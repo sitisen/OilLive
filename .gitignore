@@ -1,0 +1,20 @@
+# Compiled class file
+*.class
+
+# Compiled class folder
+bin/
+
+# Eclipse Core
+.project
+
+# JDT-specfic (Eclipse Java Development Tools)
+.classpath
+
+# Gradle
+.gradle
+
+# Settings
+.settings
+
+# Log files
+*.log
