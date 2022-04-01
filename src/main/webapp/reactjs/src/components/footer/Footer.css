@@ -1,0 +1,14 @@
+footer {
+    border-top: 2px solid lightgray;
+    background-color: rgba(0, 0, 0, .050980392156862744);
+    color: #666;
+}
+
+footer>div {
+    padding-top: 1.5rem;
+}
+
+footer>div span {
+    display: inline-block;
+    margin: 1.5rem 2rem;
+}

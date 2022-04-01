@@ -1,0 +1,25 @@
+header {
+    padding-top : 2%;
+}
+
+.header_Nav {
+    font-weight: bold;
+    font-size: 25px;
+    width: 1000px;
+}
+
+.nav_Span:hover {
+    cursor: pointer;
+    font-size: 29px;
+    color:rgb(120, 175, 10);
+}
+
+ /* 추가 */
+ .header_Nav_Img {
+    text-align: left;
+}
+
+.header_Nav_Button{
+    text-align: right;
+    width: 15%;
+}
