@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 // import css
 import './Home.css';
@@ -10,17 +10,18 @@ import Sidebar from 'components/sidebar/Sidebar';
 import Footer from 'components/footer/Footer';
 
 const Home = () => {
-    return (
-        <div>
-            <div className='home-layout'>
-                <Header />
-                <Main />
-                <Sidebar />
+    
+        return (
+            <div>
+                <div className='home-layout'>
+                    <Header />
+                    <Main />
+                    <Sidebar />
+                </div>
+                <Footer />
             </div>
-            <Footer />
-        </div>
-        
-    );
+            
+        );
 };
 
 export default Home;
