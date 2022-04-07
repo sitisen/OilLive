@@ -1,7 +1,4 @@
-import React, { useEffect } from 'react';
-
-// import css
-import './Home.css';
+import React from 'react';
 
 // import Components
 import Header from 'components/header/Header';
@@ -11,17 +8,14 @@ import Footer from 'components/footer/Footer';
 
 const Home = () => {
     
-        return (
-            <div>
-                <div className='home-layout'>
-                    <Header />
-                    <Main />
-                    <Sidebar />
-                </div>
-                <Footer />
-            </div>
-            
-        );
+    return (
+        <div>
+            <Header />
+            <Main />
+            <Sidebar />
+            <Footer />
+        </div>  
+    );
 };
 
 export default Home;
