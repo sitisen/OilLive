@@ -1,8 +1,14 @@
 package com.oillive.vo;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class ApiAvgSidoPriceVO {
 	
 	private String sidocd;	// 시도 구분코드
