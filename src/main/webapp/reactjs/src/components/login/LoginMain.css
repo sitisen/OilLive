@@ -1,0 +1,10 @@
+.loginMainLayOut {
+    background-color: rgb(233, 235, 238);
+    width: 100%;
+    border: 1px solid;
+}
+
+.loginMain {
+    margin-top: 100px;
+    border: 1px solid;
+}
