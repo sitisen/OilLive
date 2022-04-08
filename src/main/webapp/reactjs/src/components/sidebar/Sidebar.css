@@ -1,0 +1,95 @@
+/* 마우스 hover시 이미지 변경 */
+/* 마이페이지 */
+.myPageImgWap {
+    margin-top: 5px;
+}
+
+.myPageImgWap img:last-child {
+    display: none;
+}
+
+.myPageImgWap:hover img:first-child {
+    display: none;
+}
+
+.myPageImgWap:hover img:last-child {
+    display: inline-block;
+}
+
+/* 장바구니 */
+.basketImgWap {
+    margin-top: 5px;
+}
+
+.basketImgWap img:last-child {
+    display: none;
+}
+
+.basketImgWap:hover img:first-child {
+    display: none;
+}
+
+.basketImgWap:hover img:last-child {
+    display: inline-block;
+}
+
+/* 문의하기 */
+.qnaImgWap {
+    margin-top: 5px;
+}
+
+.qnaImgWap img:last-child {
+    display: none;
+}
+
+.qnaImgWap:hover img:first-child {
+    display: none;
+}
+
+.qnaImgWap:hover img:last-child {
+    display: inline-block;
+}
+
+/* Top Button */
+.topButton {
+    background-color: #444;
+    color: white;
+    font-weight: bold;
+    width: 75px;
+}
+
+/* 좌표 고정 */
+.sideBarPosition {
+    position: fixed;
+    top: 470px;
+    left: 1630px;
+}
+
+/* SideBar 스타일 */
+.sideBarPosition table {
+    text-align: center;
+    background-color: white;
+}
+
+.sideBarTdHead {
+    text-align: center;
+    background-color: white;
+    border-bottom: 1.5px solid rgb(233, 235, 238);
+    line-height: 30px;
+    width: 75px;
+}
+
+.sideBarTd {
+    text-align: center;
+    background-color: white;
+    border-bottom: 1.5px solid rgb(233, 235, 238);
+    line-height: 30px;
+    width: 75px;
+    cursor: pointer;
+}
+
+.sideBarText {
+    color: #5f6c81;
+    font-size: 12px;
+    font-weight: 800;
+}
