@@ -1,10 +1,105 @@
-.loginMainLayOut {
-    background-color: rgb(233, 235, 238);
+/* 로그인 페이지 div */
+.login-main-layout {
+    background-color: white;
+    padding-top: 100px;
+    padding-bottom: 200px;
     width: 100%;
-    border: 1px solid;
 }
 
-.loginMain {
-    margin-top: 100px;
-    border: 1px solid;
+/* 로그인 페이지 로고 div */
+.login-logo {
+    margin-bottom: 40px;
+}
+
+.login-logo img:hover {
+    cursor: pointer;
+}
+
+.login-main {
+    box-shadow: 1px 1px 1px;
+    padding-bottom: 60px;
+    margin: 0 auto;
+    width: 35%;
+    border: 0.5px solid;
+    border-radius: 12px;
+}
+
+
+/* 머릿말 div */
+.login-head-label {
+    text-align: left;
+    padding-top: 20px;
+    padding-left: 20px;
+}
+
+/* form */
+.login-form-layout {
+    width: 400px;
+    text-align: center;
+    margin: 0 auto;
+}
+
+/* form input-div */
+.input-div {
+    margin-bottom: 20px;
+}
+
+/* form input-div-checkbox */
+.input-div-checkbox {
+    width: 50%;
+    float: left;
+    margin-bottom: 20px;
+}
+/* form inputBox */
+form input[type=text] {
+    width: 80%;
+    height: 50px;
+    border : 0.1em solid rgba(150, 150, 150, 0.3);
+    outline: none;
+}
+
+form input[type=password] {
+    width: 80%;
+    height: 50px;
+    border : 0.1em solid rgba(150, 150, 150, 0.3);
+    outline: none;
+}
+
+form input[type=text]:focus {
+    border-color: rgb(107, 187, 72);
+    box-shadow: 0 0 6px 0 rgb(107, 187, 72);
+}
+
+form input[type=password]:focus {
+    border-color: rgb(107, 187, 72);
+    box-shadow: 0 0 6px 0 rgb(107, 187, 72);
+}
+
+form input[type=text] {
+    border-radius: 7px 7px 0 0;
+    border-bottom: 1;
+}
+
+form input[type=password] {
+    border-radius: 0 0 7px 7px;
+}
+
+/* 로그인 버튼 */
+.login-button {
+    width: 100%;
+}
+
+/* hr  */
+hr {
+    width: 97%;
+}
+
+/* join span */
+.join-span {
+    color: blue;
+    text-decoration: underline;
+}
+
+.join-span:hover {
+    cursor: pointer;
 }
