@@ -1,57 +1,57 @@
 /* 마우스 hover시 이미지 변경 */
 /* 마이페이지 */
-.myPageImgWap {
+.myPage-img-wap {
     margin-top: 5px;
 }
 
-.myPageImgWap img:last-child {
+.myPage-img-wap img:last-child {
     display: none;
 }
 
-.myPageImgWap:hover img:first-child {
+.myPage-img-wap:hover img:first-child {
     display: none;
 }
 
-.myPageImgWap:hover img:last-child {
+.myPage-img-wap:hover img:last-child {
     display: inline-block;
 }
 
 /* 장바구니 */
-.basketImgWap {
+.basket-img-wap {
     margin-top: 5px;
 }
 
-.basketImgWap img:last-child {
+.basket-img-wap img:last-child {
     display: none;
 }
 
-.basketImgWap:hover img:first-child {
+.basket-img-wap:hover img:first-child {
     display: none;
 }
 
-.basketImgWap:hover img:last-child {
+.basket-img-wap:hover img:last-child {
     display: inline-block;
 }
 
 /* 문의하기 */
-.qnaImgWap {
+.qna-img-wap {
     margin-top: 5px;
 }
 
-.qnaImgWap img:last-child {
+.qna-img-wap img:last-child {
     display: none;
 }
 
-.qnaImgWap:hover img:first-child {
+.qna-img-wap:hover img:first-child {
     display: none;
 }
 
-.qnaImgWap:hover img:last-child {
+.qna-img-wap:hover img:last-child {
     display: inline-block;
 }
 
 /* Top Button */
-.topButton {
+.top-button {
     background-color: #444;
     color: white;
     font-weight: bold;
@@ -59,19 +59,19 @@
 }
 
 /* 좌표 고정 */
-.sideBarPosition {
+.sidebar-layout {
     position: fixed;
     top: 470px;
     left: 1630px;
 }
 
 /* SideBar 스타일 */
-.sideBarPosition table {
+.sidebar-layout table {
     text-align: center;
     background-color: white;
 }
 
-.sideBarTdHead {
+.sidebar-thead {
     text-align: center;
     background-color: white;
     border-bottom: 1.5px solid rgb(233, 235, 238);
@@ -79,7 +79,7 @@
     width: 75px;
 }
 
-.sideBarTd {
+.sidebar-td {
     text-align: center;
     background-color: white;
     border-bottom: 1.5px solid rgb(233, 235, 238);
@@ -88,7 +88,7 @@
     cursor: pointer;
 }
 
-.sideBarText {
+.sidebar-td-span {
     color: #5f6c81;
     font-size: 12px;
     font-weight: 800;

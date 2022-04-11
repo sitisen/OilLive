@@ -3,24 +3,24 @@ header {
     padding-bottom: 1%;
 }
 
-.header_Nav {
+.header-nav {
     font-weight: bold;
     font-size: 21px;
     width: 200px;
 }
 
-.nav_Span:hover {
+.nav-span:hover {
     cursor: pointer;
     font-size: 23px;
     color:rgb(120, 175, 10);
 }
 
  /* 추가 */
- .header_Nav_Img {
+ .header-nav-img {
     text-align: left;
 }
 
-.header_Nav_Button {
+.header-nav-button {
     text-align: right;
     width: 320px;
 }
