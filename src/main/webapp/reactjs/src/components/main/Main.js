@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { getAvgSidoPrice } from 'services/ApiService';
 
-import './Main.css';
+// import CSS
+import mainStyle from './Main.module.css';
 
 /* 오늘 날짜 리턴 함수 */
 function now() {
@@ -12,11 +13,11 @@ function now() {
 const Main = () => {
 
   /* Back-End 연동 */
-  const [ avgSidoPrice, setAvgSidoPrice ] = useState();
+  // const [ avgSidoPrice, setAvgSidoPrice ] = useState();
 
-  useEffect( () => {
-    getAvgSidoPrice().then( (res) => setAvgSidoPrice(res.data) );
-  }, []);
+  // useEffect( () => {
+  //   getAvgSidoPrice().then( (res) => setAvgSidoPrice(res.data) );
+  // }, []);
 
   /* 기름 종류 라디오 버튼 클릭 이벤트 */
   const [ isChecked, setIsChecked ] = useState('0');
@@ -35,159 +36,171 @@ const Main = () => {
     }
 
     child.checked = true;
-    // console.log(e.currentTarget.children[lastCount - 1]);
+
+    const prodcd = prodcd;
+
+    /* API 관련 */
+    getAvgSidoPrice(e);
     
   }
 
   return (
-    <div className='main-layout'> 
+    <div className={mainStyle['main-layout']}> 
+      <div className={mainStyle['main-img']}>
+        <div className={`container text-center ${mainStyle['avg-all-price']}`}>
 
-      <div className='main-img'>
-        <div className='container text-center avg-all-price'>
-
-          <div className='all'>
+          <div className={mainStyle['all']}>
             <div>
               <span>전국 평균</span>
               <span>(원/리터)</span>
             </div>
             <div>
               <span>1980.14</span>
-              <span className='up-price'>&#9650; 1.54</span>
+              <span className={mainStyle['up-price']}>&#9650; 1.54</span>
             </div>
           </div>
-          <div className='local'>
+          <div className={mainStyle['local']}>
             <div>
               <span>시도별 평균</span>
               <span>(원/리터)</span>
             </div>
             <div>
               <span>1558.92</span>
-              <span className='down-price'>&#9660; 1.80</span>
+              <span className={mainStyle['down-price']}>&#9660; 1.80</span>
             </div>
           </div>
 
         </div>
       </div>
 
-      <div className='oil-layout container text-center'>
-        <div className='oil-box-button'>
+      <div className={`container text-center ${mainStyle['oil-layout']}`}> 
+        <div className={mainStyle['oil-box-button']}>
 
-          <div className='today'>
+          <div className={mainStyle['today']}>
             <h4>오늘의 유가</h4>
             <span>({now()})</span>
           </div>
 
-          <div className={isChecked === '0' ? 'oil-type active' : 'oil-type'} onClick={e => oilTypeCheck(e)}>
-            <span>휘발유</span>
-            {isChecked === '0' ? <span className='active-arrow'>&gt;</span> : ''}
-            <input type='radio' name='prodcd' value="B027" defaultChecked='true' hidden/>
-          </div>
+          <form>
+            <input type='hidden' name='' />
+            <input type='hidden' name='' />
+            <div className={ isChecked === '0' ? `${mainStyle['oil-type']} ${mainStyle['active']}` : mainStyle['oil-type'] } onClick={e => oilTypeCheck(e)}>
+              <span>휘발유</span>
+              {isChecked === '0' ? <span className={mainStyle['active-arrow']}>&gt;</span> : ''}
+              <input type='radio' name='prodcd' value="B027" defaultChecked='true' hidden/>
+            </div>
 
-          <div className={isChecked === '1' ? 'oil-type active' : 'oil-type'} onClick={e => oilTypeCheck(e)}>
-            <span>경유</span>
-            {isChecked === '1' ? <span className='active-arrow'>&gt;</span> : ''}
-            <input type='radio' name='prodcd' value="D047" hidden/>
-          </div>
+            <div className={ isChecked === '1' ? `${mainStyle['oil-type']} ${mainStyle['active']}` : mainStyle['oil-type'] } onClick={e => oilTypeCheck(e)}>
+              <span>경유</span>
+              {isChecked === '1' ? <span className={mainStyle['active-arrow']}>&gt;</span> : ''}
+              <input type='radio' name='prodcd' value="D047" hidden/>
+            </div>
 
-          <div className={isChecked === '2' ? 'oil-type active' : 'oil-type'} onClick={e => oilTypeCheck(e)}>
-            <span>LPG</span>
-            {isChecked === '2' ? <span className='active-arrow'>&gt;</span> : ''}
-            <input type='radio' name='prodcd' value='K015' hidden/>
+            <div className={ isChecked === '2' ? `${mainStyle['oil-type']} ${mainStyle['active']}` : mainStyle['oil-type'] } onClick={e => oilTypeCheck(e)}>
+              <span>LPG</span>
+              {isChecked === '2' ? <span className={mainStyle['active-arrow']}>&gt;</span> : ''}
+              <input type='radio' name='prodcd' value='K015' hidden/>
+            </div>
+            <button type='submit'>전송</button>
+          </form>
+
+          <div className={mainStyle['banner']}>
+            배너 위치
           </div>
 
         </div> {/* //.oil-box-button */}
 
-        <div className='oil-box'>
+        <div className={mainStyle['oil-box']}>
           <h5>시도별 평균</h5>
           <hr />
 
-          <div className='oil-box-api'>
-            <div className='oil-box-map'>
+          <div className={mainStyle['oil-box-api']}>
+            <div className={mainStyle['oil-box-map']}>
             {/* input hidden 으로 ex)서울=01, price 값 넘겨야함 */ }
-              <div className='gyeonggi'>
-                <span className='title'>경기</span>
-                <span className='price'>1983</span>
-                <span className='location-dot'>&bull;</span>
+              <div className={mainStyle['gyeonggi']}>
+                <span className={mainStyle['title']}>경기</span>
+                <span className={mainStyle['price']}>1983</span>
+                <span className={mainStyle['location-dot']}>&bull;</span>
               </div>
-              <div className='gangwon'>
-                <span className='title'>강원</span>
-                <span className='price'>1999</span>
-                <span className='location-dot'>&bull;</span>
+              <div className={mainStyle['gangwon']}>
+                <span className={mainStyle['title']}>강원</span>
+                <span className={mainStyle['price']}>1999</span>
+                <span className={mainStyle['location-dot']}>&bull;</span>
               </div>
-              <div className='chungbuk'>
-                <span className='title'>충북</span>
-                <span className='price'>1922</span>
-                <span className='location-dot'>&bull;</span>
+              <div className={mainStyle['chungbuk']}>
+                <span className={mainStyle['title']}>충북</span>
+                <span className={mainStyle['price']}>1922</span>
+                <span className={mainStyle['location-dot']}>&bull;</span>
               </div>
-              <div className='chungnam'>
-                <span className='title'>충남</span>
-                <span className='price'>2000</span>
-                <span className='location-dot'>&bull;</span>
+              <div className={mainStyle['chungnam']}>
+                <span className={mainStyle['title']}>충남</span>
+                <span className={mainStyle['price']}>2000</span>
+                <span className={mainStyle['location-dot']}>&bull;</span>
               </div>
-              <div className='jeonbuk'>
-                <span className='title'>전북</span>
-                <span className='price'>1880</span>
-                <span className='location-dot'>&bull;</span>
+              <div className={mainStyle['jeonbuk']}>
+                <span className={mainStyle['title']}>전북</span>
+                <span className={mainStyle['price']}>1880</span>
+                <span className={mainStyle['location-dot']}>&bull;</span>
               </div>
-              <div className='jeonnam'>
-                <span className='title'>전남</span>
-                <span className='price'>1935</span>
-                <span className='location-dot'>&bull;</span>
+              <div className={mainStyle['jeonnam']}>
+                <span className={mainStyle['title']}>전남</span>
+                <span className={mainStyle['price']}>1935</span>
+                <span className={mainStyle['location-dot']}>&bull;</span>
               </div>
-              <div className='gyeonbuk'>
-                <span className='title'>경북</span>
-                <span className='price'>1997</span>
-                <span className='location-dot'>&bull;</span>
+              <div className={mainStyle['gyeonbuk']}>
+                <span className={mainStyle['title']}>경북</span>
+                <span className={mainStyle['price']}>1997</span>
+                <span className={mainStyle['location-dot']}>&bull;</span>
               </div>
-              <div className='gyeonnam'>
-                <span className='title'>경남</span>
-                <span className='price'>2002</span>
-                <span className='location-dot'>&bull;</span>
+              <div className={mainStyle['gyeonnam']}>
+                <span className={mainStyle['title']}>경남</span>
+                <span className={mainStyle['price']}>2002</span>
+                <span className={mainStyle['location-dot']}>&bull;</span>
               </div>
-              <div className='jeju'>
-                <span className='title'>제주</span>
-                <span className='price'>2300</span>
-                <span className='location-dot'>&bull;</span>
+              <div className={mainStyle['jeju']}>
+                <span className={mainStyle['title']}>제주</span>
+                <span className={mainStyle['price']}>2300</span>
+                <span className={mainStyle['location-dot']}>&bull;</span>
               </div>
-              <div className='seoul'>
-                <span className='title'>서울</span>
-                <span className='price'>2400</span>
-                <span className='location-dot'>&bull;</span>
+              <div className={mainStyle['seoul']}>
+                <span className={mainStyle['title']}>서울</span>
+                <span className={mainStyle['price']}>2400</span>
+                <span className={mainStyle['location-dot']}>&bull;</span>
               </div>
-              <div className='busan'>
-                <span className='title'>부산</span>
-                <span className='price'>1800</span>
-                <span className='location-dot'>&bull;</span>
+              <div className={mainStyle['busan']}>
+                <span className={mainStyle['title']}>부산</span>
+                <span className={mainStyle['price']}>1800</span>
+                <span className={mainStyle['location-dot']}>&bull;</span>
               </div>
-              <div className='daegu'>
-                <span className='title'>대구</span>
-                <span className='price'>1860</span>
-                <span className='location-dot'>&bull;</span>
+              <div className={mainStyle['daegu']}>
+                <span className={mainStyle['title']}>대구</span>
+                <span className={mainStyle['price']}>1860</span>
+                <span className={mainStyle['location-dot']}>&bull;</span>
               </div>
-              <div className='incheon'>
-                <span className='title'>인천</span>
-                <span className='price'>2150</span>
-                <span className='location-dot'>&bull;</span>
+              <div className={mainStyle['incheon']}>
+                <span className={mainStyle['title']}>인천</span>
+                <span className={mainStyle['price']}>2150</span>
+                <span className={mainStyle['location-dot']}>&bull;</span>
               </div>
-              <div className='gwangju'>
-                <span className='title'>광주</span>
-                <span className='price'>2150</span>
-                <span className='location-dot'>&bull;</span>
+              <div className={mainStyle['gwangju']}>
+                <span className={mainStyle['title']}>광주</span>
+                <span className={mainStyle['price']}>2150</span>
+                <span className={mainStyle['location-dot']}>&bull;</span>
               </div>
-              <div className='daejeon'>
-                <span className='title'>대전</span>
-                <span className='price'>2150</span>
-                <span className='location-dot'>&bull;</span>
+              <div className={mainStyle['daejeon']}>
+                <span className={mainStyle['title']}>대전</span>
+                <span className={mainStyle['price']}>2150</span>
+                <span className={mainStyle['location-dot']}>&bull;</span>
               </div>
-              <div className='ulsan'>
-                <span className='title'>울산</span>
-                <span className='price'>2150</span>
-                <span className='location-dot'>&bull;</span>
+              <div className={mainStyle['ulsan']}>
+                <span className={mainStyle['title']}>울산</span>
+                <span className={mainStyle['price']}>2150</span>
+                <span className={mainStyle['location-dot']}>&bull;</span>
               </div>
-              <div className='sejong'>
-                <span className='title'>세종</span>
-                <span className='price'>2150</span>
-                <span className='location-dot'>&bull;</span>
+              <div className={mainStyle['sejong']}>
+                <span className={mainStyle['title']}>세종</span>
+                <span className={mainStyle['price']}>2150</span>
+                <span className={mainStyle['location-dot']}>&bull;</span>
               </div>
 
             </div> {/* //.oil-box-api */}   
@@ -201,11 +214,11 @@ const Main = () => {
           </ul> */}
         </div>
 
-        <div className='oil-box'>
+        <div className={mainStyle['oil-box']}>
           <h5>최근 7일간 유가추이</h5>
           <hr />
-          <div className='oil-box-api'>
-
+          <div className={mainStyle['oil-box-api']}>
+            
           </div>
         </div>
 

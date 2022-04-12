@@ -1,11 +1,11 @@
 import React from 'react';
 
 // import css
-import './Footer.css';
+import footerStyle from './Footer.module.css';
 
 const Footer = () => {
     return (
-        <footer className='text-center'>
+        <footer className={`text-center ${footerStyle['footer-layout']}`}>
             <div>
                 <h6><b>OilLive Inc. 서울특별시 강서구 12동 34로</b></h6>
                 <span>대표 : 홍길동</span>
