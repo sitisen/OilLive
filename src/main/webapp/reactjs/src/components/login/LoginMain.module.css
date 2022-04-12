@@ -1,0 +1,113 @@
+/* 로그인 페이지 div */
+.login-main-layout {
+    background-color: white;
+    padding-top: 100px;
+    padding-bottom: 200px;
+    width: 100%;
+}
+
+/* 로그인 페이지 로고 div */
+.login-logo {
+    margin-bottom: 40px;
+}
+
+.login-logo img:hover {
+    cursor: pointer;
+}
+
+.login-main {
+    box-shadow: 1px 1px 1px;
+    padding-bottom: 30px;
+    margin: 0 auto;
+    width: 24%;
+    border: 0.5px solid rgba(150, 150, 150, 0.5);
+    border-radius: 12px;
+}
+
+
+/* 머릿말 div */
+.login-head-label {
+    text-align: left;
+    padding-top: 20px;
+    padding-left: 20px;
+}
+
+/* form */
+.login-form-layout {
+    width: 400px;
+    text-align: center;
+    margin: 0 auto;
+}
+
+/* form input-div */
+.input-div {
+    margin-bottom: 20px;
+}
+
+/* form input-div-checkbox */
+.input-div-checkbox {
+    width: 50%;
+    float: left;
+    margin-bottom: 20px;
+}
+/* form inputBox */
+.login-form-layout input[type=text] {
+    width: 80%;
+    height: 50px;
+    border : 0.1em solid rgba(150, 150, 150, 0.3);
+    outline: none;
+    padding-left: 12px;
+}
+
+.login-form-layout input[type=password] {
+    width: 80%;
+    height: 50px;
+    border : 0.1em solid rgba(150, 150, 150, 0.3);
+    outline: none;
+    padding-left: 12px;
+}
+
+.login-form-layout input[type=text]:focus {
+    border-color: rgb(107, 187, 72);
+    box-shadow: 0 0 6px 0 rgb(107, 187, 72);
+}
+
+.login-form-layout input[type=password]:focus {
+    border-color: rgb(107, 187, 72);
+    box-shadow: 0 0 6px 0 rgb(107, 187, 72);
+}
+
+.login-form-layout input[type=text] {
+    border-radius: 7px 7px 0 0;
+}
+
+.login-form-layout input[type=password] {
+    border-radius: 0 0 7px 7px;
+}
+
+/* 로그인 버튼 */
+.login-button {
+    width: 80%;
+}
+
+/* hr  */
+.login-head-label hr {
+    width: 97%;
+}
+
+/* span */
+.input-div-span {
+    color: rgb(136,136,136);
+    font-size: 14px;
+    margin: 0 20px;
+}
+
+.input-div-span:hover {
+    cursor: pointer;
+}
+
+/* input-div label */ 
+.input-div label {
+    color: rgb(136,136,136);
+    font-size: 14px;
+}

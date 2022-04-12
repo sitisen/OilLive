@@ -1,0 +1,244 @@
+/* 전체 본문 레이아웃 CSS */
+.main-layout {
+    height: 100%;
+    background-color: rgb(233, 235, 238);
+    box-sizing: border-box;
+}
+
+/* 메인페이지 이미지 CSS */
+.main-img {
+    background-image: url("/public/images/main.jpg");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 350px;
+}
+
+/* 전국 평균 레이아웃 css */
+.avg-all-price {
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+    color: white;
+}
+
+.avg-all-price span {
+    display: block;
+}
+
+.all, 
+.local {
+    width: 50%;
+    height: 30%;
+    padding: 23px;
+    background-color: rgba(0, 0, 0, .8);
+    display: flex;
+    flex-direction: row;
+    font-size: 21px;
+    font-weight: bold;
+}
+
+.all div,
+.local div {
+    width: 50%;
+}
+
+.all {
+    border-right: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.up-price {
+    color : orangered;
+}
+
+.down-price {
+    color: dodgerblue;
+}
+
+/* 유가 정보 API 레이아웃 CSS */
+.oil-layout {
+    height: 550px;
+}
+
+/* 유가 종류 버튼 레이아웃 CSS */
+.oil-box-button {
+    width: 20%;
+    height: 100%;
+    float: left;
+    border: 1px solid rgb(233, 235, 238);
+    background-color: white;
+}
+
+/* 오늘의 유가 div CSS */
+.today {
+    height: 30%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: rgb(82, 167, 67);
+    color: white;
+}
+
+/* 휘발유, 경유, LPG 버튼 CSS */
+.oil-type {
+    height: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-top: 1px solid rgb(233, 235, 238);
+    background-color: rgb(82, 167, 67);
+    color: white;
+    font-size: 16px;
+    letter-spacing: 2px;
+    position: relative;
+}
+
+.oil-type:hover {
+    cursor: pointer;
+    background-color: rgb(46, 121, 33);
+}
+
+.active {
+    background-color: rgb(46, 121, 33);
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.active-arrow {
+    position: absolute;
+    right: 10px;
+    font-size: 20px;
+}
+
+/* 배너 레이아웃 CSS */
+.banner {
+    height: 40%; /* ".today:30%" + ".oil-type:10% * 3" + .banner:40% = 100% */
+    border: 1px solid red
+}
+
+/* 유가 지도 및 그래프 레이아웃 CSS */
+.oil-box {
+    padding: 20px;
+    width: 40%;
+    height: 100%;
+    float: left;
+    text-align: left;
+    border: 1px solid rgb(233, 235, 238);
+    background-color: white;
+}
+
+.oil-box-api {
+    height: 85%;
+}
+
+.oil-box-map {
+    background-image: url("/public/images/korea-map.png");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    margin: 0 auto;
+    width: 75%;
+    height: 100%;
+}
+
+.oil-box-map div {
+    position: absolute;
+    border: 1px solid rgb(46, 121, 33);
+    border-radius: 5px;
+}
+
+.oil-box-map span {
+    display: block;
+    font-size: 12px;
+    width: 38px;
+    text-align: center;
+}
+
+.title {
+    background-color: rgb(82, 167, 67);
+    color: white;
+    font-weight: bold;
+    width: 100%;
+    border-radius: 3px 3px 0 0;
+}
+
+.price {
+    background-color: white;
+    border-radius: 0 0 5px 5px;
+    font-weight: bold;
+}
+
+.location-dot {
+    position: absolute;
+    margin-top: -8px;
+    color: rgb(46, 121, 33);
+    pointer-events: none;
+}
+
+/* 시도별 평균 div 위치 CSS */
+.gyeonggi {
+    margin: 18px 0 0 120px;
+}
+
+.gangwon {
+    margin: 45px 0 0 230px;
+}
+
+.chungbuk {
+    margin: 110px 0 0 195px;
+}
+
+.chungnam {
+    margin: 150px 0 0 75px;
+}
+
+.jeonbuk {
+    margin: 215px 0 0 95px;
+}
+
+.jeonnam {
+    margin: 325px 0 0 75px;
+}
+
+.gyeonbuk {
+    margin: 140px 0 0 265px;
+}
+
+.gyeonnam {
+    margin: 260px 0 0 195px;
+}
+
+.jeju {
+    margin: 370px 0 0 30px;
+}
+
+.seoul {
+    margin: 65px 0 0 110px;
+}
+
+.busan {
+    margin: 270px 0 0 275px;
+}
+
+.daegu {
+    margin: 210px 0 0 240px;
+}
+
+.incheon {
+    margin: 50px 0 0 60px;
+}
+
+.gwangju {
+    margin: 270px 0 0 93px;
+}
+
+.daejeon {
+    margin: 175px 0 0 145px;
+}
+
+.ulsan {
+    margin: 225px 0 0 305px;
+}
+
+.sejong {
+    margin: 125px 0 0 130px;
+}
