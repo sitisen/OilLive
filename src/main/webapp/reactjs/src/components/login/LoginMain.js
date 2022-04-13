@@ -1,22 +1,46 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import UserService from 'services/UserService';
 
 /* import css */
 import LoginMainStyle from './LoginMain.module.css';
 
-
-
 const LoginMain = () => {
-  // const [userid, setUserid] = useState('');
-  // const [password, setPassword] = useState('');
 
-  // function validateForm() {
-  //   return email.length > 0 && password.length > 0;
-  // }
+  // 세션 스토리지
+  let sessionStorage = window.sessionStorage;
 
-  // function handleSubmit(event) {
-  //   event.preventDefault();
-  // }
+  // 페이지 이동 변수
+  const navigate = useNavigate();
+ 
+  // 변수 선언 및 초기화
+  const [inputs , setInputs] = useState({
+    userId : '',
+    userPwd : ''
+  });
+
+  const {userId, userPwd} = inputs;
+
+  const onChange = (e) => {
+    const {value, name} = e.target;
+    setInputs({
+      ...inputs,
+      [name]: value
+    })
+  }
+
+  // axios 통신
+  const login = () => {
+    console.log('submit test :::::::::::::::::::');
+    UserService.login(inputs).then( res => {if(res.data === 0){
+      alert('로그인에 실패했습니다.!!');
+    } else {
+      sessionStorage.setItem('userId', userId);
+      navigate('/', {replace:true} );
+    }}
+    )
+  }
+
   return (
     <div className={LoginMainStyle['login-main-layout']}>
       <div className={`text-center ${LoginMainStyle['login-logo']}`}>
@@ -30,8 +54,8 @@ const LoginMain = () => {
         <form className={LoginMainStyle['login-form-layout']}>
 
             <div className={LoginMainStyle['input-div']}>
-              <input type='text'id='userId' placeholder='아이디' name='userId' required />
-              <input type='password' id='userPwd' placeholder='비밀번호' name='userPwd' required />
+              <input type='text'id='userId' placeholder='아이디' name='userId' required onChange={onChange}/>
+              <input type='password' id='userPwd' placeholder='비밀번호' name='userPwd' required onChange={onChange}/>
             </div>
             
             <div className={LoginMainStyle['input-div-checkbox']}>
@@ -40,7 +64,7 @@ const LoginMain = () => {
             </div>
 
             <div className={LoginMainStyle['input-div']}><br></br><br></br>
-              <button type='button' className={`btn btn-success btn-block ${LoginMainStyle['login-button']}`}>로그인</button>
+              <button type='button' className={`btn btn-success btn-block ${LoginMainStyle['login-button']}`} onClick={login}>로그인</button>
             </div>
         </form>
       </div>
