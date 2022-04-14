@@ -51,6 +51,10 @@
     color : orangered;
 }
 
+.unchange-price {
+    color : orange;
+}
+
 .down-price {
     color: dodgerblue;
 }
@@ -81,7 +85,7 @@
 
 /* 휘발유, 경유, LPG 버튼 CSS */
 .oil-type {
-    height: 10%;
+    height: 54.8px;
     display: flex;
     align-items: center;
     justify-content: center;
