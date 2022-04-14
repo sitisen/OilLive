@@ -1,8 +1,14 @@
 package com.oillive.vo;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class ApiAvgAllPriceVO {
 
 	private String tradeDT;	// 해당일자

@@ -1,13 +1,21 @@
 import axios from 'axios';
 
 
-const PATH = "http://localhost:9090"
+const API_URL = "http://localhost:9090";
 
-const AVG_SIDO_PRICE_URL = PATH + "/users/home";
+const OIL_PRICE_LIST_URL = API_URL + "/users/home";
 
 /* 유가 API */
-export function getAvgSidoPrice() {
+const ApiService = {
 
-    return axios.get(AVG_SIDO_PRICE_URL);
-    
+    oilPriceList (inputs) {
+        return axios({
+            method: 'get',
+            url: OIL_PRICE_LIST_URL,
+            params: inputs
+        });
+    }
+
 }
+
+export default ApiService;
