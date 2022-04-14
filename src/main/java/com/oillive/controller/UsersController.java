@@ -1,9 +1,5 @@
 package com.oillive.controller;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,12 +13,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import com.oillive.service.UsersService;
+import com.oillive.vo.ApiAvgAllPriceVO;
 import com.oillive.vo.ApiAvgSidoPriceVO;
+import com.oillive.vo.ApiLowTop10VO;
 
 @RestController
 @RequestMapping("/users")
@@ -33,77 +31,131 @@ public class UsersController {
 	UsersService usersService;
 	
 	@GetMapping("/home")
-	public List<ApiAvgSidoPriceVO> home() {				
-		StringBuilder result = new StringBuilder();
-		List<ApiAvgSidoPriceVO> list = new ArrayList<ApiAvgSidoPriceVO>();
+	public HashMap<String, Object> home(@RequestParam HashMap<Object, String> req) {
 		
-		// URL Parameter 값 React 에서 전달한 값으로 대입할 예정
-		String urlstr = "http://www.opinet.co.kr/api/avgSidoPrice.do?prodcd=B027&out=json&code=F220314046";
+		String prodcd = req.get("prodcd");
+		String sido = req.get("sido");
+		String sigun = req.get("sigun");
 		
-		try {
+		
+		// Service 로 이전 예정		
+		List<ApiAvgAllPriceVO> AllList = new ArrayList<ApiAvgAllPriceVO>();
+		List<ApiAvgSidoPriceVO> SidoList = new ArrayList<ApiAvgSidoPriceVO>();
+		List<ApiLowTop10VO> lowTopList = new ArrayList<ApiLowTop10VO>();
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		
+		RestTemplate restTemplate = new RestTemplate();
+		
+		String baseUrl = null;
+		
+		// 유가 API 요청 횟수
+		int apiRequestCount = 2;
+		
+		// 유가 API 요청 코드
+		for(int i = 0; i < apiRequestCount; i++) {
 			
-			URL url = new URL(urlstr);
-			
-			HttpURLConnection urlconnection = (HttpURLConnection) url.openConnection();
-			urlconnection.setRequestMethod("GET");
-			
-			BufferedReader br = new BufferedReader(new InputStreamReader(urlconnection.getInputStream(), "UTF-8"));
-			
-			String returnLine;
-			
-			while((returnLine = br.readLine())!= null) {
-				result.append(returnLine + "\n");
+			// API 요청 URL, 결과값 List 선언
+			switch(i) {
+				case 0: // 전국 주유소 평균가격 API URL
+						baseUrl = "http://www.opinet.co.kr/api/avgAllPrice.do?out=json&code=F220314046";
+						break;
+				case 1: // 시도별 주유소 평균가격 API URLb
+						baseUrl = "http://www.opinet.co.kr/api/avgSidoPrice.do?prodcd=" + prodcd + "&out=json&code=F220314046";
+						break;
+						
+				case 2: // 지역별 최저가 주유소 API URL (미완성)
+						baseUrl = "http://www.opinet.co.kr/api/lowTop10.do?prodcd=" + prodcd + "&area=" + sigun + "&cnt=10&out=json&code=F220314046";
+						break;
 			}
-		
-			urlconnection.disconnect();
+
+			String response = restTemplate.getForObject(baseUrl, String.class);
 			
-			///////////////////// JSON VO 넣는부분
-			JSONObject jObj;
-			
-			JSONParser jsonParser = new JSONParser();
-			
-			JSONObject jsonObj = (JSONObject) jsonParser.parse(result.toString());
-			
-			JSONObject parseResult = (JSONObject) jsonObj.get("RESULT");
-			
-			JSONArray array = (JSONArray) parseResult.get("OIL");
-			
-			for(int i = 0; i<array.size(); i++) {
-				jObj = (JSONObject)array.get(i);
+			try {
 				
-				ApiAvgSidoPriceVO vo = ApiAvgSidoPriceVO.builder()
-						.sidocd(jObj.get("SIDOCD").toString())
-						.sidonm(jObj.get("SIDONM").toString())
-						.prodcd(jObj.get("PRODCD").toString())
-						.price(jObj.get("PRICE").toString()) 
-						.diff(jObj.get("DIFF").toString())
-						.build();
+				///////////////////// JSON VO 넣는부분		
+				JSONParser jsonParser = new JSONParser();
 				
-				list.add(vo);
+				JSONObject jsonObj = (JSONObject)jsonParser.parse(response.toString());
 				
- 				System.out.println("list ::::: " + list.get(i) + "\n");
+				// JSON Data 가공
+				JSONObject parseResult = (JSONObject) jsonObj.get("RESULT");
+				
+				JSONArray array = (JSONArray) parseResult.get("OIL");
+				
+				for(int j = 0; j < array.size(); j++) {
+					
+					jsonObj = (JSONObject)array.get(j);
+					
+					if( i == 0 ) { // 전국 주유소 평균가격 VO 가공 및 List 추가
+						
+						ApiAvgAllPriceVO vo = ApiAvgAllPriceVO.builder()
+								.tradeDT(jsonObj.get("TRADE_DT").toString())
+								.prodcd(jsonObj.get("PRODCD").toString())
+								.prodnm(jsonObj.get("PRODNM").toString())
+								.price(jsonObj.get("PRICE").toString()) 
+								.diff(jsonObj.get("DIFF").toString())
+								.build();
+						
+						AllList.add(vo);
+						
+					} else if ( i == 1 ) { // 시도별 주유소 평균가격 VO 가공 및 List 추가
+						
+						ApiAvgSidoPriceVO vo = ApiAvgSidoPriceVO.builder()
+								.sidocd(jsonObj.get("SIDOCD").toString())
+								.sidonm(jsonObj.get("SIDONM").toString())
+								.prodcd(jsonObj.get("PRODCD").toString())
+								.price(jsonObj.get("PRICE").toString()) 
+								.diff(jsonObj.get("DIFF").toString())
+								.build();
+						
+						SidoList.add(vo);
+						
+					} else { // 지역별 최저가 주유소 VO 가공 및 List 추가
+					
+						ApiLowTop10VO vo = ApiLowTop10VO.builder()
+								.uniId(jsonObj.get("UNI_ID").toString())
+								.price(jsonObj.get("PRICE").toString())
+								.pollDivCd(jsonObj.get("POLL_DIV_CD").toString())
+								.osNm(jsonObj.get("OS_NM").toString()) 
+								.vanAdr(jsonObj.get("VAN_ADR").toString())
+								.newAdr(jsonObj.get("NEW_ADR").toString())
+								.gisXCoor(jsonObj.get("GIS_X_COOR").toString())
+								.gisYCoor(jsonObj.get("GIS_Y_COOR").toString())
+								.build();
+						
+						lowTopList.add(vo);
+						
+					}
+						
+				}
+				
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 			
-			
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
-		  
-		return list;
+		
+		result.put("AllList", AllList);
+		result.put("SidoList", SidoList);
+		result.put("lowTopList", lowTopList);
+		
+		return result;
 	}
 	
 	//--------------- 로그인 --------------- //
+	
 	@PostMapping("/login")
-	public int login(@RequestBody HashMap<Object, String> req){
+	public int login(@RequestBody HashMap<Object, String> req) {
 		
 		HashMap<String, String> map = new HashMap<String, String>();
 		
-		// User 아이디, 비밀번호 받아와서 Service 전송
+		// User Id, Pwd 받아와서 Service 전송
 		map.put("userId", req.get("userId"));
 		map.put("userPwd", req.get("userPwd"));
 
 		int result = usersService.login(map);
 		
+		System.out.println("result ::: " + result);
 		return result;
 	}
 }
