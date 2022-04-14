@@ -8,7 +8,7 @@ const USERS_LOGIN = USERS_URL + '/login';
 const UserService = {
 
     login(inputs){
-        return axios.post(USERS_LOGIN , inputs);
+        return axios.post(USERS_LOGIN, inputs);
     }
     
     
