@@ -1,0 +1,122 @@
+/* 회원가입 페이지 레이아웃 */
+.signup-main-layout {
+    background-color: white;
+    padding-top: 60px;
+    padding-bottom: 200px;
+    width: 100%;
+}
+
+/* 로고 div style */
+.signup-logo {
+    margin-bottom: 70px;
+}
+
+.signup-logo img:hover {
+    cursor: pointer;
+}
+
+/* 회원가입 페이지 메인 */
+.signup-main {
+    box-shadow: 1px 1px 1px;
+    padding-bottom: 30px;
+    margin: 0 auto;
+    width: 40%;
+    border: 0.5px solid rgba(150, 150, 150, 0.5);
+    border-radius: 12px;
+}
+
+/* 머릿말 div */
+.signup-head-label {
+    text-align: left;
+    padding-top: 20px;
+    padding-left: 20px;
+}
+
+/* hr */
+.signup-head-label hr {
+    width: 97%;
+}
+
+/* 회원가입 form layout */
+.signup-form-layout {
+    width: 600px;
+    text-align: left;
+    margin-left: 80px;
+    margin-right: 80px;
+}
+
+/* form - input - div */
+.signup-input-div {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 40px;
+}
+
+.signup-input-div-phone {
+    margin-bottom: 40px;
+}
+
+/* form - div - label */
+.signup-form-label {
+    font-size: 15px;
+    font-weight: bold;
+}
+
+/* form - div - input */
+.signup-form-input {
+    height: 50px;
+    border : 0.1em solid rgba(150, 150, 150, 0.5);
+    outline: none;
+    padding-left: 12px;
+}
+
+.signup-form-input:focus {
+    border-color: rgb(107, 187, 72);
+    box-shadow: 0 0 6px 0 rgb(107, 187, 72);
+} 
+
+/* form - div - input - phone */
+.signup-form-input-phone {
+    width: 60%;
+    height: 50px;
+    border : 0.1em solid rgba(150, 150, 150, 0.5);
+    outline: none;
+    padding-left: 12px;
+}
+
+.signup-form-input-phone:focus {
+    border-color: rgb(107, 187, 72);
+    box-shadow: 0 0 6px 0 rgb(107, 187, 72);
+} 
+
+/* 인증하기 버튼 */
+.signup-form-input-phone-button {
+    margin-left: 50px;
+    width: 130px;
+    height: 50px;
+    outline: none;
+    background-color: rgb(9, 187, 89);
+    border: none;
+    border-radius:5px;
+    color: white;
+}
+
+.signup-form-input-phone-button:hover {
+    background-color:rgb(21, 196, 100);
+}
+
+
+.security-input {
+    width: 60%;
+    height: 50px;
+    border : 0.1em solid rgba(150, 150, 150, 0.5);
+    outline: none;
+    padding-left: 12px;
+    background-color: rgb(247,247,247);
+}
+
+.security-input-button {
+    margin-left: 20px;
+    width: 100px;
+    height: 50px;
+}
