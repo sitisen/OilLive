@@ -25,12 +25,13 @@
     width: 320px;
 }
 
-.stst {
-    color: red;
+.header-span {
+    color: #555;
+    font-size: 16px;
     font-weight: bold;
     text-decoration: underline;
 }
 
-.stst:hover {
+.header-span:hover {
     cursor: pointer;
 }

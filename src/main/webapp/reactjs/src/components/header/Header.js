@@ -35,7 +35,7 @@ const Header = () => {
                   <td className={HeaderStyle['header-nav-button']}>
                     {
                       userId !== null 
-                      ? <><span className={HeaderStyle['stst']}>{userId}</span>&nbsp;님 환영합니다.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      ? <><Link to='/users/myPage'><span className={HeaderStyle['header-span']}>{userId}</span></Link>님&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <button type='button' className='btn btn-outline-success' onClick={logout}>로그아웃</button></>
                       : <button type='button' className='btn btn-outline-success' onClick={login}>로그인</button>
                       }
