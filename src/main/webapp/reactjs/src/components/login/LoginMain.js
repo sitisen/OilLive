@@ -49,7 +49,6 @@ const LoginMain = () => {
   // 렌더링시 아이디 입력창에 포커스
   useEffect(() => {
     inputuserId.current.focus();
-    console.log("요기 쿠키값 : ", cookies.rememberUsersId);
 
     if(cookies.rememberUsersId !== undefined) {
       setText(cookies.rememberUsersId);
@@ -74,7 +73,6 @@ const LoginMain = () => {
       return 0;
     }
     
-    console.log("여기는 아이디 inputs 확인" , inputs.userId);
     UserService.login(inputs).then( res => {if(res.data === 0){
       alert('아이디 또는 비밀번호가 일치하지 않습니다.');
       inputuserPwd.current.value = null;
@@ -140,7 +138,7 @@ const LoginMain = () => {
         <div className={LoginMainStyle['input-div']}>
           <span className={LoginMainStyle['input-div-span']}>아이디 찾기</span><label>|</label>
           <span className={LoginMainStyle['input-div-span']}>비밀번호 찾기</span><label>|</label>
-          <span className={LoginMainStyle['input-div-span']}>회원가입</span> 
+          <Link to='/users/signup' className={LoginMainStyle['input-div-link']}><span className={LoginMainStyle['input-div-span']}>회원가입</span></Link>
         </div>
       </div>
     </div>

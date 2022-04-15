@@ -111,3 +111,8 @@
     color: rgb(136,136,136);
     font-size: 14px;
 }
+
+/* link 태그 */
+.input-div-link {
+    text-decoration: none;
+}
