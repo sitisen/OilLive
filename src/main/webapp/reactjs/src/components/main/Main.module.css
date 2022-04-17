@@ -102,6 +102,10 @@
     background-color: rgb(46, 121, 33);
 }
 
+.oil-type * {
+    pointer-events: none;
+}
+
 .active {
     background-color: rgb(46, 121, 33);
     font-weight: bold;
@@ -150,11 +154,16 @@
     border-radius: 5px;
 }
 
+.oil-box-map div:hover {
+    cursor: pointer;
+}
+
 .oil-box-map span {
     display: block;
     font-size: 12px;
     width: 38px;
     text-align: center;
+    pointer-events: none;
 }
 
 .title {
