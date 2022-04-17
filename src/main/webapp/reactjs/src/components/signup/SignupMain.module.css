@@ -64,6 +64,7 @@
 
 /* form - div - input */
 .signup-form-input {
+    width: 100%;
     height: 50px;
     border : 0.1em solid rgba(150, 150, 150, 0.5);
     outline: none;
@@ -91,7 +92,7 @@
 
 /* 인증하기 버튼 */
 .signup-form-input-phone-button {
-    margin-left: 50px;
+    margin-left: 20px;
     width: 130px;
     height: 50px;
     outline: none;
@@ -117,6 +118,142 @@
 
 .security-input-button {
     margin-left: 20px;
+    background-color:#7CC135;
+    color: white;
+    border: none;
     width: 100px;
     height: 50px;
+    border-radius:5px;
+}
+
+.security-input-button:hover {
+    background-color:#7ac72d;
+}
+
+/* 성별 */
+.signup-form-gender {
+    height: 50px;
+    border : 0.1em solid rgba(150, 150, 150, 0.5);
+    outline: none;
+    padding-left: 12px;
+}
+
+.signup-form-gender:focus {
+    border-color: rgb(107, 187, 72);
+    box-shadow: 0 0 6px 0 rgb(107, 187, 72);
+}
+
+/* 생년월일 */
+.signup-user-birth-div {
+    margin-bottom: 40px;
+}
+
+.signup-user-birth {
+    width: 30%;
+    height: 50px;
+    border : 0.1em solid rgba(150, 150, 150, 0.5);
+    outline: none;
+    padding-left: 12px;
+}
+
+.signup-user-birth:focus {
+    border-color: rgb(107, 187, 72);
+    box-shadow: 0 0 6px 0 rgb(107, 187, 72);
+}
+
+/* 주소 */
+.signup-user-address-div {
+    margin-bottom: 40px;
+}
+
+.signup-user-address {
+    width: 30%;
+    height: 50px;
+    border : 0.1em solid rgba(150, 150, 150, 0.5);
+    outline: none;
+    padding-left: 12px;
+}
+
+.signup-user-address-button {
+    margin-left: 20px;
+    background-color:#7CC135;
+    color: white;
+    border: none;
+    width: 130px;
+    height: 50px;
+    border-radius:5px;
+}
+
+.signup-user-address-button:hover {
+    background-color:#7ac72d;
+}
+
+/* 이메일 */
+.signup-input-email-div {
+    margin-bottom: 40px;
+}
+
+.signup-form-email {
+    width: 30%;
+    height: 50px;
+    border : 0.1em solid rgba(150, 150, 150, 0.5);
+    outline: none;
+    padding-left: 12px;
+}
+
+.signup-form-email:focus {
+    border-color: rgb(107, 187, 72);
+    box-shadow: 0 0 6px 0 rgb(107, 187, 72);
+}
+
+/* 동의하기 */
+.signup-input-div-agree {
+    margin-bottom: 40px;
+}
+
+.agree-checkbox {
+    width: 15px;
+    height: 15px;
+}
+
+.agree-checkbox-label-all {
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: underline;
+    margin-left: 10px;
+}
+
+.agree-checkbox-label {
+    font-size: 16px;
+    font-weight: bold;
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+
+.agree-checkbox-label-all:hover  {
+    cursor: pointer;
+}
+
+.agree-checkbox-label:hover {
+    cursor: pointer;
+}
+
+.agree-div {
+   padding-bottom: 30px;
+}
+
+.agree-content {
+    width: 100%;
+}
+
+/* 가입하기 취소하기 버튼 */
+.signup-button {
+    width: 30%;
+    height: 50px;
+    margin-right: 50px;
+}
+
+.signup-button-div {
+    margin-bottom: 40px;
+    text-align: center;
 }
