@@ -6,4 +6,7 @@ public interface UsersService {
 	
 	//--------------- 로그인 --------------- //
 	public int login(HashMap<String, String> map);
+	
+	//--------------- 아이디 중복확인 --------------- //
+	public int idCheck(String userId);
 }

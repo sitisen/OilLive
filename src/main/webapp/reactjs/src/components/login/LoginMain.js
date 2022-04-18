@@ -23,7 +23,7 @@ const LoginMain = () => {
   const [cookies, setCookie, removeCookie] = useCookies(['rememberUsersId']);
   const [inputs , setInputs] = useState({
     userId : '',
-    userPwd : ''
+    userPwd : '',
   });
 
   const {userId, userPwd} = inputs;
@@ -116,7 +116,7 @@ const LoginMain = () => {
 
         <form className={LoginMainStyle['login-form-layout']} onKeyUp={loginEnter}>
             <div className={LoginMainStyle['input-div']}>
-              <input type='text'id='userId' placeholder='아이디' name='userId' onChange={onChange} ref={inputuserId} value={text} />
+              <input type='text'id='userId' placeholder='아이디' name='userId' onChange={onChange} ref={inputuserId} defaultValue={text} />
               <input type='password' id='userPwd' placeholder='비밀번호' name='userPwd' onChange={onChangePwd} ref={inputuserPwd}/>
             </div>
             

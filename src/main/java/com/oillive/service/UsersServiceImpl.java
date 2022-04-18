@@ -16,8 +16,13 @@ public class UsersServiceImpl implements UsersService{
 	//--------------- 로그인 --------------- //
 	@Override
 	public int login(HashMap<String, String> map) {
-		
 		return usersDao.login(map);
+	}
+
+	//--------------- 아이디 중복확인 --------------- //
+	@Override
+	public int idCheck(String userId) {
+		return usersDao.idCheck(userId);
 	}
 	
 }
