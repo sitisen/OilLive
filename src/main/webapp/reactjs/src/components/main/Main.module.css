@@ -124,7 +124,7 @@
     border: 1px solid red
 }
 
-/* 유가 지도 및 그래프 레이아웃 CSS */
+/* 시도별 평균 지도 레이아웃 CSS */
 .oil-box {
     padding: 20px;
     width: 40%;
@@ -185,6 +185,65 @@
     margin-top: -8px;
     color: rgb(46, 121, 33);
     pointer-events: none;
+}
+
+/* 시도별 최저가 주유소 레이아웃 CSS */
+.oil-box-oneTop {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+
+.oil-box-oneTop div {
+    width: 50%;
+    height: 95%;
+}
+
+.oil-box-oneTop table {
+    width: 95%;
+    font-size: 15px;
+}
+
+.oil-box-oneTop tr {
+    border-bottom: 1px solid lightgray;
+}
+
+.oil-box-oneTop td {
+    padding: 10px 0;
+}
+
+.oneTop-title {
+    font-weight: bold;
+}
+
+.oneTop-station {
+    display: inline-block;
+    text-align: left;
+    width: 120px;
+    overflow:hidden; 
+    text-overflow:ellipsis; 
+    white-space:nowrap;
+}
+
+.oneTop-price {
+    font-size: 14px;
+}
+
+.oneTop-1 {
+    float: left;
+}
+
+.oneTop-2 {
+    float: right;
+}
+
+.oneTop-2 table {
+    margin-left: 5%;
+}
+
+.oneTop-span {
+    font-size: 15px;
+    color: gray;
 }
 
 /* 시도별 평균 div 위치 CSS */

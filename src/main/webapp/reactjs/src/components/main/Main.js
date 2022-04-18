@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ApiService from 'services/ApiService';
 
 // import CSS
@@ -16,11 +16,6 @@ const Main = () => {
   const gasoline = 'B027';
   const diesel = 'D047';
   const lpg = 'K015';
-
-  /* Ref 선언부 */
-  /* oilTypeRef 와 sidoTitleRef 는 여러 개의 태그에서 1개의 Ref로 사용할 예정이기 때문에, [] 로 선언 */
-  const oilTypeRef = useRef([]);
-  const sidoTitleRef = useRef([]);
 
   /* 시도별 평균 className 부여 을 위한 객체 선언 */
   const [sidoName] = useState({
@@ -101,6 +96,7 @@ const Main = () => {
     }
   }
 
+  /* ========== 실제 사이트 렌더링 ========== */
   return (
     <div className={mainStyle['main-layout']}> 
       <div className={mainStyle['main-img']}>
@@ -141,6 +137,7 @@ const Main = () => {
           
           
           { oilPriceList['SidoList'] && oilPriceList['SidoList'].filter(idx => idx.sidonm === localText).map( (list) => { 
+
             return (
               <div key={list.sidonm} className={mainStyle['local']}> {/* filter로 걸렀기 때문에, key가 필요없지만 Error 제거를 위해 추가 */}
                 <div>
@@ -171,6 +168,7 @@ const Main = () => {
 
               </div>
             )
+
           })}
 
 
@@ -185,27 +183,23 @@ const Main = () => {
             <span>({now()})</span>
           </div>
 
-          <form>
-            
             <div className={ isChecked === gasoline ? `${mainStyle['oil-type']} ${mainStyle['active']}` : mainStyle['oil-type'] } onClick={e => oilTypeCheck(e)}>
               <span>휘발유</span>
               {isChecked === gasoline ? <span className={mainStyle['active-arrow']}>&gt;</span> : ''}
-              <input type='radio' name='prodcd' value={gasoline} ref={el => oilTypeRef.current[gasoline] = el} checked={isChecked === gasoline} readOnly hidden/>
+              <input type='radio' name='prodcd' value={gasoline} checked={isChecked === gasoline} readOnly hidden/>
             </div>  
 
             <div className={ isChecked === diesel ? `${mainStyle['oil-type']} ${mainStyle['active']}` : mainStyle['oil-type'] } onClick={e => oilTypeCheck(e)}>
               <span>경유</span>
               {isChecked === diesel ? <span className={mainStyle['active-arrow']}>&gt;</span> : ''}
-              <input type='radio' name='prodcd' value={diesel} ref={el => oilTypeRef.current[diesel] = el} checked={isChecked === diesel} readOnly hidden/>
+              <input type='radio' name='prodcd' value={diesel} checked={isChecked === diesel} readOnly hidden/>
             </div>
 
             <div className={ isChecked === lpg ? `${mainStyle['oil-type']} ${mainStyle['active']}` : mainStyle['oil-type'] } onClick={e => oilTypeCheck(e)}>
               <span>LPG</span>
               {isChecked === lpg ? <span className={mainStyle['active-arrow']}>&gt;</span> : ''}
-              <input type='radio' name='prodcd' value={lpg} ref={el => oilTypeRef.current[lpg] = el} checked={isChecked === lpg} readOnly hidden/>
+              <input type='radio' name='prodcd' value={lpg} checked={isChecked === lpg} readOnly hidden/>
             </div>
-
-          </form>
 
           <div className={mainStyle['banner']}>
             배너 위치
@@ -221,34 +215,91 @@ const Main = () => {
             <div className={mainStyle['oil-box-map']}>
             { oilPriceList['SidoList'] && oilPriceList['SidoList'].filter(idx => idx.sidonm !== '전국').map( (list) => { 
 
-            return (
-
+              return (
                 <div key={list.sidonm} className={mainStyle[sidoName[list.sidonm]]} onClick={e => sidoClick(e)}>
-                  <span className={mainStyle['title']} ref={el => sidoTitleRef.current[list.sidonm] = el}>{list.sidonm}</span>
+                  <span className={mainStyle['title']}>{list.sidonm}</span>
                   <span className={mainStyle['price']}>{Math.round(list.price)}</span>
                   <span className={mainStyle['location-dot']}>&bull;</span>
                 </div>
-
-            )
+              )
 
             })}
             </div>
-
-          </div>{/* //.oil-box-api */}
-          {/* <ul>
-          {avgSidoPrice && avgSidoPrice.map((data) => (
-          <li key={data.sidocd}>
-          price : {data.price}
-          </li>
-          ))}
-          </ul> */}
+          </div>
         </div>
 
         <div className={mainStyle['oil-box']}>
-          <h5>최근 7일간 유가추이</h5>
+          <h5>시도별 최저가 주유소</h5>
           <hr />
           <div className={mainStyle['oil-box-api']}>
-            
+            <div className={mainStyle['oil-box-oneTop']}>
+              <div className={mainStyle['oneTop-1']}>
+                <table>
+                  <tr>
+                    <td className={mainStyle['oneTop-title']}>서울</td>
+                    <td><img alt="알뜰 주유소" src='/images/OK-logo.png' /></td>
+                    <td className={mainStyle['oneTop-station']}>주유소이름123123213213</td>
+                    <td className={mainStyle['oneTop-price']}>1825원</td>
+                  </tr>
+                  <tr>
+                    <td className={mainStyle['oneTop-title']}>서울</td>
+                    <td><img alt="자가상표" src='/images/PB-logo.png' /></td>
+                    <td className={mainStyle['oneTop-station']}>주유소이름</td>
+                    <td className={mainStyle['oneTop-price']}>가격</td>
+                  </tr>
+                  <tr>
+                    <td className={mainStyle['oneTop-title']}>서울</td>
+                    <td><img alt="E1" src='/images/E1-logo.png' /></td>
+                    <td className={mainStyle['oneTop-station']}>주유소이름</td>
+                    <td className={mainStyle['oneTop-price']}>가격</td>
+                  </tr>
+                  <tr>
+                    <td className={mainStyle['oneTop-title']}>서울</td>
+                    <td><img alt="GS칼텍스" src='/images/GS-logo.png' /></td>
+                    <td className={mainStyle['oneTop-station']}>주유소이름</td>
+                    <td className={mainStyle['oneTop-price']}>가격</td>
+                  </tr>
+
+                  <tr>
+                    <td className={mainStyle['oneTop-title']}>서울</td>
+                    <td><img alt="현대오일뱅크" src='/images/Hyundai-logo.png' /></td>
+                    <td className={mainStyle['oneTop-station']}>주유소이름</td>
+                    <td className={mainStyle['oneTop-price']}>가격</td>
+                  </tr>
+                  <tr>
+                    <td className={mainStyle['oneTop-title']}>서울</td>
+                    <td><img alt="S-Oil" src='/images/S-Oil-logo.png' /></td>
+                    <td className={mainStyle['oneTop-station']}>주유소이름</td>
+                    <td className={mainStyle['oneTop-price']}>가격</td>
+                  </tr>
+                  <tr>
+                    <td className={mainStyle['oneTop-title']}>서울</td>
+                    <td><img alt="SK에너지" src='/images/SKEnergy-logo.png' /></td>
+                    <td className={mainStyle['oneTop-station']}>주유소이름</td>
+                    <td className={mainStyle['oneTop-price']}>가격</td>
+                  </tr>
+                  <tr>
+                    <td className={mainStyle['oneTop-title']}>서울</td>
+                    <td><img alt="SK가스" src='/images/SKGas-logo.png' /></td>
+                    <td className={mainStyle['oneTop-station']}>주유소이름</td>
+                    <td className={mainStyle['oneTop-price']}>가격</td>
+                  </tr>
+                  
+                </table>
+              </div>
+              <div className={mainStyle['oneTop-2']}>
+                <table>
+                  <tr>
+                    <td className={mainStyle['oneTop-title']}>대전</td>
+                    <td>상표</td>
+                    <td className={mainStyle['oneTop-station']}>주유소이름</td>
+                    <td className={mainStyle['oneTop-price']}>가격</td>
+                  </tr>
+                </table>
+              </div>
+              <span className={mainStyle['oneTop-span']}>※ 같은 지역에서 최저가가 동일할 경우, 동일 가격 중 랜덤 표시됩니다.
+              요금 단위는 1L당으로 계산됩니다.</span>
+            </div>
           </div>
         </div>
 
