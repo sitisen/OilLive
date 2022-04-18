@@ -10,6 +10,7 @@ import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -155,7 +156,15 @@ public class UsersController {
 
 		int result = usersService.login(map);
 		
-		System.out.println("result ::: " + result);
 		return result;
 	}
+	
+	@GetMapping("/idCheck/{userId}")
+	public int idCheck(@PathVariable String userId) {
+		
+		int result = usersService.idCheck(userId);
+
+		return result;
+	}
+	
 }

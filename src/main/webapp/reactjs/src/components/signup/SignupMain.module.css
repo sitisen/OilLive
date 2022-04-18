@@ -257,3 +257,12 @@
     margin-bottom: 40px;
     text-align: center;
 }
+
+/* 중복확인 */
+.id-check-false {
+    color: red;
+}
+
+.id-check-true {
+    color: green;
+}
