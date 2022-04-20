@@ -144,7 +144,6 @@ public class UsersController {
 	}
 	
 	//--------------- 로그인 --------------- //
-	
 	@PostMapping("/login")
 	public int login(@RequestBody HashMap<Object, String> req) {
 		
@@ -159,11 +158,15 @@ public class UsersController {
 		return result;
 	}
 	
+	//--------------- 아이디 중복확인 --------------- //
 	@GetMapping("/idCheck/{userId}")
 	public int idCheck(@PathVariable String userId) {
 		
 		int result = usersService.idCheck(userId);
-
+		int mresult = usersService.idMCheck(userId);
+		
+		result += mresult;
+		
 		return result;
 	}
 	

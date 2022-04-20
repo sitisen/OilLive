@@ -8,5 +8,6 @@ public interface UsersService {
 	public int login(HashMap<String, String> map);
 	
 	//--------------- 아이디 중복확인 --------------- //
-	public int idCheck(String userId);
+	public int idCheck(String userId);	// 사용자
+	public int idMCheck(String userId); // 관리자
 }

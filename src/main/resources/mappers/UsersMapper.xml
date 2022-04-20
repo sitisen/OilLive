@@ -19,4 +19,10 @@
 		FROM users
 		WHERE user_id = #{userId}
 	</select>
+	
+	<select id="idMCheck" parameterType="String" resultType="int"> 
+		SELECT count(*)
+		FROM admin
+		WHERE admin_id = #{userId}
+	</select>
 </mapper>

@@ -24,5 +24,10 @@ public class UsersServiceImpl implements UsersService{
 	public int idCheck(String userId) {
 		return usersDao.idCheck(userId);
 	}
+	// 관리자
+	@Override
+	public int idMCheck(String userId) {
+		return usersDao.idMCheck(userId);
+	}
 	
 }
