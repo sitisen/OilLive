@@ -26,7 +26,7 @@ const LoginMain = () => {
     userPwd : '',
   });
 
-  const {userId, userPwd} = inputs;
+  const {userId} = inputs;
 
   // input 입력 받을때마다 변하는 값
   const onChange = (e) => {
@@ -57,7 +57,7 @@ const LoginMain = () => {
       });
       setIsRemember(true);
     }
-  }, []);
+  }, [cookies]);
 
   // axios 통신
   const login = () => {
