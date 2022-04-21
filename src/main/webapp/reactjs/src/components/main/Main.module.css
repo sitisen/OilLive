@@ -187,64 +187,63 @@
     pointer-events: none;
 }
 
-/* 시도별 최저가 주유소 레이아웃 CSS */
-.oil-box-oneTop {
+/* 지난 7일간 상표별 전국 평균가 레이아웃 CSS */
+.oil-box-avgPrice-wrap {
     width: 100%;
     height: 100%;
+}
+
+.oil-box-brand {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
     text-align: center;
+    line-height: 2.5em;
+    font-size: 16px;
+    width: 100%;
+    height: 20%;
+    border-top: 1px solid rgb(233, 235, 238);
+    border-left: 1px solid rgb(233, 235, 238);
+    background-color: rgb(82, 167, 67);
+    color: white;
 }
 
-.oil-box-oneTop div {
-    width: 50%;
-    height: 95%;
+.oil-box-brand div {
+    width: 33.3%;
+    height: 50%;
+    border-right: 1px solid rgb(233, 235, 238);
+    border-bottom: 1px solid rgb(233, 235, 238);
 }
 
-.oil-box-oneTop table {
-    width: 95%;
-    font-size: 15px;
+.oil-box-brand div:hover {
+    background-color: rgb(46, 121, 33);
+    cursor: pointer;
 }
 
-.oil-box-oneTop tr {
-    border-bottom: 1px solid lightgray;
+.oil-box-brand img {
+    margin: 0px 5px 4px -15px;
+    pointer-events: none;
 }
 
-.oil-box-oneTop td {
-    padding: 10px 0;
+.oil-box-brand label {
+    pointer-events: none;
 }
 
-.oneTop-title {
+.oil-box-brand-lpg {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
     font-weight: bold;
 }
 
-.oneTop-station {
-    display: inline-block;
-    text-align: left;
-    width: 120px;
-    overflow:hidden; 
-    text-overflow:ellipsis; 
-    white-space:nowrap;
+.oil-box-graph {
+    width: 100%;
+    height: 80%;
 }
 
-.oneTop-price {
-    font-size: 14px;
-}
-
-.oneTop-1 {
-    float: left;
-}
-
-.oneTop-2 {
-    float: right;
-}
-
-.oneTop-2 table {
-    margin-left: 5%;
-}
-
-.oneTop-span {
-    font-size: 15px;
-    color: gray;
-}
 
 /* 시도별 평균 div 위치 CSS */
 .gyeonggi {

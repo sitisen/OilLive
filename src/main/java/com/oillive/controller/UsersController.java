@@ -20,6 +20,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.oillive.service.UsersService;
 import com.oillive.vo.ApiAvgAllPriceVO;
+import com.oillive.vo.ApiAvgRecentPriceVO;
 import com.oillive.vo.ApiAvgSidoPriceVO;
 import com.oillive.vo.ApiLowTop10VO;
 
@@ -40,17 +41,22 @@ public class UsersController {
 		
 		
 		// Service 로 이전 예정		
-		List<ApiAvgAllPriceVO> AllList = new ArrayList<ApiAvgAllPriceVO>();
-		List<ApiAvgSidoPriceVO> SidoList = new ArrayList<ApiAvgSidoPriceVO>();
+		List<ApiAvgAllPriceVO> allList = new ArrayList<ApiAvgAllPriceVO>();
+		List<ApiAvgSidoPriceVO> sidoList = new ArrayList<ApiAvgSidoPriceVO>();
+		List<ApiAvgRecentPriceVO> recentList = new ArrayList<ApiAvgRecentPriceVO>();
 		List<ApiLowTop10VO> lowTopList = new ArrayList<ApiLowTop10VO>();
+		
+		List<JSONObject> avgRecentTemp = new ArrayList<JSONObject>();
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		
 		RestTemplate restTemplate = new RestTemplate();
-		
 		String baseUrl = null;
 		
 		// 유가 API 요청 횟수
-		int apiRequestCount = 2;
+		int apiRequestCount = 4;
+		
+		// 2가지 API를 한 개의 VO로 가공할 때, 쓰이는 인덱스 값
+		int idx = 0;
 		
 		// 유가 API 요청 코드
 		for(int i = 0; i < apiRequestCount; i++) {
@@ -58,14 +64,23 @@ public class UsersController {
 			// API 요청 URL, 결과값 List 선언
 			switch(i) {
 				case 0: // 전국 주유소 평균가격 API URL
-						baseUrl = "http://www.opinet.co.kr/api/avgAllPrice.do?out=json&code=F220314046";
-						break;
-				case 1: // 시도별 주유소 평균가격 API URLb
-						baseUrl = "http://www.opinet.co.kr/api/avgSidoPrice.do?prodcd=" + prodcd + "&out=json&code=F220314046";
+						baseUrl = "http://www.opinet.co.kr/api/avgAllPrice.do?out=json&code=F220411106";
 						break;
 						
-				case 2: // 지역별 최저가 주유소 API URL (미완성)
-						baseUrl = "http://www.opinet.co.kr/api/lowTop10.do?prodcd=" + prodcd + "&area=" + sigun + "&cnt=10&out=json&code=F220314046";
+				case 1: // 시도별 주유소 평균가격 API URL
+						baseUrl = "http://www.opinet.co.kr/api/avgSidoPrice.do?prodcd=" + prodcd + "&out=json&code=F220411106";
+						break;
+						
+				case 2: // 최근 7일간 전국 일일 평균가격 API URL
+						baseUrl = "http://www.opinet.co.kr/api/avgRecentPrice.do?prodcd=" + prodcd + "&out=json&code=F220411106";
+						break;
+						
+				case 3: // 최근 7일간 전국 일일 상표별 평균가격 API URL
+						baseUrl = "http://www.opinet.co.kr/api/pollAvgRecentPrice.do?prodcd=" + prodcd + "&out=json&code=F220411106";
+						break;
+						
+				case 4: // 지역별 최저가 주유소 API URL (미완성)
+						baseUrl = "http://www.opinet.co.kr/api/lowTop10.do?prodcd=" + prodcd + "&area=" + sido + "&cnt=10&out=json&code=F220411106";
 						break;
 			}
 
@@ -73,59 +88,88 @@ public class UsersController {
 			
 			try {
 				
-				///////////////////// JSON VO 넣는부분		
+				// JSON VO 넣는부분		
 				JSONParser jsonParser = new JSONParser();
 				
 				JSONObject jsonObj = (JSONObject)jsonParser.parse(response.toString());
+			
 				
 				// JSON Data 가공
-				JSONObject parseResult = (JSONObject) jsonObj.get("RESULT");
+				JSONObject parseResult = (JSONObject)jsonObj.get("RESULT");
 				
-				JSONArray array = (JSONArray) parseResult.get("OIL");
+				JSONArray array = (JSONArray)parseResult.get("OIL");
 				
 				for(int j = 0; j < array.size(); j++) {
 					
 					jsonObj = (JSONObject)array.get(j);
 					
-					if( i == 0 ) { // 전국 주유소 평균가격 VO 가공 및 List 추가
-						
-						ApiAvgAllPriceVO vo = ApiAvgAllPriceVO.builder()
-								.tradeDT(jsonObj.get("TRADE_DT").toString())
-								.prodcd(jsonObj.get("PRODCD").toString())
-								.prodnm(jsonObj.get("PRODNM").toString())
-								.price(jsonObj.get("PRICE").toString()) 
-								.diff(jsonObj.get("DIFF").toString())
-								.build();
-						
-						AllList.add(vo);
-						
-					} else if ( i == 1 ) { // 시도별 주유소 평균가격 VO 가공 및 List 추가
-						
-						ApiAvgSidoPriceVO vo = ApiAvgSidoPriceVO.builder()
-								.sidocd(jsonObj.get("SIDOCD").toString())
-								.sidonm(jsonObj.get("SIDONM").toString())
-								.prodcd(jsonObj.get("PRODCD").toString())
-								.price(jsonObj.get("PRICE").toString()) 
-								.diff(jsonObj.get("DIFF").toString())
-								.build();
-						
-						SidoList.add(vo);
-						
-					} else { // 지역별 최저가 주유소 VO 가공 및 List 추가
+					switch(i) {
 					
-						ApiLowTop10VO vo = ApiLowTop10VO.builder()
-								.uniId(jsonObj.get("UNI_ID").toString())
-								.price(jsonObj.get("PRICE").toString())
-								.pollDivCd(jsonObj.get("POLL_DIV_CD").toString())
-								.osNm(jsonObj.get("OS_NM").toString()) 
-								.vanAdr(jsonObj.get("VAN_ADR").toString())
-								.newAdr(jsonObj.get("NEW_ADR").toString())
-								.gisXCoor(jsonObj.get("GIS_X_COOR").toString())
-								.gisYCoor(jsonObj.get("GIS_Y_COOR").toString())
-								.build();
+						case 0: // 전국 주유소 평균가격 VO 가공 및 List 추가
+								ApiAvgAllPriceVO allVO = ApiAvgAllPriceVO.builder()
+														 .tradeDT(jsonObj.get("TRADE_DT").toString())
+														 .prodcd(jsonObj.get("PRODCD").toString())
+														 .prodnm(jsonObj.get("PRODNM").toString())
+														 .price(jsonObj.get("PRICE").toString()) 
+														 .diff(jsonObj.get("DIFF").toString())
+														 .build();
+								
+								allList.add(allVO);
+								break;
+								
+						case 1: // 시도별 주유소 평균가격 VO 가공 및 List 추가
+								ApiAvgSidoPriceVO sidoVO = ApiAvgSidoPriceVO.builder()
+															.sidocd(jsonObj.get("SIDOCD").toString())
+															.sidonm(jsonObj.get("SIDONM").toString())
+															.prodcd(jsonObj.get("PRODCD").toString())
+															.price(jsonObj.get("PRICE").toString()) 
+															.diff(jsonObj.get("DIFF").toString())
+															.build();
 						
-						lowTopList.add(vo);
+								sidoList.add(sidoVO);
+								break;
 						
+						case 2: // 최근 7일간 전국 일일 평균가격 VO 가공 전, 임시로 넣어두기
+								avgRecentTemp.add(jsonObj);
+								break;
+								
+						case 3: // 최근 7일간 전국 일일 평균가격, 최근 7일간 전국 일일 상표별 평균가격 VO 가공 및 List 추가
+								
+								// Front-End 에서 그래프로 활용하기 위해, 2가지 API를 한 개의 VO로 가공하는 로직
+								String dateCompare = String.valueOf(jsonObj.get("DATE")); // API 상표별 날짜로 초기화
+
+								if ( dateCompare != null && 
+									! dateCompare.equals(avgRecentTemp.get(idx).get("DATE")) ) { // 상표별 날짜가 null이 아니고, 상표별 날짜와 전국 날짜가 같지 않으면 true
+									
+									idx += 1; // 날짜를 같게 하기 위해, idx + 1
+									
+								}
+								
+								ApiAvgRecentPriceVO recentVO = ApiAvgRecentPriceVO.builder()
+																.date(avgRecentTemp.get(idx).get("DATE").toString().substring(4, 6) + '/' + jsonObj.get("DATE").toString().substring(6, 8))
+																.prodcd(avgRecentTemp.get(idx).get("PRODCD").toString())
+																.pollDivCd(jsonObj.get("POLL_DIV_CD").toString())
+																.allPrice(avgRecentTemp.get(idx).get("PRICE").toString())
+																.pollPrice(jsonObj.get("PRICE").toString())
+																.build();
+								recentList.add(recentVO);
+								break;
+								
+						case 4: // 지역별 최저가 주유소 VO 가공 및 List 추가 (미완성)
+								ApiLowTop10VO lowTopVO = ApiLowTop10VO.builder()
+														  .uniId(jsonObj.get("UNI_ID").toString())
+														  .price(jsonObj.get("PRICE").toString())
+														  .pollDivCd(jsonObj.get("POLL_DIV_CD").toString())
+														  .osNm(jsonObj.get("OS_NM").toString()) 
+		 												  .vanAdr(jsonObj.get("VAN_ADR").toString())
+														  .newAdr(jsonObj.get("NEW_ADR").toString())
+														  .gisXCoor(jsonObj.get("GIS_X_COOR").toString())
+														  .gisYCoor(jsonObj.get("GIS_Y_COOR").toString())
+														  .build();
+						
+								lowTopList.add(lowTopVO);
+								break;
+							
 					}
 						
 				}
@@ -136,13 +180,14 @@ public class UsersController {
 			
 		}
 		
-		result.put("AllList", AllList);
-		result.put("SidoList", SidoList);
+		result.put("allList", allList);
+		result.put("sidoList", sidoList);
+		result.put("recentList", recentList);
 		result.put("lowTopList", lowTopList);
 		
 		return result;
 	}
-	
+
 	//--------------- 로그인 --------------- //
 	@PostMapping("/login")
 	public int login(@RequestBody HashMap<Object, String> req) {
