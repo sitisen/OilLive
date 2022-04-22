@@ -23,7 +23,7 @@ const LoginMain = () => {
   const [cookies, setCookie, removeCookie] = useCookies(['rememberUsersId']);
   const [inputs , setInputs] = useState({
     userId : '',
-    userPwd : '',
+    userPwd : ''
   });
 
   const {userId} = inputs;
