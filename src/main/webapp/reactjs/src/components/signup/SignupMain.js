@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate} from 'react-router-dom';
 import UserService from 'services/UserService';
 import Modal from 'react-modal';
 
@@ -34,7 +34,9 @@ const SignupMain = () => {
         statusMonth : 0,
         statusDay : 0,
         statusEmail : 0,
-        statusAddress : 0
+        statusAddress : 0,
+        statusseNumber : 0,
+        certiNum : ''
     });
     // status (1 : 5글자 미만, 2 : 사용가능한 아이디, 3 : 사용불가능한 아이디, 4 : 정규식에 맞지않음)
     // statusPwd (1 : 비밀번호 정규식에 맞지않음, 2 : 비밀번호가 정규식에 맞음)
@@ -45,10 +47,12 @@ const SignupMain = () => {
     // statusEmail (1 : 이메일형식이 맞지않음, 2 : 이메일 형식이 맞음)
     // statusYear, Month, Day (1 : 맞지않음, 2 : 올바르게 입력했을 때)
     // statusAddress (1 : 주소지 검색 X, 2 : 상세주소 미입력, 3 : 올바르게 입력)
+    // statusseNumber (1: 4자리 입력 완료, 0 : 4자리 미입력, 인증완료)
 
     /* getter */
-    const {status, statusPwd, statusrePwd, statusName, statusPhone, statusGender, statusYear, statusMonth, statusDay, statusEmail, statusAddress} = inputs;
+    const {status, statusPwd, statusrePwd, statusName, statusPhone, statusGender, statusYear, statusMonth, statusDay, statusEmail, statusAddress, statusseNumber, certiNum} = inputs;
 
+    const navigate = useNavigate();
     /* 생년월일 변수 선언 */
     let now = new Date();
     let year = now.getFullYear();
@@ -295,6 +299,20 @@ const SignupMain = () => {
             /* 주소지검색 눌러서 값 가져옴 */
             addressCheck();
         }
+        /* 인증하기 값 입력 */
+        if(e.target.id === 'seNumber'){
+            if(userInfoRef.current['seNumber'].value.length === 4){
+                setInputs({
+                    ...inputs,
+                    statusseNumber : 1
+                })
+            } else {
+                setInputs({
+                    ...inputs,
+                    statusseNumber : 0
+                })
+            }
+        }
     }
 
     /* 체크박스 전체선택 및 선택 변수 선언 */
@@ -340,13 +358,137 @@ const SignupMain = () => {
         }
     }
 
+    /* 타이머 변수 선언 */
+    const [min, setMin] = useState(3);
+    const [sec, setSec] = useState(0);
+    const time = useRef(179);
+    const timerId = useRef(null);
+    const [stateTime, setStateTime] = useState(0);
+    /* stateTime (1: 시간초과, 2: 인증완료) */
+
+    useEffect(() => {
+        timerId.current = setInterval(() => {
+            setMin(parseInt(time.current / 60));
+            setSec(time.current % 60);
+            time.current -= 1;
+        }, 1000);
+        return () => clearInterval(timerId.current);
+    }, []);
+
+    useEffect(() => {
+        if(time.current < 0){
+            setStateTime(1);
+            time.current = 0;
+            setInputs({
+                statusseNumber : 0
+            })
+            userInfoRef.current['seNumber'].readOnly = true;
+        }
+    }, [sec]);
+
     /* 인증하기 버튼 클릭시 이벤트 */
     const buttonClick = () => {
-        /* 버튼 숨김 */
-        setInputButton({
-            certibutton : true
-        })
-        userInfoRef.current['userPhone'].readOnly = true;
+        var  phoneNumber = userInfoRef.current['userPhone'];
+        
+        UserService.phoneCheck(phoneNumber.value).then( re => {
+            if(re.data !== 1){
+                /* 핸드폰 번호를 back-end에 전달 */
+                if(window.confirm('요청하신 ' + phoneNumber.value + ' 로 인증하시겠습니까?')){
+                    /* 버튼 숨김 */
+                    setInputButton({
+                        certibutton : true
+                    })
+                    phoneNumber.readOnly = true;
+
+                    UserService.sendSMS(phoneNumber.value).then( res =>{
+                        if(res !== undefined){
+                            alert('요청하신 번호로 인증번호가 발송되었습니다.\n3분 이내에 입력해주세요.');
+                            setInputs({
+                                ...inputs,
+                                certiNum : res.data
+                            })
+                            time.current = 179;
+                            userInfoRef.current['seNumber'].focus();
+                        } else {
+                            alert('전송에 실패했습니다. 핸드폰번호를 확인해주세요.');
+                        }
+                    });
+                } else {
+                    return 0;
+                }
+            } else {
+                alert('이미 등록된 핸드폰 번호입니다.\n다른 번호로 시도해주세요.');
+            }
+        });
+    }
+
+    const [count, setCount] = useState({
+        maxcount : 5
+    });
+
+    // 횟수제한
+    const {maxcount} = count;
+
+    /* 인증번호 입력 후 확인버튼 클릭 */
+    const checkSeNum = () => {
+        var seNumber = userInfoRef.current['seNumber'];
+        if(time.current !== 0) {
+            if(seNumber.value === certiNum.toString()){
+                setInputs({
+                    ...inputs,
+                    statusseNumber : 0
+                })
+                clearInterval(timerId.current)
+                seNumber.readOnly = true;
+                setStateTime(2);
+            } else {
+                if(maxcount === 1){
+                    alert('인증가능 횟수가 초과되었습니다.\n회원가입을 다시 시도해주세요.');
+                    navigate('/', {replace:true} );
+                } else {
+                    setCount({
+                        maxcount : maxcount - 1
+                    })
+                    alert('인증번호가 일치하지 않습니다.\n' + (maxcount-1) + '번 남았습니다.');
+                }
+                
+            }
+        } else {
+            alert('입력시간 초과');
+        }
+        
+    }
+
+    /* 인증번호 재전송 */
+    const reSend = () => {
+        var seNumber = userInfoRef.current['seNumber'];
+        var phoneNumber = userInfoRef.current['userPhone'];
+
+        if(window.confirm('재전송 하시겠습니까?')){
+            seNumber.readOnly = false;
+
+            UserService.sendSMS(phoneNumber.value).then( res =>{
+                if(res !== undefined){
+                    alert('인증번호가 재발송되었습니다.\n3분 이내에 입력해주세요.');
+                    setInputs({
+                        ...inputs,
+                        certiNum : res.data,
+                        statusseNumber : 0
+                    })
+                    setCount({
+                        maxcount : 5
+                    })
+                    setStateTime(0);
+                    time.current = 180;
+                    seNumber.value = '';
+                    seNumber.focus();
+                } else {
+                    alert('전송에 실패했습니다. 핸드폰번호를 확인해주세요.');
+                }
+            });
+        } else {
+            return 0;
+        }
     }
 
     /* 주소찾기 처리 */
@@ -435,6 +577,80 @@ const SignupMain = () => {
 
     }, [isAllChecked,isChecked,inputs]);
 
+    /* 회원가입 확인버튼 */
+    const signup = () => {
+        if(window.confirm('입력하신 정보로 가입하시겠습니까?')){
+            /* 아이디 */
+            if(status !== 2){
+                alert('아이디를 다시 작성해주세요.');
+                userInfoRef.current['userId'].focus();
+            /* 비밀번호 */
+            } else if(statusPwd !== 2){
+                alert('비밀번호를 다시 입력해주세요.');
+                userInfoRef.current['userPwd'].focus();
+            /* 비밀번호 확인 */
+            } else if(statusrePwd !== 1){
+                alert('비밀번호가 일치하지 않습니다.\n다시 입력해주세요');
+                userInfoRef.current['userrePwd'].value = '';
+                userInfoRef.current['userrePwd'].focus();
+            /* 이름 */
+            } else if(statusName !== 2){
+                alert('이름을 다시 입력해주세요.');
+                userInfoRef.current['userName'].focus();
+            /* 휴대전화 */
+            } else if(statusPhone !== 2){
+                alert('휴대전화를 다시 입력 해주세요.');
+                userInfoRef.current['userPhone'].focus();
+            /* 휴대전화 인증 */
+            } else if(stateTime !== 2){
+                alert('휴대전화 인증을 진행해주세요.');
+            /* 성별 */
+            } else if(statusGender !== 2){
+                alert('성별을 선택해주세요.');
+                userInfoRef.current['userGender'].focus();
+            /* 년도 */
+            } else if(statusYear !== 2){
+                alert('년도를 다시 입력해주세요.');
+                userInfoRef.current['year'].focus();
+            /* 월 */
+            } else if(statusMonth !== 2){
+                alert('월을 선택해주세요.');
+                userInfoRef.current['month'].focus();
+            /* 일 */
+            } else if(statusDay !== 2){
+                alert('일을 다시 입력해주세요.');
+                userInfoRef.current['day'].focus();
+            /* 주소 */
+            } else if(statusAddress !== 3){
+                alert('주소를 다시 입력해주세요.');
+            /* 이메일 */
+            } else if(statusEmail !== 2){
+                alert('이메일 주소를 다시 입력해주세요.');
+                userInfoRef.current['email1'].focus();
+            } else if(isAllChecked !== true){
+                alert('모든 약관에 동의해주세요.');
+            } else{
+                /* 회원가입 처리 */
+                UserService.signup(userInfoRef.current['userId'].value,
+                    userInfoRef.current['userPwd'].value,
+                    userInfoRef.current['userName'].value,
+                    userInfoRef.current['userPhone'].value,
+                    userInfoRef.current['userGender'].value,
+                    userInfoRef.current['year'].value + userInfoRef.current['month'].value + userInfoRef.current['day'].value,
+                    userInfoRef.current['address1'].value + userInfoRef.current['address2'].value + userInfoRef.current['address3'].value,
+                    userInfoRef.current['email1'].value + userInfoRef.current['email2'].value
+                ).then( res => {
+                    if(res.data === 1){
+                        alert('회원가입이 완료 되었습니다.\n가입하신 아이디로 로그인해주세요.');
+                        navigate('/users/login', {replace:true} );
+                    } else {
+                        alert('회원가입 실패!');
+                    }
+                });
+            }
+        }
+    }
+
     return (
         <div className={SignupMainStyle['signup-main-layout']}>
             <div className={`text-center ${SignupMainStyle['signup-logo']}`}>
@@ -507,12 +723,20 @@ const SignupMain = () => {
                         {
                             certibutton === true 
                             ?   <>
-                                <input className={SignupMainStyle['security-input']}
-                                    type='text' name='securityNumber' maxLength='4'placeholder='인증번호를 입력해주세요.'/>
-                                <button className={SignupMainStyle['security-input-button']}
-                                    type='button' >확인</button>
-                                <button className={SignupMainStyle['security-input-button']}
-                                    type='button' >재전송</button>
+                                <input className={SignupMainStyle['security-input']} ref={el => userInfoRef.current['seNumber'] = el} onChange={onchange}
+                                    id='seNumber' type='text' name='securityNumber' maxLength='4'placeholder='인증번호를 입력해주세요.'/>
+                                
+                                    {   
+                                        stateTime === 1 ? <span className={SignupMainStyle['security-small']}>시간 초과&nbsp;&nbsp;&nbsp;</span>
+                                        : stateTime === 2 ? <span className={SignupMainStyle['security-small-success']}>인증 완료&nbsp;&nbsp;&nbsp;</span>
+                                        : sec < 10 ? <span className={SignupMainStyle['security-small']}> {min} : 0{sec} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
+                                        : <span className={SignupMainStyle['security-small']}> {min} : {sec}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
+                                    }
+                               
+                                <button className={statusseNumber ? SignupMainStyle['security-input-button'] : SignupMainStyle['security-input-button-fail']}  disabled={!statusseNumber}
+                                    type='button' onClick={checkSeNum} >확인</button>
+                                <button className={stateTime === 2 ? SignupMainStyle['security-input-button-fail'] : SignupMainStyle['security-input-button']} disabled={stateTime === 2}
+                                    type='button' onClick={reSend} >재전송</button>
                                 </>
                             : null
                         }
@@ -623,9 +847,9 @@ const SignupMain = () => {
                     </div>
                     <div className={SignupMainStyle['signup-button-div']}>
                         <button className={`btn btn-success ${SignupMainStyle['signup-button']}`}
-                            type='button'>가입하기</button>
-                        <button className={`btn btn-secondary ${SignupMainStyle['signup-button']}`}
-                            type='button'>취소</button>
+                            type='button' onClick={signup}>가입하기</button>
+                        <Link to='/'><button className={`btn btn-secondary ${SignupMainStyle['signup-button']}`}
+                            type='button'>취소</button></Link>
                     </div>
                 </form>
             </div>

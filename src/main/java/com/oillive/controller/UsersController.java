@@ -3,6 +3,7 @@ package com.oillive.controller;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -211,6 +212,56 @@ public class UsersController {
 		int mresult = usersService.idMCheck(userId);
 		
 		result += mresult;
+		
+		return result;
+	}
+	
+	//--------------- 휴대전화 인증 --------------- //
+	@GetMapping("/sendSMS/{phoneNum}")
+	public String sendSMS(@PathVariable String phoneNum) {
+		
+		// 난수생성
+		Random rand = new Random();
+		String numStr = "";
+		
+		for(int i=0; i<4; i++) {
+			String ran = Integer.toString(rand.nextInt(10));
+			numStr+=ran;
+		}
+		
+		System.out.println("인증번호 : "+numStr);
+		System.out.println("휴대번호 : "+phoneNum);
+		
+		return numStr;
+	}
+	
+	//--------------- 휴대폰 중복확인 --------------- //
+	@GetMapping("/phoneCheck/{phoneNum}")
+	public int phoneCheck(@PathVariable String phoneNum) {
+		
+		int result = 0;
+		result = usersService.phoneCheck(phoneNum);
+		
+		return result;
+	}
+	
+	//--------------- 회원가입 --------------- //
+	@PostMapping("/signup")
+	public int signup(@RequestBody HashMap<Object, String> req) {
+		
+		HashMap<String, String> map = new HashMap<String, String>();
+		int result = 0;
+		
+		map.put("userId", req.get("userId"));
+		map.put("userPwd", req.get("userPwd"));
+		map.put("userName", req.get("userName"));
+		map.put("userPhone", req.get("userPhone"));
+		map.put("userGender", req.get("userGender"));
+		map.put("userBirth", req.get("userBirth"));
+		map.put("userAddress", req.get("userAddress"));
+		map.put("userEmail", req.get("userEmail"));
+		
+		result = usersService.signup(map);
 		
 		return result;
 	}

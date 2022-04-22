@@ -13,4 +13,12 @@ public interface UsersDao {
 	//--------------- 아이디 중복확인 --------------- //
 	public int idCheck(String userId);	// 사용자
 	public int idMCheck(String userId);	// 관리자
+
+	//--------------- 핸드폰 중복확인 --------------- //
+	public int phoneCheck(String phoneNum);
+	
+	//--------------- 회원가입 --------------- //
+	public int signup(HashMap<String, String> map);
+
+	
 }
