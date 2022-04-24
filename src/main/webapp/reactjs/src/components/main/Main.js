@@ -39,6 +39,46 @@ const Main = () => {
     세종 : 'sejong'
   });
 
+  /* 상표별 유가 추이를 위한 배열 */
+  const [brandArray] = useState([
+    {
+      idx: 0,
+      title : 'SK에너지',
+      code : 'SKE',
+      src: '/images/SKEnergy-logo.png'
+    },
+    {
+      idx: 1,
+      title : '현대오일뱅크',
+      code : 'HDO',
+      src: '/images/Hyundai-logo.png'
+    },
+    {
+      idx: 2,
+      title : 'S-Oil',
+      code : 'SOL',
+      src: '/images/S-Oil-logo.png'
+    },
+    {
+      idx: 3,
+      title : 'GS칼텍스',
+      code : 'GSC',
+      src: '/images/GS-logo.png'
+    },
+    {
+      idx: 4,
+      title : '자영알뜰', 
+      code : 'RTO',
+      src: '/images/OK-logo.png'
+    },
+    {
+      idx: 5,
+      title : '개인사업',
+      code : 'ETC',
+      src: '/images/PB-logo.png'
+    }
+  ])
+
 
   /* 유가 API 요청 값 */
   const [inputs, setInputs] = useState({
@@ -56,7 +96,6 @@ const Main = () => {
 
     // 시도별 주유소 평균가격(전국 포함) API
     ApiService.oilPriceList(inputs).then( (res) => {
-      setOilPriceList(res.data);
       const recentTemp = res.data['recentList'].map( (data) => {
         return {
           date : data.date,
@@ -66,12 +105,15 @@ const Main = () => {
           pollPrice : data.pollPrice
         }
       });
-      setBrandData([...recentTemp]);
-      setBrandSelect('개인사업');
-      setGraphData(recentTemp.filter( idx => idx.pollDivCd === recentTemp[0].pollDivCd ).map( list => { return list; }))
+      const firstData = recentTemp.filter( idx => idx.pollDivCd === recentTemp[0].pollDivCd ); // 코드가 길기 때문에, 아래에서 사용하기 전에 상수에 담음.
+
+      setOilPriceList(res.data);
+      setBrandData([...recentTemp]); // 순수한 API 요청 데이터 -> uniqueBrand에서 brandData를 활용하여 겹치는 상표를 제거함
+      setBrandSelect(brandArray.filter( idx => idx.code === firstData[0].pollDivCd )[0].title); // 상표별 유가 추이에서 가장 처음 상표를 클릭된 상태로 set
+      setGraphData(firstData.map( list => { return list; })) // 상표별 유가 추이에서 가장 처음 상표의 데이터를 그래프로 출력하기위해 set
     });
 
-  }, [inputs]);
+  }, [inputs, brandArray]);
 
 
   /* 기름 종류 Click 이벤트 */
@@ -119,19 +161,8 @@ const Main = () => {
 
   /* 상표 평균 유가 추이 Click 이벤트 */
 
-  const [ brandSelect, setBrandSelect ] = useState('개인사업');
+  const [ brandSelect, setBrandSelect ] = useState();
   const [ graphData, setGraphData ] = useState({});
-
-  const [ brandList ] = useState({
-    SKE : 'SK에너지/SKEnergy-logo',
-    HDO : '현대오일뱅크/Hyundai-logo',
-    SOL : 'S-Oil/S-Oil-logo',
-    GSC : 'GS칼텍스/GS-logo',
-    RTO : '알뜰/OK-logo',
-    RTX : '고속도로알뜰',
-    NHO : '농협알뜰',
-    ETC : '개인사업/PB-logo'
-  });
 
   let uniqueBrand = brandData.map( list => { /* 상표별 Div 렌더링을 위해, 반복되는 상표를 지우는 로직 */
     return list.pollDivCd
@@ -160,6 +191,7 @@ const Main = () => {
 
     }
   };
+
 
 
   /* ========== 실제 사이트 렌더링 ========== */
@@ -241,8 +273,10 @@ const Main = () => {
         </div>
       </div>
 
-      <div className={`container text-center ${mainStyle['oil-layout']}`}> 
-        <div className={mainStyle['oil-box-button']}>
+      {/* ========== 아래부터 Main Top ( 오늘의 유가, 시도별 평균, 지난 7일간 상표별 평균 유가 추이 ) ========== */}
+
+      <div className={`container text-center ${mainStyle['oil-layout-1']}`}> 
+        <div className={`${mainStyle['line-right']} ${mainStyle['oil-box-button']}`}>
 
           <div className={mainStyle['today']}>
             <h4>오늘의 유가</h4>
@@ -273,7 +307,7 @@ const Main = () => {
 
         </div> {/* //.oil-box-button */}
 
-        <div className={mainStyle['oil-box']}>
+        <div className={`${mainStyle['line-right']} ${mainStyle['oil-box']}`}>
           <h5>시도별 평균</h5>
           <hr />
 
@@ -311,13 +345,15 @@ const Main = () => {
                 
                       case 'NHO': break;
                                   
-                      default:  const name = brandList[brandCode].split('/')[0]; // 상표명을 위한 상수 선언 및 초기화
-                                const src = '/images/' + brandList[brandCode].split('/')[1] + '.png'; // 이미지 파일을 위한 상수 선언 및 초기화
+                      default:  const name = brandArray.filter( idx => idx.code === brandCode )[0].title; // 상표명을 위한 상수 선언 및 초기화
+                                const src = brandArray.filter( idx => idx.code === brandCode )[0].src; // 이미지 파일을 위한 상수 선언 및 초기화
+
                                 return (
                                   <div key={brandCode} // 이전에 값을 걸렀기 때문에, key가 필요없지만 Error 제거를 위해 추가
                                        className={ name === brandSelect ? `${mainStyle['active']}` : '' } 
-                                       onClick={e => brandClick(e)}
+                                       onClick={e => brandClick(e)} 
                                   >
+                                    {/* {require(`../images/${imageName}.png`).default} */}
                                     <img alt={name} src={src} />  
                                     <label>{name}</label>
                                     <input type='radio' value={brandCode} readOnly hidden />
@@ -358,10 +394,10 @@ const Main = () => {
                     dataKey='allPrice'
                     name='전국'
                     stroke="rgb(46, 121, 33)"
-                  />
+                  /> 
                   <Line 
-                    dataKey='pollPrice' 
-                    name={graphData[0] !== undefined ? brandList[graphData[0].pollDivCd].split('/')[0] : ''} 
+                    dataKey='pollPrice'
+                    name={graphData[0] !== undefined ? brandArray.filter( idx => idx.code === graphData[0].pollDivCd )[0].title : ''} 
                     stroke="mediumblue" 
                   />
                   </LineChart>
@@ -375,7 +411,105 @@ const Main = () => {
           </div>
         </div>
 
-      </div> {/* //.oil-layout */}
+      </div> {/* //.oil-layout-1 */}
+
+      {/* ========== 아래부터 Main Bottom ( 네이버 지도 API, 시도별 최저가 TOP 10 ) ========== */}
+
+      <div className={`container text-center ${mainStyle['oil-layout-2']}`}> 
+        <div className={mainStyle['naver-map']}>
+            네이버 지도 위치
+        </div>
+        <div className={mainStyle['oil-box-ranking']}>
+          <h5>동네별 저렴한 주유소 TOP 10</h5>
+          <hr />
+
+            <div className={mainStyle['ranking-select-layout']}>
+              <select className={`form-select ${mainStyle['ranking-select']}`}>
+                <option>동네이름 동적할당</option>
+              </select>
+              <select className={`form-select ${mainStyle['ranking-select']}`}>
+                <option>저가순</option>
+                <option>고가순</option>
+              </select>
+            </div>
+            <div className={`text-center ${mainStyle['ranking-list-layout']}`}>
+              <div className={`${mainStyle['ranking-list']} ${mainStyle['line-right']}`}>
+                <p className={mainStyle['ranking-title']}>TOP 1 - 5</p>
+
+                <div className={mainStyle['ranking-item']}>
+                  <div className={mainStyle['ranking-item-logo']}>
+                    로고
+                  </div>
+                  <div className={mainStyle['ranking-item-station']}>
+                    내용
+                  </div>
+                  <div className={mainStyle['ranking-item-price']}>
+                    1,852
+                  </div>
+                </div>
+
+                <div className={mainStyle['ranking-item']}>
+                  <div className={mainStyle['ranking-item-logo']}>
+                    로고
+                  </div>
+                  <div className={mainStyle['ranking-item-station']}>
+                    내용
+                  </div>
+                  <div className={mainStyle['ranking-item-price']}>
+                    1,852
+                  </div>
+                </div>
+
+                <div className={mainStyle['ranking-item']}>
+                  <div className={mainStyle['ranking-item-logo']}>
+                    로고
+                  </div>
+                  <div className={mainStyle['ranking-item-station']}>
+                    내용
+                  </div>
+                  <div className={mainStyle['ranking-item-price']}>
+                    1,852
+                  </div>
+                </div>
+
+                <div className={mainStyle['ranking-item']}>
+                  <div className={mainStyle['ranking-item-logo']}>
+                    로고
+                  </div>
+                  <div className={mainStyle['ranking-item-station']}>
+                    내용
+                  </div>
+                  <div className={mainStyle['ranking-item-price']}>
+                    1,852
+                  </div>
+                </div>
+
+                <div className={mainStyle['ranking-item']}>
+                  <div className={mainStyle['ranking-item-logo']}>
+                    로고
+                  </div>
+                  <div className={mainStyle['ranking-item-station']}>
+                    내용
+                  </div>
+                  <div className={mainStyle['ranking-item-price']}>
+                    1,852
+                  </div>
+                </div>
+
+              </div>
+              <div className={mainStyle['ranking-list']}>
+                <p className={mainStyle['ranking-title']}>TOP 6 - 10</p>
+
+
+              </div>
+            </div>
+            <div className={mainStyle['ranking-comment']}>
+              <span>※ 주유소 이름 클릭 시, 지도에 해당 주유소의 위치가 표시됩니다.</span>
+            </div>
+        </div>
+
+      </div> {/* //.oil-layout-2 */}
+
     </div> /* //.main-layout */
   );
 };
