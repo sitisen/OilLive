@@ -5,6 +5,7 @@ import './App.css';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import Findinfo from './pages/Findinfo';
 
 // Page Routing Setting
 function App() {
@@ -14,6 +15,7 @@ function App() {
       <Route path='/users/home' element={<Home />} />
       <Route path='/users/login' element={<Login />} />
       <Route path='/users/signup' element={<Signup />} />
+      <Route path='/users/findinfo' element={<Findinfo />} />
     </Routes>
   );
 }
