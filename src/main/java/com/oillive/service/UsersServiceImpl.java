@@ -69,5 +69,11 @@ public class UsersServiceImpl implements UsersService{
 		return usersDao.signup(map);
 	}
 
+	//--------------- 비밀번호 반환 --------------- //
+	@Override
+	public String getPassword(String userId) {
+		return usersDao.getPassword(userId);
+	}
+
 	
 }

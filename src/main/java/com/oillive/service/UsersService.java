@@ -19,5 +19,8 @@ public interface UsersService {
 	
 	//--------------- 회원가입 --------------- //
 	public int signup(HashMap<String, String> map);
+
+	//--------------- 아이디에 해당하는 비밀번호 반환 --------------- //
+	public String getPassword(String userId);
 	
 }

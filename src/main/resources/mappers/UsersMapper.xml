@@ -40,5 +40,11 @@
 		 , #{userGender} , #{userBirth} , #{userAddress} , #{userEmail} , SYSDATE , 'Y')
 	</insert>
 	
+	<!-- 비밀번호 반환 -->
+	<select id="getPassword" parameterType="String" resultType="String">
+		SELECT user_pwd
+		FROM users
+		WHERE user_id = #{userId}
+	</select>
 	
 </mapper>

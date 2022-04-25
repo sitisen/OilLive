@@ -9,6 +9,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,13 +34,14 @@ public class UsersController {
 	@Autowired
 	UsersService usersService;
 	
+	@Autowired
+    PasswordEncoder passwordEncoder;
+	
 	@GetMapping("/home")
 	public HashMap<String, Object> home(@RequestParam HashMap<Object, String> req) {
 		
 		String prodcd = req.get("prodcd");
 		String sido = req.get("sido");
-		String sigun = req.get("sigun");
-		
 		
 		// Service 로 이전 예정		
 		List<ApiAvgAllPriceVO> allList = new ArrayList<ApiAvgAllPriceVO>();
@@ -193,13 +195,15 @@ public class UsersController {
 	@PostMapping("/login")
 	public int login(@RequestBody HashMap<Object, String> req) {
 		
-		HashMap<String, String> map = new HashMap<String, String>();
+		int result = 0;
 		
-		// User Id, Pwd 받아와서 Service 전송
-		map.put("userId", req.get("userId"));
-		map.put("userPwd", req.get("userPwd"));
-
-		int result = usersService.login(map);
+		// 암호화된 비밀번호 return
+		String secuPwd = usersService.getPassword(req.get("userId"));
+		
+		// 암호화 비교
+		if(passwordEncoder.matches(req.get("userPwd"),secuPwd)){
+			result = 1;
+		}	
 		
 		return result;
 	}
@@ -251,9 +255,10 @@ public class UsersController {
 		
 		HashMap<String, String> map = new HashMap<String, String>();
 		int result = 0;
+		String encodedPassword = passwordEncoder.encode(req.get("userPwd"));
 		
 		map.put("userId", req.get("userId"));
-		map.put("userPwd", req.get("userPwd"));
+		map.put("userPwd", encodedPassword);
 		map.put("userName", req.get("userName"));
 		map.put("userPhone", req.get("userPhone"));
 		map.put("userGender", req.get("userGender"));

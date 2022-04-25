@@ -20,5 +20,8 @@ public interface UsersDao {
 	//--------------- 회원가입 --------------- //
 	public int signup(HashMap<String, String> map);
 
+	//--------------- 비밀번호 반환 --------------- //
+	public String getPassword(String userId);
+
 	
 }
