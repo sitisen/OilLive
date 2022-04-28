@@ -8,11 +8,11 @@ const OIL_PRICE_LIST_URL = API_URL + "/users/home";
 /* 유가 API */
 const ApiService = {
 
-    oilPriceList (inputs) {
+    oilPriceList (oilType) {
         return axios({
             method: 'get',
             url: OIL_PRICE_LIST_URL,
-            params: inputs
+            params: oilType
         });
     }
 
