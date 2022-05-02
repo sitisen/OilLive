@@ -1,3 +1,92 @@
+/* 페이지 전체 layout */
 .findinfo-layout {
     text-align: center;
+    height: 700px;
+    margin-bottom: 250px;
+}
+
+/* 제목 */
+.findinfo-lable {
+    text-align: center;
+    padding-top: 60px;
+    padding-bottom: 40px;
+    margin: 0 auto;
+    width: 60%;
+}
+
+/* 페이지 폼 */
+.findinfo-form {
+    margin: 0 auto;
+    box-shadow: 1px 1px 1px;
+    width: 60%;
+    border: 0.5px solid rgba(150, 150, 150, 0.5);
+    border-radius: 12px;
+    background-color: white;
+    padding-left: 20px;
+    padding-top: 20px;
+    text-align: left;
+}
+
+.findinfo-form input[type=radio] {
+    width: 40px;
+    height: 15px;
+}
+
+.form-padding {
+    margin-bottom: 50px;
+}
+
+/* 핸드폰 번호로 찾기 */
+.findinfo-phone {
+    margin-left: 20px;
+}
+
+.findinfo-phone input {
+    width: 30%;
+    height: 50px;
+    border : 0.1em solid rgba(150, 150, 150, 0.3);
+    outline: none;
+    padding-left: 15px;
+    margin-left: 70px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.findinfo-phone input:focus {
+    border-color: rgb(107, 187, 72);
+    box-shadow: 0 0 6px 0 rgb(107, 187, 72);
+}
+
+/* 인증하기 버튼 */
+.certi-button {
+    height: 50px;
+    width: 90px;
+    outline: none;
+    background-color:#7CC135;
+    border: none;
+    border-radius:5px;
+    color: white;
+}
+
+.certi-button:hover {
+    background-color:#7ac72d;
+}
+
+/* 인증번호 입력 div */
+.certi-div {
+    width: 100%;
+    margin-left: 85px;
+}
+
+/* 이메일 주소로 아이디 찾기 */
+.findinfo-email {
+    margin-top: 20px;
+}
+
+.display-off {
+    display:none;
+}
+
+.display-on {
+    display: block;
 }
