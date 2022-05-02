@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, CartesianGrid } from 'recharts';
 import ApiService from 'services/ApiService';
@@ -5,10 +6,13 @@ import ApiService from 'services/ApiService';
 // import CSS
 import mainStyle from './Main.module.css';
 
-/* 오늘 날짜 리턴 함수 */
+// 오늘 날짜 리턴 함수 
 function now() {
   return new Date().toISOString().slice(0, 10);
 }
+
+// 네이버 지도 API 호출 ( 완성 시, index.html의 Client ID 제거 )
+const { naver } = window;
 
 /* 메인 함수 */
 const Main = () => {
@@ -18,84 +22,174 @@ const Main = () => {
   const diesel = 'D047';
   const lpg = 'K015';
 
-  /* 시도별 평균 className 부여 을 위한 객체 선언 */
-  const [sidoName] = useState({
-    서울 : 'seoul',
-    경기 : 'gyeonggi',
-    강원 : 'gangwon',
-    충북 : 'chungbuk',
-    충남 : 'chungnam',
-    전북 : 'jeonbuk',
-    전남 : 'jeonnam',
-    경북 : 'gyeonbuk',
-    경남 : 'gyeonnam',
-    부산 : 'busan',
-    제주 : 'jeju',
-    대구 : 'daegu',
-    인천 : 'incheon',
-    광주 : 'gwangju',
-    대전 : 'daejeon',
-    울산 : 'ulsan',
-    세종 : 'sejong'
-  });
+  /* 시도별 평균을 위한 객체배열 */
+  const [sidoName] = useState([
+  {
+    korTitle : '서울',
+    engTitle : 'seoul',
+    sido : '01'
+  },
+  {
+    korTitle : '경기',
+    engTitle : 'gyeonggi',
+    sido : '02'
+  },
+  {
+    korTitle : '강원',
+    engTitle : 'gangwon',
+    sido : '03'
+  },
+  {
+    korTitle : '충북',
+    engTitle : 'chungbuk',
+    sido : '04'
+  },
+  {
+    korTitle : '충남',
+    engTitle : 'chungnam',
+    sido : '05'
+  },
+  {
+    korTitle : '전북',
+    engTitle : 'jeonbuk',
+    sido : '06'
+  },
+  {
+    korTitle : '전남',
+    engTitle : 'jeonnam',
+    sido : '07'
+  },
+  {
+    korTitle : '경북',
+    engTitle : 'gyeonbuk',
+    sido : '08'
+  },
+  {
+    korTitle : '경남',
+    engTitle : 'gyeonnam',
+    sido : '09'
+  },
+  {
+    korTitle : '부산',
+    engTitle : 'busan',
+    sido : '10'
+  },
+  {
+    korTitle : '제주',
+    engTitle : 'jeju',
+    sido : '11'
+  },
+  {
+    korTitle : '대구',
+    engTitle : 'daegu',
+    sido : '14'
+  },
+  {
+    korTitle : '인천',
+    engTitle : 'incheon',
+    sido : '15'
+  },
+  {
+    korTitle : '광주',
+    engTitle : 'gwangju',
+    sido : '16'
+  },
+  {
+    korTitle : '대전',
+    engTitle : 'daejeon',
+    sido : '17'
+  },
+  {
+    korTitle : '울산',
+    engTitle : 'ulsan',
+    sido : '18'
+  },
+  {
+    korTitle : '세종',
+    engTitle : 'sejong',
+    sido : '19'
+  }
+  ]);
 
-  /* 상표별 유가 추이를 위한 배열 */
+  /* 상표별 유가 추이를 위한 객체배열 */
   const [brandArray] = useState([
     {
-      idx: 0,
       title : 'SK에너지',
       code : 'SKE',
-      src: '/images/SKEnergy-logo.png'
+      sLogo: '/images/SKEnergy-logo.png',
+      bLogo : '/images/SKEnergy-large-logo.png'
     },
     {
-      idx: 1,
       title : '현대오일뱅크',
       code : 'HDO',
-      src: '/images/Hyundai-logo.png'
+      sLogo: '/images/Hyundai-logo.png',
+      bLogo : '/images/Hyundai-large-logo.png'
     },
     {
-      idx: 2,
       title : 'S-Oil',
       code : 'SOL',
-      src: '/images/S-Oil-logo.png'
+      sLogo: '/images/S-Oil-logo.png',
+      bLogo : '/images/S-Oil-large-logo.png'
     },
     {
-      idx: 3,
       title : 'GS칼텍스',
       code : 'GSC',
-      src: '/images/GS-logo.png'
+      sLogo: '/images/GS-logo.png',
+      bLogo : '/images/GS-large-logo.png'
     },
     {
-      idx: 4,
       title : '자영알뜰', 
       code : 'RTO',
-      src: '/images/OK-logo.png'
+      sLogo: '/images/OK-logo.png',
+      bLogo : '/images/OK-large-logo.png'
     },
     {
-      idx: 5,
+      title : '고속도로알뜰', 
+      code : 'RTX',
+      sLogo: '/images/OK-logo.png',
+      bLogo : '/images/OK-large-logo.png'
+    },
+    {
+      title : '농협알뜰', 
+      code : 'NHO',
+      sLogo: '/images/OK-logo.png',
+      bLogo : '/images/OK-large-logo.png'
+    },
+    {
       title : '개인사업',
       code : 'ETC',
-      src: '/images/PB-logo.png'
+      sLogo: '/images/PB-logo.png',
+      bLogo : '/images/PB-large-logo.png'
+    },
+    { // 아래부터는 LPG 상표
+      title : 'E1',
+      code : 'E1G',
+      bLogo: '/images/E1-large-logo.png',
+    },
+    {
+      title : 'SK가스',
+      code : 'SKG',
+      bLogo: '/images/PB-large-logo.png',
     }
   ])
 
-
   /* 유가 API 요청 값 */
-  const [inputs, setInputs] = useState({
-    prodcd : gasoline,
-    sido: '',
-    sigun: ''
+  const [ oilType, setOilType ] = useState({
+    prodcd : gasoline,  // 휘발유
+    sido : '01',        // 서울
+    apiStatus : 0       // 0 : 모든 API 요청 / 1 : 시도별 최저가 주유소 TOP 10 API 만 요청
   });
 
 
   /* 첫 화면 렌더링 */
-  const [ oilPriceList, setOilPriceList ] = useState([]);
-  const [ brandData, setBrandData ] = useState([]);
+  const [ oilPriceList, setOilPriceList ] = useState([]); // 유가 API 요청 값이 모두 담겨있음.
+  const [ brandData, setBrandData ] = useState([]); // 상표별 유가가 담겨있음.
+  const [ lowTopData, setLowTopData ] = useState([]); // 시도별 최저가 주유소 TOP 10의 정보가 담겨있음.
 
   useEffect( () => {
 
     // 시도별 주유소 평균가격(전국 포함) API
-    ApiService.oilPriceList(inputs).then( (res) => {
+    ApiService.oilPriceList(oilType).then( (res) => {
       const recentTemp = res.data['recentList'].map( (data) => {
         return {
           date : data.date,
@@ -107,13 +201,33 @@ const Main = () => {
       });
       const firstData = recentTemp.filter( idx => idx.pollDivCd === recentTemp[0].pollDivCd ); // 코드가 길기 때문에, 아래에서 사용하기 전에 상수에 담음.
 
-      setOilPriceList(res.data);
-      setBrandData([...recentTemp]); // 순수한 API 요청 데이터 -> uniqueBrand에서 brandData를 활용하여 겹치는 상표를 제거함
-      setBrandSelect(brandArray.filter( idx => idx.code === firstData[0].pollDivCd )[0].title); // 상표별 유가 추이에서 가장 처음 상표를 클릭된 상태로 set
-      setGraphData(firstData.map( list => { return list; })) // 상표별 유가 추이에서 가장 처음 상표의 데이터를 그래프로 출력하기위해 set
+      setLowTopData(res.data['lowTopList']); // 최저가 주유소 데이터를 가공할 일이 많으므로, 해당 데이터만 담아둠.
+
+      if( res.data['allList'].length !== 0 ) { // API를 모두 요청했을 경우, true
+        setOilPriceList(res.data); // allList 와 sidoList를 함께 사용하기 위해 res.data를 한 번에 받음.
+        setBrandData([...recentTemp]); // 순수한 API 요청 데이터 -> uniqueBrand에서 brandData를 활용하여 겹치는 상표를 제거함
+      }
+
+      if( firstData.length !== 0 ) { // LPG가 아닐 경우, true
+        setBrandSelect(brandArray.filter( idx => idx.code === firstData[0].pollDivCd )[0].title); // 상표별 유가 추이에서 가장 처음 상표를 클릭된 상태로 set
+        setGraphData(firstData.map( list => { return list; })) // 상표별 유가 추이에서 가장 처음 상표의 데이터를 그래프로 출력하기위해 set
+      }
+
+      let mapOptions = {
+        center: new naver.maps.LatLng(37.5310602, 126.8312778),
+        zoom: 10
+      };
+    
+      let map = new naver.maps.Map('map', mapOptions);
+
+      let marker = new naver.maps.Marker({
+        position: mapOptions.center,
+        map: map
+      });
+
     });
 
-  }, [inputs, brandArray]);
+  }, [oilType, brandArray]);
 
 
   /* 기름 종류 Click 이벤트 */
@@ -124,17 +238,26 @@ const Main = () => {
     if ( e.currentTarget.innerText.includes('휘발유') ) { // 선택한 기름 종류가 휘발유일 경우, true
 
       setIsChecked(gasoline);
-      setInputs({ ...inputs, prodcd: gasoline } );
+      setOilType({ ...oilType, 
+                  prodcd: gasoline,
+                  apiStatus: 0
+                });
 
     } else if ( e.currentTarget.innerText.includes('경유') ) { // 선택한 기름 종류가 경유일 경우, true
 
       setIsChecked(diesel);
-      setInputs({ ...inputs, prodcd: diesel });
+      setOilType({ ...oilType, 
+                  prodcd: diesel,
+                  apiStatus: 0
+                });
 
     } else { // 선택한 기름 종류가 LPG일 경우, true
 
       setIsChecked(lpg);
-      setInputs({ ...inputs, prodcd: lpg });
+      setOilType({ ...oilType, 
+                  prodcd: lpg,
+                  apiStatus: 0
+                });
       
     }
     
@@ -142,18 +265,22 @@ const Main = () => {
 
 
   /* 시도별 평균 Click 이벤트 */
-  const [ localText, setLocalText ] = useState('서울');
+  const [ localText, setLocalText ] = useState('서울'); // 전국 평균 오른쪽 OO 평균 에 쓰일 값
 
   const sidoClick = (e) => {
-    
-    let text = '';
 
     for ( let i = 0; i < e.currentTarget.children.length; i++ ) {
 
-      text = e.currentTarget.children[i].innerText;
+      let text = e.currentTarget.children[i].innerText;
       
-      if ( sidoName[text] !== undefined ) { // Click 한 Div 의 지역명이 sidoName에 존재하면, true
+      if ( sidoName.filter( idx => idx.korTitle === text ).length !== 0 ) { // Click 한 Div 의 지역명이 sidoName에 존재하면, true
+        const sidoCode = sidoName.filter( idx => idx.korTitle === text )[0].sido;
+
         setLocalText(text); // 해당 Div의 지역명 text값으로 setLocalText 이후, sidoClick 함수 종료 후 재렌더링
+        setOilType({ ...oilType, 
+                    sido : sidoCode,  
+                    apiStatus : 1 // 시도별 최저가 주유소 TOP 10 API 만 요청
+                  });
       }
     }
   };
@@ -190,9 +317,30 @@ const Main = () => {
       }
 
     }
+  }; 
+
+  /* 시도별 최저가  */
+  const stationClick = (e) => {
+    // console.log('lowTopData ::: ', lowTopData);
+    var tm128 = new naver.maps.Point(296899.43014, 548290.96783);
+    var latLng = naver.maps.TransCoord.fromTM128ToLatLng(tm128);
+    console.log(latLng);
+    // console.log('TM128ToLatLng ::: ', naver.maps.TransCoord.fromTM128ToEPSG3857(545023.6863, 302896.0305));
+    console.log('naver.maps 객체 ::: ', naver.maps);
+    // console.log('KATEC X :: ', lowTopData.filter( idx => idx.osNm.includes(e.target.innerText))[0].gisXCoor );
+    // console.log('KATEC Y :: ', lowTopData.filter( idx => idx.osNm.includes(e.target.innerText))[0].gisYCoor );
   };
 
-
+  /* 
+    gisXCoor: "296899.43014"
+    gisYCoor: "548290.96783"
+    newAdr: "서울 양천구 남부순환로 408"
+    osNm: "형산석유(주)원주유소"
+    pollDivCd: "HDO"
+    price: "1897"
+    uniId: "A0000983"
+    vanAdr: "서울 양천구 신월동 199-5" 
+  */
 
   /* ========== 실제 사이트 렌더링 ========== */
   return (
@@ -209,24 +357,26 @@ const Main = () => {
                   </div>
 
                 {
-                  Number(list.diff).toFixed(2) === '0.00' ? // 전일대비 전국 평균 가격이 변함없을 경우
-  
-                  <div>
-                    <span>{Number(list.price).toFixed(2)}</span>
-                    <span className={mainStyle['unchange-price']}>&#45; {Number(list.diff).toFixed(2)}</span> 
-                  </div>
-  
-                : list.diff.includes('-') === true ? // 전일대비 전국 평균 가격이 감소했을 경우
-                  <div>
-                    <span>{Number(list.price).toFixed(2)}</span>
-                    <span className={mainStyle['down-price']}>&#9660; {Number(list.diff).toFixed(2)}</span> 
-                  </div>       
-  
-                : // 전일대비 전국 평균 가격이 증가했을 경우
-                  <div>
-                    <span>{Number(list.price).toFixed(2)}</span>
-                    <span className={mainStyle['up-price']}>&#9650; {Number(list.diff).toFixed(2)}</span> 
-                  </div>
+                  Number(list.diff).toFixed(2) === '0.00' 
+
+                  // 전일대비 전국 평균 가격이 변함없을 경우
+                  ? <div>
+                      <span>{Number(list.price).toFixed(2)}</span>
+                      <span className={mainStyle['unchange-price']}>&#45; {Number(list.diff).toFixed(2)}</span> 
+                    </div>
+
+                  // 전일대비 전국 평균 가격이 감소했을 경우
+                  : list.diff.includes('-') === true 
+                  ? <div>
+                      <span>{Number(list.price).toFixed(2)}</span>
+                      <span className={mainStyle['down-price']}>&#9660; {Number(list.diff).toFixed(2)}</span> 
+                    </div>
+
+                  // 전일대비 전국 평균 가격이 증가했을 경우 
+                  : <div>
+                      <span>{Number(list.price).toFixed(2)}</span>
+                      <span className={mainStyle['up-price']}>&#9650; {Number(list.diff).toFixed(2)}</span> 
+                    </div>
                 }
 
                 </div>
@@ -244,24 +394,26 @@ const Main = () => {
                 </div>
 
               { 
-                Number(list.diff).toFixed(2) === '0.00' ? // 전일대비 전국 평균 가격이 변함없을 경우
+                Number(list.diff).toFixed(2) === '0.00' 
 
-                <div>
-                  <span>{Number(list.price).toFixed(2)}</span>
-                  <span className={mainStyle['unchange-price']}>&#45; {Number(list.diff).toFixed(2)}</span> 
-                </div>
+                // 전일대비 전국 평균 가격이 변함없을 경우
+                ? <div>
+                    <span>{Number(list.price).toFixed(2)}</span>
+                    <span className={mainStyle['unchange-price']}>&#45; {Number(list.diff).toFixed(2)}</span> 
+                  </div>
 
-              : list.diff.includes('-') === true ? // 전일대비 전국 평균 가격이 감소했을 경우
-                <div>
-                  <span>{Number(list.price).toFixed(2)}</span>
-                  <span className={mainStyle['down-price']}>&#9660; {Number(list.diff).toFixed(2)}</span> 
-                </div>       
-
-              : // 전일대비 전국 평균 가격이 증가했을 경우
-                <div>
-                  <span>{Number(list.price).toFixed(2)}</span>
-                  <span className={mainStyle['up-price']}>&#9650; {Number(list.diff).toFixed(2)}</span> 
-                </div>
+                // 전일대비 전국 평균 가격이 감소했을 경우
+                : list.diff.includes('-') === true 
+                ? <div>
+                    <span>{Number(list.price).toFixed(2)}</span>
+                    <span className={mainStyle['down-price']}>&#9660; {Number(list.diff).toFixed(2)}</span> 
+                  </div>
+              
+                // 전일대비 전국 평균 가격이 증가했을 경우
+                : <div>
+                    <span>{Number(list.price).toFixed(2)}</span>
+                    <span className={mainStyle['up-price']}>&#9650; {Number(list.diff).toFixed(2)}</span> 
+                  </div>
               }
 
               </div>
@@ -282,22 +434,63 @@ const Main = () => {
             <h4>오늘의 유가</h4>
             <span>({now()})</span>
           </div>
+            {/* 휘발유 div 레이아웃 */}
+            <div className={ 
+                              isChecked === gasoline 
+                              ? `${mainStyle['oil-type']} ${mainStyle['active']}` 
+                              : mainStyle['oil-type'] 
+                            } 
+                 onClick={e => oilTypeCheck(e)}
+            >
 
-            <div className={ isChecked === gasoline ? `${mainStyle['oil-type']} ${mainStyle['active']}` : mainStyle['oil-type'] } onClick={e => oilTypeCheck(e)}>
               <span>휘발유</span>
-              {isChecked === gasoline ? <span className={mainStyle['active-arrow']}>&gt;</span> : ''}
+
+              {
+                isChecked === gasoline 
+                ? <span className={mainStyle['active-arrow']}>&gt;</span> 
+                : ''
+              }
+
               <input type='radio' name='prodcd' value={gasoline} checked={isChecked === gasoline} readOnly hidden/>
             </div>  
 
-            <div className={ isChecked === diesel ? `${mainStyle['oil-type']} ${mainStyle['active']}` : mainStyle['oil-type'] } onClick={e => oilTypeCheck(e)}>
+            {/* 경유 div 레이아웃 */}
+            <div className={ 
+                            isChecked === diesel 
+                            ? `${mainStyle['oil-type']} ${mainStyle['active']}` 
+                            : mainStyle['oil-type'] 
+                          } 
+                 onClick={e => oilTypeCheck(e)}
+            >
+
               <span>경유</span>
-              {isChecked === diesel ? <span className={mainStyle['active-arrow']}>&gt;</span> : ''}
+
+              {
+                isChecked === diesel 
+                ? <span className={mainStyle['active-arrow']}>&gt;</span> 
+                : ''
+              }
+
               <input type='radio' name='prodcd' value={diesel} checked={isChecked === diesel} readOnly hidden/>
             </div>
 
-            <div className={ isChecked === lpg ? `${mainStyle['oil-type']} ${mainStyle['active']}` : mainStyle['oil-type'] } onClick={e => oilTypeCheck(e)}>
+            {/* LPG div 레이아웃 */}
+            <div className={ 
+                            isChecked === lpg 
+                            ? `${mainStyle['oil-type']} ${mainStyle['active']}` 
+                            : mainStyle['oil-type'] 
+                          } 
+                 onClick={e => oilTypeCheck(e)}
+            >
+
               <span>LPG</span>
-              {isChecked === lpg ? <span className={mainStyle['active-arrow']}>&gt;</span> : ''}
+
+              {
+                isChecked === lpg 
+                ? <span className={mainStyle['active-arrow']}>&gt;</span> 
+                : ''
+              }
+
               <input type='radio' name='prodcd' value={lpg} checked={isChecked === lpg} readOnly hidden/>
             </div>
 
@@ -314,9 +507,11 @@ const Main = () => {
           <div className={mainStyle['oil-box-api']}>
             <div className={mainStyle['oil-box-map']}>
             { oilPriceList['sidoList'] && oilPriceList['sidoList'].filter(idx => idx.sidonm !== '전국').map( (list) => { 
+            
+              const sidoClass = sidoName.filter( idx => idx.korTitle === list.sidonm ).map( sido => {return sido.engTitle} ); // className 동적 부여를 위한 변수
 
               return (
-                <div key={list.sidonm} className={mainStyle[sidoName[list.sidonm]]} onClick={e => sidoClick(e)}>
+                <div key={list.sidonm} className={mainStyle[sidoClass]} onClick={e => sidoClick(e)}>
                   <span className={mainStyle['title']}>{list.sidonm}</span>
                   <span className={mainStyle['price']}>{Math.round(list.price)}</span>
                   <span className={mainStyle['location-dot']}>&bull;</span>
@@ -333,78 +528,88 @@ const Main = () => {
           <hr />
           <div className={mainStyle['oil-box-api']}>
 
-            { isChecked !== lpg ?  // 기름 종류가 LPG 가 아닐 경우, 아래 출력
-            <div className={mainStyle['oil-box-avgPrice-wrap']}>
+            { isChecked !== lpg 
 
-              <div className={mainStyle['oil-box-brand']}> {/* 상표 선택 Div 출력 */}
+            // 기름 종류가 LPG 가 아닐 경우, 아래 출력
+            ? <div className={mainStyle['oil-box-avgPrice-wrap']}>
 
-                { uniqueBrand.map( brandCode => {
+                <div className={mainStyle['oil-box-brand']}> {/* 상표 선택 Div 출력 */}
 
-                    switch (brandCode) {
-                      case 'RTX': break;
-                
-                      case 'NHO': break;
-                                  
-                      default:  const name = brandArray.filter( idx => idx.code === brandCode )[0].title; // 상표명을 위한 상수 선언 및 초기화
-                                const src = brandArray.filter( idx => idx.code === brandCode )[0].src; // 이미지 파일을 위한 상수 선언 및 초기화
+                  { uniqueBrand.map( brandCode => {
 
-                                return (
-                                  <div key={brandCode} // 이전에 값을 걸렀기 때문에, key가 필요없지만 Error 제거를 위해 추가
-                                       className={ name === brandSelect ? `${mainStyle['active']}` : '' } 
-                                       onClick={e => brandClick(e)} 
-                                  >
-                                    {/* {require(`../images/${imageName}.png`).default} */}
-                                    <img alt={name} src={src} />  
-                                    <label>{name}</label>
-                                    <input type='radio' value={brandCode} readOnly hidden />
-                                  </div>         
-                                )
-                    }
+                      switch (brandCode) {
+                        case 'RTX': break;
+                  
+                        case 'NHO': break;
+                                    
+                        default:  const brandName = brandArray.filter( idx => idx.code === brandCode )[0].title; // 상표명을 위한 상수 선언 및 초기화
+                                  const sLogo = brandArray.filter( idx => idx.code === brandCode )[0].sLogo; // 이미지 파일을 위한 상수 선언 및 초기화
 
-                    return ''; // map의 Arrow 경고를 지우기 위해 공백 return
-                })}
+                                  return (
+                                    <div key={brandCode} // 이전에 값을 걸렀기 때문에, key가 필요없지만 Error 제거를 위해 추가
+                                        className={ 
+                                                    brandName === brandSelect 
+                                                      ? `${mainStyle['active']}` 
+                                                      : '' 
+                                                  } 
+                                        onClick={e => brandClick(e)} 
+                                    >
+                                      {/* {require(`../images/${imageName}.png`).default} */}
+                                      <img alt={brandName} src={sLogo} />  
+                                      <label>{brandName}</label>
+                                      <input type='radio' value={brandCode} readOnly hidden />
+                                    </div>         
+                                  )
+                      }
 
+                      return ''; // map의 Arrow 경고를 지우기 위해 공백 return
+                  })}
+
+                </div>
+                <div className={mainStyle['oil-box-graph']}>  {/* 상표와 기름 종류에 맞는 데이터 그래프화 */}
+                  <ResponsiveContainer>
+                    <LineChart
+                      data={graphData}
+                      margin={{
+                        top: 25,
+                        right: 20,
+                        left: -10,
+                        bottom: -10
+                      }}
+                    >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis 
+                      dataKey='date' 
+                      tick={{fontSize: 15, fontWeight: 'bold'}} 
+                      dy={5} 
+                    />
+                    <YAxis 
+                      domain={['auto', 'auto']}
+                      tick={{fontSize: 15, fontWeight: 'bold'}}
+                      dx={-5}
+                    />  
+                    <Tooltip />
+                    <Legend wrapperStyle={{marginLeft: '25px'}} />
+                    <Line
+                      dataKey='allPrice'
+                      name='전국'
+                      stroke="rgb(46, 121, 33)"
+                    /> 
+                    <Line 
+                      dataKey='pollPrice'
+                      name={graphData[0] !== undefined 
+                              ? brandArray.filter( idx => idx.code === graphData[0].pollDivCd )[0].title 
+                              : ''
+                            } 
+                      stroke="mediumblue" 
+                    />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
               </div>
-              <div className={mainStyle['oil-box-graph']}>  {/* 상표와 기름 종류에 맞는 데이터 그래프화 */}
-                <ResponsiveContainer>
-                  <LineChart
-                    data={graphData}
-                    margin={{
-                      top: 25,
-                      right: 20,
-                      left: -10,
-                      bottom: -10
-                    }}
-                  >
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis 
-                    dataKey='date' 
-                    tick={{fontSize: 15, fontWeight: 'bold'}} 
-                    dy={5} 
-                  />
-                  <YAxis 
-                    domain={['auto', 'auto']}
-                    tick={{fontSize: 15, fontWeight: 'bold'}}
-                    dx={-5}
-                    // label={{ value: '(원/리터)', offset: 10, angle: 0, position: 'bottom' }}
-                  />  
-                  <Tooltip />
-                  <Legend wrapperStyle={{marginLeft: '25px'}} />
-                  <Line
-                    dataKey='allPrice'
-                    name='전국'
-                    stroke="rgb(46, 121, 33)"
-                  /> 
-                  <Line 
-                    dataKey='pollPrice'
-                    name={graphData[0] !== undefined ? brandArray.filter( idx => idx.code === graphData[0].pollDivCd )[0].title : ''} 
-                    stroke="mediumblue" 
-                  />
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
-            </div>
-            : <div  className={`text-center ${mainStyle['oil-box-brand-lpg']}`}> {/* 기름 종류가 LPG 일 경우, 통계 자료가 존재하지 않기 때문에 안내문구 출력 */}
+              
+            // 기름 종류가 LPG 일 경우, 통계 자료가 존재하지 않기 때문에 안내문구 출력
+            : <div  className={`text-center ${mainStyle['oil-box-brand-lpg']}`}>
                 현재 LPG 는 통계 자료가 존재하지 않습니다.
               </div>           
             }
@@ -416,16 +621,21 @@ const Main = () => {
       {/* ========== 아래부터 Main Bottom ( 네이버 지도 API, 시도별 최저가 TOP 10 ) ========== */}
 
       <div className={`container text-center ${mainStyle['oil-layout-2']}`}> 
-        <div className={mainStyle['naver-map']}>
-            네이버 지도 위치
+        <div className={mainStyle['map-layout']}>
+          <h5>주유소 위치 찾기</h5>
+          <hr />
+
+          <div id='map' className={mainStyle['naver-map']} />
+
         </div>
+
         <div className={mainStyle['oil-box-ranking']}>
-          <h5>동네별 저렴한 주유소 TOP 10</h5>
+          <h5>시도별 최저가 주유소 TOP 10</h5>
           <hr />
 
             <div className={mainStyle['ranking-select-layout']}>
               <select className={`form-select ${mainStyle['ranking-select']}`}>
-                <option>동네이름 동적할당</option>
+                <option>무엇을 넣을까</option>
               </select>
               <select className={`form-select ${mainStyle['ranking-select']}`}>
                 <option>저가순</option>
@@ -436,72 +646,64 @@ const Main = () => {
               <div className={`${mainStyle['ranking-list']} ${mainStyle['line-right']}`}>
                 <p className={mainStyle['ranking-title']}>TOP 1 - 5</p>
 
-                <div className={mainStyle['ranking-item']}>
-                  <div className={mainStyle['ranking-item-logo']}>
-                    로고
-                  </div>
-                  <div className={mainStyle['ranking-item-station']}>
-                    내용
-                  </div>
-                  <div className={mainStyle['ranking-item-price']}>
-                    1,852
-                  </div>
-                </div>
+                { lowTopData.map( (list, index) => {
 
-                <div className={mainStyle['ranking-item']}>
-                  <div className={mainStyle['ranking-item-logo']}>
-                    로고
-                  </div>
-                  <div className={mainStyle['ranking-item-station']}>
-                    내용
-                  </div>
-                  <div className={mainStyle['ranking-item-price']}>
-                    1,852
-                  </div>
-                </div>
+                  const brandName = brandArray.filter( idx => idx.code === list.pollDivCd )[0].title; // 상표명을 위한 상수 선언 및 초기화
+                  const bLogo = brandArray.filter( idx => idx.code === list.pollDivCd )[0].bLogo; // 이미지 파일을 위한 상수 선언 및 초기화
 
-                <div className={mainStyle['ranking-item']}>
-                  <div className={mainStyle['ranking-item-logo']}>
-                    로고
-                  </div>
-                  <div className={mainStyle['ranking-item-station']}>
-                    내용
-                  </div>
-                  <div className={mainStyle['ranking-item-price']}>
-                    1,852
-                  </div>
-                </div>
+                  if( index < 5 ) { // TOP 1 ~ 5 까지의 데이터 출력
+                    return (
+                      <div key={index} className={mainStyle['ranking-item']}>
+                        <div className={mainStyle['ranking-item-logo']}>
+                          <img alt={brandName} src={bLogo} />
+                        </div>
+                        <div className={mainStyle['ranking-item-station']} onClick={e => stationClick(e)}>
+                          {list.osNm}
+                        </div>
+                        <div className={mainStyle['ranking-item-price']}>
+                          {list.price}
+                        </div>
+                      </div>
+                    )
+                  } else { // 나머지는 출력 무시
+                    return null
+                  }
 
-                <div className={mainStyle['ranking-item']}>
-                  <div className={mainStyle['ranking-item-logo']}>
-                    로고
-                  </div>
-                  <div className={mainStyle['ranking-item-station']}>
-                    내용
-                  </div>
-                  <div className={mainStyle['ranking-item-price']}>
-                    1,852
-                  </div>
-                </div>
-
-                <div className={mainStyle['ranking-item']}>
-                  <div className={mainStyle['ranking-item-logo']}>
-                    로고
-                  </div>
-                  <div className={mainStyle['ranking-item-station']}>
-                    내용
-                  </div>
-                  <div className={mainStyle['ranking-item-price']}>
-                    1,852
-                  </div>
-                </div>
+                })}
 
               </div>
+
+
               <div className={mainStyle['ranking-list']}>
                 <p className={mainStyle['ranking-title']}>TOP 6 - 10</p>
 
+                { lowTopData.map( (list, index) => {
+
+                  const brandName = brandArray.filter( idx => idx.code === list.pollDivCd )[0].title; // 상표명을 위한 상수 선언 및 초기화
+                  const bLogo = brandArray.filter( idx => idx.code === list.pollDivCd )[0].bLogo; // 이미지 파일을 위한 상수 선언 및 초기화
+
+                  if( index > 4 ) { // TOP 6 ~ 10 까지의 데이터 출력
+                    return (
+                      <div key={index} className={mainStyle['ranking-item']}>
+                        <div className={mainStyle['ranking-item-logo']}>
+                          <img alt={brandName} src={bLogo} />
+                        </div>
+                        <div className={mainStyle['ranking-item-station']} onClick={e => stationClick(e)}>
+                          {list.osNm}
+                        </div>
+                        <div className={mainStyle['ranking-item-price']}>
+                          {list.price}
+                        </div>
+                      </div>
+                    )
+                  } else { // 나머지는 출력 무시
+                    return null;
+                  }
+
+                })}
 
               </div>
+
             </div>
             <div className={mainStyle['ranking-comment']}>
               <span>※ 주유소 이름 클릭 시, 지도에 해당 주유소의 위치가 표시됩니다.</span>
@@ -509,8 +711,8 @@ const Main = () => {
         </div>
 
       </div> {/* //.oil-layout-2 */}
-
-    </div> /* //.main-layout */
+ 
+    </div> //.main-layout 
   );
 };
 
