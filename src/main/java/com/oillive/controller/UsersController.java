@@ -42,6 +42,7 @@ public class UsersController {
 		
 		String prodcd = req.get("prodcd");
 		String sido = req.get("sido");
+		int apiStatus = Integer.parseInt(req.get("apiStatus"));
 		
 		// Service 로 이전 예정		
 		List<ApiAvgAllPriceVO> allList = new ArrayList<ApiAvgAllPriceVO>();
@@ -56,35 +57,41 @@ public class UsersController {
 		String baseUrl = null;
 		
 		// 유가 API 요청 횟수
-		int apiRequestCount = 4;
+		int apiRequestCount = 5;
+		
+		if( apiStatus == 1 ) { // 시도별 최저가 주유소 TOP 10 API 만 요청할 경우
+			
+			apiRequestCount = 1;
+			
+		}
 		
 		// 2가지 API를 한 개의 VO로 가공할 때, 쓰이는 인덱스 값
 		int idx = 0;
 		
 		// 유가 API 요청 코드
-		for(int i = 0; i < apiRequestCount; i++) {
+		for( int i = 0; i < apiRequestCount; i++ ) {
 			
 			// API 요청 URL, 결과값 List 선언
-			switch(i) {
-				case 0: // 전국 주유소 평균가격 API URL
+			switch( i ) {
+				case 0: // 지역별 최저가 주유소 API URL
+						baseUrl = "http://www.opinet.co.kr/api/lowTop10.do?prodcd=" + prodcd + "&area=" + sido + "&cnt=10&out=json&code=F220411106";
+						break;
+			
+				case 1: // 전국 주유소 평균가격 API URL
 						baseUrl = "http://www.opinet.co.kr/api/avgAllPrice.do?out=json&code=F220411106";
 						break;
 						
-				case 1: // 시도별 주유소 평균가격 API URL
+				case 2: // 시도별 주유소 평균가격 API URL
 						baseUrl = "http://www.opinet.co.kr/api/avgSidoPrice.do?prodcd=" + prodcd + "&out=json&code=F220411106";
 						break;
 						
-				case 2: // 최근 7일간 전국 일일 평균가격 API URL
+				case 3: // 최근 7일간 전국 일일 평균가격 API URL
 						baseUrl = "http://www.opinet.co.kr/api/avgRecentPrice.do?prodcd=" + prodcd + "&out=json&code=F220411106";
 						break;
 						
-				case 3: // 최근 7일간 전국 일일 상표별 평균가격 API URL
+				case 4: // 최근 7일간 전국 일일 상표별 평균가격 API URL
 						baseUrl = "http://www.opinet.co.kr/api/pollAvgRecentPrice.do?prodcd=" + prodcd + "&out=json&code=F220411106";
-						break;
-						
-				case 4: // 지역별 최저가 주유소 API URL (미완성)
-						baseUrl = "http://www.opinet.co.kr/api/lowTop10.do?prodcd=" + prodcd + "&area=" + sido + "&cnt=10&out=json&code=F220411106";
-						break;
+						break;		
 			}
 
 			String response = restTemplate.getForObject(baseUrl, String.class);
@@ -102,13 +109,29 @@ public class UsersController {
 				
 				JSONArray array = (JSONArray)parseResult.get("OIL");
 				
-				for(int j = 0; j < array.size(); j++) {
+				for( int j = 0; j < array.size(); j++ ) {
 					
 					jsonObj = (JSONObject)array.get(j);
 					
-					switch(i) {
+					switch( i ) { // apiRequestCount 값에 따라 VO 가공
 					
-						case 0: // 전국 주유소 평균가격 VO 가공 및 List 추가
+						case 0: // 지역별 최저가 주유소 VO 가공 및 List 추가
+								ApiLowTop10VO lowTopVO = ApiLowTop10VO.builder()
+														  .uniId(jsonObj.get("UNI_ID").toString())
+														  .price(jsonObj.get("PRICE").toString())
+														  .pollDivCd(jsonObj.get("POLL_DIV_CD").toString())
+														  .osNm(jsonObj.get("OS_NM").toString()) 
+		 												  .vanAdr(jsonObj.get("VAN_ADR").toString())
+														  .newAdr(jsonObj.get("NEW_ADR").toString())
+														  .gisXCoor(jsonObj.get("GIS_X_COOR").toString())
+														  .gisYCoor(jsonObj.get("GIS_Y_COOR").toString())
+														  .build();
+				
+						lowTopList.add(lowTopVO);
+						break;
+					
+					
+						case 1: // 전국 주유소 평균가격 VO 가공 및 List 추가
 								ApiAvgAllPriceVO allVO = ApiAvgAllPriceVO.builder()
 														 .tradeDT(jsonObj.get("TRADE_DT").toString())
 														 .prodcd(jsonObj.get("PRODCD").toString())
@@ -120,7 +143,7 @@ public class UsersController {
 								allList.add(allVO);
 								break;
 								
-						case 1: // 시도별 주유소 평균가격 VO 가공 및 List 추가
+						case 2: // 시도별 주유소 평균가격 VO 가공 및 List 추가
 								ApiAvgSidoPriceVO sidoVO = ApiAvgSidoPriceVO.builder()
 															.sidocd(jsonObj.get("SIDOCD").toString())
 															.sidonm(jsonObj.get("SIDONM").toString())
@@ -132,11 +155,11 @@ public class UsersController {
 								sidoList.add(sidoVO);
 								break;
 						
-						case 2: // 최근 7일간 전국 일일 평균가격 VO 가공 전, 임시로 넣어두기
+						case 3: // 최근 7일간 전국 일일 평균가격 VO 가공 전, 임시로 넣어두기
 								avgRecentTemp.add(jsonObj);
 								break;
 								
-						case 3: // 최근 7일간 전국 일일 평균가격, 최근 7일간 전국 일일 상표별 평균가격 VO 가공 및 List 추가
+						case 4: // 최근 7일간 전국 일일 평균가격, 최근 7일간 전국 일일 상표별 평균가격 VO 가공 및 List 추가
 								
 								// Front-End 에서 그래프로 활용하기 위해, 2가지 API를 한 개의 VO로 가공하는 로직
 								String dateCompare = String.valueOf(jsonObj.get("DATE")); // API 상표별 날짜로 초기화
@@ -158,21 +181,6 @@ public class UsersController {
 								recentList.add(recentVO);
 								break;
 								
-						case 4: // 지역별 최저가 주유소 VO 가공 및 List 추가 (미완성)
-								ApiLowTop10VO lowTopVO = ApiLowTop10VO.builder()
-														  .uniId(jsonObj.get("UNI_ID").toString())
-														  .price(jsonObj.get("PRICE").toString())
-														  .pollDivCd(jsonObj.get("POLL_DIV_CD").toString())
-														  .osNm(jsonObj.get("OS_NM").toString()) 
-		 												  .vanAdr(jsonObj.get("VAN_ADR").toString())
-														  .newAdr(jsonObj.get("NEW_ADR").toString())
-														  .gisXCoor(jsonObj.get("GIS_X_COOR").toString())
-														  .gisYCoor(jsonObj.get("GIS_Y_COOR").toString())
-														  .build();
-						
-								lowTopList.add(lowTopVO);
-								break;
-							
 					}
 						
 				}

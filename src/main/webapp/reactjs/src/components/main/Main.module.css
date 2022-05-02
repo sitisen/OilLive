@@ -325,12 +325,20 @@
 
 
 /* 네이버 지도 API 레이아웃 CSS */
-.naver-map {
+.map-layout {
     float: left;
+    text-align: left;
+    margin-top: 12px;
+    padding: 20px;
     margin-top: 12px;
     width: 49.5%;
     height: 95%;
     background-color: white;
+}
+
+.naver-map {
+    width: 100%;
+    height: 90%;
 }
 
 /* 동네별 저렴한 주유소 TOP 10 레이아웃 CSS */
@@ -399,6 +407,10 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.ranking-item-station:hover {
+    cursor: pointer;
 }
 
 .ranking-item-price {
