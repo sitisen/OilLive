@@ -28,7 +28,7 @@ const Header = () => {
               <tbody>
                 <tr>
                   <td className={HeaderStyle['header-nav-img']}><Link to='/'><img alt='logo' src='/images/logo.jpg' width='230' height='100%'/></Link></td>
-                  <td className={HeaderStyle['header-nav']}><span className={HeaderStyle['nav-span']}>차량용품</span></td>
+                  <td className={HeaderStyle['header-nav']}><Link className={HeaderStyle['header-link']} to='/users/goodslist'><span className={HeaderStyle['nav-span']}>차량용품</span></Link></td>
                   <td className={HeaderStyle['header-nav']}><span className={HeaderStyle['nav-span']}>이용안내</span></td>
                   <td className={HeaderStyle['header-nav']}><span className={HeaderStyle['nav-span']}>전기차 충전소</span></td>
                   <td className={HeaderStyle['header-nav']}><span className={HeaderStyle['nav-span']}>이벤트</span></td>

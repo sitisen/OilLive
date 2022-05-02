@@ -35,3 +35,8 @@
 .header-span:hover {
     cursor: pointer;
 }
+
+.header-link {
+    color: #555;
+    text-decoration: none;
+}
