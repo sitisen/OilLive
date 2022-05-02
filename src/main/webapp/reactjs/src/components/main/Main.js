@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, CartesianGrid } from 'recharts';
 import ApiService from 'services/ApiService';
@@ -186,6 +185,15 @@ const Main = () => {
   const [ brandData, setBrandData ] = useState([]); // 상표별 유가가 담겨있음.
   const [ lowTopData, setLowTopData ] = useState([]); // 시도별 최저가 주유소 TOP 10의 정보가 담겨있음.
 
+
+  // 네이버 지도 API 관련 변수
+  let tm128 = '';
+  let latLng = '';
+  let mapOptions = {
+    center : '',
+    zoom : 0
+  };
+
   useEffect( () => {
 
     // 시도별 주유소 평균가격(전국 포함) API
@@ -199,6 +207,7 @@ const Main = () => {
           pollPrice : data.pollPrice
         }
       });
+
       const firstData = recentTemp.filter( idx => idx.pollDivCd === recentTemp[0].pollDivCd ); // 코드가 길기 때문에, 아래에서 사용하기 전에 상수에 담음.
 
       setLowTopData(res.data['lowTopList']); // 최저가 주유소 데이터를 가공할 일이 많으므로, 해당 데이터만 담아둠.
@@ -213,14 +222,21 @@ const Main = () => {
         setGraphData(firstData.map( list => { return list; })) // 상표별 유가 추이에서 가장 처음 상표의 데이터를 그래프로 출력하기위해 set
       }
 
-      let mapOptions = {
-        center: new naver.maps.LatLng(37.5310602, 126.8312778),
-        zoom: 10
+      // tm128 -> latLng 로 변환
+      const tm128 = new naver.maps.Point(res.data['lowTopList'][0].gisXCoor, res.data['lowTopList'][0].gisYCoor);
+      const latLng = naver.maps.TransCoord.fromTM128ToLatLng(tm128);
+
+      // 네이버 지도 API 설정
+      const mapOptions = {
+        center: new naver.maps.LatLng(latLng),
+        zoom: 17
       };
     
+      // 네이버 지도 API 객체 생성
       let map = new naver.maps.Map('map', mapOptions);
-
-      let marker = new naver.maps.Marker({
+    
+      // 네이버 지도 API 마커 생성
+      let marker = new naver.maps.Marker({ // eslint-disable-line no-unused-vars
         position: mapOptions.center,
         map: map
       });
@@ -228,7 +244,7 @@ const Main = () => {
     });
 
   }, [oilType, brandArray]);
-
+  
 
   /* 기름 종류 Click 이벤트 */
   const [ isChecked, setIsChecked ] = useState(gasoline);
@@ -319,28 +335,40 @@ const Main = () => {
     }
   }; 
 
+
+
+  
+
   /* 시도별 최저가  */
   const stationClick = (e) => {
-    // console.log('lowTopData ::: ', lowTopData);
-    var tm128 = new naver.maps.Point(296899.43014, 548290.96783);
-    var latLng = naver.maps.TransCoord.fromTM128ToLatLng(tm128);
-    console.log(latLng);
-    // console.log('TM128ToLatLng ::: ', naver.maps.TransCoord.fromTM128ToEPSG3857(545023.6863, 302896.0305));
-    console.log('naver.maps 객체 ::: ', naver.maps);
-    // console.log('KATEC X :: ', lowTopData.filter( idx => idx.osNm.includes(e.target.innerText))[0].gisXCoor );
-    // console.log('KATEC Y :: ', lowTopData.filter( idx => idx.osNm.includes(e.target.innerText))[0].gisYCoor );
+
+    
+    const coord = { // 클릭한 주유소의 X, Y 좌표 값 설정
+      x: lowTopData.filter( idx => idx.osNm.includes(e.target.innerText))[0].gisXCoor,
+      y: lowTopData.filter( idx => idx.osNm.includes(e.target.innerText))[0].gisYCoor
+    }
+
+    // tm128 -> latLng 로 변환
+    tm128 = new naver.maps.Point(coord.x, coord.y);
+    latLng = naver.maps.TransCoord.fromTM128ToLatLng(tm128);
+
+    // 네이버 지도 API 설정
+    mapOptions = {
+      center: new naver.maps.LatLng(latLng),
+      zoom: 17
+    };
+
+    // 네이버 지도 API 객체 생성
+    let map = new naver.maps.Map('map', mapOptions);
+
+    // 네이버 지도 API 마커 생성
+    let marker = new naver.maps.Marker({ // eslint-disable-line no-unused-vars
+       position: mapOptions.center,
+       map: map
+    });
+
   };
 
-  /* 
-    gisXCoor: "296899.43014"
-    gisYCoor: "548290.96783"
-    newAdr: "서울 양천구 남부순환로 408"
-    osNm: "형산석유(주)원주유소"
-    pollDivCd: "HDO"
-    price: "1897"
-    uniId: "A0000983"
-    vanAdr: "서울 양천구 신월동 199-5" 
-  */
 
   /* ========== 실제 사이트 렌더링 ========== */
   return (
@@ -625,6 +653,8 @@ const Main = () => {
           <h5>주유소 위치 찾기</h5>
           <hr />
 
+
+
           <div id='map' className={mainStyle['naver-map']} />
 
         </div>
@@ -633,15 +663,6 @@ const Main = () => {
           <h5>시도별 최저가 주유소 TOP 10</h5>
           <hr />
 
-            <div className={mainStyle['ranking-select-layout']}>
-              <select className={`form-select ${mainStyle['ranking-select']}`}>
-                <option>무엇을 넣을까</option>
-              </select>
-              <select className={`form-select ${mainStyle['ranking-select']}`}>
-                <option>저가순</option>
-                <option>고가순</option>
-              </select>
-            </div>
             <div className={`text-center ${mainStyle['ranking-list-layout']}`}>
               <div className={`${mainStyle['ranking-list']} ${mainStyle['line-right']}`}>
                 <p className={mainStyle['ranking-title']}>TOP 1 - 5</p>
@@ -706,6 +727,7 @@ const Main = () => {
 
             </div>
             <div className={mainStyle['ranking-comment']}>
+              <span>※ 동일한 가격일 경우, 랜덤하게 표시됩니다.</span>
               <span>※ 주유소 이름 클릭 시, 지도에 해당 주유소의 위치가 표시됩니다.</span>
             </div>
         </div>

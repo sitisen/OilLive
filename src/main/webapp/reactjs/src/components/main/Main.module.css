@@ -330,7 +330,6 @@
     text-align: left;
     margin-top: 12px;
     padding: 20px;
-    margin-top: 12px;
     width: 49.5%;
     height: 95%;
     background-color: white;
@@ -372,7 +371,7 @@
     display: flex;
     flex-direction: row;
     margin-top: 5%;
-    height: 55%;
+    height: 60%;
 }
 
 .ranking-list {
@@ -411,6 +410,7 @@
 
 .ranking-item-station:hover {
     cursor: pointer;
+    font-weight: bold;
 }
 
 .ranking-item-price {
@@ -420,9 +420,14 @@
 
 .ranking-comment {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 20%;
+    height: 30%;
     color: gray;
     font-size: 14px;
+}
+
+.ranking-comment span {
+    margin: 5px 0;
 }
