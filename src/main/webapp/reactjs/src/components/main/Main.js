@@ -241,6 +241,8 @@ const Main = () => {
         map: map
       });
 
+      setStationActive(0); // 시도별 최저가 주유소 TOP 10 의 Bold 효과를 위한 State
+
     });
 
   }, [oilType, brandArray]);
@@ -336,12 +338,12 @@ const Main = () => {
   }; 
 
 
+  /* 시도별 최저가 주유소 TOP 10 Click 이벤트 */
+  const [ stationActive, setStationActive ] = useState(); // div 클릭 시, bold 효과를 주기 위한 State
 
-  
+  const stationClick = (e, index) => {
 
-  /* 시도별 최저가  */
-  const stationClick = (e) => {
-
+    setStationActive(index);
     
     const coord = { // 클릭한 주유소의 X, Y 좌표 값 설정
       x: lowTopData.filter( idx => idx.osNm.includes(e.target.innerText))[0].gisXCoor,
@@ -660,7 +662,7 @@ const Main = () => {
         </div>
 
         <div className={mainStyle['oil-box-ranking']}>
-          <h5>시도별 최저가 주유소 TOP 10</h5>
+          <h5>{localText} 최저가 주유소 TOP 10</h5>
           <hr />
 
             <div className={`text-center ${mainStyle['ranking-list-layout']}`}>
@@ -673,12 +675,18 @@ const Main = () => {
                   const bLogo = brandArray.filter( idx => idx.code === list.pollDivCd )[0].bLogo; // 이미지 파일을 위한 상수 선언 및 초기화
 
                   if( index < 5 ) { // TOP 1 ~ 5 까지의 데이터 출력
-                    return (
-                      <div key={index} className={mainStyle['ranking-item']}>
+                    return ( // key 값은 API 에서 이미 오름차순으로 정렬된 데이터이므로, index 사용
+                      <div key={index} className={mainStyle['ranking-item']}> 
                         <div className={mainStyle['ranking-item-logo']}>
                           <img alt={brandName} src={bLogo} />
                         </div>
-                        <div className={mainStyle['ranking-item-station']} onClick={e => stationClick(e)}>
+                        <div className={
+                                        index === stationActive
+                                        ? `${mainStyle['ranking-item-station']} ${mainStyle['active-bold']}`
+                                        : `${mainStyle['ranking-item-station']}`
+                                       }
+                             onClick={e => stationClick(e, index)}
+                        >
                           {list.osNm}
                         </div>
                         <div className={mainStyle['ranking-item-price']}>
@@ -704,12 +712,18 @@ const Main = () => {
                   const bLogo = brandArray.filter( idx => idx.code === list.pollDivCd )[0].bLogo; // 이미지 파일을 위한 상수 선언 및 초기화
 
                   if( index > 4 ) { // TOP 6 ~ 10 까지의 데이터 출력
-                    return (
+                    return ( // key 값은 API 에서 이미 오름차순으로 정렬된 데이터이므로, index 사용
                       <div key={index} className={mainStyle['ranking-item']}>
                         <div className={mainStyle['ranking-item-logo']}>
                           <img alt={brandName} src={bLogo} />
                         </div>
-                        <div className={mainStyle['ranking-item-station']} onClick={e => stationClick(e)}>
+                        <div className={
+                                        index === stationActive
+                                        ? `${mainStyle['ranking-item-station']} ${mainStyle['active-bold']}`
+                                        : `${mainStyle['ranking-item-station']}`
+                                       }
+                             onClick={e => stationClick(e, index)}
+                        >
                           {list.osNm}
                         </div>
                         <div className={mainStyle['ranking-item-price']}>

@@ -122,6 +122,10 @@
     font-size: 20px;
 }
 
+.active-bold {
+    font-weight: bold;
+}
+
 /* 배너 레이아웃 CSS */
 .banner {
     height: 40%; /* ".today:30%" + ".oil-type:10% * 3" + .banner:40% = 100% */
@@ -410,6 +414,7 @@
 
 .ranking-item-station:hover {
     cursor: pointer;
+    font-size: 17px;
     font-weight: bold;
 }
 
