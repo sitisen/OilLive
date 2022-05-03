@@ -90,3 +90,14 @@
 .display-on {
     display: block;
 }
+
+/* 아이디 찾기 - 휴대전화 인증버튼 */
+.certi-button-fail {
+    height: 50px;
+    width: 90px;
+    outline: none;
+    background-color:  #dee2e6;
+    border: none;
+    border-radius:5px;
+    color: white;
+}

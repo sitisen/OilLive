@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 
 /* import css */
 import FindinfoMainStyle from './FindinfoMain.module.css';
 
 const FindinfoMain = () => {
+
 
     // 아이디 비밀번호 찾기 active 활성화 변수
     const [idPwdCheck, setIdPwdCehck] = useState(false);
@@ -11,11 +12,22 @@ const FindinfoMain = () => {
     // radio 버튼 활성화 변수
     const [idRadio, setIdRadio] = useState(false);
 
+    // 버튼 상태관리
+    const [manageButton, setManageButton] = useState({
+        idphonebutton : false,
+        idemailbutton : false
+    });
+
+    const {idphonebutton, idemailbutton} = manageButton;
+
+    // ref 선언
+    const findInfoRef = useRef([]);
+
     // 첫 화면 렌더링시 자동선택되어있는 버튼
     useEffect(() => {
         setIdPwdCehck(true);
         setIdRadio(true);
-    }, []);
+    }, [manageButton]);
 
     // 아이디 찾기 / 비밀번호 찾기 nav 버튼 클릭시 이벤트
     const changeNav = (e) => {
@@ -28,11 +40,25 @@ const FindinfoMain = () => {
 
     // onchange 이벤트
     const onChange = (e) => {
+        // 아이디 찾기
         if(e.target.id === 'idphone'){
             setIdRadio(true);
+        // 비밀번호 찾기
         } else if(e.target.id === 'idemail'){
             setIdRadio(false);
+        // 핸드폰 번호 입력시 버튼 활성화
+        } else if(e.target.id === 'userphone'){
+            if(findInfoRef.current['idphone'].value !== ''){
+                setManageButton({
+                    idphonebutton : true
+                });
+            } else {
+                setManageButton({
+                    idphonebutton : false
+                });
+            }
         }
+        
     }
 
     return (
@@ -56,9 +82,10 @@ const FindinfoMain = () => {
                     <div className={idRadio ? FindinfoMainStyle['display-on'] : FindinfoMainStyle['display-off']}>
                         <div className={FindinfoMainStyle['findinfo-phone']}>
                             <label htmlFor='username'>이름</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <input type='text' maxLength='4' id='username'/><br></br>
-                            <label htmlFor='userphone'>휴대전화</label>&nbsp;&nbsp;&nbsp;&nbsp;<input type='text' maxLength='11' id='userphone'/>&nbsp;&nbsp;
-                            <button className={FindinfoMainStyle['certi-button']}>인증하기</button>
+                            <input type='text' maxLength='4' id='username' ref={el => findInfoRef.current['idname'] = el} onChange={onChange} /><br></br>
+                            <label htmlFor='userphone'>휴대전화</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type='text' maxLength='11' id='userphone' ref={el => findInfoRef.current['idphone'] = el} onChange={onChange} />&nbsp;&nbsp;
+                            <button disabled={!idphonebutton} className={idphonebutton ? FindinfoMainStyle['certi-button'] : FindinfoMainStyle['certi-button-fail']}>인증하기</button>
                             <div className={FindinfoMainStyle['certi-div']}>
                                 <input type='text' placeholder='인증번호를 입력해주세요.'/>&nbsp;&nbsp;
                                 <button className={FindinfoMainStyle['certi-button']}>확인</button>
@@ -73,8 +100,9 @@ const FindinfoMain = () => {
                     <div className={!idRadio ? FindinfoMainStyle['display-on'] : FindinfoMainStyle['display-off']}>
                         <div className={FindinfoMainStyle['findinfo-phone']}>
                             <label htmlFor='usernameEmail'>이름</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <input type='text' maxLength='4' id='usernameEmail'/><br></br>
-                            <label htmlFor='userEmail'>이메일 주소</label><input type='text' id='userEmail'/>&nbsp;&nbsp;
+                            <input type='text' maxLength='4' id='usernameEmail' ref={el => findInfoRef.current['idemailname'] = el} onChange={onChange} /><br></br>
+                            <label htmlFor='userEmail'>이메일 주소</label>
+                            <input type='text' id='userEmail' ref={el => findInfoRef.current['idemail'] = el} onChange={onChange} />&nbsp;&nbsp;
                             <button className={FindinfoMainStyle['certi-button']}>인증하기</button>
                             <div className={FindinfoMainStyle['certi-div']}>
                                 <input type='text' placeholder='인증번호를 입력해주세요.'/>&nbsp;&nbsp;
