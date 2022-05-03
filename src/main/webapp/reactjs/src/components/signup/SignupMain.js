@@ -365,16 +365,6 @@ const SignupMain = () => {
     const timerId = useRef(null);
     const [stateTime, setStateTime] = useState(0);
     /* stateTime (1: 시간초과, 2: 인증완료) */
-
-    useEffect(() => {
-        timerId.current = setInterval(() => {
-            setMin(parseInt(time.current / 60));
-            setSec(time.current % 60);
-            time.current -= 1;
-        }, 1000);
-        return () => clearInterval(timerId.current);
-    }, []);
-
     useEffect(() => {
         if(time.current < 0){
             setStateTime(1);
@@ -407,6 +397,11 @@ const SignupMain = () => {
                                 ...inputs,
                                 certiNum : res.data
                             })
+                            timerId.current = setInterval(() => {
+                                setMin(parseInt(time.current / 60));
+                                setSec(time.current % 60);
+                                time.current -= 1;
+                            }, 1000);
                             time.current = 179;
                             userInfoRef.current['seNumber'].focus();
                         } else {
