@@ -7,6 +7,7 @@ const USERS_IDCHECK = USERS_URL + '/idCheck';       // 아이디 중복확인
 const USERS_PHONE =  USERS_URL + '/sendSMS';        // 휴대폰 인증
 const USERS_PHONE_CHECK = USERS_URL + '/phoneCheck';   // 휴대폰 번호 중복확인
 const USERS_SIGNUP = USERS_URL + '/signup';         // 회원가입
+const USERS_FINDID_PHONE = USERS_URL + '/findIdPhone';   // 아이디 찾기 - 핸드폰
 
 /* 사용자 Service */
 const UserService = {
@@ -34,7 +35,7 @@ const UserService = {
     /* 회원가입 */
     signup(userId, userPwd, userName, userPhone, userGender, userBirth, userAddress, userEmail){
         return axios.post(USERS_SIGNUP,{
-            userId: userId,
+            userId : userId,
             userPwd : userPwd,
             userName : userName,
             userPhone : userPhone,
@@ -42,6 +43,14 @@ const UserService = {
             userBirth : userBirth,
             userAddress : userAddress,
             userEmail :userEmail
+        });
+    },
+
+    /* 아이디 찾기 - 휴대전화 인증 */
+    findIdPhone(username, userphone){
+        return axios.post(USERS_FINDID_PHONE,{
+            username : username,
+            userphone : userphone
         });
     }
     
