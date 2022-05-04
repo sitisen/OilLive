@@ -241,6 +241,9 @@ public class UsersController {
 			numStr+=ran;
 		}
 		
+		// 문자 보내는 횟수가 제한되어 있어 막아놓음
+		// usersService.sendSMS(phoneNum, numStr);
+		
 		System.out.println("인증번호 : "+numStr);
 		System.out.println("휴대번호 : "+phoneNum);
 		
@@ -278,5 +281,40 @@ public class UsersController {
 		
 		return result;
 	}
+	
+	//--------------- 아이디 찾기 - 휴대전화 인증 --------------- //
+	@PostMapping("/findIdPhone")
+	public String findIdPhone(@RequestBody HashMap<Object, String> req) {
+
+		// 난수생성
+		Random rand = new Random();
+		String numStr = "";
+		
+		// 이름과 휴대전화로 된 아이디가 있는지 검색
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("username",req.get("username"));
+		map.put("userphone",req.get("userphone"));
+		String userId = "";
+		
+		for(int i=0; i<4; i++) {
+			String ran = Integer.toString(rand.nextInt(10));
+			numStr+=ran;
+		}
+		
+		// 서비스를 통해 이름과 휴대전화에 일치하는 아이디가 있는지를 조회
+		userId = usersService.findIdPhone(map);
+		
+		// 아이디가 있다면 인증번호 발송
+		if(userId == null) {
+			numStr = null;
+		} else {
+			// 문자 보내는 횟수가 제한되어 있어 막아놓음
+			// usersService.sendSMS(req.get("userphone"), numStr);
+		}
+		
+		System.out.println("인증번호 : " + numStr);
+		return numStr;
+	}
+	
 	
 }

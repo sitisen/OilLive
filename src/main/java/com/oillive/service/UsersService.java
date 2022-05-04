@@ -22,5 +22,8 @@ public interface UsersService {
 
 	//--------------- 아이디에 해당하는 비밀번호 반환 --------------- //
 	public String getPassword(String userId);
+
+	//--------------- 아이디 찾기 - 휴대전화 인증 --------------- //
+	public String findIdPhone(HashMap<String, String> map);
 	
 }

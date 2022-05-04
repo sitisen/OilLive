@@ -75,5 +75,11 @@ public class UsersServiceImpl implements UsersService{
 		return usersDao.getPassword(userId);
 	}
 
+	//--------------- 아이디 찾기 - 휴대전화 인증 --------------- //
+	@Override
+	public String findIdPhone(HashMap<String, String> map) {
+		return usersDao.findIdPhone(map);
+	}
+
 	
 }
