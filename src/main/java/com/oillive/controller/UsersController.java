@@ -37,6 +37,9 @@ public class UsersController {
 	@Autowired
     PasswordEncoder passwordEncoder;
 	
+	// 난수생성
+	Random rand = new Random();
+		
 	@GetMapping("/home")
 	public HashMap<String, Object> home(@RequestParam HashMap<Object, String> req) {
 		
@@ -282,12 +285,11 @@ public class UsersController {
 		return result;
 	}
 	
-	//--------------- 아이디 찾기 - 휴대전화 인증 --------------- //
+	//--------------- 아이디/비밀번호찾기 휴대전화 인증 --------------- //
 	@PostMapping("/findIdPhone")
 	public String findIdPhone(@RequestBody HashMap<Object, String> req) {
 
-		// 난수생성
-		Random rand = new Random();
+		// 인증번호
 		String numStr = "";
 		
 		// 이름과 휴대전화로 된 아이디가 있는지 검색
@@ -314,10 +316,44 @@ public class UsersController {
 		
 		System.out.println("인증번호 : " + numStr);
 		return numStr;
-
 	}
   
-  //--------------- 상품 목록 조회 --------------- //
+	//--------------- 아이디/비밀번호찾기 이메일 인증 --------------- //
+	@PostMapping("/findIdEmail")
+	public String findIdEmail(@RequestBody HashMap<Object, String> req) {
+		
+		String numStr = "";
+		
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("username",req.get("username"));
+		map.put("useremail",req.get("useremail"));
+		String userId = "";
+		
+
+		System.out.println("ㅅㄷㄴㅅ : " + req.get("username"));
+		System.out.println("ㅅㄷㄴㅅ : " + req.get("useremail"));
+		
+		for(int i=0; i<4; i++) {
+			String ran = Integer.toString(rand.nextInt(10));
+			numStr+=ran;
+		}
+		
+		// 서비스를 통해 이름과 이메일에 일치하는 아이디가 있는지 검색
+		userId = usersService.findIdEmail(map);
+		
+		if(userId == null) {
+			numStr = null;
+		} else {
+			// 해당하는 값이 있을때 이메일 전송
+			usersService.sendEmail(req.get("useremail"), numStr);
+		}
+		
+		System.out.println("인증번호 : " + numStr);
+		
+		return numStr;
+	}
+	
+	//--------------- 상품 목록 조회 --------------- //
 	@GetMapping("/selectGoodsList")
 	public int selectGoodsList(@RequestParam( name = "page" ) int currentPage) {
 		
@@ -338,9 +374,8 @@ public class UsersController {
 			endNum = maxPage;
 		}
 		*/
-		
 		return 0;
-  }
+	}
 	
 	
 }

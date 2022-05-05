@@ -3,6 +3,8 @@ package com.oillive.service;
 import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import com.oillive.dao.UsersDao;
@@ -15,6 +17,9 @@ public class UsersServiceImpl implements UsersService{
 
 	@Autowired
 	UsersDao usersDao;
+	
+	@Autowired
+	private JavaMailSender javaMailSender;
 
 	//--------------- 로그인 --------------- //
 	@Override
@@ -79,6 +84,32 @@ public class UsersServiceImpl implements UsersService{
 	@Override
 	public String findIdPhone(HashMap<String, String> map) {
 		return usersDao.findIdPhone(map);
+	}
+
+	//--------------- 아이디 찾기 - 이메일 인증 --------------- //
+	@Override
+	public String findIdEmail(HashMap<String, String> map) {
+		return usersDao.findIdEmail(map);
+	}
+
+	//--------------- 이메일 인증 --------------- //
+	@Override
+	public void sendEmail(String email, String numStr) {
+		
+		// 단순 텍스트 구성 메시지 생성할때 사용
+		SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+		
+		// 수신자
+		simpleMailMessage.setTo(email);
+		
+		// 메일 제목
+		simpleMailMessage.setSubject("오일라이브 인증번호 입니다.");
+		
+		// 메일 내용
+		simpleMailMessage.setText("인증번호는 " + numStr +"입니다.");
+		
+		// 메일 발송
+		javaMailSender.send(simpleMailMessage);
 	}
 
 	

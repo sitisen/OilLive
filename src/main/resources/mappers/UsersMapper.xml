@@ -54,4 +54,12 @@
 		WHERE user_name = #{username}
 		AND user_phone = #{userphone}
 	</select>
+	
+	<!-- 아이디 찾기 - 이메일 -->
+	<select id="findIdEmail" parameterType="Map" resultType="String">
+		SELECT user_id
+		FROM users
+		WHERE user_name = #{username}
+		AND user_email = #{useremail}
+	</select>
 </mapper>

@@ -25,5 +25,11 @@ public interface UsersService {
 
 	//--------------- 아이디 찾기 - 휴대전화 인증 --------------- //
 	public String findIdPhone(HashMap<String, String> map);
+
+	//--------------- 아이디 찾기 - 이메일 인증 --------------- //
+	public String findIdEmail(HashMap<String, String> map);
+
+	//--------------- 이메일 인증 --------------- //
+	public void sendEmail(String email, String numStr);
 	
 }

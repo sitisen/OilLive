@@ -26,5 +26,8 @@ public interface UsersDao {
 	//--------------- 아이디 찾기 - 휴대전화 --------------- //
 	public String findIdPhone(HashMap<String, String> map);
 
+	//--------------- 아이디 찾기 - 이메일 --------------- //
+	public String findIdEmail(HashMap<String, String> map);
+
 	
 }

@@ -101,3 +101,28 @@
     border-radius:5px;
     color: white;
 }
+
+/* 비밀번호 찾기 - 아이디 입력 */
+.form-padding hr {
+    width: 98%;
+}
+
+.findpwd-userid {
+    text-align: center;
+    padding-top: 40px;
+}
+
+.findpwd-userid input {
+    width: 30%;
+    height: 50px;
+    border : 0.1em solid rgba(150, 150, 150, 0.3);
+    outline: none;
+    padding-left: 15px;
+    margin-left: 30px;
+    margin-right: 10px;
+}
+
+.findpwd-userid input:focus {
+    border-color: rgb(107, 187, 72);
+    box-shadow: 0 0 6px 0 rgb(107, 187, 72);
+}
