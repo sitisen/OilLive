@@ -19,8 +19,8 @@ const Sidebar = () => {
                     <tr>
                         <td className={SidebarStyle['sidebar-td']}>
                             <div className={SidebarStyle['myPage-img-wap']}>
-                                <img alt='mypage' src='/images/mypage.png' width='35' height='35'/>
-                                <img alt='mypage-hover' src='/images/mypageHover.png' width='35' height='35'/>
+                                <img alt='mypage' src='/images/icon/mypage.png' width='35' height='35'/>
+                                <img alt='mypage-hover' src='/images/icon/mypageHover.png' width='35' height='35'/>
                             </div>
                             <span className={SidebarStyle['sidebar-td-span']}>마이페이지</span>
                         </td>    
@@ -28,8 +28,8 @@ const Sidebar = () => {
                     <tr>
                         <td className={SidebarStyle['sidebar-td']}> 
                             <div className={SidebarStyle['basket-img-wap']}>
-                                <img alt='basket' src='/images/basket.png' width='35' height='35'/>
-                                <img alt='basket-hover'src='/images/basketHover.png' width='35' height='35'/>
+                                <img alt='basket' src='/images/icon/basket.png' width='35' height='35'/>
+                                <img alt='basket-hover'src='/images/icon/basketHover.png' width='35' height='35'/>
                             </div> 
                             <span className={SidebarStyle['sidebar-td-span']}>장바구니</span>
                         </td>    
@@ -37,8 +37,8 @@ const Sidebar = () => {
                     <tr>
                         <td className={SidebarStyle['sidebar-td']}>
                             <div className={SidebarStyle['qna-img-wap']}>
-                                <img alt='qna' src='/images/qna.png' width='35' height='35'/>
-                                <img alt='qna-hover' src='/images/qnaHover.png' width='35' height='35'/>
+                                <img alt='qna' src='/images/icon/qna.png' width='35' height='35'/>
+                                <img alt='qna-hover' src='/images/icon/qnaHover.png' width='35' height='35'/>
                             </div>
                             <span className={SidebarStyle['sidebar-td-span']}>문의하기</span>
                         </td>    

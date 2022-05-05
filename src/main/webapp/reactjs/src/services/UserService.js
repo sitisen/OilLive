@@ -8,6 +8,7 @@ const USERS_PHONE =  USERS_URL + '/sendSMS';        // 휴대폰 인증
 const USERS_PHONE_CHECK = USERS_URL + '/phoneCheck';   // 휴대폰 번호 중복확인
 const USERS_SIGNUP = USERS_URL + '/signup';         // 회원가입
 const USERS_FINDID_PHONE = USERS_URL + '/findIdPhone';   // 아이디 찾기 - 핸드폰
+const USERS_SELECT_GOODS_LIST = USERS_URL + '/selectGoodsList';  // 상품 목록 조회
 
 /* 사용자 Service */
 const UserService = {
@@ -51,6 +52,15 @@ const UserService = {
         return axios.post(USERS_FINDID_PHONE,{
             username : username,
             userphone : userphone
+        });
+    },
+  
+    /* 상품 목록 조회 */
+    selectGoodsList (currentPage) {
+        return axios({
+            method: 'get',
+            url: USERS_SELECT_GOODS_LIST,
+            params: { page : currentPage }
         });
     }
     

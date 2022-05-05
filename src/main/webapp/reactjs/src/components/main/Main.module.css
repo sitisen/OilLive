@@ -7,7 +7,7 @@
 
 /* 메인페이지 이미지 CSS */
 .main-img {
-    background-image: url("/public/images/main.jpg");
+    background-image: url("/public/images/icon/main.jpg");
     background-size: 100% 100%;
     background-repeat: no-repeat;
     width: 100%;
@@ -122,6 +122,10 @@
     font-size: 20px;
 }
 
+.active-bold {
+    font-weight: bold;
+}
+
 /* 배너 레이아웃 CSS */
 .banner {
     height: 40%; /* ".today:30%" + ".oil-type:10% * 3" + .banner:40% = 100% */
@@ -142,7 +146,7 @@
 }
 
 .oil-box-map {
-    background-image: url("/public/images/korea-map.png");
+    background-image: url("/public/images/icon/korea-map.png");
     background-size: 100% 100%;
     background-repeat: no-repeat;
     margin: 0 auto;
@@ -410,6 +414,7 @@
 
 .ranking-item-station:hover {
     cursor: pointer;
+    font-size: 17px;
     font-weight: bold;
 }
 

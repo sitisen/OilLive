@@ -314,7 +314,33 @@ public class UsersController {
 		
 		System.out.println("인증번호 : " + numStr);
 		return numStr;
+
 	}
+  
+  //--------------- 상품 목록 조회 --------------- //
+	@GetMapping("/selectGoodsList")
+	public int selectGoodsList(@RequestParam( name = "page" ) int currentPage) {
+		
+		/*
+		int totalCount = Goods 테이블 Count(*) 결과값; // 현재 DB에 상품이 몇개 있는가
+
+		int pageLimit = 5; // 페이징바에 보여줄 최대 개수 ex) 5 : 1 ~ 5 까지 출력 / 6 ~ 10까지 출력
+
+		int goodsLimit = 15; // 한 페이지당 노출할 상품 개수
+
+		int maxPage = (int)Math.ceil((double)totalCount / goodsLimit); // 페이지로 나타냈을때 최대 몇 페이지인가
+
+		int startNum = ( currentPage - 1 ) / pageLimit * pageLimit + 1; // 페이징바의 시작 수 ex) 1 ~ 5 일때, 1부터 시작
+
+		int endNum = startNum + pageLimit - 1; // 페이징바의 마지막 수 ex) 1 ~ 5 일때, 5 / 1 ~ 4 일때, 4
+
+		if( endNum > maxPage ) { // 페이징바의 마지막 수가 최대 페이지를 넘었을 경우,
+			endNum = maxPage;
+		}
+		*/
+		
+		return 0;
+  }
 	
 	
 }

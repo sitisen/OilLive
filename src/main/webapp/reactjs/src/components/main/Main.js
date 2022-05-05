@@ -115,60 +115,60 @@ const Main = () => {
     {
       title : 'SK에너지',
       code : 'SKE',
-      sLogo: '/images/SKEnergy-logo.png',
-      bLogo : '/images/SKEnergy-large-logo.png'
+      sLogo: '/images/logo/SKEnergy-logo.png',
+      bLogo : '/images/logo/SKEnergy-large-logo.png'
     },
     {
       title : '현대오일뱅크',
       code : 'HDO',
-      sLogo: '/images/Hyundai-logo.png',
-      bLogo : '/images/Hyundai-large-logo.png'
+      sLogo: '/images/logo/Hyundai-logo.png',
+      bLogo : '/images/logo/Hyundai-large-logo.png'
     },
     {
       title : 'S-Oil',
       code : 'SOL',
-      sLogo: '/images/S-Oil-logo.png',
-      bLogo : '/images/S-Oil-large-logo.png'
+      sLogo: '/images/logo/S-Oil-logo.png',
+      bLogo : '/images/logo/S-Oil-large-logo.png'
     },
     {
       title : 'GS칼텍스',
       code : 'GSC',
-      sLogo: '/images/GS-logo.png',
-      bLogo : '/images/GS-large-logo.png'
+      sLogo: '/images/logo/GS-logo.png',
+      bLogo : '/images/logo/GS-large-logo.png'
     },
     {
       title : '자영알뜰', 
       code : 'RTO',
-      sLogo: '/images/OK-logo.png',
-      bLogo : '/images/OK-large-logo.png'
+      sLogo: '/images/logo/OK-logo.png',
+      bLogo : '/images/logo/OK-large-logo.png'
     },
     {
       title : '고속도로알뜰', 
       code : 'RTX',
-      sLogo: '/images/OK-logo.png',
-      bLogo : '/images/OK-large-logo.png'
+      sLogo: '/images/logo/OK-logo.png',
+      bLogo : '/images/logo/OK-large-logo.png'
     },
     {
       title : '농협알뜰', 
       code : 'NHO',
-      sLogo: '/images/OK-logo.png',
-      bLogo : '/images/OK-large-logo.png'
+      sLogo: '/images/logo/OK-logo.png',
+      bLogo : '/images/logo/OK-large-logo.png'
     },
     {
       title : '개인사업',
       code : 'ETC',
-      sLogo: '/images/PB-logo.png',
-      bLogo : '/images/PB-large-logo.png'
+      sLogo: '/images/logo/PB-logo.png',
+      bLogo : '/images/logo/PB-large-logo.png'
     },
     { // 아래부터는 LPG 상표
       title : 'E1',
       code : 'E1G',
-      bLogo: '/images/E1-large-logo.png',
+      bLogo: '/images/logo/E1-large-logo.png',
     },
     {
       title : 'SK가스',
       code : 'SKG',
-      bLogo: '/images/PB-large-logo.png',
+      bLogo: '/images/logo/PB-large-logo.png',
     }
   ])
 
@@ -240,6 +240,8 @@ const Main = () => {
         position: mapOptions.center,
         map: map
       });
+
+      setStationActive(0); // 시도별 최저가 주유소 TOP 10 의 Bold 효과를 위한 State
 
     });
 
@@ -336,12 +338,12 @@ const Main = () => {
   }; 
 
 
+  /* 시도별 최저가 주유소 TOP 10 Click 이벤트 */
+  const [ stationActive, setStationActive ] = useState(); // div 클릭 시, bold 효과를 주기 위한 State
 
-  
+  const stationClick = (e, index) => {
 
-  /* 시도별 최저가  */
-  const stationClick = (e) => {
-
+    setStationActive(index);
     
     const coord = { // 클릭한 주유소의 X, Y 좌표 값 설정
       x: lowTopData.filter( idx => idx.osNm.includes(e.target.innerText))[0].gisXCoor,
@@ -582,7 +584,6 @@ const Main = () => {
                                                   } 
                                         onClick={e => brandClick(e)} 
                                     >
-                                      {/* {require(`../images/${imageName}.png`).default} */}
                                       <img alt={brandName} src={sLogo} />  
                                       <label>{brandName}</label>
                                       <input type='radio' value={brandCode} readOnly hidden />
@@ -660,7 +661,7 @@ const Main = () => {
         </div>
 
         <div className={mainStyle['oil-box-ranking']}>
-          <h5>시도별 최저가 주유소 TOP 10</h5>
+          <h5>{localText} 최저가 주유소 TOP 10</h5>
           <hr />
 
             <div className={`text-center ${mainStyle['ranking-list-layout']}`}>
@@ -673,12 +674,18 @@ const Main = () => {
                   const bLogo = brandArray.filter( idx => idx.code === list.pollDivCd )[0].bLogo; // 이미지 파일을 위한 상수 선언 및 초기화
 
                   if( index < 5 ) { // TOP 1 ~ 5 까지의 데이터 출력
-                    return (
-                      <div key={index} className={mainStyle['ranking-item']}>
+                    return ( // key 값은 API 에서 이미 오름차순으로 정렬된 데이터이므로, index 사용
+                      <div key={index} className={mainStyle['ranking-item']}> 
                         <div className={mainStyle['ranking-item-logo']}>
                           <img alt={brandName} src={bLogo} />
                         </div>
-                        <div className={mainStyle['ranking-item-station']} onClick={e => stationClick(e)}>
+                        <div className={
+                                        index === stationActive
+                                        ? `${mainStyle['ranking-item-station']} ${mainStyle['active-bold']}`
+                                        : `${mainStyle['ranking-item-station']}`
+                                       }
+                             onClick={e => stationClick(e, index)}
+                        >
                           {list.osNm}
                         </div>
                         <div className={mainStyle['ranking-item-price']}>
@@ -704,12 +711,18 @@ const Main = () => {
                   const bLogo = brandArray.filter( idx => idx.code === list.pollDivCd )[0].bLogo; // 이미지 파일을 위한 상수 선언 및 초기화
 
                   if( index > 4 ) { // TOP 6 ~ 10 까지의 데이터 출력
-                    return (
+                    return ( // key 값은 API 에서 이미 오름차순으로 정렬된 데이터이므로, index 사용
                       <div key={index} className={mainStyle['ranking-item']}>
                         <div className={mainStyle['ranking-item-logo']}>
                           <img alt={brandName} src={bLogo} />
                         </div>
-                        <div className={mainStyle['ranking-item-station']} onClick={e => stationClick(e)}>
+                        <div className={
+                                        index === stationActive
+                                        ? `${mainStyle['ranking-item-station']} ${mainStyle['active-bold']}`
+                                        : `${mainStyle['ranking-item-station']}`
+                                       }
+                             onClick={e => stationClick(e, index)}
+                        >
                           {list.osNm}
                         </div>
                         <div className={mainStyle['ranking-item-price']}>
