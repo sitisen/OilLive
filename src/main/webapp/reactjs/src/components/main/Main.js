@@ -115,60 +115,60 @@ const Main = () => {
     {
       title : 'SK에너지',
       code : 'SKE',
-      sLogo: '/images/SKEnergy-logo.png',
-      bLogo : '/images/SKEnergy-large-logo.png'
+      sLogo: '/images/logo/SKEnergy-logo.png',
+      bLogo : '/images/logo/SKEnergy-large-logo.png'
     },
     {
       title : '현대오일뱅크',
       code : 'HDO',
-      sLogo: '/images/Hyundai-logo.png',
-      bLogo : '/images/Hyundai-large-logo.png'
+      sLogo: '/images/logo/Hyundai-logo.png',
+      bLogo : '/images/logo/Hyundai-large-logo.png'
     },
     {
       title : 'S-Oil',
       code : 'SOL',
-      sLogo: '/images/S-Oil-logo.png',
-      bLogo : '/images/S-Oil-large-logo.png'
+      sLogo: '/images/logo/S-Oil-logo.png',
+      bLogo : '/images/logo/S-Oil-large-logo.png'
     },
     {
       title : 'GS칼텍스',
       code : 'GSC',
-      sLogo: '/images/GS-logo.png',
-      bLogo : '/images/GS-large-logo.png'
+      sLogo: '/images/logo/GS-logo.png',
+      bLogo : '/images/logo/GS-large-logo.png'
     },
     {
       title : '자영알뜰', 
       code : 'RTO',
-      sLogo: '/images/OK-logo.png',
-      bLogo : '/images/OK-large-logo.png'
+      sLogo: '/images/logo/OK-logo.png',
+      bLogo : '/images/logo/OK-large-logo.png'
     },
     {
       title : '고속도로알뜰', 
       code : 'RTX',
-      sLogo: '/images/OK-logo.png',
-      bLogo : '/images/OK-large-logo.png'
+      sLogo: '/images/logo/OK-logo.png',
+      bLogo : '/images/logo/OK-large-logo.png'
     },
     {
       title : '농협알뜰', 
       code : 'NHO',
-      sLogo: '/images/OK-logo.png',
-      bLogo : '/images/OK-large-logo.png'
+      sLogo: '/images/logo/OK-logo.png',
+      bLogo : '/images/logo/OK-large-logo.png'
     },
     {
       title : '개인사업',
       code : 'ETC',
-      sLogo: '/images/PB-logo.png',
-      bLogo : '/images/PB-large-logo.png'
+      sLogo: '/images/logo/PB-logo.png',
+      bLogo : '/images/logo/PB-large-logo.png'
     },
     { // 아래부터는 LPG 상표
       title : 'E1',
       code : 'E1G',
-      bLogo: '/images/E1-large-logo.png',
+      bLogo: '/images/logo/E1-large-logo.png',
     },
     {
       title : 'SK가스',
       code : 'SKG',
-      bLogo: '/images/PB-large-logo.png',
+      bLogo: '/images/logo/PB-large-logo.png',
     }
   ])
 
@@ -584,7 +584,6 @@ const Main = () => {
                                                   } 
                                         onClick={e => brandClick(e)} 
                                     >
-                                      {/* {require(`../images/${imageName}.png`).default} */}
                                       <img alt={brandName} src={sLogo} />  
                                       <label>{brandName}</label>
                                       <input type='radio' value={brandCode} readOnly hidden />

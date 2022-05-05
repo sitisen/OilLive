@@ -7,7 +7,7 @@
 
 /* 메인페이지 이미지 CSS */
 .main-img {
-    background-image: url("/public/images/main.jpg");
+    background-image: url("/public/images/icon/main.jpg");
     background-size: 100% 100%;
     background-repeat: no-repeat;
     width: 100%;
@@ -146,7 +146,7 @@
 }
 
 .oil-box-map {
-    background-image: url("/public/images/korea-map.png");
+    background-image: url("/public/images/icon/korea-map.png");
     background-size: 100% 100%;
     background-repeat: no-repeat;
     margin: 0 auto;
