@@ -633,7 +633,7 @@ const SignupMain = () => {
                     userInfoRef.current['userGender'].value,
                     userInfoRef.current['year'].value + userInfoRef.current['month'].value + userInfoRef.current['day'].value,
                     userInfoRef.current['address1'].value + userInfoRef.current['address2'].value + userInfoRef.current['address3'].value,
-                    userInfoRef.current['email1'].value + userInfoRef.current['email2'].value
+                    userInfoRef.current['email1'].value + '@' + userInfoRef.current['email2'].value
                 ).then( res => {
                     if(res.data === 1){
                         alert('회원가입이 완료 되었습니다.\n가입하신 아이디로 로그인해주세요.');
