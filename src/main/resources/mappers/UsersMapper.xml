@@ -47,4 +47,11 @@
 		WHERE user_id = #{userId}
 	</select>
 	
+	<!-- 아이디 찾기 - 휴대전화 -->
+	<select id="findIdPhone" parameterType="Map" resultType="String">
+		SELECT user_id
+		FROM users
+		WHERE user_name = #{username}
+		AND user_phone = #{userphone}
+	</select>
 </mapper>

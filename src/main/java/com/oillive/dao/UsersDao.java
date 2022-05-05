@@ -23,5 +23,8 @@ public interface UsersDao {
 	//--------------- 비밀번호 반환 --------------- //
 	public String getPassword(String userId);
 
+	//--------------- 아이디 찾기 - 휴대전화 --------------- //
+	public String findIdPhone(HashMap<String, String> map);
+
 	
 }
