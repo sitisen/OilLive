@@ -1,9 +1,24 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import UserService from 'services/UserService';
 
 // import css
 import GoodslistMainStyle from './GoodslistMain.module.css';
 
 const GoodslistMain = () => {
+
+    const [ currentPage, setCurrentPage ] = useState(1);
+
+    useEffect( () => {
+
+        UserService.selectGoodsList(currentPage).then( res => console.log(res.data) );
+        
+    }, [currentPage])
+    
+    const selectPage = (e) => {
+        const selectNum = Number(e.currentTarget.innerText);
+
+        setCurrentPage(selectNum);
+    };
 
     return (
         <div className={GoodslistMainStyle['goods-list-wrap']}>
@@ -43,7 +58,7 @@ const GoodslistMain = () => {
                     <div className={GoodslistMainStyle['goods-list-main']}>
                         <div className={GoodslistMainStyle['goods-item']}>
                             <div className={GoodslistMainStyle['goods-item-img']}>
-                                <img alt='test' src='/images/basket.png' />
+                                <img alt='test' src='/images/icon/basket.png' />
                             </div>
                             <div className={GoodslistMainStyle['goods-item-title']}>
                                 <span>블랙박스</span>
@@ -61,7 +76,7 @@ const GoodslistMain = () => {
 
                         <div className={GoodslistMainStyle['goods-item']}>
                             <div className={GoodslistMainStyle['goods-item-img']}>
-                                <img alt='test' src='/images/qna.png' />
+                                <img alt='test' src='/images/icon/qna.png' />
                             </div>
                             <div className={GoodslistMainStyle['goods-item-title']}>
                                 <span>실내용품</span>
@@ -86,7 +101,7 @@ const GoodslistMain = () => {
                     <div className={GoodslistMainStyle['goods-list-main']}>
                         <div className={GoodslistMainStyle['goods-item']}>
                             <div className={GoodslistMainStyle['goods-item-img']}>
-                                <img alt='test' src='/images/basket.png' />
+                                <img alt='test' src='/images/icon/basket.png' />
                             </div>
                             <div className={GoodslistMainStyle['goods-item-title']}>
                                 <span>블랙박스</span>
@@ -104,7 +119,7 @@ const GoodslistMain = () => {
 
                         <div className={GoodslistMainStyle['goods-item']}>
                             <div className={GoodslistMainStyle['goods-item-img']}>
-                                <img alt='test' src='/images/qna.png' />
+                                <img alt='test' src='/images/icon/qna.png' />
                             </div>
                             <div className={GoodslistMainStyle['goods-item-title']}>
                                 <span>실내용품</span>
@@ -129,7 +144,7 @@ const GoodslistMain = () => {
                     <div className={GoodslistMainStyle['goods-list-main']}>
                         <div className={GoodslistMainStyle['goods-item']}>
                             <div className={GoodslistMainStyle['goods-item-img']}>
-                                <img alt='test' src='/images/basket.png' />
+                                <img alt='test' src='/images/icon/basket.png' />
                             </div>
                             <div className={GoodslistMainStyle['goods-item-title']}>
                                 <span>블랙박스</span>
@@ -147,7 +162,7 @@ const GoodslistMain = () => {
 
                     <div className={GoodslistMainStyle['goods-item']}>
                         <div className={GoodslistMainStyle['goods-item-img']}>
-                            <img alt='test' src='/images/qna.png' />
+                            <img alt='test' src='/images/icon/qna.png' />
                         </div>
                         <div className={GoodslistMainStyle['goods-item-title']}>
                             <span>실내용품</span>
@@ -179,15 +194,28 @@ const GoodslistMain = () => {
                             </button>
                         </li>
                         <li className='page-item'>
-                            <button className={`page-link ${GoodslistMainStyle['page-button']} ${GoodslistMainStyle['page-active']}`}>
+                            <button 
+                                    className={`page-link ${GoodslistMainStyle['page-button']} ${GoodslistMainStyle['page-active']}`}
+                                    onClick={e => selectPage(e)}
+                            >
                                 1
                             </button>
                         </li>
                         <li className='page-item'>
-                            <button className={`page-link ${GoodslistMainStyle['page-button']}`}>2</button>
+                            <button 
+                                    className={`page-link ${GoodslistMainStyle['page-button']}`}
+                                    onClick={e => selectPage(e)}
+                            >
+                                2
+                            </button>
                         </li>
                         <li className='page-item'>
-                            <button className={`page-link ${GoodslistMainStyle['page-button']}`}>3</button>
+                            <button 
+                                    className={`page-link ${GoodslistMainStyle['page-button']}`}
+                                    onClick={e => selectPage(e)}
+                            >
+                                3
+                            </button>
                         </li>
                         <li className='page-item'>
                             <button className={`page-link ${GoodslistMainStyle['page-button']}`}>&gt;</button>

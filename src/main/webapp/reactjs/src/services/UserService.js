@@ -7,6 +7,7 @@ const USERS_IDCHECK = USERS_URL + '/idCheck';       // 아이디 중복확인
 const USERS_PHONE =  USERS_URL + '/sendSMS';        // 휴대폰 인증
 const USERS_PHONE_CHECK = USERS_URL + '/phoneCheck';   // 휴대폰 번호 중복확인
 const USERS_SIGNUP = USERS_URL + '/signup';         // 회원가입
+const USERS_SELECT_GOODS_LIST = USERS_URL + '/selectGoodsList';  // 상품 목록 조회
 
 /* 사용자 Service */
 const UserService = {
@@ -42,6 +43,15 @@ const UserService = {
             userBirth : userBirth,
             userAddress : userAddress,
             userEmail :userEmail
+        });
+    },
+
+    /* 상품 목록 조회 */
+    selectGoodsList (currentPage) {
+        return axios({
+            method: 'get',
+            url: USERS_SELECT_GOODS_LIST,
+            params: { page : currentPage }
         });
     }
     
