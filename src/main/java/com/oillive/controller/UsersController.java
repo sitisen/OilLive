@@ -172,10 +172,6 @@ public class UsersController {
 		map.put("useremail",req.get("useremail"));
 		String userId = "";
 		
-
-		System.out.println("ㅅㄷㄴㅅ : " + req.get("username"));
-		System.out.println("ㅅㄷㄴㅅ : " + req.get("useremail"));
-		
 		for(int i=0; i<4; i++) {
 			String ran = Integer.toString(rand.nextInt(10));
 			numStr+=ran;

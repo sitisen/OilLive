@@ -8,6 +8,7 @@ const USERS_PHONE =  USERS_URL + '/sendSMS';        // 휴대폰 인증
 const USERS_PHONE_CHECK = USERS_URL + '/phoneCheck';   // 휴대폰 번호 중복확인
 const USERS_SIGNUP = USERS_URL + '/signup';         // 회원가입
 const USERS_FINDID_PHONE = USERS_URL + '/findIdPhone';   // 아이디 찾기 - 핸드폰
+const USERS_FINDID_EMAIL = USERS_URL + '/findIdEmail';  // 아이디 찾기 - 이메일
 
 /* 사용자 Service */
 const UserService = {
@@ -52,7 +53,15 @@ const UserService = {
             username : username,
             userphone : userphone
         });
-    }
+    },
+
+    /* 아이디 찾기 - 이메일 인증 */
+    findIdEmail(username, useremail){
+        return axios.post(USERS_FINDID_EMAIL,{
+            username : username,
+            useremail : useremail
+        });
+    },
     
 }
 

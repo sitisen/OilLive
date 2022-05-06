@@ -36,46 +36,57 @@ const FindinfoMain = () => {
     const findInfoRef = useRef([]);
 
      /* 버튼이 바뀔때마다 모든 값 초기화 */
-    //  const reset = () => {
-    //     setManageButton({
-    //         idphonebutton : false,
-    //         idphonecerti : false,
-    //         idemailbutton : false,
-    //         idemailcerti : false,
-    //         pwdphonebutton : false,
-    //         pwdphonecerti : false,
-    //         pwdemailbutton : false,
-    //         pwdemailcerti : false
-    //     });
+    const reset = () => {
+        setManageButton({
+            idphonebutton : false,
+            idphonecerti : false,
+            idemailbutton : false,
+            idemailcerti : false,
+            pwdphonebutton : false,
+            pwdphonecerti : false,
+            pwdemailbutton : false,
+            pwdemailcerti : false
+        });
 
-    //     findInfoRef.current('idname').value = '';
-    //     findInfoRef.current('idphone').value = '';
-    //     findInfoRef.current('idphonecerti').value = '';
-    //     findInfoRef.current('idemailname').value = '';
-    //     findInfoRef.current('emailId').value = '';
-    //     findInfoRef.current('idemailcerti').value = '';
-    //     findInfoRef.current('userId').value = '';
-    //     findInfoRef.current('pwdphonename').value = '';
-    //     findInfoRef.current('pwdphonephone').value = '';
-    //     findInfoRef.current('pwdphonecerti').value = '';
-    //     findInfoRef.current('pwdemailname').value = '';
-    //     findInfoRef.current('pwdemailname').value = '';
-    //     findInfoRef.current('pwdemailcerti').value = '';
-    // }
+        findInfoRef.current['idname'].value = '';
+        findInfoRef.current['idphone'].value = '';
+        findInfoRef.current['idphonecerti'].value = '';
+        findInfoRef.current['idemailname'].value = '';
+        findInfoRef.current['emailId'].value = '';
+        findInfoRef.current['idemailcerti'].value = '';
+        findInfoRef.current['userId'].value = '';
+        findInfoRef.current['pwdphonename'].value = '';
+        findInfoRef.current['pwdphonephone'].value = '';
+        findInfoRef.current['pwdphonecerti'].value = '';
+        findInfoRef.current['pwdemailname'].value = '';
+        findInfoRef.current['pwdemailname'].value = '';
+        findInfoRef.current['pwdemailcerti'].value = '';
+
+        findInfoRef.current['idemailname'].readOnly = false;
+        findInfoRef.current['emailId'].readOnly = false;
+        findInfoRef.current['pwdemailname'].readOnly = false;
+        findInfoRef.current['emailpwd'].readOnly = false;
+        findInfoRef.current['pwdphonename'].readOnly = false;
+        findInfoRef.current['pwdphonephone'].readOnly = false;
+        findInfoRef.current['idname'].readOnly = false;
+        findInfoRef.current['idphone'].readOnly = false;
+    }
 
     // 첫 화면 렌더링시 자동선택되어있는 버튼
     useEffect(() => {
         setIdPwdCehck(true);
         setIdRadio(true);
         setPwdRadio(true);
+        sessionStorage.removeItem('pwCheck');
     }, []);
 
     // 아이디 찾기 / 비밀번호 찾기 nav 버튼 클릭시 이벤트
     const changeNav = (e) => {
         if(e.target.id === 'findId'){
-            sessionStorage.clear();
+            reset();
             setIdPwdCehck(true);
         } else if(e.target.id === 'findPwd'){
+            reset();
             setIdPwdCehck(false);
         }
     }
@@ -84,9 +95,11 @@ const FindinfoMain = () => {
     const onChange = (e) => {
         // 아이디 찾기
         if(e.target.id === 'idphone'){
+            reset();
             setIdRadio(true);
         // 비밀번호 찾기
         } else if(e.target.id === 'idemail'){
+            reset();
             setIdRadio(false);
         // 핸드폰 번호 입력시 버튼 활성화
         } else if(e.target.id === 'userphone'){
@@ -112,8 +125,10 @@ const FindinfoMain = () => {
             }
         // 비밀번호 찾기 - radio 상태관리
         } else if(e.target.id === 'pwdphone'){
+            reset();
             setPwdRadio(true);
         } else if(e.target.id === 'pwdemail'){
+            reset();
             setPwdRadio(false);
         // 비밀번호 찾기 - 핸드폰 번호 입력시 버튼 활성화
         } else if(e.target.id === 'pwdphonephone'){

@@ -5,7 +5,7 @@ import Header from 'components/header/Header';
 import Footer from 'components/footer/Footer';
 import FindinfoMain from 'components/findinfo/FindinfoMain';
 
-const Findinfo = () => {
+const FindInfo = () => {
     
     return (
         <div>
@@ -16,4 +16,4 @@ const Findinfo = () => {
     );
 };
 
-export default Findinfo;
+export default FindInfo;
