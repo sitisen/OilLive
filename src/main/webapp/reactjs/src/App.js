@@ -6,6 +6,7 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Findinfo from './pages/Findinfo';
+import FindinfoResult from './pages/FindinfoResult';
 import Goodslist from './pages/Goodslist';
 
 // Page Routing Setting
@@ -17,6 +18,7 @@ function App() {
       <Route path='/users/login' element={<Login />} />
       <Route path='/users/signup' element={<Signup />} />
       <Route path='/users/findinfo' element={<Findinfo />} />
+      <Route path='/users/FindinfoResult' element={<FindinfoResult />} />
       <Route path='/users/goodslist' element={<Goodslist />} />
     </Routes>
   );
