@@ -12,7 +12,7 @@ const Header = () => {
   var userId = sessionStorage.getItem('userId');
 
   const logout = () => {
-    sessionStorage.clear();
+    sessionStorage.removeItem('userId');
     navigate('/', {replace:true});
   }
 
