@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.oillive.dao.GoodsDao">
+	
+	<!-- 상품 종류 탭 조회 -->
+	<select id="selectGoodsKind" resultType="String">
+		SELECT DISTINCT goods_kind
+				   FROM goods
+			   ORDER BY goods_kind ASC
+	</select>
+	
+	<!-- 상품 목록 개수 조회 (페이징) -->
+	<select id="selectGoodsCount" resultType="int">
+		SELECT count(*)
+		  FROM goods
+	</select>
+	
+	<!-- 상품 목록 조회 -->
+	<select id="selectGoodsList" parameterType="Map" resultType="Map">
+		SELECT G.*
+		  FROM (  SELECT ROWNUM RNUM, goods_name, goods_kind, goods_price, 
+		                 goods_amount, goods_content, goods_discount, goods_date
+        		    FROM goods
+		<if test='! selectedKind.equals("전체")'>
+				   WHERE goods_kind = #{selectedKind}
+		</if>
+				ORDER BY RNUM ASC
+      		    ) G
+		 WHERE G.rnum BETWEEN #{startRow} AND #{endRow}
+	</select>
+	
+</mapper>

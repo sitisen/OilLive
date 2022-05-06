@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import UserService from 'services/UserService';
+import GoodsService from 'services/GoodsService';
 
 // import css
 import GoodslistMainStyle from './GoodslistMain.module.css';
@@ -14,7 +14,7 @@ const GoodslistMain = () => {
     /* ----- useEffect 부분 ----- */
     useEffect( () => { // 첫 렌더링 시, 작동
 
-        UserService.selectGoodsKind().then( res => {
+        GoodsService.selectGoodsKind().then( res => {
             setGoodsKind(res.data);
         });
 
@@ -22,7 +22,7 @@ const GoodslistMain = () => {
 
     useEffect( () => { // 첫 렌더링, 상품 종류 선택, 페이지 번호 선택 시 작동
 
-        UserService.selectGoodsList(selectedKind, currentPage).then( res => {
+        GoodsService.selectGoodsList(selectedKind, currentPage).then( res => {
             setGoodsList(res.data);
         });
         
@@ -40,6 +40,7 @@ const GoodslistMain = () => {
 
         setCurrentPage(selectNum);
     };
+
 
     /* ===== 실제 페이지 렌더링 =====  */
     return (

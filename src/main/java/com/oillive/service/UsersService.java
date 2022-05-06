@@ -8,6 +8,9 @@ import com.oillive.vo.PaginationVO;
 
 public interface UsersService {
 	
+	//--------------- 메인화면 API 호출 --------------- //
+	public HashMap<String, Object> home(String prodcd, String sido, int apiStatus);
+	
 	//--------------- 로그인 --------------- //
 	public int login(HashMap<String, String> map);
 	
@@ -35,14 +38,5 @@ public interface UsersService {
 
 	//--------------- 이메일 인증 --------------- //
 	public void sendEmail(String email, String numStr);
-	
-	//--------------- 상품 종류 탭 조회 --------------- //	
-	public List<String> selectGoodsKind();
-	
-	//--------------- 상품 목록 개수 조회 (페이징) --------------- //
-	public int selectGoodsCount();
-	
-	//--------------- 상품 목록 조회 --------------- //
-	public List<GoodsVO> selectGoodsList(String selectedKind, PaginationVO paging);
 	
 }
