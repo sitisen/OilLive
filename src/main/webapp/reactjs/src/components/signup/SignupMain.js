@@ -649,7 +649,7 @@ const SignupMain = () => {
     return (
         <div className={SignupMainStyle['signup-main-layout']}>
             <div className={`text-center ${SignupMainStyle['signup-logo']}`}>
-                <Link to='/'><img alt='logo' src='/images/logo.jpg' width='300'/></Link>
+                <Link to='/'><img alt='logo' src='/images/logo/logo.jpg' width='300'/></Link>
             </div>
 
             <div className={`text-center ${SignupMainStyle['signup-main']}`}>

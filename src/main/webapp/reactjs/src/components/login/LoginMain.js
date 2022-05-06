@@ -107,7 +107,7 @@ const LoginMain = () => {
   return (
     <div className={LoginMainStyle['login-main-layout']}>
       <div className={`text-center ${LoginMainStyle['login-logo']}`}>
-       <Link to='/'><img alt='logo' src='/images/logo.jpg' width='300'/></Link>
+       <Link to='/'><img alt='logo' src='/images/logo/logo.jpg' width='300'/></Link>
       </div>
       <div className={`text-center ${LoginMainStyle['login-main']}`}>
         <div className={LoginMainStyle['login-head-label']}>
