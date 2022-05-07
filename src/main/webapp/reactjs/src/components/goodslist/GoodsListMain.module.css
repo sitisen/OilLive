@@ -1,0 +1,229 @@
+/* ----- 전체 레이아웃 CSS */
+.goods-list-wrap {
+    height: 1500px;
+    padding-top: 2%;
+    padding-bottom: 5%;
+    box-sizing: border-box;
+    background-color: rgb(233, 235, 238);
+}
+
+/* ----- 본문 레이아웃 CSS */
+.goods-list-layout {
+    height: 100%;
+    box-shadow: 1px 1px 1px;
+    border: 0.5px solid rgba(150, 150, 150, 0.5);
+    border-radius: 12px;
+    padding: 20px;
+    background-color: white;
+}
+
+/* ----- 상품 분류 탭 및 검색바 레이아웃 CSS */
+.goods-list-header {
+    width: 100%;
+    height: 13%;
+}
+
+.goods-list-header>h4 {
+    text-align: left;
+}
+
+.header-main {
+    display: flex;
+    width: 100%;
+    height: 45%;
+    border-bottom: 1px solid lightgray;
+}
+
+/* 상품 분류 탭 CSS */
+.header-nav {
+    width: 65%;
+    height: 100%;
+}
+
+.header-nav>ul {
+    height: 100%;
+    align-items: flex-end;
+}
+
+.header-nav>ul li {
+    margin-right: 2px;
+}
+
+.nav-button {
+    display: block;
+    padding: 0.5rem 1rem;
+    font-size: 17px;
+    color: gray;
+    border: none;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    background-color: white;
+}
+
+.nav-button:hover {
+    color: white;
+    background-color: #7CC135;
+}
+
+.active {
+    color: white !important;
+    font-size: 19px !important;
+    border-bottom: none;
+    background-color: #7CC135 !important;
+}
+
+/* 상품 검색바 CSS */
+.header-findGoods {
+    display: flex;
+    align-items: flex-end;
+    justify-content: right;
+    width: 35%;
+    height: 100%;
+}
+
+.findGoods-icon {
+    width: 12%;
+    height: 60%;
+    background-color: #7CC135;
+    background-image: url('/public/images/icon/find-icon.png');
+    background-size: 50% 50%;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+}
+
+.findGoods-input {
+    width: 80%;
+    height: 60%;
+    border: 0.1em solid rgba(150, 150, 150, 0.5);
+    outline: none;
+}
+
+.findGoods-input:focus {
+    border-color: rgb(107, 187, 72);
+    box-shadow: 0 0 6px 0 rgb(107, 187, 72);
+}
+
+.findGoods-button:hover {
+    background-color: rgb(82, 167, 67);
+}
+
+/* ----- 상품 목록 레이아웃 CSS */
+.goods-list-container {
+    width: 100%;
+    height: 80%;
+}
+
+.goods-list-main {
+    display: flex;
+    margin: 10px 0;
+    width: 100%;
+    height: 33%; /* 한 페이지 당, 목록 3행이 배치됨. */
+}
+
+.goods-item {
+    /* margin: 0 auto; */
+    width: 19%; /* div 끼리 간격을 두기 위함. */
+    height: 100%;
+}
+
+.goods-item:hover {
+    box-shadow: 0px 0px 4px 0.5px;
+    cursor: pointer;
+}
+
+.goods-item-img { /* 상품 사진 */
+    width: 100%;
+    height: 70%;
+    position: relative;
+}
+
+.item-img {
+    width: 90%;
+    height: 100%;
+}
+
+.item-img-sold {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    height: 60%;
+}
+
+.goods-item-title { /* 상품명 */
+    line-height: 3rem;
+    width: 100%;
+    height: 13%;
+    font-size: 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.goods-item-price { /* 상품 가격 */
+    width: 100%;
+    height: 17%;
+}
+
+.original-price { /* 할인율 존재 시, 기존 가격 */
+    height: 50%;
+    font-size: 18px;
+}
+
+.original-price>span {
+    margin: 0 10px;
+    text-decoration: line-through;
+    color: gray;
+}
+
+.original-price label {
+    color: red;
+    font-weight: bold;
+}
+
+.discount-price { /* 할인율 존재 시, 할인된 가격 */
+    height: 50%;
+    color: #455;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.item-price { /* 할인율이 없을 때, 기존 가격 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    color: #455;
+    font-size: 23px;
+    font-weight: bold;
+}
+
+/* ----- 페이징 바 레이아웃 CSS */
+.goods-list-footer {
+    width: 100%;
+    height: 7%;
+    text-align: center;
+}
+
+.goods-list-footer>ul {
+    height: 100%;
+    font-size: 20px;
+    align-items: center;
+    justify-content: center;
+}
+
+.page-button {
+    color: rgb(82, 167, 67) !important;
+}
+
+.page-button:active,
+.page-button:focus {
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+.page-active {
+    background-color: #7CC135 !important;
+    color: white !important;
+}

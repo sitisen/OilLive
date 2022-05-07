@@ -13,9 +13,16 @@
 	</select>
 	
 	<!-- 상품 목록 개수 조회 (페이징) -->
-	<select id="selectGoodsCount" resultType="int">
-		SELECT count(*)
-		  FROM goods
+	<select id="selectGoodsCount" parameterType="Map" resultType="int">
+		   SELECT count(*)
+			 FROM goods
+			WHERE 1 = 1
+		<if test="! goodsName.isEmpty()">
+			  AND goods_name LIKE '%' || #{goodsName} || '%'
+		</if>
+		<if test='! selectedKind.equals("전체")'>
+			  AND goods_kind = #{selectedKind}
+		</if>
 	</select>
 	
 	<!-- 상품 목록 조회 -->
@@ -24,8 +31,12 @@
 		  FROM (  SELECT ROWNUM RNUM, goods_name, goods_kind, goods_price, 
 		                 goods_amount, goods_content, goods_discount, goods_date
         		    FROM goods
+        		    WHERE 1 = 1
+		<if test="! goodsName.isEmpty()">
+					  AND goods_name LIKE '%' || #{goodsName} || '%'
+		</if>
 		<if test='! selectedKind.equals("전체")'>
-				   WHERE goods_kind = #{selectedKind}
+					  AND goods_kind = #{selectedKind}
 		</if>
 				ORDER BY RNUM ASC
       		    ) G

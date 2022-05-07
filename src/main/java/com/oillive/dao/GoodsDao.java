@@ -14,7 +14,7 @@ public interface GoodsDao {
 	public List<String> selectGoodsKind();
 	
 	//--------------- 상품 목록 개수 조회 (페이징) --------------- //
-	public int selectGoodsCount();
+	public int selectGoodsCount(HashMap<String, String> param);
 	
 	//--------------- 상품 목록 조회 --------------- //
 	public List<GoodsVO> selectGoodsList(HashMap<String, String> param);

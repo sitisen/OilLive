@@ -11,9 +11,9 @@ public interface GoodsService {
 	public List<String> selectGoodsKind();
 	
 	//--------------- 상품 목록 개수 조회 (페이징) --------------- //
-	public int selectGoodsCount();
+	public int selectGoodsCount(String goodsName, String selectedKind);
 	
 	//--------------- 상품 목록 조회 --------------- //
-	public List<GoodsVO> selectGoodsList(String selectedKind, PaginationVO paging);
+	public List<GoodsVO> selectGoodsList(String goodsName, String selectedKind, PaginationVO paging);
 	
 }

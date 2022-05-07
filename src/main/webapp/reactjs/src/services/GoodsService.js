@@ -8,7 +8,7 @@ const GOODS_SELECT_GOODS_LIST = GOODS_URL + '/selectGoodsList';  // 상품 목�
 /* 차량용품 Service */
 const GoodsService = {
 
-    /* 상품 목록 조회 */
+    /* 상품 분류 탭 조회 */
     selectGoodsKind () {
         return axios({
             method: 'get',
@@ -17,13 +17,14 @@ const GoodsService = {
     },
   
     /* 상품 목록 조회 */
-    selectGoodsList (selectedKind, currentPage) {
+    selectGoodsList (goodsName, selectedKind, currentPage) {
         return axios({
             method: 'get',
             url: GOODS_SELECT_GOODS_LIST,
             params: { 
-                        kind : selectedKind,
-                        page : currentPage 
+                        title: goodsName,
+                        kind: selectedKind,
+                        page: currentPage 
                     }
         });
     }
