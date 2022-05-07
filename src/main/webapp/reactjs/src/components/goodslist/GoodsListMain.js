@@ -6,10 +6,13 @@ import GoodslistMainStyle from './GoodsListMain.module.css';
 
 const GoodslistMain = () => {
 
+    // 1행당 상품 노출 개수
+    const goodsPerLine = 5;
+
     /* useState 부분 */
     const [ goodsKind, setGoodsKind ] = useState([]); // 상품 분류 탭
     const [ selectedKind, setSelectedKind ] = useState({ type: '전체', status: 0 }); // 사용자가 선택한 상품 분류 탭
-    const [ goodsName, setGoodsName ] = useState('');
+    const [ goodsName, setGoodsName ] = useState(''); // 사용자가 검색한 상품 이름 값
     const [ goodsList, setGoodsList ] = useState([]); // 상품 목록
     const [ currentPage, setCurrentPage ] = useState(1); // 현재 페이지 번호
     const [ paging, setPaging ] = useState({}); // 페이징 관련 값
@@ -141,28 +144,32 @@ const GoodslistMain = () => {
                     </div>
                 </div> {/* // .goods-list-header */}
 
+
                 <div className={`container ${GoodslistMainStyle['goods-list-container']}`}>
 
                     {               
-                        [...Array( Math.ceil(goodsList.length / 5) )].map( (n, mainIndex) => {
+                        [...Array( Math.ceil(goodsList.length / goodsPerLine) )].map( (n, mainIndex) => {
                             const listArray = [];
                             let startNum = 1;
-                            let endNum = paging.pageLimit;
+                            let endNum = goodsPerLine;
 
                             if ( currentPage > 1 ) { // currentPage 가 1을 넘겼을 경우,
-                                startNum = (currentPage - 1) * 15 + 1;
-                                endNum = startNum + 5;
+                                startNum = (currentPage - 1) * paging.listRange + 1;
+                                endNum = startNum + goodsPerLine;
                             }
 
 
-                            switch ( mainIndex ) { // 1행당 5개씩 목록을 띄워줘야 하기 때문에 switch 문 사용
-                                case 0: listArray[0] = goodsList.filter( idx => idx.RNUM >= startNum && idx.RNUM <= endNum );
+                            switch ( mainIndex ) { // 1행당 goodsPerLine 만큼 목록을 띄워줘야 하기 때문에 switch 문 사용
+                                case 0: listArray[mainIndex] = goodsList.filter( idx => idx.RNUM >= startNum && 
+                                                                                 idx.RNUM <= endNum );
                                         break;
                             
-                                case 1: listArray[1] = goodsList.filter( idx => idx.RNUM >= startNum + 5 && idx.RNUM <= endNum + 5 );
+                                case 1: listArray[mainIndex] = goodsList.filter( idx => idx.RNUM >= startNum + (goodsPerLine * mainIndex) && 
+                                                                                 idx.RNUM <= endNum + (goodsPerLine * mainIndex) );
                                         break;
 
-                                default: listArray[2] = goodsList.filter( idx => idx.RNUM >= startNum + 10 && idx.RNUM <= endNum + 10 );
+                                default: listArray[mainIndex] = goodsList.filter( idx => idx.RNUM >= startNum + (goodsPerLine * mainIndex) && 
+                                                                                  idx.RNUM <= endNum + (goodsPerLine * mainIndex) );
                             }
 
                             return (
@@ -231,9 +238,8 @@ const GoodslistMain = () => {
                             )
                         })
                     }
-
-
                 </div> {/* // .goods-list-container */}
+
 
                 <div className={GoodslistMainStyle['goods-list-footer']}>
                     <ul className='pagination'>
