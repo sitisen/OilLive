@@ -31,5 +31,8 @@ public interface UsersDao {
 
 	//--------------- 아이디 찾기 - 이메일 --------------- //
 	public String findIdEmail(HashMap<String, String> map);
+
+	//--------------- 비밀번호 변경 --------------- //
+	public int pwdUpdate(HashMap<String, String> map);
 	
 }

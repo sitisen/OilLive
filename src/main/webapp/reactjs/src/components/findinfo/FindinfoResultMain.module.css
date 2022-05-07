@@ -1,0 +1,127 @@
+/* 전체 div */
+.result-layout {
+    text-align: center;
+    margin-top: 100px;
+    margin-bottom: 500px;
+}
+
+/* 결과창 div */
+.result-div {
+    margin: 0 auto;
+    box-shadow: 1px 1px 1px;
+    width: 45%;
+    border: 0.5px solid rgba(150, 150, 150, 0.5);
+    border-radius: 12px;
+    background-color: white;
+    padding-left: 20px;
+    padding-top: 20px;
+    text-align: center;
+    padding-bottom: 40px;
+}
+
+/* 결과창 아이디 span  */
+.result-id {
+    font-weight: bold;
+    color: red;
+}
+
+/* 로그인 화면으로 돌아가기 버튼 */
+.button {
+  background: green;
+  margin : 0 auto;
+  width : 250px;
+  height : 40px;
+  overflow: hidden;
+  text-align : center;
+  transition : .2s;
+  cursor : pointer;
+  border-radius: 3px;
+  box-shadow: 0px 1px 2px rgba(0,0,0,.2);
+}
+
+.btnTwo {
+    position : relative;
+    width : 50px;
+    height : 55px;
+    margin-top: -102px;
+    padding-top: 1px;
+    right : -180px;
+    transition : .3s;
+}
+
+.btnText {
+    padding-top: 5px;
+    color : white;
+    transition : .3s;
+}
+
+.btnText2 {
+    margin-top : 63px;
+    margin-right : -130px;
+    color : #FFF;
+
+}
+
+.button:hover .btnTwo{
+    right: -140px;
+}
+
+.button:hover .btnText{
+    margin-right : 30px;
+}
+
+.button:active {
+    box-shadow: 0px 5px 6px rgba(0,0,0,0.3);
+}
+
+/* link 효과 */
+.result-link {
+    text-decoration: none;
+}
+
+/* 비밀번호 변경창 */
+.result-label {
+    text-align: left;
+    font-size: 20px;
+}
+
+.result-label hr {
+    width: 98%;
+}
+
+/* 비밀번호 변경 div */
+.change-pwd-div {
+    margin-top: 40px;
+}
+
+/* 비밀변호 변경 창 */
+.change-pwd-div input {
+    width: 50%;
+    height: 50px;
+    border : 0.1em solid rgba(150, 150, 150, 0.5);
+    outline: none;
+    padding-left: 12px;
+}
+
+.change-pwd-div input:focus {
+    border-color: rgb(107, 187, 72);
+    box-shadow: 0 0 6px 0 rgb(107, 187, 72);
+}
+
+/* 설명글 */
+.notice {
+    margin-top: 12px;
+    font-size: 14px;
+    color: #868e96;
+}
+
+/* 재설정하기 버튼 */
+.confirm-button {
+    margin-top: 40px;
+    width: 150px;
+    height: 50px;
+}
+
+.result-div hr {
+    width: 98%;
+}

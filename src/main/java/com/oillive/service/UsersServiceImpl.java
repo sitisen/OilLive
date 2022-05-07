@@ -18,8 +18,6 @@ import com.oillive.vo.ApiAvgAllPriceVO;
 import com.oillive.vo.ApiAvgRecentPriceVO;
 import com.oillive.vo.ApiAvgSidoPriceVO;
 import com.oillive.vo.ApiLowTop10VO;
-import com.oillive.vo.GoodsVO;
-import com.oillive.vo.PaginationVO;
 
 import net.nurigo.java_sdk.api.Message;
 import net.nurigo.java_sdk.exceptions.CoolsmsException;
@@ -281,6 +279,12 @@ public class UsersServiceImpl implements UsersService{
 		
 		// 메일 발송
 		javaMailSender.send(simpleMailMessage);
+	}
+
+	//--------------- 비밀번호 변경 --------------- //
+	@Override
+	public int pwdUpdate(HashMap<String, String> map) {
+		return usersDao.pwdUpdate(map);
 	}	
 	
 }

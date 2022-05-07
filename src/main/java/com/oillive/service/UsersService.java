@@ -1,10 +1,6 @@
 package com.oillive.service;
 
 import java.util.HashMap;
-import java.util.List;
-
-import com.oillive.vo.GoodsVO;
-import com.oillive.vo.PaginationVO;
 
 public interface UsersService {
 	
@@ -38,5 +34,8 @@ public interface UsersService {
 
 	//--------------- 이메일 인증 --------------- //
 	public void sendEmail(String email, String numStr);
+
+	//--------------- 비밀번호 변경 --------------- //
+	public int pwdUpdate(HashMap<String, String> map);
 	
 }

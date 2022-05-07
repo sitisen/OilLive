@@ -63,4 +63,10 @@
 		AND user_email = #{useremail}
 	</select>
 
+	<!-- 비밀번호 변경 -->
+	<update id="pwdUpdate" parameterType="Map">
+		UPDATE users
+		SET user_pwd = #{userpwd}
+		WHERE user_id = #{userid}
+	</update>
 </mapper>

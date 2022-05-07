@@ -9,6 +9,8 @@ const USERS_PHONE_CHECK = USERS_URL + '/phoneCheck';   // 휴대폰 번호 중�
 const USERS_SIGNUP = USERS_URL + '/signup';         // 회원가입
 const USERS_FINDID_PHONE = USERS_URL + '/findIdPhone';   // 아이디 찾기 - 핸드폰
 const USERS_FINDID_EMAIL = USERS_URL + '/findIdEmail';  // 아이디 찾기 - 이메일
+const USERS_FIND_RESULT = USERS_URL + '/resultId';  // 아이디 반환
+const USERS_PWD_UPDATE = USERS_URL + '/pwdUpdate'; // 비밀번호 변경
 
 /* 사용자 Service */
 const UserService = {
@@ -47,7 +49,7 @@ const UserService = {
         });
     },
 
-    /* 아이디 찾기 - 휴대전화 인증 */
+    /* 아이디/비밀번호 찾기 - 휴대전화 인증 */
     findIdPhone(username, userphone){
         return axios.post(USERS_FINDID_PHONE,{
             username : username,
@@ -55,7 +57,7 @@ const UserService = {
         });
     },
 
-    /* 아이디 찾기 - 이메일 인증 */
+    /* 아이디/비밀번호 찾기 - 이메일 인증 */
     findIdEmail(username, useremail){
         return axios.post(USERS_FINDID_EMAIL,{
             username : username,
@@ -63,6 +65,31 @@ const UserService = {
         });
     },
     
+    /* 아이디 결과값 - 핸드폰 */
+    resultPhone(username, userphone){
+        return axios.post(USERS_FIND_RESULT,{
+            username : username,
+            userphone : userphone
+        });
+    },
+
+     /* 아이디 결과값 - 이메일 */
+    resultEmail(username, useremail){
+        return axios.post(USERS_FIND_RESULT,{
+            username : username,
+            useremail : useremail
+        });
+    },
+
+    /* 비밀번호 변경 */
+    pwdUpdate(userid, userpwd){
+        return axios.post(USERS_PWD_UPDATE,{
+            userid : userid,
+            userpwd : userpwd
+        })
+    }
+
+
 }
 
 export default UserService;

@@ -170,6 +170,7 @@ public class UsersController {
 		HashMap<String, String> map = new HashMap<String, String>();
 		map.put("username",req.get("username"));
 		map.put("useremail",req.get("useremail"));
+		
 		String userId = "";
 		
 		for(int i=0; i<4; i++) {
@@ -192,4 +193,44 @@ public class UsersController {
 		return numStr;
 	}
 	
+	//--------------- 아이디 찾기 결과값 반환 --------------- //
+	@PostMapping("/resultId")
+	public String resultId(@RequestBody HashMap<Object, String> req) {
+	
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("username",req.get("username"));
+		
+		String userId = "";
+		
+		// 핸드폰인증 결과
+		if(req.get("useremail") == null) {
+			map.put("userphone",req.get("userphone"));
+			userId = usersService.findIdPhone(map);
+		// 이메일인증 결과
+		} else {
+			map.put("useremail",req.get("useremail"));
+			userId = usersService.findIdEmail(map);
+		}
+		
+		return userId;
+	}
+	
+	//--------------- 비밀번호 변경 --------------- //
+	@PostMapping("/pwdUpdate")
+	public int pwdUpdate(@RequestBody HashMap<Object, String> req) {
+	
+		int result = 0;
+		
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("userid",req.get("userid"));
+		
+		// 암호화
+		String encodedPassword = passwordEncoder.encode(req.get("userpwd"));
+		
+		map.put("userpwd",encodedPassword);
+		
+		result = usersService.pwdUpdate(map);
+		
+		return result;
+	}
 }

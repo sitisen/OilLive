@@ -1,10 +1,14 @@
 import React, { useEffect, useState, useRef } from 'react';
 import UserService from 'services/UserService';
+import { useNavigate } from 'react-router-dom';
 
 /* import css */
 import FindinfoMainStyle from './FindinfoMain.module.css';
 
 const FindinfoMain = () => {
+
+    // 페이지 이동해주는 변수
+    const navigate = useNavigate();
 
     // 아이디 비밀번호 찾기 active 활성화 변수
     const [idPwdCheck, setIdPwdCehck] = useState(false);
@@ -224,7 +228,10 @@ const FindinfoMain = () => {
     /* 아이디 찾기 - 휴대전화 인증 - 인증번호 확인 버튼 클릭 이벤트 */
     const idphonecertiOK = () => {
         if(findInfoRef.current['idphonecerti'].value === certiNum.toString()){
-            alert('일치!');
+            UserService.resultPhone(findInfoRef.current['idname'].value, findInfoRef.current['idphone'].value).then( res => {
+                navigate('/users/findinfoResult', { state: res.data,
+                    replace : true });
+            });
         } else {
             alert('인증번호가 일치하지 않습니다.\n다시 입력해주세요.');
         }
@@ -233,7 +240,12 @@ const FindinfoMain = () => {
     /* 비밀번호 찾기 - 휴대전화 인증 - 인증번호 확인 버튼 클릭 이벤트 */
     const pwdphonecertiOK = () => {
         if(findInfoRef.current['pwdphonecerti'].value === certiNum.toString()){
-            alert('일치!');
+            UserService.resultPhone(
+                findInfoRef.current['pwdphonename'].value,
+                findInfoRef.current['pwdphonephone'].value).then( res => {
+                    sessionStorage.setItem('tempId', res.data);
+                });
+            navigate('/users/findinfoResult',  {replace : true});
         } else {
             alert('인증번호가 일치하지 않습니다.\n다시 입력해주세요.');
         }
@@ -337,7 +349,10 @@ const FindinfoMain = () => {
     /* 아이디 찾기 - 이메일 인증 - 인증번호 확인 버튼 이벤트 */
     const idemailcertiOK = () => {
         if(findInfoRef.current['idemailcerti'].value === certiNum.toString()){
-            alert('일치!');
+            UserService.resultEmail(findInfoRef.current['idemailname'].value, findInfoRef.current['emailId'].value).then( res => {
+                navigate('/users/findinfoResult', { state: res.data,
+                replace : true});
+            })
         } else {
             alert('인증번호가 일치하지 않습니다.\n다시 입력해주세요.');
         }
@@ -346,7 +361,12 @@ const FindinfoMain = () => {
     /* 비밀번호 찾기 - 이메일 인증 - 인증번호 확인 버튼 이벤트 */
     const pwdemailcertiOK = () => {
         if(findInfoRef.current['pwdemailcerti'].value === certiNum.toString()){
-            alert('일치!');
+            UserService.resultEmail(
+                findInfoRef.current['pwdemailname'].value, 
+                findInfoRef.current['emailpwd'].value).then(res => {
+                    sessionStorage.setItem('tempId', res.data);
+                });
+            navigate('/users/findinfoResult', { replace : true});
         } else {
             alert('인증번호가 일치하지 않습니다.\n다시 입력해주세요.');
         }
