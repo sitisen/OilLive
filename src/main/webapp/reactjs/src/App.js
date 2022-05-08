@@ -8,6 +8,7 @@ import Signup from './pages/Signup';
 import Findinfo from './pages/Findinfo';
 import FindinfoResult from './pages/FindinfoResult';
 import GoodsList from './pages/GoodsList';
+import GoodsDetail from './pages/GoodsDetail';
 
 // Page Routing Setting
 function App() {
@@ -19,7 +20,8 @@ function App() {
       <Route path='/users/signup' element={<Signup />} />
       <Route path='/users/findinfo' element={<Findinfo />} />
       <Route path='/users/findinfoResult' element={<FindinfoResult />} />
-      <Route path='/users/goodslist' element={<GoodsList />} />
+      <Route path='/goods/goodslist' element={<GoodsList />} />
+      <Route path='/goods/goodsdetail' element={<GoodsDetail />} />
     </Routes>
   );
 }
