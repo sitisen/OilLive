@@ -8,6 +8,8 @@ import Signup from './pages/Signup';
 import Findinfo from './pages/Findinfo';
 import FindinfoResult from './pages/FindinfoResult';
 import GoodsList from './pages/GoodsList';
+import Qna from './pages/Qna';
+import QboardWrite from './pages/QboardWrite';
 
 // Page Routing Setting
 function App() {
@@ -19,7 +21,9 @@ function App() {
       <Route path='/users/signup' element={<Signup />} />
       <Route path='/users/findinfo' element={<Findinfo />} />
       <Route path='/users/findinfoResult' element={<FindinfoResult />} />
-      <Route path='/users/goodslist' element={<GoodsList />} />
+      <Route path='/goods/goodslist' element={<GoodsList />} />
+      <Route path='/qna/qna' element={<Qna />} />
+      <Route path='/qboard/qboardWrite' element={<QboardWrite />} />
     </Routes>
   );
 }
