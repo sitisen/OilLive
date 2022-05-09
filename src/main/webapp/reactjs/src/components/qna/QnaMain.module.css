@@ -1,0 +1,114 @@
+/* 전체 레이아웃 */
+.qna-layout {
+    text-align: center;
+    background-color: rgb(233, 235, 238);
+    height: 100%;
+    padding-bottom: 100px;
+}
+
+/* qna 목록 리스트 div */
+.qna-list-div {
+    height: 90%;
+    box-shadow: 1px 1px 1px;
+    border: 0.5px solid rgba(150, 150, 150, 0.5);
+    border-radius: 12px;
+    background-color: white;
+    width: 69.5%;
+    margin: 0 auto;
+    margin-top: 15px;
+    padding-top: 20px;
+    padding-bottom: 50px;
+}
+
+/* qna label */
+.qna-list-lable {
+    text-align: left;
+    padding-left: 25px;
+}
+
+/* hr 태그 */
+.qna-list-lable hr {
+    width: 98%;
+    margin-bottom: 40px;
+}
+
+/* 반복되는 div */
+.qna-list-code {
+    width: 90%;
+    margin: 0 auto;
+}
+
+/* 답변 내용 */
+.qna-list-content {
+    width: 100%;
+    padding-top: 13px;
+    border-top:1px solid rgb(210, 210, 210);
+    height: 100%;
+    padding-bottom: 13px;
+    display: block;
+    background-color: rgb(249, 249, 249);
+}
+
+/* qna 제목 */
+.qna-list-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80px;
+    border-top:1px solid rgb(210, 210, 210);
+    position: relative;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* 제목 클릭시 css */
+.qna-list-title-click {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80px;
+    position: relative;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: 1px;
+    background-color: rgb(70, 77, 95);
+    color: white;
+}
+
+
+.qna-list-title:hover {
+    color: green;
+}
+
+/* qna 로고 */ 
+.qna-logo {
+    width: 50px;
+    height: 100%;
+    position: absolute;
+    line-height: 5rem;
+    margin-right: 8px;
+    right: 0;
+}
+
+.bottom {
+    margin: 0 auto;
+    width: 90%;
+    border-top:1px solid rgb(210, 210, 210);
+}
+
+/* display off */
+.display-off {
+    display: none;
+}
+
+/* 1:1 문의하기 div */
+.write-qna {
+    margin-top: 100px;
+    margin-right: 50px;
+    text-align: right;
+}
+
+/* 1:1 문의하기 버튼 */
+.write-qna-button {
+    margin-left: 30px;
+}
