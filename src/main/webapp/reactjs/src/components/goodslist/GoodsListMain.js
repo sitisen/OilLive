@@ -7,7 +7,7 @@ import GoodslistMainStyle from './GoodsListMain.module.css';
 
 const GoodslistMain = () => {
 
-    // 1행당 상품 노출 개수
+    // 1행 당 상품 노출 개수
     const goodsPerLine = 5;
 
     /* useState 부분 */
@@ -134,8 +134,9 @@ const GoodslistMain = () => {
                             </ul>
                         </div>
                         <div className={GoodslistMainStyle['header-findGoods']}>
-                            <div className={GoodslistMainStyle['findGoods-icon']}></div>
+                            <label className={GoodslistMainStyle['findGoods-icon']} htmlFor='findInputId' />
                             <input className={GoodslistMainStyle['findGoods-input']} 
+                                   id='findInputId'
                                    ref={findInput}
                                    onKeyUp={() => findGoods()}
                                    placeholder='상품명 입력'
@@ -188,11 +189,11 @@ const GoodslistMain = () => {
                                                         <img className={GoodslistMainStyle['item-img']} alt='test' src='/images/icon/Engine-Oil-Zic.jpg' />
                                                     </div>
                                                     <div className={GoodslistMainStyle['goods-item-title']}>
-                                                        <span>{list.GOODS_NAME}</span>
+                                                        <span className={GoodslistMainStyle['item-span-sold']}>{list.GOODS_NAME}</span>
                                                     </div>
                                                     <div className={GoodslistMainStyle['goods-item-price']}>
                                                         <div className={GoodslistMainStyle['item-price']}>
-                                                            <span>{list.GOODS_PRICE.toLocaleString('ko-KR')}원</span>
+                                                            <span className={GoodslistMainStyle['item-span-sold']}>{list.GOODS_PRICE.toLocaleString('ko-KR')}원</span>
                                                         </div>
                                                     </div>
                                                 </div>

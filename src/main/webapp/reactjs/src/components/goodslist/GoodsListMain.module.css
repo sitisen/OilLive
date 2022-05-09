@@ -86,9 +86,13 @@
     height: 60%;
     background-color: #7CC135;
     background-image: url('/public/images/icon/find-icon.png');
-    background-size: 50% 50%;
+    background-size: 135% 125%;
     background-repeat: no-repeat;
     background-position: 50% 50%;
+}
+
+.findGoods-icon:hover {
+    cursor: pointer;
 }
 
 .findGoods-input {
@@ -96,6 +100,7 @@
     height: 60%;
     border: 0.1em solid rgba(150, 150, 150, 0.5);
     outline: none;
+    padding-left: 10px;
 }
 
 .findGoods-input:focus {
@@ -157,6 +162,10 @@
     transform: translate(-50%, -50%);
     width: 90%;
     height: 60%;
+}
+
+.item-span-sold {
+    color: rgb(178, 178, 178) !important;
 }
 
 .goods-item-title { /* 상품명 */
