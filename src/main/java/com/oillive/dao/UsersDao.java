@@ -1,11 +1,8 @@
 package com.oillive.dao;
 
 import java.util.HashMap;
-import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
-
-import com.oillive.vo.GoodsVO;
 
 @Mapper
 public interface UsersDao {
