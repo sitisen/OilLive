@@ -125,11 +125,6 @@
     border-bottom: 1px solid lightgray
 }
 
-.goods-item-wrap {
-    width: 20%;
-    height: 100%;
-}
-
 .goods-item {
     padding: 12px 0;
     width: 100%;
