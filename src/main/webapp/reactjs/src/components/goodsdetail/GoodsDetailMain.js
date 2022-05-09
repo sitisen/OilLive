@@ -1,5 +1,5 @@
-import React from "react";
-import { useLocation } from "react-router-dom";
+import React, { useRef, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 
 // import css
 import GoodsDetailMainStyle from './GoodsDetailMain.module.css';
@@ -7,15 +7,105 @@ import GoodsDetailMainStyle from './GoodsDetailMain.module.css';
 const GoodsDetailMain = () => {
 
     // 사용자가 선택한 상품 정보
-    const goodsInfo = useLocation().state.data;
+    const goodsInfo = useLocation().state.data; // 선택된 상품 정보
+    const discountPrice = goodsInfo.GOODS_PRICE - (goodsInfo.GOODS_PRICE * (goodsInfo.GOODS_DISCOUNT * 0.01)); // 할인율로 할인된 가격
 
+    /* useState 부분 */
+    const [ amount, setAmount ] = useState(1); // 사용자가 선택한 상품 개수
+    /* //. useState 부분 */
+
+    /* useRef 부분 */
+    const amountCount = useRef(1);
+    /* //. useRef 부분 */
+
+    // 상품 수량 변경 이벤트
+    const amountChange = (e) => {
+        const value = amountCount.current.value;
+        const max = Number(e.currentTarget.max);
+
+        if(value >= max) {
+            setAmount(max);
+        } else if(value <= 1) {
+            setAmount(1);
+        } else {
+            setAmount(value);
+        }
+    };
+
+    /* ===== 실제 페이지 렌더링 =====  */
     return (
         <div className={GoodsDetailMainStyle['goods-detail-wrap']}>
-            <div className={`container text-center ${GoodsDetailMainStyle['goods-detail-layout']}`}>
+            <div className={`container ${GoodsDetailMainStyle['goods-detail-layout']}`}>
 
                 <div className={`container ${GoodsDetailMainStyle['goods-detail-header']}`}>
-                    <div></div>
-                    <div></div>
+                    <div className={GoodsDetailMainStyle['header-img-layout']}>
+                        <img className={GoodsDetailMainStyle['goods-img']} alt='test' src='/images/icon/Indoor-BullsOne-Defuser.jpg' />
+                    </div>
+                    <div className={GoodsDetailMainStyle['header-option-layout']}>
+                        <h5>{goodsInfo.GOODS_NAME}</h5>
+                        <hr/>
+                        <div className={GoodsDetailMainStyle['info-content']}>
+
+                        {/* 상품 가격 출력 */}
+                        { goodsInfo.GOODS_DISCOUNT === 0
+                            ? // 할인 상품이 아닐 경우
+                                <>
+                                    <div className={GoodsDetailMainStyle['goods-price']}>
+                                        <span>
+                                            판매가 : {Number(goodsInfo.GOODS_PRICE * amount).toLocaleString('ko-KR')}원
+                                        </span>
+                                    </div>
+                                </>
+                            : // 할인 상품일 경우
+                                <>
+                                    <div key={goodsInfo.GOODS_CODE}>
+                                        <span className={GoodsDetailMainStyle['goods-discount-price']}>
+                                            {Number(goodsInfo.GOODS_PRICE * amount).toLocaleString('ko-KR')}원
+                                        </span>
+                                        <span className={GoodsDetailMainStyle['goods-discount-rate']}>
+                                            {goodsInfo.GOODS_DISCOUNT}%
+                                        </span>
+                                    </div>
+                                    <div className={GoodsDetailMainStyle['goods-original-price']}>
+                                        <span>
+                                            판매가 : {(discountPrice * amount).toLocaleString('ko-KR')}원
+                                        </span>
+                                    </div>
+                                </>
+                        }
+
+                            <div className={GoodsDetailMainStyle['goods-info']}>
+                                <span>상품코드 : {goodsInfo.GOODS_CODE}</span>
+                                <span>분류 : {goodsInfo.GOODS_KIND}</span>
+                                <span>배송비 : 40,000원</span>
+                            </div>
+
+                            <div className={GoodsDetailMainStyle['goods-buy']}>
+                                <span className={GoodsDetailMainStyle['goods-amount-span']}>수량</span>
+                                <input type='number' 
+                                        className={`form-control ${GoodsDetailMainStyle['amount-input']}`}
+                                        ref={amountCount}
+                                        onChange={(e) => amountChange(e)}
+                                        min='1'
+                                        max={goodsInfo.GOODS_AMOUNT}
+                                        value={amount}
+                                />
+                                <Link className={GoodsDetailMainStyle['goods-buy-Link']} to={'/users/home'}>
+                                    <button className={`btn btn-success ${GoodsDetailMainStyle['goods-button']}`}>바로구매</button>
+                                </Link>
+                                <Link className={GoodsDetailMainStyle['goods-buy-Link']} to={'/users/home'}>
+                                    <button className={`btn btn-primary ${GoodsDetailMainStyle['goods-button']}`}>장바구니</button>
+                                </Link>
+                                
+                                <Link className={GoodsDetailMainStyle['goods-buy-Link']} to={'/goods/goodslist'}>
+                                    <button className={`btn btn-secondary ${GoodsDetailMainStyle['goods-button']}`}>이전으로</button>
+                                </Link>
+                            </div>
+
+                        </div>
+
+
+                    </div>
                 </div> {/* //. goods-detail-header */}
 
                 <div className={`container ${GoodsDetailMainStyle['goods-detail-container']}`}>

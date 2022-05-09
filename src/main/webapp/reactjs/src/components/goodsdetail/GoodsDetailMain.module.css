@@ -4,10 +4,12 @@
     padding-top: 2%;
     padding-bottom: 5%;
     box-sizing: border-box;
+    background-color: rgb(233, 235, 238);
 }
 
 /* ----- 본문 레이아웃 CSS */
 .goods-detail-layout {
+    width: 950px !important;
     height: 100%;
     box-shadow: 1px 1px 1px;
     border: 0.5px solid rgba(150, 150, 150, 0.5);
@@ -18,22 +20,117 @@
 
 /* ----- 상품 상세 정보 레이아웃 CSS */
 .goods-detail-header {
+    display: flex;
     width: 100%;
-    height: 30%;
-    border: 1px solid red;
+    height: 20%;
+}
+
+/* 상품 이미지 레이아웃 CSS */
+.header-img-layout {
+    display: flex;
+    justify-content: right;
+    width: 50%;
+    height: 100%;
+}
+
+/* 상품 이미지 CSS */
+.goods-img {
+    width: 100%;
+    height: 100%;
+}
+
+/* 상품 정보 레이아웃 CSS */
+.header-option-layout {
+    width: 50%;
+    height: 100%;
+    padding: 20px;
+}
+
+/* 상품 구매 옵션 레이아웃 CSS */
+.info-content {
+    width: 100%;
+    height: 89%;
+}
+
+/* 할인 중일 경우, 기존 가격 */
+.goods-discount-price {
+    padding-right: 10px;
+    text-decoration: line-through;
+    color: gray;
+}
+
+/* 할인 중일 경우, 할인율 */
+.goods-discount-rate {
+    color: red;
+    font-weight: bold;
+}
+
+/* 할인 중일 경우, 할인된 가격 */
+.goods-original-price {
+    height: 16.5%;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* 상품 가격 CSS */
+.goods-price {
+    height: 25%;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* 상품 분류 CSS */
+.goods-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 35%;
+    font-size: 17px;
+}
+
+/* 상품 관련 버튼들 CSS */
+.goods-buy {
+    display: flex;
+    align-items: flex-end;
+    height: 40%;
+    position: relative;
+}
+
+.goods-buy-Link {
+    margin: 0 3%;
+    width: 21%;
+}
+
+/* "수량" Span CSS*/
+.goods-amount-span {
+    position: absolute;
+    top: 50px;
+    left: 20px;
+    font-weight: bold;
+}
+
+.amount-input {
+    width: 18% !important;
+    height: 30.5%;
+    font-size: 17px;
+}
+
+.goods-button {
+    width: 100%;
+    font-size: 14px !important;
 }
 
 /* ----- 상품 설명 레이아웃 CSS */
 .goods-detail-container {
     width: 100%;
-    height: 25%;
+    height: 40%;
     border: 1px solid blue;
 }
 
 /* ----- 상품 안내사항 레이아웃 CSS */
 .goods-detail-footer {
     width: 100%;
-    height: 45%;
+    height: 40%;
 }
 
 /* 상품 안내사항 머리말 */
@@ -45,25 +142,26 @@
 /* 상품 안내사항 pre 태그 CSS */
 .footer-table-pre {
     margin-bottom: 0;
-    text-align: left;
     font-size: 14px;
     font-weight: 500;
 }
 
 /* 상품 안내사항 테이블 CSS */
+.footer-table {
+    border: rgb(200, 200, 200) !important;
+}
+
 .footer-table th {
-    background-color: rgb(244, 244, 244) !important;
+    background-color: rgb(233, 233, 233) !important;
     vertical-align: middle;
 }
 
 .footer-table td {
-    text-align: left;
     vertical-align: middle;
 }
 
 /* 상품 안내사항 ul 태그 CSS */
 .footer-ul {
-    text-align: left;
     padding-left: 0;
 }
 
