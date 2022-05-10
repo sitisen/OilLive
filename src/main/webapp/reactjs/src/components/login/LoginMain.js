@@ -137,7 +137,7 @@ const LoginMain = () => {
         <br></br>
         <div className={LoginMainStyle['input-div']}>
           <Link to='/users/findinfo' className={LoginMainStyle['input-div-link']}><span className={LoginMainStyle['input-div-span']}>아이디 찾기</span></Link><label>|</label>
-          <span className={LoginMainStyle['input-div-span']}>비밀번호 찾기</span><label>|</label>
+          <Link to='/users/findinfo' className={LoginMainStyle['input-div-link']}><span className={LoginMainStyle['input-div-span']}>비밀번호 찾기</span></Link><label>|</label>
           <Link to='/users/signup' className={LoginMainStyle['input-div-link']}><span className={LoginMainStyle['input-div-span']}>회원가입</span></Link>
         </div>
       </div>

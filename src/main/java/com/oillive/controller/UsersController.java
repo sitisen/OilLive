@@ -91,7 +91,6 @@ public class UsersController {
 		// usersService.sendSMS(phoneNum, numStr);
 		
 		System.out.println("인증번호 : "+numStr);
-		System.out.println("휴대번호 : "+phoneNum);
 		
 		return numStr;
 	}

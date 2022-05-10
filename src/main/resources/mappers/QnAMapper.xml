@@ -5,5 +5,9 @@
 
 <mapper namespace="com.oillive.dao.QnADao">
 	
-	
+	<!-- qna 목록 -->
+	<select id="qnaList" resultType="QnAVO">
+		SELECT qna_code, qna_title, qna_content
+		FROM qna
+	</select>
 </mapper>
