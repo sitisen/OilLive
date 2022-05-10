@@ -8,6 +8,7 @@ const GoodsDetailMain = () => {
 
     // 사용자가 선택한 상품 정보
     const goodsInfo = useLocation().state.data; // 선택된 상품 정보
+    const goodsPrice = goodsInfo.GOODS_PRICE; // 상품 가격
     const discountPrice = goodsInfo.GOODS_PRICE - (goodsInfo.GOODS_PRICE * (goodsInfo.GOODS_DISCOUNT * 0.01)); // 할인율로 할인된 가격
 
     /* useState 부분 */
@@ -20,8 +21,8 @@ const GoodsDetailMain = () => {
 
     // 상품 수량 변경 이벤트
     const amountChange = (e) => {
-        const value = amountCount.current.value;
-        const max = Number(e.currentTarget.max);
+        const value = Number(amountCount.current.value); // 상품 수량
+        const max = Number(e.currentTarget.max); // 상품 최대 수량
 
         if(value >= max) {
             setAmount(max);
@@ -32,15 +33,29 @@ const GoodsDetailMain = () => {
         }
     };
 
+    const soldOutClick = (e) => {
+        e.preventDefault();
+        alert('해당 상품은 품절되었습니다.');
+    }
+
     /* ===== 실제 페이지 렌더링 =====  */
     return (
         <div className={GoodsDetailMainStyle['goods-detail-wrap']}>
             <div className={`container ${GoodsDetailMainStyle['goods-detail-layout']}`}>
 
                 <div className={`container ${GoodsDetailMainStyle['goods-detail-header']}`}>
-                    <div className={GoodsDetailMainStyle['header-img-layout']}>
-                        <img className={GoodsDetailMainStyle['goods-img']} alt='test' src='/images/icon/Indoor-BullsOne-Defuser.jpg' />
-                    </div>
+                        { goodsInfo.GOODS_AMOUNT === 0 
+
+                            ? // 상품 재고가 없을 경우
+                            <div className={GoodsDetailMainStyle['header-img-layout']}>
+                                <img className={GoodsDetailMainStyle['goods-img-sold']} alt='SoldOut' src='/images/icon/SoldOut.png' />
+                                <img className={GoodsDetailMainStyle['goods-img']} alt='test' src='/images/icon/Indoor-BullsOne-Defuser.jpg' />
+                            </div>
+                            : // 상품 재고가 있을 경우
+                            <div className={GoodsDetailMainStyle['header-img-layout']}>
+                                <img className={GoodsDetailMainStyle['goods-img']} alt='test' src='/images/icon/Indoor-BullsOne-Defuser.jpg' />
+                            </div>
+                        }
                     <div className={GoodsDetailMainStyle['header-option-layout']}>
                         <h5>{goodsInfo.GOODS_NAME}</h5>
                         <hr/>
@@ -48,30 +63,61 @@ const GoodsDetailMain = () => {
 
                         {/* 상품 가격 출력 */}
                         { goodsInfo.GOODS_DISCOUNT === 0
-                            ? // 할인 상품이 아닐 경우
-                                <>
-                                    <div className={GoodsDetailMainStyle['goods-price']}>
-                                        <span>
-                                            판매가 : {Number(goodsInfo.GOODS_PRICE * amount).toLocaleString('ko-KR')}원
-                                        </span>
-                                    </div>
-                                </>
-                            : // 할인 상품일 경우
-                                <>
-                                    <div key={goodsInfo.GOODS_CODE}>
-                                        <span className={GoodsDetailMainStyle['goods-discount-price']}>
-                                            {Number(goodsInfo.GOODS_PRICE * amount).toLocaleString('ko-KR')}원
-                                        </span>
-                                        <span className={GoodsDetailMainStyle['goods-discount-rate']}>
-                                            {goodsInfo.GOODS_DISCOUNT}%
-                                        </span>
-                                    </div>
-                                    <div className={GoodsDetailMainStyle['goods-original-price']}>
-                                        <span>
-                                            판매가 : {(discountPrice * amount).toLocaleString('ko-KR')}원
-                                        </span>
-                                    </div>
-                                </>
+
+                            // 할인 상품이 아닐 경우
+                            ? goodsInfo.GOODS_AMOUNT === 0
+                                ? // 상품 재고가 없을 경우
+                                    <>
+                                        <div className={GoodsDetailMainStyle['goods-price']}>
+                                            <span>
+                                                판매가 : {Number(goodsPrice).toLocaleString('ko-KR')}원
+                                            </span>
+                                        </div>
+                                    </> 
+                                : // 상품 재고가 있을 경우
+                                    <>
+                                        <div className={GoodsDetailMainStyle['goods-price']}>
+                                            <span>
+                                                판매가 : {Number(goodsPrice * amount).toLocaleString('ko-KR')}원
+                                            </span>
+                                        </div>
+                                    </> 
+
+                            // 할인 상품일 경우
+                            : goodsInfo.GOODS_AMOUNT === 0
+                                ? // 상품 재고가 없을 경우
+                                    <>
+                                        <div key={goodsInfo.GOODS_CODE}>
+                                            <span className={GoodsDetailMainStyle['goods-discount-price']}>
+                                                {Number(goodsPrice).toLocaleString('ko-KR')}원
+                                            </span>
+                                            <span className={GoodsDetailMainStyle['goods-discount-rate']}>
+                                                {goodsInfo.GOODS_DISCOUNT}%
+                                            </span>
+                                        </div>
+                                        <div className={GoodsDetailMainStyle['goods-original-price']}>
+                                            <span>
+                                                판매가 : {(discountPrice).toLocaleString('ko-KR')}원
+                                            </span>
+                                        </div>
+                                    </>
+
+                                : // 상품 재고가 있을 경우
+                                    <>
+                                        <div key={goodsInfo.GOODS_CODE}>
+                                            <span className={GoodsDetailMainStyle['goods-discount-price']}>
+                                                {Number(goodsPrice * amount).toLocaleString('ko-KR')}원
+                                            </span>
+                                            <span className={GoodsDetailMainStyle['goods-discount-rate']}>
+                                                {goodsInfo.GOODS_DISCOUNT}%
+                                            </span>
+                                        </div>
+                                        <div className={GoodsDetailMainStyle['goods-original-price']}>
+                                            <span>
+                                                판매가 : {(discountPrice * amount).toLocaleString('ko-KR')}원
+                                            </span>
+                                        </div>
+                                    </>
                         }
 
                             <div className={GoodsDetailMainStyle['goods-info']}>
@@ -90,16 +136,35 @@ const GoodsDetailMain = () => {
                                         max={goodsInfo.GOODS_AMOUNT}
                                         value={amount}
                                 />
-                                <Link className={GoodsDetailMainStyle['goods-buy-Link']} to={'/users/home'}>
-                                    <button className={`btn btn-success ${GoodsDetailMainStyle['goods-button']}`}>바로구매</button>
-                                </Link>
-                                <Link className={GoodsDetailMainStyle['goods-buy-Link']} to={'/users/home'}>
-                                    <button className={`btn btn-primary ${GoodsDetailMainStyle['goods-button']}`}>장바구니</button>
-                                </Link>
-                                
-                                <Link className={GoodsDetailMainStyle['goods-buy-Link']} to={'/goods/goodslist'}>
-                                    <button className={`btn btn-secondary ${GoodsDetailMainStyle['goods-button']}`}>이전으로</button>
-                                </Link>
+
+                                { goodsInfo.GOODS_AMOUNT === 0 
+                                    ? // 상품 재고가 없을 경우
+                                        <>
+                                            <Link className={GoodsDetailMainStyle['goods-buy-Link']} to='#' onClick={(e) => soldOutClick(e)}>
+                                                <button className={`btn btn-secondary ${GoodsDetailMainStyle['goods-button']}`}>바로구매</button>
+                                            </Link>
+                                            <Link className={GoodsDetailMainStyle['goods-buy-Link']} to='#' onClick={(e) => soldOutClick(e)}>
+                                                <button className={`btn btn-secondary ${GoodsDetailMainStyle['goods-button']}`}>장바구니</button>
+                                            </Link>
+                                            
+                                            <Link className={GoodsDetailMainStyle['goods-buy-Link']} to={'/goods/goodslist'}>
+                                                <button className={`btn btn-secondary ${GoodsDetailMainStyle['goods-button']}`}>이전으로</button>
+                                            </Link>
+                                        </>
+                                    : // 상품 재고가 있을 경우
+                                        <>
+                                            <Link className={GoodsDetailMainStyle['goods-buy-Link']} to={'/orders/goodsOrders'}>
+                                                <button className={`btn btn-success ${GoodsDetailMainStyle['goods-button']}`}>바로구매</button>
+                                            </Link>
+                                            <Link className={GoodsDetailMainStyle['goods-buy-Link']} to={'/users/home'}> {/* 장바구니 구현 후, 링크 변경 */}
+                                                <button className={`btn btn-primary ${GoodsDetailMainStyle['goods-button']}`}>장바구니</button>
+                                            </Link>
+                                            
+                                            <Link className={GoodsDetailMainStyle['goods-buy-Link']} to={'/goods/goodslist'}>
+                                                <button className={`btn btn-secondary ${GoodsDetailMainStyle['goods-button']}`}>이전으로</button>
+                                            </Link>
+                                        </>
+                                }
                             </div>
 
                         </div>
@@ -109,7 +174,12 @@ const GoodsDetailMain = () => {
                 </div> {/* //. goods-detail-header */}
 
                 <div className={`container ${GoodsDetailMainStyle['goods-detail-container']}`}>
-
+                    <div className={GoodsDetailMainStyle['container-info']}>
+                        <textarea className={`form-control ${GoodsDetailMainStyle['info-textarea']}`} 
+                                  value={goodsInfo.GOODS_CONTENT}
+                                  readOnly
+                        />
+                    </div>
                 </div> {/* //. goods-detail-container */}
 
                 <div className={`container ${GoodsDetailMainStyle['goods-detail-footer']}`}>

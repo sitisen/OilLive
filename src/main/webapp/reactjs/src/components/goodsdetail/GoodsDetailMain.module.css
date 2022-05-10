@@ -1,6 +1,6 @@
 /* ----- 전체 레이아웃 CSS */
 .goods-detail-wrap {
-    height: 2000px;
+    height: 1500px;
     padding-top: 2%;
     padding-bottom: 5%;
     box-sizing: border-box;
@@ -9,7 +9,7 @@
 
 /* ----- 본문 레이아웃 CSS */
 .goods-detail-layout {
-    width: 950px !important;
+    width: 970px !important;
     height: 100%;
     box-shadow: 1px 1px 1px;
     border: 0.5px solid rgba(150, 150, 150, 0.5);
@@ -22,7 +22,7 @@
 .goods-detail-header {
     display: flex;
     width: 100%;
-    height: 20%;
+    height: 25%;
 }
 
 /* 상품 이미지 레이아웃 CSS */
@@ -31,10 +31,21 @@
     justify-content: right;
     width: 50%;
     height: 100%;
+    position: relative;
 }
 
 /* 상품 이미지 CSS */
 .goods-img {
+    width: 100%;
+    height: 100%;
+}
+
+/* 품절 시, Sold Out 이미지 */
+.goods-img-sold {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     width: 100%;
     height: 100%;
 }
@@ -44,12 +55,15 @@
     width: 50%;
     height: 100%;
     padding: 20px;
+    border: 1px solid lightgray;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
 }
 
 /* 상품 구매 옵션 레이아웃 CSS */
 .info-content {
     width: 100%;
-    height: 89%;
+    height: 87%;
 }
 
 /* 할인 중일 경우, 기존 가격 */
@@ -84,7 +98,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    height: 35%;
+    height: 33%;
     font-size: 17px;
 }
 
@@ -104,12 +118,13 @@
 /* "수량" Span CSS*/
 .goods-amount-span {
     position: absolute;
-    top: 50px;
+    top: 45px;
     left: 20px;
     font-weight: bold;
 }
 
 .amount-input {
+    margin-right: 3%;
     width: 18% !important;
     height: 30.5%;
     font-size: 17px;
@@ -123,14 +138,32 @@
 /* ----- 상품 설명 레이아웃 CSS */
 .goods-detail-container {
     width: 100%;
-    height: 40%;
-    border: 1px solid blue;
+    height: 15%;
+}
+
+.container-info {
+    margin-top: 2%;
+    padding: 20px;
+    height: 90%;
+    border: 1px solid lightgray;
+    border-radius: 15px;
+}
+
+.info-textarea {
+    height: 100%;
+    resize: none;
+    border: none !important;
+}
+
+.info-textarea:focus {
+    border-color: rgb(107, 187, 72);
+    box-shadow: 0 0 6px 0 rgb(107, 187, 72);
 }
 
 /* ----- 상품 안내사항 레이아웃 CSS */
 .goods-detail-footer {
     width: 100%;
-    height: 40%;
+    height: 60%;
 }
 
 /* 상품 안내사항 머리말 */
