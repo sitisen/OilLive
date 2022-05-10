@@ -28,7 +28,6 @@ const QnaMain = () => {
         for(var i = 0; i < qnaList.length; i++){
             var title = QnaMainStyle['qna-list-title'];
             var titleClick = QnaMainStyle['qna-list-title-click'];
-            var backOn = QnaMainStyle['qna-list-title'];
             var contentOn = QnaMainStyle['qna-list-content'];
             var contentOff = QnaMainStyle['display-off'];
 
