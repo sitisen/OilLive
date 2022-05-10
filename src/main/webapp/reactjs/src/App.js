@@ -11,6 +11,7 @@ import GoodsList from './pages/GoodsList';
 import GoodsDetail from './pages/GoodsDetail';
 import Qna from './pages/Qna';
 import QboardWrite from './pages/QboardWrite';
+import GoodsOrders from './pages/GoodsOrders';
 
 
 // Page Routing Setting
@@ -27,7 +28,7 @@ function App() {
       <Route path='/goods/goodsdetail' element={<GoodsDetail />} />
       <Route path='/qna/qna' element={<Qna />} />
       <Route path='/qboard/qboardWrite' element={<QboardWrite />} />
-
+      <Route path='/orders/goodsOrders' element={<GoodsOrders />} />
     </Routes>
   );
 }
