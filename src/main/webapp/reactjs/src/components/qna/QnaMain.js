@@ -15,24 +15,38 @@ const QnaMain = () => {
     // ref 선언
     const qnaRef = useRef([]);
 
+    /* 이미지, css효과 변경을 위한 변수선언 */
+    const [change, setChange] = useState({
+        displayYN : false,
+        imgYN : false,
+        backYN : false
+    });
+
     // qna 제목 클릭시 classname 변경, 이미지 변경
     const titleClick = (code) => {
         
         for(var i = 0; i < qnaList.length; i++){
+            var title = QnaMainStyle['qna-list-title'];
+            var titleClick = QnaMainStyle['qna-list-title-click'];
+            var backOn = QnaMainStyle['qna-list-title'];
+            var contentOn = QnaMainStyle['qna-list-content'];
+            var contentOff = QnaMainStyle['display-off'];
+
             if(code === i){
-                if(qnaRef.current[code].className === 'QnaMain_display-off__w+rP3'){
-                    qnaRef.current[code].className = 'QnaMain_qna-list-content__wf9D0';
-                    qnaRef.current['img'+code].src='/images/logo/qna-open-logo.png';
-                    qnaRef.current['back'+code].className='QnaMain_qna-list-title-click__MtaWq';
+                
+                if(qnaRef.current[code].className === contentOff){
+                    qnaRef.current[code].className = contentOn;
+                    qnaRef.current['img'+code].src = '/images/logo/qna-open-logo.png';
+                    qnaRef.current['back'+code].className = titleClick;
                 } else {
-                    qnaRef.current[code].className = 'QnaMain_display-off__w+rP3';
-                    qnaRef.current['img'+code].src='/images/logo/qna-close-logo.png';
-                    qnaRef.current['back'+code].className='QnaMain_qna-list-title__41k2x';
+                    qnaRef.current[code].className = contentOff;
+                    qnaRef.current['img'+code].src = '/images/logo/qna-close-logo.png';
+                    qnaRef.current['back'+code].className = title;
                 }
             } else {
-                qnaRef.current[i].className = 'QnaMain_display-off__w+rP3';
-                qnaRef.current['img'+i].src='/images/logo/qna-close-logo.png';
-                qnaRef.current['back'+i].className='QnaMain_qna-list-title__41k2x';
+                qnaRef.current[i].className = contentOff;
+                qnaRef.current['img'+i].src = '/images/logo/qna-close-logo.png';
+                qnaRef.current['back'+i].className = title;
             }
         }
         
