@@ -15,13 +15,6 @@ const QnaMain = () => {
     // ref 선언
     const qnaRef = useRef([]);
 
-    /* 이미지, css효과 변경을 위한 변수선언 */
-    const [change, setChange] = useState({
-        displayYN : false,
-        imgYN : false,
-        backYN : false
-    });
-
     // qna 제목 클릭시 classname 변경, 이미지 변경
     const titleClick = (code) => {
         
