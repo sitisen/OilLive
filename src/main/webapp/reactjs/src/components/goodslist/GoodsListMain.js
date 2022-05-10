@@ -183,11 +183,11 @@ const GoodslistMain = () => {
                                         return ( 
                                             // 해당 상품의 재고가 없을 경우,
                                             list.GOODS_AMOUNT === 0 
-                                            ?   <Link className={GoodslistMainStyle['goods-item-Link']} 
+                                            ?   <Link key={list.RNUM} className={GoodslistMainStyle['goods-item-Link']} 
                                                       to='/goods/goodsdetail' 
                                                       state={{ data: list }}
                                                  >
-                                                        <div key={list.RNUM} className={GoodslistMainStyle['goods-item']}>
+                                                        <div className={GoodslistMainStyle['goods-item']}>
                                                             <div className={GoodslistMainStyle['goods-item-img']}>
                                                                 <img className={GoodslistMainStyle['item-img-sold']} alt='SoldOut' src='/images/icon/SoldOut.png' />
                                                                 <img className={GoodslistMainStyle['item-img']} alt='test' src='/images/icon/Engine-Oil-Zic.jpg' />
@@ -205,11 +205,11 @@ const GoodslistMain = () => {
 
                                             // 해당 상품이 할인 중이지 않을 경우,
                                             : list.GOODS_DISCOUNT === 0
-                                            ?   <Link className={GoodslistMainStyle['goods-item-Link']} 
+                                            ?   <Link key={list.RNUM} className={GoodslistMainStyle['goods-item-Link']} 
                                                       to='/goods/goodsdetail' 
                                                       state={{ data: list }}
                                                 >
-                                                    <div key={list.RNUM} className={GoodslistMainStyle['goods-item']}>
+                                                    <div className={GoodslistMainStyle['goods-item']}>
                                                             <div className={GoodslistMainStyle['goods-item-img']}>
                                                                 <img className={GoodslistMainStyle['item-img']} alt='test' src='/images/icon/Indoor-UnderScore-Defuser.jpg' />
                                                             </div>
@@ -226,11 +226,11 @@ const GoodslistMain = () => {
                                                 
 
                                             // 해당 상품이 할인 중일 경우,
-                                            :   <Link className={GoodslistMainStyle['goods-item-Link']} 
+                                            :   <Link key={list.RNUM} className={GoodslistMainStyle['goods-item-Link']} 
                                                       to='/goods/goodsdetail' 
                                                       state={{ data: list }}
                                                 >
-                                                    <div key={list.RNUM} className={GoodslistMainStyle['goods-item']}>
+                                                    <div className={GoodslistMainStyle['goods-item']}>
 
                                                             <div className={GoodslistMainStyle['goods-item-img']}>
                                                                 <img className={GoodslistMainStyle['item-img']} alt='test' src='/images/icon/Indoor-Mobenta-PhoneCharge.jpg' />
