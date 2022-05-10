@@ -1,0 +1,111 @@
+/* 전체 레이아웃 */
+.qboard-write-layout {
+    text-align: center;
+    background-color: rgb(233, 235, 238);
+    height: 100%;
+    padding-bottom: 100px;
+}
+
+/* 폼 div */
+.qboard-main {
+    height: 90%;
+    box-shadow: 1px 1px 1px;
+    border: 0.5px solid rgba(150, 150, 150, 0.5);
+    border-radius: 12px;
+    background-color: white;
+    width: 69.5%;
+    margin: 0 auto;
+    margin-top: 15px;
+    padding-top: 20px;
+    padding-bottom: 50px;
+}
+
+/* label div */
+.qboard-label-div {
+    text-align: left;
+    padding-left: 25px;
+}
+
+.qboard-label-div hr {
+    width: 98%;
+    margin-bottom: 40px;
+}
+
+/* 폼 div */
+.qboard-form-div {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border: 0.5px solid rgba(150, 150, 150, 0.5);
+    border-radius: 12px;
+    width: 70%;
+    margin: 0 auto;
+}
+
+/* 제목, input div */
+.qboard-flex {
+    display: flex;
+    margin-top: 70px;
+    margin-bottom: 70px;
+    text-align: center;
+}
+
+/* label */
+.qboard-label {
+    margin-left: 50px;
+    font-size: 17px;
+    padding-top: 7px;
+}
+
+/* input */
+.qboard-input {
+    width: 60%;
+    height: 50px;
+    border : 0.1em solid rgba(150, 150, 150, 0.5);
+    outline: none;
+    padding-left: 12px;
+    margin-left: 150px;
+}
+
+.qboard-input:focus {
+    border-color: rgb(107, 187, 72);
+    box-shadow: 0 0 6px 0 rgb(107, 187, 72);
+}
+
+/* textarea */
+.qboard-input-textarea {
+    width: 60%;
+    padding-left: 12px;
+    padding-top: 12px;
+    margin-left: 150px;
+    border : 0.1em solid rgba(150, 150, 150, 0.5);
+    outline: none;
+}
+
+.qboard-input-textarea:focus {
+    border-color: rgb(107, 187, 72);
+    box-shadow: 0 0 6px 0 rgb(107, 187, 72);
+}
+
+/* 아이디 div */
+.qboard-id {
+    margin-left: 150px;
+    width: 60%;
+}
+
+/* 첨부파일 */
+.qboard-attached {
+    margin-left: 180px;
+    width: 60%;
+}
+
+/* 버튼 div */
+.button {
+    margin-bottom: 100px;
+    margin-top: 100px;
+}
+
+/* 버튼 css */
+.qna-write-button {
+    width: 30%;
+    height: 50px;
+}
