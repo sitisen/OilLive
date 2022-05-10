@@ -689,7 +689,7 @@ const Main = () => {
                           {list.osNm}
                         </div>
                         <div className={mainStyle['ranking-item-price']}>
-                          {list.price}
+                          <span>{Number(list.price).toLocaleString('ko-KR')}원</span>
                         </div>
                       </div>
                     )
@@ -726,7 +726,7 @@ const Main = () => {
                           {list.osNm}
                         </div>
                         <div className={mainStyle['ranking-item-price']}>
-                          {list.price}
+                          <span>{Number(list.price).toLocaleString('ko-KR')}원</span>
                         </div>
                       </div>
                     )
