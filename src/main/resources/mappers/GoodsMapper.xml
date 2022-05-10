@@ -28,7 +28,7 @@
 	<!-- 상품 목록 조회 -->
 	<select id="selectGoodsList" parameterType="Map" resultType="Map">
 		SELECT G.*
-		  FROM (  SELECT ROWNUM RNUM, goods_name, goods_kind, goods_price, 
+		  FROM (  SELECT ROWNUM RNUM, goods_code, goods_name, goods_kind, goods_price, 
 		                 goods_amount, goods_content, goods_discount, goods_date
         		    FROM goods
         		    WHERE 1 = 1
