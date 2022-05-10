@@ -1,0 +1,151 @@
+/* ----- 전체 레이아웃 CSS */
+.orders-wrap {
+    padding-top: 2%;
+    padding-bottom: 5%;
+    box-sizing: border-box;
+    background-color: rgb(233, 235, 238);
+}
+
+/* ----- 본문 레이아웃 CSS */
+.orders-layout {
+    width: 50% !important;
+    height: 100%;
+    box-shadow: 1px 1px 1px;
+    border: 0.5px solid rgba(150, 150, 150, 0.5);
+    border-radius: 12px;
+    padding: 20px;
+    background-color: white;
+}
+
+/* ----- 머리말 레이아웃 CSS */
+.orders-header {
+    height: 5%;
+}
+
+/* ----- 정보 레이아웃 CSS */
+.orders-container {
+    height: 95%;
+}
+
+/* ----- 정보 테이블 CSS */
+.orders-table {
+    vertical-align: middle !important;
+    border: rgb(200, 200, 200) !important;
+}
+
+.orders-table th {
+    width: 20%;
+    text-align: right;
+    background-color: rgb(233, 233, 233) !important;
+}
+
+/* ----- 정보 테이블(가로) CSS */
+.orders-table-row {
+    vertical-align: middle !important;
+    border: rgb(200, 200, 200) !important;
+}
+
+.orders-table-row th {
+    background-color: rgb(233, 233, 233) !important;
+}
+
+/* ----- 카드 정보 테이블 CSS */
+.card-table {
+    vertical-align: middle;
+}
+
+.card-table th {
+    width: 45%;
+    text-align: right;
+    font-weight: normal;
+}
+
+.card-table td {
+    text-align: left;
+    padding: 1% 2%;
+}
+
+/* ----- 버튼 CSS */
+.orders-button {
+    margin: 0 3%;
+}
+
+/* ----- select 태그 CSS */
+.card-select {
+    width: 15%;
+    border : 0.1em solid rgba(150, 150, 150, 0.5);
+    outline: none;
+    padding-left: 10px;
+}
+
+.card-select:focus {
+    border-color: rgb(107, 187, 72);
+    box-shadow: 0 0 6px 0 rgb(107, 187, 72);
+}
+
+/* ----- input 태그 CSS */
+.card-input {
+    width: 15%;
+    border : 0.1em solid rgba(150, 150, 150, 0.5);
+    outline: none;
+    padding-left: 10px;
+    margin-right: 2%;
+}
+
+.card-input:focus {
+    border-color: rgb(107, 187, 72);
+    box-shadow: 0 0 6px 0 rgb(107, 187, 72);
+}
+
+/* ----- 카드 정보 CSS */
+.card-layout {
+    margin-bottom: 2%;
+    text-align: center;
+    border: 1px solid rgb(200, 200, 200);
+}
+
+/* 카드 정보 선택 CSS */
+.card-status {
+    margin-bottom: 2%;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.card-status label {
+    margin-left: 5px;
+    margin-right: 5%;
+}
+
+/* 카드사 정보 CSS */
+.card-company {
+    margin-bottom: 2%;
+}
+
+/* 카드 번호 CSS */
+.card-number {
+    margin-bottom: 2%;
+}
+
+/* 카드 유효기간 CSS */
+.card-validate {
+    margin-bottom: 2%;
+}
+
+/* 카드 CVC CSS */
+.card-cvc {
+    margin-bottom: 2%;
+}
+
+/* 카드 비밀번호 CSS */
+.card-password {
+    margin-bottom: 2%;
+}
+
+/* ----- 결제하기 버튼 CSS */
+.orders-confirm {
+    text-align: center;
+}
+
+.orders-confirm button {
+    font-size: 21px;
+}
