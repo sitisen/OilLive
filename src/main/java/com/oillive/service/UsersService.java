@@ -38,4 +38,7 @@ public interface UsersService {
 	//--------------- 비밀번호 변경 --------------- //
 	public int pwdUpdate(HashMap<String, String> map);
 	
+	//--------------- 유저 코드값 가져오기 --------------- //
+	public int getUserCode(String userId);
+	
 }

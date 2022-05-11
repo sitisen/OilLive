@@ -1,13 +1,19 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 /* import css */
 import QboardWriteMainStyle from './QboardWriteMain.module.css'
 
+/* import service */
+import QBoardService from 'services/QBoardService';
+
 const QboardWriteMain = () => {
 
     // 페이지 이동해주는 변수
     const navigate = useNavigate();
+
+    // Ref 변수 선언
+    const qboardRef = useRef([]);
 
     // 첫 화면 렌더링
     useEffect(() => {
@@ -16,7 +22,47 @@ const QboardWriteMain = () => {
             alert('로그인하고 이용할 수 있는 기능입니다.');
             navigate('/users/login', {replace:true} );
         }
-    }, []);
+    }, [navigate]);
+
+    // 저장하기 버튼 클릭 이벤트
+    const onSave = () => {
+        var title = qboardRef.current['title'];
+        var content = qboardRef.current['content'];
+        var file = qboardRef.current['file'].files;
+
+        // 제목 필수입력
+        if(title.value === ''){
+            alert('제목을 입력해주세요.');
+            title.focus();
+        // 내용 필수입력
+        } else if(content === ''){
+            alert('내용을 입력해주세요.');
+            content.focus();
+        // 조건 만족시 service
+        } else {
+            let formData = new FormData(); // formData 객체 생성
+            for(var i = 0; i < file.length; i++){
+                formData.append('files', file[i]);   // 이미지 파일 저장
+            }
+            
+            QBoardService.qBoardWrite(sessionStorage.getItem('userId'),title.value, content.value).then( res =>{
+                if(res !== 0){
+                    // 첨부파일 없는경우
+                    if(file.length === 0) {
+                        alert('문의내용이 저장되었습니다.');
+                        navigate('/', {replace:true} );
+                    // 첨부파일 있는경우
+                    } else {
+                        QBoardService.qBoardImgUpload(formData).then( re => {
+                            console.log(re.data);
+                        });
+                    }
+                } else {
+                    alert('작성실패!');
+                }
+            });
+        }
+    }
 
     return (
         <div className={QboardWriteMainStyle['qboard-write-layout']}><br />
@@ -36,23 +82,25 @@ const QboardWriteMain = () => {
                     <div className={QboardWriteMainStyle['qboard-flex']}>
                         <label htmlFor='title' className={QboardWriteMainStyle['qboard-label']}>문의제목</label>
                         <input type='text' id='title' className={QboardWriteMainStyle['qboard-input']}
-                            placeholder='제목을 입력해주세요'/>
+                            ref={el => qboardRef.current['title'] = el} placeholder='제목을 입력해주세요'/>
                     </div>
                     <div className={QboardWriteMainStyle['qboard-flex']}>
                         <label htmlFor='content' className={QboardWriteMainStyle['qboard-label']} >문의내용</label>
                         <textarea type='text' id='content' className={QboardWriteMainStyle['qboard-input-textarea']} 
-                            placeholder='내용을 입력해주세요' rows='15' />
+                            ref={el => qboardRef.current['content'] = el} placeholder='내용을 입력해주세요' rows='15' />
                     </div>
                     <div className={QboardWriteMainStyle['qboard-flex']}>
                         <label htmlFor='attached' className={QboardWriteMainStyle['qboard-label']}>첨부</label>
                         <input type='file' id='attached' className={QboardWriteMainStyle['qboard-attached']}
-                            accept='image/gif,image/jpeg,image/png'/>
+                            ref={el => qboardRef.current['file'] = el} accept='image/*' />
                     </div>
                     <div className={QboardWriteMainStyle['button']}>
                         <button className={`btn btn-success ${QboardWriteMainStyle['qna-write-button']}`}
-                            type='button'>저장하기</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <Link to='/'><button className={`btn btn-secondary ${QboardWriteMainStyle['qna-write-button']}`}
-                            type='button'>취소</button></Link>
+                            type='button' onClick={onSave}>저장하기</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <Link to='/'>
+                            <button className={`btn btn-secondary ${QboardWriteMainStyle['qna-write-button']}`}
+                            type='button'>취소</button>
+                        </Link>
                     </div>
                 </div>
             </div>

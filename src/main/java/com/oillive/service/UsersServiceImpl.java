@@ -285,6 +285,12 @@ public class UsersServiceImpl implements UsersService{
 	@Override
 	public int pwdUpdate(HashMap<String, String> map) {
 		return usersDao.pwdUpdate(map);
+	}
+
+	//--------------- 유저코드 반환 --------------- //
+	@Override
+	public int getUserCode(String userId) {
+		return usersDao.getUserCode(userId);
 	}	
 	
 }

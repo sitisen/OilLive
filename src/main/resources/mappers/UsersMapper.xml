@@ -69,4 +69,11 @@
 		SET user_pwd = #{userpwd}
 		WHERE user_id = #{userid}
 	</update>
+	
+	<!-- 유저코드 반환 -->
+	<select id="getUserCode" parameterType="String" resultType="int">
+		SELECT user_code
+		FROM users
+		WHERE user_id = #{userid}
+	</select>
 </mapper>

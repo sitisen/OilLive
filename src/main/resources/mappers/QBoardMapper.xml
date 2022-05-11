@@ -5,5 +5,11 @@
 
 <mapper namespace="com.oillive.dao.QBoardDao">
 	
+	<!-- 문의 작성 -->
+	<insert id="qBoardWrite" parameterType="QBoardVO">
+		INSERT INTO q_board 
+		VALUES ( seq_q_board.NEXTVAL , #{userCode} , #{qBoardTitle} , #{qBoardQContent} , null
+		 , SYSDATE , null , 'N' , 'Y')
+	</insert>
 	
 </mapper>
