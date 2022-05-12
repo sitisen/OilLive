@@ -1,10 +1,6 @@
 package com.oillive.controller;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -18,7 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.oillive.service.QBoardService;
 import com.oillive.service.UploadService;
 import com.oillive.service.UsersService;
-import com.oillive.vo.PhotoVO;
 import com.oillive.vo.QBoardVO;
 
 @RestController
@@ -58,32 +53,9 @@ public class QBoardController {
 	
 	//--------------- 문의 이미지 업로드 --------------- //
 	@PostMapping("/qBoardImgUpload")
-	public int qBoardImgUpload(@RequestParam(value="files", required=false) MultipartFile[] files) throws IllegalStateException, IOException {
-		
-		// 결과값 변수 선언
-		int result = 0;
-		
-		for (MultipartFile mf : files) {
-			if(!mf.isEmpty()) {
-				PhotoVO vo = new PhotoVO();
-				// 수정파일명
-				vo.setPhotoReName(UUID.randomUUID().toString());
-				
-				// 경로
-				String filepath = "C:\\workspace\\OilLive\\src\\main\\webapp\\reactjs\\public\\images\\";
-				vo.setPhotoPath(filepath);
-				
-				// 원본 파일명
-				String originFileName = mf.getOriginalFilename(); 
-				vo.setPhotoName(originFileName);
-				
-				
-			}
-		}
-		
-		
-		
-		return result;
+	public int qBoardImgUpload(@RequestParam("files") MultipartFile file) throws IllegalStateException, IOException  {
+		// 업로드
+		return uploadService.upLoad("Q", file);
 	}
 }
 
