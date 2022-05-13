@@ -2,9 +2,9 @@ package com.oillive.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 
 import javax.servlet.ServletContext;
-import javax.swing.filechooser.FileSystemView;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,28 +26,44 @@ public class UploadServiceImpl implements UploadService{
 	@Override
 	public int upLoad(String kind, MultipartFile file) throws IllegalStateException, IOException {
 
-		// 파일 업로드 로직
+		// 파일 DB에 저장할 VO 객체생성
 		PhotoVO vo = new PhotoVO();
 		
 		// 실제 저장장소
 		String rootpath = servletContext.getRealPath("/reactjs").toString();
-		String realpath = rootpath + "\\public\\images\\uploads\\" + file.getOriginalFilename();
+		String realpath = rootpath + "\\public\\images\\uploads";
+		
+		// 중복방지 함수선언
+		Date date = new Date();
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append(date.getTime());
+		sb.append(file.getOriginalFilename());
 		
 		File fe = new File(realpath);
+		File dest = new File(realpath + "\\" + sb.toString());
 		
-		file.transferTo(fe);
-		
-		
-		
-		switch(kind) {
-//			case "Q" :	return uploadDao.upLoadQ(file);
-//						break;
-//			case "G" :	return uploadDao.upLoadG(file);
-//						break;
-//			case "E" :	return uploadDao.upLoadE(file);
-//						break;
+		// 폴더가 존재하지 않을때 폴더생성
+		if(!fe.exists()) {
+			fe.mkdir();
+		// 폴더가 존재하면 파일 생성
+		} else {
+	        file.transferTo(dest);
 		}
-	
-		return 0;
+		// react path 변수 선언
+		String reactPath = "\\images\\uploads\\";
+		vo.setPhotoPath(reactPath);
+		
+		vo.setPhotoName(file.getOriginalFilename().toString());	// 원본파일명
+		vo.setPhotoReName(sb.toString());						// 수정파일명
+		
+		// 코드별 이미지 업로드
+		switch(kind) {
+			case "Q" :	return uploadDao.upLoadQ(vo);
+			case "G" :	return uploadDao.upLoadG(vo);
+			case "E" :	return uploadDao.upLoadE(vo);
+			default : return 0;
+		}
+		
 	}
 }
