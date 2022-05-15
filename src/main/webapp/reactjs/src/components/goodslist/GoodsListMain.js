@@ -189,8 +189,8 @@ const GoodslistMain = () => {
                                                  >
                                                         <div className={GoodslistMainStyle['goods-item']}>
                                                             <div className={GoodslistMainStyle['goods-item-img']}>
-                                                                <img className={GoodslistMainStyle['item-img-sold']} alt='SoldOut' src='/images/icon/SoldOut.png' />
-                                                                <img className={GoodslistMainStyle['item-img']} alt='test' src='/images/icon/Engine-Oil-Zic.jpg' />
+                                                                <img className={GoodslistMainStyle['item-img-sold']} alt='SoldOut' src='/images/goods/SoldOut.png' />
+                                                                <img className={GoodslistMainStyle['item-img']} alt='test' src='/images/goods/Engine-Oil-Zic.jpg' />
                                                             </div>
                                                             <div className={GoodslistMainStyle['goods-item-title']}>
                                                                 <span className={GoodslistMainStyle['item-span-sold']}>{list.GOODS_NAME}</span>
@@ -211,7 +211,7 @@ const GoodslistMain = () => {
                                                 >
                                                     <div className={GoodslistMainStyle['goods-item']}>
                                                             <div className={GoodslistMainStyle['goods-item-img']}>
-                                                                <img className={GoodslistMainStyle['item-img']} alt='test' src='/images/icon/Indoor-UnderScore-Defuser.jpg' />
+                                                                <img className={GoodslistMainStyle['item-img']} alt='test' src='/images/goods/Indoor-UnderScore-Defuser.jpg' />
                                                             </div>
                                                             <div className={GoodslistMainStyle['goods-item-title']}>
                                                                 <span>{list.GOODS_NAME}</span>
@@ -233,7 +233,7 @@ const GoodslistMain = () => {
                                                     <div className={GoodslistMainStyle['goods-item']}>
 
                                                             <div className={GoodslistMainStyle['goods-item-img']}>
-                                                                <img className={GoodslistMainStyle['item-img']} alt='test' src='/images/icon/Indoor-Mobenta-PhoneCharge.jpg' />
+                                                                <img className={GoodslistMainStyle['item-img']} alt='test' src='/images/goods/Indoor-Mobenta-PhoneCharge.jpg' />
                                                             </div>
                                                             <div className={GoodslistMainStyle['goods-item-title']}>
                                                                 <span>{list.GOODS_NAME}</span>
