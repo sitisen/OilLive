@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 // import css
 import GoodsDetailMainStyle from './GoodsDetailMain.module.css';
@@ -10,6 +10,8 @@ const GoodsDetailMain = () => {
     const goodsInfo = useLocation().state.data; // 선택된 상품 정보
     const goodsPrice = goodsInfo.GOODS_PRICE; // 상품 가격
     const discountPrice = goodsInfo.GOODS_PRICE - (goodsInfo.GOODS_PRICE * (goodsInfo.GOODS_DISCOUNT * 0.01)); // 할인율로 할인된 가격
+
+    const navigate = useNavigate();
 
     /* useState 부분 */
     const [ amount, setAmount ] = useState(1); // 사용자가 선택한 상품 개수
@@ -33,9 +35,15 @@ const GoodsDetailMain = () => {
         }
     };
 
-    const soldOutClick = (e) => {
+    const purchaseClick = (e) => {
         e.preventDefault();
-        alert('해당 상품은 품절되었습니다.');
+
+        if(sessionStorage.getItem('userId') === null){
+            alert('로그인하고 이용할 수 있는 기능입니다.');
+            navigate('/users/login', {replace:true} );
+        } else if( goodsInfo.GOODS_AMOUNT === 0 ) {
+            alert('해당 상품은 품절되었습니다.');
+        }
     }
 
     /* ===== 실제 페이지 렌더링 =====  */
@@ -48,12 +56,12 @@ const GoodsDetailMain = () => {
 
                             ? // 상품 재고가 없을 경우
                             <div className={GoodsDetailMainStyle['header-img-layout']}>
-                                <img className={GoodsDetailMainStyle['goods-img-sold']} alt='SoldOut' src='/images/icon/SoldOut.png' />
-                                <img className={GoodsDetailMainStyle['goods-img']} alt='test' src='/images/icon/Indoor-BullsOne-Defuser.jpg' />
+                                <img className={GoodsDetailMainStyle['goods-img-sold']} alt='SoldOut' src='/images/goods/SoldOut.png' />
+                                <img className={GoodsDetailMainStyle['goods-img']} alt='test' src='/images/goods/Indoor-BullsOne-Defuser.jpg' />
                             </div>
                             : // 상품 재고가 있을 경우
                             <div className={GoodsDetailMainStyle['header-img-layout']}>
-                                <img className={GoodsDetailMainStyle['goods-img']} alt='test' src='/images/icon/Indoor-BullsOne-Defuser.jpg' />
+                                <img className={GoodsDetailMainStyle['goods-img']} alt='test' src='/images/goods/Indoor-BullsOne-Defuser.jpg' />
                             </div>
                         }
                     <div className={GoodsDetailMainStyle['header-option-layout']}>
@@ -137,13 +145,13 @@ const GoodsDetailMain = () => {
                                         value={amount}
                                 />
 
-                                { goodsInfo.GOODS_AMOUNT === 0 
+                                { goodsInfo.GOODS_AMOUNT === 0
                                     ? // 상품 재고가 없을 경우
                                         <>
-                                            <Link className={GoodsDetailMainStyle['goods-buy-Link']} to='#' onClick={(e) => soldOutClick(e)}>
+                                            <Link className={GoodsDetailMainStyle['goods-buy-Link']} to='#' onClick={(e) => purchaseClick(e)}>
                                                 <button className={`btn btn-secondary ${GoodsDetailMainStyle['goods-button']}`}>바로구매</button>
                                             </Link>
-                                            <Link className={GoodsDetailMainStyle['goods-buy-Link']} to='#' onClick={(e) => soldOutClick(e)}>
+                                            <Link className={GoodsDetailMainStyle['goods-buy-Link']} to='#' onClick={(e) => purchaseClick(e)}>
                                                 <button className={`btn btn-secondary ${GoodsDetailMainStyle['goods-button']}`}>장바구니</button>
                                             </Link>
                                             
@@ -151,19 +159,42 @@ const GoodsDetailMain = () => {
                                                 <button className={`btn btn-secondary ${GoodsDetailMainStyle['goods-button']}`}>이전으로</button>
                                             </Link>
                                         </>
-                                    : // 상품 재고가 있을 경우
-                                        <>
-                                            <Link className={GoodsDetailMainStyle['goods-buy-Link']} to={'/orders/goodsOrders'}>
-                                                <button className={`btn btn-success ${GoodsDetailMainStyle['goods-button']}`}>바로구매</button>
-                                            </Link>
-                                            <Link className={GoodsDetailMainStyle['goods-buy-Link']} to={'/users/home'}> {/* 장바구니 구현 후, 링크 변경 */}
-                                                <button className={`btn btn-primary ${GoodsDetailMainStyle['goods-button']}`}>장바구니</button>
-                                            </Link>
-                                            
-                                            <Link className={GoodsDetailMainStyle['goods-buy-Link']} to={'/goods/goodslist'}>
-                                                <button className={`btn btn-secondary ${GoodsDetailMainStyle['goods-button']}`}>이전으로</button>
-                                            </Link>
-                                        </>
+                                    
+                                    : sessionStorage.getItem('userId') === null // 상품 재고가 있을 경우
+                                        ? // 로그인 하지 않았을 경우
+                                            <>
+                                                <Link className={GoodsDetailMainStyle['goods-buy-Link']} 
+                                                    to={'/orders/goodsOrders'}
+                                                    state={{ data: goodsInfo }}
+                                                    onClick={(e) => purchaseClick(e)}
+                                                >
+                                                    <button className={`btn btn-secondary ${GoodsDetailMainStyle['goods-button']}`}>바로구매</button>
+                                                </Link>
+                                                <Link className={GoodsDetailMainStyle['goods-buy-Link']} to='#' onClick={(e) => purchaseClick(e)}>
+                                                    <button className={`btn btn-secondary ${GoodsDetailMainStyle['goods-button']}`}>장바구니</button>
+                                                </Link>
+                                                
+                                                <Link className={GoodsDetailMainStyle['goods-buy-Link']} to={'/goods/goodslist'}>
+                                                    <button className={`btn btn-secondary ${GoodsDetailMainStyle['goods-button']}`}>이전으로</button>
+                                                </Link>
+                                            </>
+
+                                        : // 로그인 했을 경우
+                                            <>
+                                                <Link className={GoodsDetailMainStyle['goods-buy-Link']} 
+                                                    to={'/orders/goodsOrders'}
+                                                    state={{ data: goodsInfo }}
+                                                >
+                                                    <button className={`btn btn-success ${GoodsDetailMainStyle['goods-button']}`}>바로구매</button>
+                                                </Link>
+                                                <Link className={GoodsDetailMainStyle['goods-buy-Link']} to={'/users/home'}> {/* 장바구니 구현 후, 링크 변경 */}
+                                                    <button className={`btn btn-primary ${GoodsDetailMainStyle['goods-button']}`}>장바구니</button>
+                                                </Link>
+                                                
+                                                <Link className={GoodsDetailMainStyle['goods-buy-Link']} to={'/goods/goodslist'}>
+                                                    <button className={`btn btn-secondary ${GoodsDetailMainStyle['goods-button']}`}>이전으로</button>
+                                                </Link>
+                                            </>
                                 }
                             </div>
 
