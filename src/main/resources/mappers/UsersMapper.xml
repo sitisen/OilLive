@@ -69,4 +69,12 @@
 		SET user_pwd = #{userpwd}
 		WHERE user_id = #{userid}
 	</update>
+	
+	<!-- 사용자 정보 조회 -->
+	<select id="selectUserInfo" parameterType="String" resultType="UsersVO">
+		SELECT user_code, user_id, user_name, user_phone, user_gender, 
+		       user_birth, user_address, user_email, user_date
+		FROM users
+		WHERE USER_ID = #{userId}
+	</select>
 </mapper>

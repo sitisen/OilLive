@@ -2,6 +2,7 @@ package com.oillive.controller;
 
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.oillive.service.UsersService;
+import com.oillive.vo.UsersVO;
 
 @RestController
 @RequestMapping("/users")
@@ -232,4 +234,17 @@ public class UsersController {
 		
 		return result;
 	}
+	
+	//--------------- 사용자 정보 조회 --------------- //
+	@PostMapping("/selectUserInfo")
+	public List<UsersVO> selectUserInfo(@RequestBody HashMap<Object, String> req) {
+	
+		String userId = req.get("userId");
+		
+		List<UsersVO> userInfo = usersService.selectUserInfo(userId);
+		
+		return userInfo;
+	}
+	
+	
 }

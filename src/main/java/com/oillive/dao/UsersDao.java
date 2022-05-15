@@ -1,8 +1,11 @@
 package com.oillive.dao;
 
 import java.util.HashMap;
+import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+
+import com.oillive.vo.UsersVO;
 
 @Mapper
 public interface UsersDao {
@@ -31,5 +34,8 @@ public interface UsersDao {
 
 	//--------------- 비밀번호 변경 --------------- //
 	public int pwdUpdate(HashMap<String, String> map);
+	
+	//--------------- 사용자 정보 조회 --------------- //
+	public List<UsersVO> selectUserInfo(String userId);
 	
 }

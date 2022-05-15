@@ -18,6 +18,7 @@ import com.oillive.vo.ApiAvgAllPriceVO;
 import com.oillive.vo.ApiAvgRecentPriceVO;
 import com.oillive.vo.ApiAvgSidoPriceVO;
 import com.oillive.vo.ApiLowTop10VO;
+import com.oillive.vo.UsersVO;
 
 import net.nurigo.java_sdk.api.Message;
 import net.nurigo.java_sdk.exceptions.CoolsmsException;
@@ -285,6 +286,11 @@ public class UsersServiceImpl implements UsersService{
 	@Override
 	public int pwdUpdate(HashMap<String, String> map) {
 		return usersDao.pwdUpdate(map);
+	}
+
+	@Override
+	public List<UsersVO> selectUserInfo(String userId) {
+		return usersDao.selectUserInfo(userId);
 	}	
 	
 }
