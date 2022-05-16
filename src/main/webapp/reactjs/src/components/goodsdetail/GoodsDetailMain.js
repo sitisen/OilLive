@@ -41,7 +41,7 @@ const GoodsDetailMain = () => {
             }
         }
 
-    }, [amount])
+    }, [amount, goodsInfo.GOODS_DISCOUNT, goodsPrice, discountPrice])
 
     // 상품 수량 변경 이벤트
     const amountChange = (e) => {
