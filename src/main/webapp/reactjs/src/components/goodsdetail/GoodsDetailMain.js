@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 // import css
@@ -11,15 +11,37 @@ const GoodsDetailMain = () => {
     const goodsPrice = goodsInfo.GOODS_PRICE; // 상품 가격
     const discountPrice = goodsInfo.GOODS_PRICE - (goodsInfo.GOODS_PRICE * (goodsInfo.GOODS_DISCOUNT * 0.01)); // 할인율로 할인된 가격
 
+    /* useNavigate 부분 */
     const navigate = useNavigate();
+    /* //. useNavigate 부분 */
 
     /* useState 부분 */
     const [ amount, setAmount ] = useState(1); // 사용자가 선택한 상품 개수
+    const [ deliveryPrice, setDeliveryPrice ] = useState(5000); // 상품 배송비
     /* //. useState 부분 */
 
     /* useRef 부분 */
     const amountCount = useRef(1);
     /* //. useRef 부분 */
+
+    useEffect( () => {
+
+        if( goodsInfo.GOODS_DISCOUNT === 0 ) { // 할인 상품일 경우
+            if( goodsPrice * amount >= 40000 ) { // 주문 금액이 40000원 이상일 때, 배송비 무료
+                setDeliveryPrice(0);
+            } else {
+                setDeliveryPrice(5000);
+            }
+            
+        } else { // 할인 상품이 아닐 경우
+            if( discountPrice * amount >= 40000 ) { // 주문 금액이 40000원 이상일 때, 배송비 무료
+                setDeliveryPrice(0);
+            } else {
+                setDeliveryPrice(5000);
+            }
+        }
+
+    }, [amount])
 
     // 상품 수량 변경 이벤트
     const amountChange = (e) => {
@@ -35,10 +57,11 @@ const GoodsDetailMain = () => {
         }
     };
 
+    // 권한에 따라 구매 가능 여부 판별 이벤트
     const purchaseClick = (e) => {
         e.preventDefault();
 
-        if(sessionStorage.getItem('userId') === null){
+        if(sessionStorage.getItem('userId') === null) {
             alert('로그인하고 이용할 수 있는 기능입니다.');
             navigate('/users/login', {replace:true} );
         } else if( goodsInfo.GOODS_AMOUNT === 0 ) {
@@ -46,6 +69,10 @@ const GoodsDetailMain = () => {
         }
     }
 
+    // 결제 및 장바구니로 넘길 최종 상품 객체
+    const goodsData = Object.assign(goodsInfo, { GOODS_SELECTED_AMOUNT: amount }, { GOODS_DELIVERY_PRICE : deliveryPrice } )
+
+    
     /* ===== 실제 페이지 렌더링 =====  */
     return (
         <div className={GoodsDetailMainStyle['goods-detail-wrap']}>
@@ -131,7 +158,7 @@ const GoodsDetailMain = () => {
                             <div className={GoodsDetailMainStyle['goods-info']}>
                                 <span>상품코드 : {goodsInfo.GOODS_CODE}</span>
                                 <span>분류 : {goodsInfo.GOODS_KIND}</span>
-                                <span>배송비 : 40,000원</span>
+                                <span>배송비 : {deliveryPrice.toLocaleString('ko-KR')}원</span>
                             </div>
 
                             <div className={GoodsDetailMainStyle['goods-buy']}>
@@ -165,7 +192,7 @@ const GoodsDetailMain = () => {
                                             <>
                                                 <Link className={GoodsDetailMainStyle['goods-buy-Link']} 
                                                     to={'/orders/goodsOrders'}
-                                                    state={{ data: [ goodsInfo ] }}
+                                                    state={{ data: [ goodsData ] }}
                                                     onClick={(e) => purchaseClick(e)}
                                                 >
                                                     <button className={`btn btn-secondary ${GoodsDetailMainStyle['goods-button']}`}>바로구매</button>
@@ -183,7 +210,7 @@ const GoodsDetailMain = () => {
                                             <>
                                                 <Link className={GoodsDetailMainStyle['goods-buy-Link']} 
                                                     to={'/orders/goodsOrders'}
-                                                    state={{ data: [ goodsInfo ] }}
+                                                    state={{ data: [ goodsData ] }}
                                                 >
                                                     <button className={`btn btn-success ${GoodsDetailMainStyle['goods-button']}`}>바로구매</button>
                                                 </Link>
