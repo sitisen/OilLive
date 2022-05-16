@@ -165,7 +165,7 @@ const GoodsDetailMain = () => {
                                             <>
                                                 <Link className={GoodsDetailMainStyle['goods-buy-Link']} 
                                                     to={'/orders/goodsOrders'}
-                                                    state={{ data: goodsInfo }}
+                                                    state={{ data: [ goodsInfo ] }}
                                                     onClick={(e) => purchaseClick(e)}
                                                 >
                                                     <button className={`btn btn-secondary ${GoodsDetailMainStyle['goods-button']}`}>바로구매</button>
@@ -183,7 +183,7 @@ const GoodsDetailMain = () => {
                                             <>
                                                 <Link className={GoodsDetailMainStyle['goods-buy-Link']} 
                                                     to={'/orders/goodsOrders'}
-                                                    state={{ data: goodsInfo }}
+                                                    state={{ data: [ goodsInfo ] }}
                                                 >
                                                     <button className={`btn btn-success ${GoodsDetailMainStyle['goods-button']}`}>바로구매</button>
                                                 </Link>
