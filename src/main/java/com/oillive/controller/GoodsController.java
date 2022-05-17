@@ -1,17 +1,20 @@
 package com.oillive.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.oillive.service.GoodsService;
 import com.oillive.service.PaginationService;
+import com.oillive.vo.BasketVO;
 import com.oillive.vo.GoodsVO;
 import com.oillive.vo.PaginationVO;
 
@@ -25,6 +28,34 @@ public class GoodsController {
 	
 	@Autowired
 	PaginationService paginationService;
+	
+	//--------------- 특정 상품 조회 --------------- //
+	@PostMapping("/selectGoods")
+	public List<GoodsVO> selectGoods(@RequestParam( name = "goodsCode", required = false ) String goodsCode,
+									 @RequestParam( name = "basketCode", required = false ) List<String> basketCode) {
+
+		List<GoodsVO> goods = new ArrayList<GoodsVO>();
+		List<BasketVO> basket = new ArrayList<BasketVO>();
+		
+		if( basketCode == null ) { // 바로 구매일 경우,
+			
+			 goods = goodsService.selectGoods(goodsCode);
+
+			
+		} else { 
+		
+			System.out.println(basketCode.get(0));
+//			basket = goodsService.selectBasket(basketCode);
+			// for문 ( basket 만큼 ) 
+			// selectGoods (basket 만큼)
+			// List.add (goods)
+			
+		}
+		
+		return goods;
+		
+	}
+	
 	
 	//--------------- 상품 종류 탭 조회 --------------- //
 	@GetMapping("/selectGoodsKind")

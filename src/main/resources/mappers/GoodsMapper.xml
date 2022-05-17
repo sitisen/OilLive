@@ -5,6 +5,20 @@
 
 <mapper namespace="com.oillive.dao.GoodsDao">
 	
+	<!-- 특정 상품 조회 -->
+	<select id="selectGoods" parameterType="String" resultType="GoodsVO">
+		SELECT goods_code, goods_name, goods_kind, goods_price, 
+		       goods_amount, goods_content, goods_discount, goods_date
+		  FROM goods
+		 WHERE goods_code = #{goodsCode}
+	</select>
+	
+	<!-- 특정 장바구니 조회 -->
+	<select id="selectBasket" parameterType="String" resultType="BasketVO">
+		SELECT *
+		FROM BASKET
+	</select>
+	
 	<!-- 상품 종류 탭 조회 -->
 	<select id="selectGoodsKind" resultType="String">
 		SELECT DISTINCT goods_kind

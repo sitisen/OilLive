@@ -1,5 +1,6 @@
 package com.oillive.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.oillive.dao.GoodsDao;
+import com.oillive.vo.BasketVO;
 import com.oillive.vo.GoodsVO;
 import com.oillive.vo.PaginationVO;
 
@@ -15,6 +17,27 @@ public class GoodsServiceImpl implements GoodsService {
 
 	@Autowired
 	GoodsDao goodsDao;
+	
+	//--------------- 특정 상품 조회 --------------- //
+	@Override
+	public List<GoodsVO> selectGoods(String goodsCode) {
+		return goodsDao.selectGoods(goodsCode);
+	}
+	
+	//--------------- 특정 장바구니 조회 --------------- //
+	@Override
+	public List<BasketVO> selectBasket(List<BasketVO> basketCode) {
+
+		List<BasketVO> result = new ArrayList<BasketVO>();
+
+		for(int i = 0; i < basketCode.size(); i++) {
+			
+//			String j = basketCode.get(i);
+//			result.add(goodsDao.selectBasket());	
+		}
+		
+		return result;
+	}
 	
 	//--------------- 상품 종류 탭 조회 --------------- //
 	@Override
