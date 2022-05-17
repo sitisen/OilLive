@@ -84,6 +84,7 @@
 		SELECT card_code, card_company, card_num, card_pwd, card_cvc, card_date
 		  FROM card
 		 WHERE user_code = #{userCode}
+	</select>
 
 	<!-- 유저코드 반환 -->
 	<select id="getUserCode" parameterType="String" resultType="int">
