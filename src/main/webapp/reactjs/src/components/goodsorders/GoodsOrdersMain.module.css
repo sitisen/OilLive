@@ -29,8 +29,9 @@
 
 /* ----- input 태그 CSS */
 .orders-input {
+    vertical-align: middle;
     width: 30%;
-    height: 60%;
+    height: 35px;
     border: 0.1em solid rgba(150, 150, 150, 0.5);
     outline: none;
     padding-left: 10px;
@@ -52,6 +53,10 @@
     width: 20%;
     text-align: right;
     background-color: rgb(233, 233, 233) !important;
+}
+
+.orders-table td {
+    font-size: 14px;
 }
 
 /* ----- 정보 테이블(가로) CSS */

@@ -8,6 +8,7 @@ import DaumPostcode from 'react-daum-postcode';
 
 // import css
 import GoodsOrdersMainStyle from './GoodsOrdersMain.module.css';
+import GoodsService from "services/GoodsService";
 
 
 const GoodsOrdersMain = () => {
@@ -16,13 +17,16 @@ const GoodsOrdersMain = () => {
     const login = sessionStorage.getItem('userId');
 
     // 기타 변수
-    const goodsData = useLocation().state.data; // 선택된 상품 정보
+    const goodsInfo = useLocation().state.data; // 선택된 상품 정보
+    const goodsSelectedAmount = goodsInfo[0].goodsSelectedAmount;
     let goodsPrice = 0; // 각 상품들의 총 금액
+    let deliveryPrice = 0; // 각 상품들의 배송비
     let totalGoodsPrice = 0; // 총 상품 금액
     let totalDelivery = 0; // 총 배송비
     let userPhone = ''; // 휴대폰번호 010-1111-1111 형식으로 변경
 
     /* useState 부분 */
+    const [ goodsData, setGoodsData ] = useState([]);
     const [ userInfo, setUserInfo ] = useState({}); // 구매자 정보
     const [ userAddress, setUserAddress ] = useState(''); // 수령인 배송 주소
     const [ userRequest, setUserRequest ] = useState('문 앞에 놔주세요'); // 수령인 배송 요청사항
@@ -44,18 +48,27 @@ const GoodsOrdersMain = () => {
 
     /* useEffect 부분 */
     useEffect( () => {
+        const goodsCode = goodsInfo[0].goodsCode;
+        const basketCode = [1, 2];
 
+        // 특정 상품 조회 및 특정 장바구니 조회
+        GoodsService.selectGoods(goodsCode, basketCode).then( res => {
+            setGoodsData(res.data);
+        });
+
+        // 사용자 정보 조회
         UserService.selectUserInfo(login).then( userRes => {
             const code = userRes.data[0].userCode;
             setUserInfo(userRes.data[0]);
             setUserAddress(userRes.data[0].userAddress.split('/')[0] + ' ' + userRes.data[0].userAddress.split('/')[1] + ' ' + userRes.data[0].userAddress.split('/')[2]);
 
+            // 사용자 카드 정보 조회
             UserService.selectCardInfo(code).then( cardRes => {
                 setCardInfo(cardRes.data);
             });
         });
 
-    }, [login])
+    }, [login, goodsInfo])
     /* //. useEffect 부분 */
 
     // 휴대폰번호와 배송지 주소를 보기 쉽게 가공하는 기능
@@ -99,26 +112,44 @@ const GoodsOrdersMain = () => {
         });
     }
 
-    /* 정보 변경 후, 완료 버튼 Click 이벤트 */
-    const changeConfirm = () => {
+    /* 배송 주소 변경 후, 완료 버튼 Click 이벤트 */
+    const changeAddrConfirm = () => {
         const addrValue = addrInput.current.value;
-        const reqValue = requestInput.current.value;
 
-        if(addrValue !== '') { // 주소변경 클릭 시, 이벤트
+        if(addrValue !== '') {
             setUserAddress(userAddress.concat(' ' + addrValue));
             setIsChanged({
                 ...isChanged,
                 addrChange: false
             });
             addrInput.current.value = '';
+        }
+    }
 
-        } else { // 요청사항 변경 클릭 시, 이벤트
-            setUserRequest(reqValue);
-            setIsChanged({
-                ...isChanged,
-                requestChange: false
-            });
-            requestInput.current.value = '';
+    /* 배송 요청사항 변경 후, 완료 버튼 Click 이벤트 */
+    const changeReqConfirm = () => {
+        const reqValue = requestInput.current.value;
+
+        setUserRequest(reqValue);
+        setIsChanged({
+            ...isChanged,
+            requestChange: false
+        });
+        requestInput.current.value = '';    
+    }
+
+    /* 요청사항 Input 태그 엔터키 이벤트 */
+    const keyPressEnter = (e) => {
+        const value = e.target.id;
+
+        if(e.key === 'Enter') { // 엔터키가 눌렸을 경우,
+
+            if( value === 'addrInput' ) { // 배송 주소 변경 시,
+                changeAddrConfirm();
+
+            } else if( value === 'reqInput' ) { // 배송 요청사항 변경 시,
+                changeReqConfirm();
+            }
         }
 
     }
@@ -132,8 +163,7 @@ const GoodsOrdersMain = () => {
             selectValue: id
         });
 
-    }
-
+   }
 
 
     /* ===== 실제 페이지 렌더링 =====  */
@@ -180,22 +210,30 @@ const GoodsOrdersMain = () => {
                                         <th>배송주소</th>
                                         <td>
                                             {userAddress} 
-                                            <input type='text' className={GoodsOrdersMainStyle['orders-input']} ref={addrInput} placeholder="나머지 주소 입력" hidden={! isChanged.addrChange} />
+                                            <input type='text' 
+                                                   className={GoodsOrdersMainStyle['orders-input']} 
+                                                   id='addrInput'
+                                                   ref={addrInput}
+                                                   onKeyDown={(e) => keyPressEnter(e)}
+                                                   placeholder="나머지 주소 입력" 
+                                                   hidden={! isChanged.addrChange} 
+                                            />
+
                                             { isChanged.addrChange === false
                                                 ? // 배송주소 변경 클릭 전
-                                                    <button className={`btn btn-danger ${GoodsOrdersMainStyle['orders-button']}`} 
+                                                    <button className={`btn btn-primary ${GoodsOrdersMainStyle['orders-button']}`} 
                                                             onClick={() => searchAddress()}
                                                     >
                                                         변경
                                                     </button>
+
                                                 : // 배송주소 변경 클릭 후
                                                     <button className={`btn btn-success ${GoodsOrdersMainStyle['orders-button']}`}
-                                                            onClick={() => changeConfirm()}
+                                                            onClick={() => changeAddrConfirm()}
                                                     >
                                                         확인
                                                     </button>
                                             }
-
                                         </td>
                                     </tr>
                                     <tr>
@@ -206,17 +244,26 @@ const GoodsOrdersMain = () => {
                                         <th>배송 요청사항</th>
                                         <td>
                                             {userRequest}
-                                            <input type='text' className={GoodsOrdersMainStyle['orders-input']} ref={requestInput} placeholder="요청사항 입력" hidden={! isChanged.requestChange} />
+                                            <input type='text' 
+                                                   className={GoodsOrdersMainStyle['orders-input']}
+                                                   id='reqInput'
+                                                   ref={requestInput} 
+                                                   onKeyDown={(e) => keyPressEnter(e)}
+                                                   placeholder="요청사항 입력" 
+                                                   hidden={! isChanged.requestChange} 
+                                            />
+
                                             { isChanged.requestChange === false 
                                                 ? // 배송 요청사항 버튼 클릭 전
-                                                    <button className={`btn btn-danger ${GoodsOrdersMainStyle['orders-button']}`}
+                                                    <button className={`btn btn-primary ${GoodsOrdersMainStyle['orders-button']}`}
                                                             onClick={() => changeRequest()}
                                                     >
                                                         변경
                                                     </button>
+
                                                 : // 배송 요청사항 버튼 클릭 후
                                                     <button className={`btn btn-success ${GoodsOrdersMainStyle['orders-button']}`}
-                                                            onClick={() => changeConfirm()}
+                                                            onClick={() => changeReqConfirm()}
                                                     >
                                                         확인
                                                     </button>
@@ -247,22 +294,30 @@ const GoodsOrdersMain = () => {
                                 </thead>
                                 <tbody>
                                     { goodsData.map( (list, index) => {
-                                        if( list.GOODS_DISCOUNT === 0 ) { // 할인 중인 상품일 경우
-                                            goodsPrice = list.GOODS_PRICE * list.GOODS_SELECTED_AMOUNT;
+
+                                        if( list.goodsDiscount === 0 ) { // 할인 중인 상품일 경우
+                                            goodsPrice = list.goodsPrice * goodsSelectedAmount;
 
                                         } else { // 할인 중인 상품이 아닐 경우
-                                            goodsPrice = ( list.GOODS_PRICE - (list.GOODS_PRICE * (list.GOODS_DISCOUNT * 0.01)) ) * list.GOODS_SELECTED_AMOUNT;
+                                            goodsPrice = ( list.goodsPrice - (list.goodsPrice * (list.goodsDiscount * 0.01)) ) * goodsSelectedAmount;
+                                        }
+
+                                        if(goodsPrice >= 40000) { // 상품 가격이 40000원 이상일 경우
+                                            deliveryPrice = 0;
+                                            
+                                        } else { // 상품 가격이 40000원 이상일 경우
+                                            deliveryPrice = 5000;
                                         }
 
                                         totalGoodsPrice += goodsPrice; // 총 상품 가격
-                                        totalDelivery += list.GOODS_DELIVERY_PRICE; // 총 배송비
+                                        totalDelivery += deliveryPrice; // 총 배송비
 
                                         return (
                                             <tr key={index}>
-                                                <td>{list.GOODS_NAME}</td>
-                                                <td>{list.GOODS_SELECTED_AMOUNT}개</td>
+                                                <td>{list.goodsName}</td>
+                                                <td>{goodsSelectedAmount}개</td>
                                                 <td>{goodsPrice.toLocaleString('ko-KR')}원</td>
-                                                <td>{list.GOODS_DELIVERY_PRICE.toLocaleString('ko-KR')}원</td>
+                                                <td>{deliveryPrice.toLocaleString('ko-KR')}원</td>
                                             </tr>
                                         )
                                     })} 
