@@ -93,3 +93,8 @@
     font-size: 12px;
     font-weight: 800;
 }
+
+/* 링크 태그 스타일 */
+.sidebar-link {
+    text-decoration: none;
+}

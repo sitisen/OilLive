@@ -48,4 +48,7 @@ public interface UsersService {
 	//--------------- 사용자 카드 정보 조회 --------------- //
 	public List<CardVO> selectCardInfo(String userCode);
 	
+	//--------------- 유저 코드값 가져오기 --------------- //
+	public int getUserCode(String userId);
+	
 }

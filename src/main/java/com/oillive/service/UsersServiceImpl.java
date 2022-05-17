@@ -289,6 +289,7 @@ public class UsersServiceImpl implements UsersService{
 		return usersDao.pwdUpdate(map);
 	}
 
+
 	//--------------- 사용자 정보 조회 --------------- //
 	@Override
 	public List<UsersVO> selectUserInfo(String userId) {
@@ -299,6 +300,12 @@ public class UsersServiceImpl implements UsersService{
 	@Override
 	public List<CardVO> selectCardInfo(String userCode) {
 		return usersDao.selectCardInfo(userCode);
+
+	//--------------- 유저코드 반환 --------------- //
+	@Override
+	public int getUserCode(String userId) {
+		return usersDao.getUserCode(userId);
+
 	}	
 	
 }

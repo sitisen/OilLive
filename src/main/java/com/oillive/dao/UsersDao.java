@@ -35,6 +35,9 @@ public interface UsersDao {
 
 	//--------------- 비밀번호 변경 --------------- //
 	public int pwdUpdate(HashMap<String, String> map);
+
+	//--------------- 유저코드 반환 --------------- //
+	public int getUserCode(String userId);
 	
 	//--------------- 사용자 정보 조회 --------------- //
 	public List<UsersVO> selectUserInfo(String userId);
