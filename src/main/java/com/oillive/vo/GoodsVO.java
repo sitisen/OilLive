@@ -9,6 +9,7 @@ public class GoodsVO {
 
 	private int goodsCode;		 // 차량용품 코드
 	private String goodsName;	 // 상품명
+	private String goodsKind;	 // 상품종류
 	private int goodsPrice;		 // 상품가격
 	private int goodsAmount;	 // 상품수량
 	private String goodsContent; // 상품설명
