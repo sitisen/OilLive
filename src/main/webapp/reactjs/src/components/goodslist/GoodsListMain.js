@@ -185,7 +185,7 @@ const GoodslistMain = () => {
                                             list.GOODS_AMOUNT === 0 
                                             ?   <Link key={list.RNUM} className={GoodslistMainStyle['goods-item-Link']} 
                                                       to='/goods/goodsdetail' 
-                                                      state={{ data: list }}
+                                                      state={{ data: list.GOODS_CODE }}
                                                  >
                                                         <div className={GoodslistMainStyle['goods-item']}>
                                                             <div className={GoodslistMainStyle['goods-item-img']}>
@@ -207,7 +207,7 @@ const GoodslistMain = () => {
                                             : list.GOODS_DISCOUNT === 0
                                             ?   <Link key={list.RNUM} className={GoodslistMainStyle['goods-item-Link']} 
                                                       to='/goods/goodsdetail' 
-                                                      state={{ data: list }}
+                                                      state={{ data: list.GOODS_CODE }}
                                                 >
                                                     <div className={GoodslistMainStyle['goods-item']}>
                                                             <div className={GoodslistMainStyle['goods-item-img']}>
@@ -228,7 +228,7 @@ const GoodslistMain = () => {
                                             // 해당 상품이 할인 중일 경우,
                                             :   <Link key={list.RNUM} className={GoodslistMainStyle['goods-item-Link']} 
                                                       to='/goods/goodsdetail' 
-                                                      state={{ data: list }}
+                                                      state={{ data: list.GOODS_CODE }}
                                                 >
                                                     <div className={GoodslistMainStyle['goods-item']}>
 
