@@ -11,6 +11,8 @@ const USERS_FINDID_PHONE = USERS_URL + '/findIdPhone';   // 아이디 찾기 - �
 const USERS_FINDID_EMAIL = USERS_URL + '/findIdEmail';  // 아이디 찾기 - 이메일
 const USERS_FIND_RESULT = USERS_URL + '/resultId';  // 아이디 반환
 const USERS_PWD_UPDATE = USERS_URL + '/pwdUpdate'; // 비밀번호 변경
+const USERS_SELECT_USER_INFO = USERS_URL + '/selectUserInfo'; // 사용자 정보 조회
+const USERS_SELECT_CARD_INFO = USERS_URL + '/selectCardInfo'; // 사용자 카드 정보 조회
 
 /* 사용자 Service */
 const UserService = {
@@ -86,6 +88,20 @@ const UserService = {
         return axios.post(USERS_PWD_UPDATE,{
             userid : userid,
             userpwd : userpwd
+        })
+    },
+
+    /* 사용자 정보 조회 */
+    selectUserInfo(userId) {
+        return axios.post(USERS_SELECT_USER_INFO, {
+            userId : userId
+        })
+    },
+
+    /* 사용자 카드 정보 조회 */
+    selectCardInfo(userCode) {
+        return axios.post(USERS_SELECT_CARD_INFO, {
+            userCode : userCode
         })
     }
 

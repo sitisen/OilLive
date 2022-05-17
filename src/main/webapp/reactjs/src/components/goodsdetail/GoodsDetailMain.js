@@ -1,5 +1,5 @@
-import React, { useRef, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import React, { useEffect, useRef, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 // import css
 import GoodsDetailMainStyle from './GoodsDetailMain.module.css';
@@ -11,13 +11,37 @@ const GoodsDetailMain = () => {
     const goodsPrice = goodsInfo.GOODS_PRICE; // 상품 가격
     const discountPrice = goodsInfo.GOODS_PRICE - (goodsInfo.GOODS_PRICE * (goodsInfo.GOODS_DISCOUNT * 0.01)); // 할인율로 할인된 가격
 
+    /* useNavigate 부분 */
+    const navigate = useNavigate();
+    /* //. useNavigate 부분 */
+
     /* useState 부분 */
     const [ amount, setAmount ] = useState(1); // 사용자가 선택한 상품 개수
+    const [ deliveryPrice, setDeliveryPrice ] = useState(5000); // 상품 배송비
     /* //. useState 부분 */
 
     /* useRef 부분 */
     const amountCount = useRef(1);
     /* //. useRef 부분 */
+
+    useEffect( () => {
+
+        if( goodsInfo.GOODS_DISCOUNT === 0 ) { // 할인 상품일 경우
+            if( goodsPrice * amount >= 40000 ) { // 주문 금액이 40000원 이상일 때, 배송비 무료
+                setDeliveryPrice(0);
+            } else {
+                setDeliveryPrice(5000);
+            }
+            
+        } else { // 할인 상품이 아닐 경우
+            if( discountPrice * amount >= 40000 ) { // 주문 금액이 40000원 이상일 때, 배송비 무료
+                setDeliveryPrice(0);
+            } else {
+                setDeliveryPrice(5000);
+            }
+        }
+
+    }, [amount, goodsInfo.GOODS_DISCOUNT, goodsPrice, discountPrice])
 
     // 상품 수량 변경 이벤트
     const amountChange = (e) => {
@@ -33,11 +57,22 @@ const GoodsDetailMain = () => {
         }
     };
 
-    const soldOutClick = (e) => {
+    // 권한에 따라 구매 가능 여부 판별 이벤트
+    const purchaseClick = (e) => {
         e.preventDefault();
-        alert('해당 상품은 품절되었습니다.');
+
+        if(sessionStorage.getItem('userId') === null) {
+            alert('로그인하고 이용할 수 있는 기능입니다.');
+            navigate('/users/login', {replace:true} );
+        } else if( goodsInfo.GOODS_AMOUNT === 0 ) {
+            alert('해당 상품은 품절되었습니다.');
+        }
     }
 
+    // 결제 및 장바구니로 넘길 최종 상품 객체
+    const goodsData = Object.assign(goodsInfo, { GOODS_SELECTED_AMOUNT: amount }, { GOODS_DELIVERY_PRICE : deliveryPrice } )
+
+    
     /* ===== 실제 페이지 렌더링 =====  */
     return (
         <div className={GoodsDetailMainStyle['goods-detail-wrap']}>
@@ -48,12 +83,12 @@ const GoodsDetailMain = () => {
 
                             ? // 상품 재고가 없을 경우
                             <div className={GoodsDetailMainStyle['header-img-layout']}>
-                                <img className={GoodsDetailMainStyle['goods-img-sold']} alt='SoldOut' src='/images/icon/SoldOut.png' />
-                                <img className={GoodsDetailMainStyle['goods-img']} alt='test' src='/images/icon/Indoor-BullsOne-Defuser.jpg' />
+                                <img className={GoodsDetailMainStyle['goods-img-sold']} alt='SoldOut' src='/images/goods/SoldOut.png' />
+                                <img className={GoodsDetailMainStyle['goods-img']} alt='test' src='/images/goods/Indoor-BullsOne-Defuser.jpg' />
                             </div>
                             : // 상품 재고가 있을 경우
                             <div className={GoodsDetailMainStyle['header-img-layout']}>
-                                <img className={GoodsDetailMainStyle['goods-img']} alt='test' src='/images/icon/Indoor-BullsOne-Defuser.jpg' />
+                                <img className={GoodsDetailMainStyle['goods-img']} alt='test' src='/images/goods/Indoor-BullsOne-Defuser.jpg' />
                             </div>
                         }
                     <div className={GoodsDetailMainStyle['header-option-layout']}>
@@ -123,7 +158,7 @@ const GoodsDetailMain = () => {
                             <div className={GoodsDetailMainStyle['goods-info']}>
                                 <span>상품코드 : {goodsInfo.GOODS_CODE}</span>
                                 <span>분류 : {goodsInfo.GOODS_KIND}</span>
-                                <span>배송비 : 40,000원</span>
+                                <span>배송비 : {deliveryPrice.toLocaleString('ko-KR')}원</span>
                             </div>
 
                             <div className={GoodsDetailMainStyle['goods-buy']}>
@@ -137,13 +172,13 @@ const GoodsDetailMain = () => {
                                         value={amount}
                                 />
 
-                                { goodsInfo.GOODS_AMOUNT === 0 
+                                { goodsInfo.GOODS_AMOUNT === 0
                                     ? // 상품 재고가 없을 경우
                                         <>
-                                            <Link className={GoodsDetailMainStyle['goods-buy-Link']} to='#' onClick={(e) => soldOutClick(e)}>
+                                            <Link className={GoodsDetailMainStyle['goods-buy-Link']} to='#' onClick={(e) => purchaseClick(e)}>
                                                 <button className={`btn btn-secondary ${GoodsDetailMainStyle['goods-button']}`}>바로구매</button>
                                             </Link>
-                                            <Link className={GoodsDetailMainStyle['goods-buy-Link']} to='#' onClick={(e) => soldOutClick(e)}>
+                                            <Link className={GoodsDetailMainStyle['goods-buy-Link']} to='#' onClick={(e) => purchaseClick(e)}>
                                                 <button className={`btn btn-secondary ${GoodsDetailMainStyle['goods-button']}`}>장바구니</button>
                                             </Link>
                                             
@@ -151,19 +186,42 @@ const GoodsDetailMain = () => {
                                                 <button className={`btn btn-secondary ${GoodsDetailMainStyle['goods-button']}`}>이전으로</button>
                                             </Link>
                                         </>
-                                    : // 상품 재고가 있을 경우
-                                        <>
-                                            <Link className={GoodsDetailMainStyle['goods-buy-Link']} to={'/orders/goodsOrders'}>
-                                                <button className={`btn btn-success ${GoodsDetailMainStyle['goods-button']}`}>바로구매</button>
-                                            </Link>
-                                            <Link className={GoodsDetailMainStyle['goods-buy-Link']} to={'/users/home'}> {/* 장바구니 구현 후, 링크 변경 */}
-                                                <button className={`btn btn-primary ${GoodsDetailMainStyle['goods-button']}`}>장바구니</button>
-                                            </Link>
-                                            
-                                            <Link className={GoodsDetailMainStyle['goods-buy-Link']} to={'/goods/goodslist'}>
-                                                <button className={`btn btn-secondary ${GoodsDetailMainStyle['goods-button']}`}>이전으로</button>
-                                            </Link>
-                                        </>
+                                    
+                                    : sessionStorage.getItem('userId') === null // 상품 재고가 있을 경우
+                                        ? // 로그인 하지 않았을 경우
+                                            <>
+                                                <Link className={GoodsDetailMainStyle['goods-buy-Link']} 
+                                                    to={'/orders/goodsOrders'}
+                                                    state={{ data: [ goodsData ] }}
+                                                    onClick={(e) => purchaseClick(e)}
+                                                >
+                                                    <button className={`btn btn-secondary ${GoodsDetailMainStyle['goods-button']}`}>바로구매</button>
+                                                </Link>
+                                                <Link className={GoodsDetailMainStyle['goods-buy-Link']} to='#' onClick={(e) => purchaseClick(e)}>
+                                                    <button className={`btn btn-secondary ${GoodsDetailMainStyle['goods-button']}`}>장바구니</button>
+                                                </Link>
+                                                
+                                                <Link className={GoodsDetailMainStyle['goods-buy-Link']} to={'/goods/goodslist'}>
+                                                    <button className={`btn btn-secondary ${GoodsDetailMainStyle['goods-button']}`}>이전으로</button>
+                                                </Link>
+                                            </>
+
+                                        : // 로그인 했을 경우
+                                            <>
+                                                <Link className={GoodsDetailMainStyle['goods-buy-Link']} 
+                                                    to={'/orders/goodsOrders'}
+                                                    state={{ data: [ goodsData ] }}
+                                                >
+                                                    <button className={`btn btn-success ${GoodsDetailMainStyle['goods-button']}`}>바로구매</button>
+                                                </Link>
+                                                <Link className={GoodsDetailMainStyle['goods-buy-Link']} to={'/users/home'}> {/* 장바구니 구현 후, 링크 변경 */}
+                                                    <button className={`btn btn-primary ${GoodsDetailMainStyle['goods-button']}`}>장바구니</button>
+                                                </Link>
+                                                
+                                                <Link className={GoodsDetailMainStyle['goods-buy-Link']} to={'/goods/goodslist'}>
+                                                    <button className={`btn btn-secondary ${GoodsDetailMainStyle['goods-button']}`}>이전으로</button>
+                                                </Link>
+                                            </>
                                 }
                             </div>
 

@@ -2,6 +2,7 @@ package com.oillive.controller;
 
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,8 @@ import java.net.URL;
 import java.net.URLEncoder;
 
 import com.oillive.service.UsersService;
+import com.oillive.vo.CardVO;
+import com.oillive.vo.UsersVO;
 
 @RestController
 @RequestMapping("/users")
@@ -240,6 +243,28 @@ public class UsersController {
 		return result;
 	}
 	
+
+	//--------------- 사용자 정보 조회 --------------- //
+	@PostMapping("/selectUserInfo")
+	public List<UsersVO> selectUserInfo(@RequestBody HashMap<Object, String> req) {
+	
+		String userId = req.get("userId");
+		
+		List<UsersVO> userInfo = usersService.selectUserInfo(userId);
+		
+		return userInfo;
+	}
+	
+	//--------------- 사용자 카드 정보 조회 --------------- //
+	@PostMapping("/selectCardInfo")
+	public List<CardVO> selectCardInfo(@RequestBody HashMap<Object, String> req) {
+		
+		String userCode = req.get("userCode");
+		
+		List<CardVO> cardInfo = usersService.selectCardInfo(userCode);
+		
+		return cardInfo;
+
 	//--------------- 전기차 충전소 --------------- //
 	@GetMapping("/electriccar")
 	public String electriccar() throws IOException {
@@ -273,6 +298,7 @@ public class UsersController {
         System.out.println(sb.toString());
 		
 		return sb.toString();
+
 	}
 	
 }

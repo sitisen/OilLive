@@ -9,7 +9,7 @@
 
 /* ----- 본문 레이아웃 CSS */
 .goods-detail-layout {
-    width: 970px !important;
+    width: 950px !important;
     height: 100%;
     box-shadow: 1px 1px 1px;
     border: 0.5px solid rgba(150, 150, 150, 0.5);
@@ -187,6 +187,7 @@
 .footer-table th {
     background-color: rgb(233, 233, 233) !important;
     vertical-align: middle;
+    text-align: center;
 }
 
 .footer-table td {
