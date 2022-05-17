@@ -18,6 +18,7 @@ import com.oillive.vo.ApiAvgAllPriceVO;
 import com.oillive.vo.ApiAvgRecentPriceVO;
 import com.oillive.vo.ApiAvgSidoPriceVO;
 import com.oillive.vo.ApiLowTop10VO;
+import com.oillive.vo.CardVO;
 import com.oillive.vo.UsersVO;
 
 import net.nurigo.java_sdk.api.Message;
@@ -288,9 +289,16 @@ public class UsersServiceImpl implements UsersService{
 		return usersDao.pwdUpdate(map);
 	}
 
+	//--------------- 사용자 정보 조회 --------------- //
 	@Override
 	public List<UsersVO> selectUserInfo(String userId) {
 		return usersDao.selectUserInfo(userId);
+	}
+
+	//--------------- 사용자 카드 정보 조회 --------------- //
+	@Override
+	public List<CardVO> selectCardInfo(String userCode) {
+		return usersDao.selectCardInfo(userCode);
 	}	
 	
 }

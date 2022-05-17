@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.oillive.service.UsersService;
+import com.oillive.vo.CardVO;
 import com.oillive.vo.UsersVO;
 
 @RestController
@@ -246,5 +247,15 @@ public class UsersController {
 		return userInfo;
 	}
 	
+	//--------------- 사용자 카드 정보 조회 --------------- //
+	@PostMapping("/selectCardInfo")
+	public List<CardVO> selectCardInfo(@RequestBody HashMap<Object, String> req) {
+		
+		String userCode = req.get("userCode");
+		
+		List<CardVO> cardInfo = usersService.selectCardInfo(userCode);
+		
+		return cardInfo;
+	}
 	
 }

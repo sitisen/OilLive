@@ -3,6 +3,7 @@ package com.oillive.service;
 import java.util.HashMap;
 import java.util.List;
 
+import com.oillive.vo.CardVO;
 import com.oillive.vo.UsersVO;
 
 public interface UsersService {
@@ -43,5 +44,8 @@ public interface UsersService {
 
 	//--------------- 사용자 정보 조회 --------------- //
 	public List<UsersVO> selectUserInfo(String userId);
+	
+	//--------------- 사용자 카드 정보 조회 --------------- //
+	public List<CardVO> selectCardInfo(String userCode);
 	
 }

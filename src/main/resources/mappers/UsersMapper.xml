@@ -77,4 +77,11 @@
 		FROM users
 		WHERE USER_ID = #{userId}
 	</select>
+	
+	<!-- 사용자 카드 정보 조회 -->
+	<select id="selectCardInfo" parameterType="String" resultType="CardVO">
+		SELECT card_code, card_company, card_num, card_pwd, card_cvc, card_date
+		  FROM card
+		 WHERE user_code = #{userCode}
+	</select>
 </mapper>
