@@ -35,17 +35,17 @@ const Sidebar = () => {
                             <span className={SidebarStyle['sidebar-td-span']}>장바구니</span>
                         </td>    
                     </tr>
-                    <Link to='/qna/qna/' className={SidebarStyle['sidebar-link']}>
                     <tr>
                         <td className={SidebarStyle['sidebar-td']}>
-                            <div className={SidebarStyle['qna-img-wap']}>
-                                <img alt='qna' src='/images/icon/qna.png' width='35' height='35'/>
-                                <img alt='qna-hover' src='/images/icon/qnaHover.png' width='35' height='35'/>
-                            </div>
-                           <span className={SidebarStyle['sidebar-td-span']}>문의하기</span>
+                            <Link to='/qna/qna/' className={SidebarStyle['sidebar-link']}>
+                                <div className={SidebarStyle['qna-img-wap']}>
+                                    <img alt='qna' src='/images/icon/qna.png' width='35' height='35'/>
+                                    <img alt='qna-hover' src='/images/icon/qnaHover.png' width='35' height='35'/>
+                                </div>
+                            <span className={SidebarStyle['sidebar-td-span']}>문의하기</span>
+                            </Link>
                         </td>    
                     </tr>
-                    </Link>
                     <tr>
                         <td className={SidebarStyle['sidebar-td']}>
                             <button type='button' className={SidebarStyle['top-button']} onClick={moveToTop}>TOP ∧</button>
