@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +18,8 @@ import com.oillive.service.PaginationService;
 import com.oillive.vo.BasketVO;
 import com.oillive.vo.GoodsVO;
 import com.oillive.vo.PaginationVO;
+
+import edu.emory.mathcs.backport.java.util.Arrays;
 
 @RestController
 @RequestMapping("/goods")
@@ -31,28 +34,38 @@ public class GoodsController {
 	
 	//--------------- 특정 상품 조회 --------------- //
 	@PostMapping("/selectGoods")
-	public List<GoodsVO> selectGoods(@RequestParam( name = "goodsCode", required = false ) String goodsCode,
-									 @RequestParam( name = "basketCode", required = false ) List<String> basketCode) {
-
+	public HashMap<String, Object> selectGoods(@RequestBody HashMap<String, String> req) {
+		
+		// 비즈니스 로직 결과값을 저장할 컬렉션 선언
 		List<GoodsVO> goods = new ArrayList<GoodsVO>();
 		List<BasketVO> basket = new ArrayList<BasketVO>();
+		HashMap<String, Object> result = new HashMap<String, Object>();
 		
-		if( basketCode == null ) { // 바로 구매일 경우,
+		String goodsCode = req.get("goodsCode");	// 상품 코드
+		String basketCheck = req.get("basketCode");	// 장바구니로 구매하는건지 체크
+		String userCode = req.get("userCode");		// 회원 코드
+		
+		if( basketCheck == null ) { // 바로 구매일 경우,
 			
 			 goods = goodsService.selectGoods(goodsCode);
-
+			 
+			 result.put("goods", goods);
 			
-		} else { 
-		
-			System.out.println(basketCode.get(0));
-//			basket = goodsService.selectBasket(basketCode);
-			// for문 ( basket 만큼 ) 
-			// selectGoods (basket 만큼)
-			// List.add (goods)
+		} else { // 장바구니에 있는 상품 구매일 경우, 
+			
+			List<String> basketCode = new ArrayList<String>();
+			
+			for(String s : basketCheck.split(",")) { // String 으로 넘어온 장바구니 코드를 배열로 변환하여, List에 추가
+				basketCode.add(s);
+			}
+			
+			basket = goodsService.selectBasket(basketCode, userCode);	
+			
+			result.put("goods", basket); // 장바구니에 담긴 상품을 출력해야하기 때문에 Key값 goods로 설정
 			
 		}
 		
-		return goods;
+		return result;
 		
 	}
 	

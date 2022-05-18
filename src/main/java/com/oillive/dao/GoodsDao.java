@@ -15,7 +15,7 @@ public interface GoodsDao {
 	public List<GoodsVO> selectGoods(String goodsCode);
 	
 	//--------------- 특정 장바구니 조회 --------------- //
-	public List<BasketVO> selectBasket(String basketCode);
+	public List<BasketVO> selectBasket(HashMap<String, Object> params);
 	
 	//--------------- 상품 종류 탭 조회 --------------- //
 	public List<String> selectGoodsKind();

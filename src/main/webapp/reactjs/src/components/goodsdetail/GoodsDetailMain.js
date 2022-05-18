@@ -32,7 +32,7 @@ const GoodsDetailMain = () => {
     useEffect( () => {
 
         GoodsService.selectGoods(goodsCode).then( res => {
-            setGoodsInfo(res.data[0]);
+            setGoodsInfo(res.data.goods[0]);
         });
 
     }, [goodsCode]);

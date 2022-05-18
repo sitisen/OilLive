@@ -18,7 +18,7 @@ const GoodsOrdersMain = () => {
 
     // 기타 변수
     const goodsInfo = useLocation().state.data; // 선택된 상품 정보
-    const goodsSelectedAmount = goodsInfo[0].goodsSelectedAmount;
+    const goodsSelectedAmount = goodsInfo[0].goodsSelectedAmount; // 바로 구매 시, 선택한 상품 수량
     let goodsPrice = 0; // 각 상품들의 총 금액
     let deliveryPrice = 0; // 각 상품들의 배송비
     let totalGoodsPrice = 0; // 총 상품 금액
@@ -26,7 +26,7 @@ const GoodsOrdersMain = () => {
     let userPhone = ''; // 휴대폰번호 010-1111-1111 형식으로 변경
 
     /* useState 부분 */
-    const [ goodsData, setGoodsData ] = useState([]);
+    const [ goodsData, setGoodsData ] = useState([]); // 상품 정보
     const [ userInfo, setUserInfo ] = useState({}); // 구매자 정보
     const [ userAddress, setUserAddress ] = useState(''); // 수령인 배송 주소
     const [ userRequest, setUserRequest ] = useState('문 앞에 놔주세요'); // 수령인 배송 요청사항
@@ -39,6 +39,7 @@ const GoodsOrdersMain = () => {
     const [ existCard, setExistCard ] = useState({ // 기존 카드 정보 사용 여부
         selectValue: 'standard'
     });
+    const [ purchaseType, setPurchaseType ] = useState(''); // 구매 타입 체크 (바로구매, 장바구니)
     /* //. useState 부분 */
 
     /* useRef 부분 */
@@ -49,18 +50,27 @@ const GoodsOrdersMain = () => {
     /* useEffect 부분 */
     useEffect( () => {
         const goodsCode = goodsInfo[0].goodsCode;
-        const basketCode = [1, 2];
+        let basketCode = 0;
 
-        // 특정 상품 조회 및 특정 장바구니 조회
-        GoodsService.selectGoods(goodsCode, basketCode).then( res => {
-            setGoodsData(res.data);
-        });
+        if( goodsInfo[0].basketCode === undefined ) { // 장바구니 구매가 아닌 경우
+            basketCode = null;
+            setPurchaseType('바로구매');
+
+        } else { // 장바구니 구매일 경우
+            basketCode = goodsInfo[0].basketCode.join(',');
+            setPurchaseType('장바구니');
+        }
 
         // 사용자 정보 조회
         UserService.selectUserInfo(login).then( userRes => {
             const code = userRes.data[0].userCode;
             setUserInfo(userRes.data[0]);
             setUserAddress(userRes.data[0].userAddress.split('/')[0] + ' ' + userRes.data[0].userAddress.split('/')[1] + ' ' + userRes.data[0].userAddress.split('/')[2]);
+
+            // 특정 상품 조회 및 특정 장바구니 조회
+            GoodsService.selectGoods(goodsCode, basketCode, code).then( res => {
+                setGoodsData(res.data.goods);
+            });
 
             // 사용자 카드 정보 조회
             UserService.selectCardInfo(code).then( cardRes => {
@@ -295,31 +305,63 @@ const GoodsOrdersMain = () => {
                                 <tbody>
                                     { goodsData.map( (list, index) => {
 
-                                        if( list.goodsDiscount === 0 ) { // 할인 중인 상품일 경우
-                                            goodsPrice = list.goodsPrice * goodsSelectedAmount;
+                                        switch (purchaseType) {
 
-                                        } else { // 할인 중인 상품이 아닐 경우
-                                            goodsPrice = ( list.goodsPrice - (list.goodsPrice * (list.goodsDiscount * 0.01)) ) * goodsSelectedAmount;
+                                            case '바로구매': // 바로 구매일 경우,                                    
+                                                            if( list.goodsDiscount === 0 ) { // 할인 중인 상품이 아닐 경우
+                                                                goodsPrice = list.goodsPrice * goodsSelectedAmount;
+                    
+                                                            } else { // 할인 중인 상품일 경우
+                                                                goodsPrice = ( list.goodsPrice - (list.goodsPrice * (list.goodsDiscount * 0.01)) ) * goodsSelectedAmount;
+                                                            }
+                    
+                                                            if(goodsPrice >= 40000) { // 상품 가격이 40000원 이상일 경우
+                                                                deliveryPrice = 0;
+                                                                
+                                                            } else { // 상품 가격이 40000원 이상일 경우
+                                                                deliveryPrice = 5000;
+                                                            }
+                    
+                                                            totalGoodsPrice += goodsPrice; // 총 상품 가격
+                                                            totalDelivery += deliveryPrice; // 총 배송비
+                    
+                                                            return (
+                                                                <tr key={index}>
+                                                                    <td>{list.goodsName}</td>
+                                                                    <td>{goodsSelectedAmount}개</td>
+                                                                    <td>{goodsPrice.toLocaleString('ko-KR')}원</td>
+                                                                    <td>{deliveryPrice.toLocaleString('ko-KR')}원</td>
+                                                                </tr>
+                                                            )
+
+                                                    default: // 장바구니에 담긴 상품 구매일 경우
+                                                            if( list.goodsVO.goodsDiscount === 0 ) { // 할인 중인 상품이 아닐 경우
+                                                                goodsPrice = list.goodsVO.goodsPrice * list.basketAmount;
+                    
+                                                            } else { // 할인 중인 상품 일 경우
+                                                                goodsPrice = ( list.goodsVO.goodsPrice - (list.goodsVO.goodsPrice * (list.goodsVO.goodsDiscount * 0.01)) ) * list.basketAmount;
+                                                            }
+                    
+                                                            if(goodsPrice >= 40000) { // 상품 가격이 40000원 이상일 경우
+                                                                deliveryPrice = 0;
+                                                                
+                                                            } else { // 상품 가격이 40000원 이상일 경우
+                                                                deliveryPrice = 5000;
+                                                            }
+                    
+                                                            totalGoodsPrice += goodsPrice; // 총 상품 가격
+                                                            totalDelivery += deliveryPrice; // 총 배송비
+                    
+                                                            return (
+                                                                <tr key={index}>
+                                                                    <td>{list.goodsVO.goodsName}</td>
+                                                                    <td>{list.basketAmount}개</td>
+                                                                    <td>{goodsPrice.toLocaleString('ko-KR')}원</td>
+                                                                    <td>{deliveryPrice.toLocaleString('ko-KR')}원</td>
+                                                                </tr>
+                                                            )
                                         }
 
-                                        if(goodsPrice >= 40000) { // 상품 가격이 40000원 이상일 경우
-                                            deliveryPrice = 0;
-                                            
-                                        } else { // 상품 가격이 40000원 이상일 경우
-                                            deliveryPrice = 5000;
-                                        }
-
-                                        totalGoodsPrice += goodsPrice; // 총 상품 가격
-                                        totalDelivery += deliveryPrice; // 총 배송비
-
-                                        return (
-                                            <tr key={index}>
-                                                <td>{list.goodsName}</td>
-                                                <td>{goodsSelectedAmount}개</td>
-                                                <td>{goodsPrice.toLocaleString('ko-KR')}원</td>
-                                                <td>{deliveryPrice.toLocaleString('ko-KR')}원</td>
-                                            </tr>
-                                        )
                                     })} 
                                 </tbody>
                             </table>

@@ -12,7 +12,7 @@ public interface GoodsService {
 	public List<GoodsVO> selectGoods(String goodsCode);
 	
 	//--------------- 특정 장바구니 조회 --------------- //
-	public List<BasketVO> selectBasket(List<BasketVO> basketCode);
+	public List<BasketVO> selectBasket(List<String> basketCode, String userCode);
 	
 	//--------------- 상품 종류 탭 조회 --------------- //	
 	public List<String> selectGoodsKind();

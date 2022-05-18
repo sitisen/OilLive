@@ -26,17 +26,14 @@ public class GoodsServiceImpl implements GoodsService {
 	
 	//--------------- 특정 장바구니 조회 --------------- //
 	@Override
-	public List<BasketVO> selectBasket(List<BasketVO> basketCode) {
-
-		List<BasketVO> result = new ArrayList<BasketVO>();
-
-		for(int i = 0; i < basketCode.size(); i++) {
-			
-//			String j = basketCode.get(i);
-//			result.add(goodsDao.selectBasket());	
-		}
+	public List<BasketVO> selectBasket(List<String> basketCode, String userCode) {
 		
-		return result;
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		
+		params.put("basketCode", basketCode);
+		params.put("userCode", userCode);
+		
+		return goodsDao.selectBasket(params);
 	}
 	
 	//--------------- 상품 종류 탭 조회 --------------- //

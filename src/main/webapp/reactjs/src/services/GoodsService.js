@@ -10,15 +10,12 @@ const GOODS_SELECT_GOODS_LIST = GOODS_URL + '/selectGoodsList';  // 상품 목�
 const GoodsService = {
 
     /* 특정 상품 조회 */
-    selectGoods (goodsCode, basketCode) {
-        return axios({
-            method: 'post',
-            url: GOODS_SELECT_GOODS,
-            params: {
-                        goodsCode: goodsCode,
-                        basketCode: basketCode === undefined ? basketCode : basketCode.join(',')
-                    }
-        });
+    selectGoods (goodsCode, basketCode, userCode) {
+        return axios.post(GOODS_SELECT_GOODS, {
+            goodsCode: goodsCode,
+            basketCode: basketCode,
+            userCode: userCode
+        })
     },
 
     /* 상품 분류 탭 조회 */

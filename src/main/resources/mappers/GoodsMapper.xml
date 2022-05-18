@@ -4,6 +4,21 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.oillive.dao.GoodsDao">
+
+	<!-- 장바구니 조회 시, 사용하는 ResultMap -->
+	<resultMap type="BasketVO" id="basketMap">
+	    <result column="USER_CODE" property="userCode"/>
+	    <result column="BASKET_CODE" property="basketCode"/>
+	    <result column="BASKET_AMOUNT" property="basketAmount"/>
+	   	<collection property="goodsVO" resultMap="goodsVO"/>
+	</resultMap>
+	<resultMap type="GoodsVO" id="goodsVO">
+	    <result column="GOODS_CODE" property="goodsCode"/>
+	    <result column="GOODS_NAME" property="goodsName"/>
+	    <result column="GOODS_PRICE" property="goodsPrice"/>
+	    <result column="GOODS_DISCOUNT" property="goodsDiscount"/>
+	</resultMap>
+	
 	
 	<!-- 특정 상품 조회 -->
 	<select id="selectGoods" parameterType="String" resultType="GoodsVO">
@@ -14,9 +29,17 @@
 	</select>
 	
 	<!-- 특정 장바구니 조회 -->
-	<select id="selectBasket" parameterType="String" resultType="BasketVO">
-		SELECT *
-		FROM BASKET
+	<select id="selectBasket" parameterType="Map" resultMap="basketMap">
+		SELECT user_code, basket_code, basket_amount, 
+		       goods_code, goods_name, goods_price, goods_discount
+		  FROM basket
+		  JOIN goods
+		 USING (goods_code)
+		 WHERE user_code = #{userCode}
+		   AND basket_code IN
+		<foreach collection="basketCode" item="code" open="(" close=")" separator=",">
+			#{code}
+		</foreach>
 	</select>
 	
 	<!-- 상품 종류 탭 조회 -->
