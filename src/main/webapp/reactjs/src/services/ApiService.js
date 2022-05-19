@@ -17,8 +17,14 @@ const ApiService = {
         });
     },
 
-    electriccar(){
-        return axios.get(ELECTRIC_CAR);
+    electriccar(code){
+        return axios({
+            method: 'get',
+            url: ELECTRIC_CAR,
+            params: {
+                code : code
+            }
+        });
     }
 
 }

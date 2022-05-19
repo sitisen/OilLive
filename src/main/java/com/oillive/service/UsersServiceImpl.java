@@ -1,8 +1,21 @@
 package com.oillive.service;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.StringReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -12,6 +25,9 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 
 import com.oillive.dao.UsersDao;
 import com.oillive.vo.ApiAvgAllPriceVO;
@@ -19,6 +35,7 @@ import com.oillive.vo.ApiAvgRecentPriceVO;
 import com.oillive.vo.ApiAvgSidoPriceVO;
 import com.oillive.vo.ApiLowTop10VO;
 import com.oillive.vo.CardVO;
+import com.oillive.vo.ElectricCarVO;
 import com.oillive.vo.UsersVO;
 
 import net.nurigo.java_sdk.api.Message;
@@ -307,6 +324,85 @@ public class UsersServiceImpl implements UsersService{
 	public int getUserCode(String userId) {
 		return usersDao.getUserCode(userId);
 
+	}
+
+	//--------------- 전기차 충전소 ---------------- //
+	@Override
+	public List<ElectricCarVO> electriccar(String zcode) {
+		String key = "WdSNS%2BzKpz3RwhPiNQi0e8FMKOMVP8OLryni1q96T8%2F%2FfVfgy2n2MtmorTmqpfphzL76hB8U6DFuqgCutnc5Sg%3D%3D";
+		List<ElectricCarVO> carList = new ArrayList<ElectricCarVO>();
+		try {
+			StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/B552584/EvCharger/getChargerInfo"); /*URL*/
+	        urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "="+key); /*Service Key*/
+	        urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*페이지번호*/
+	        urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("10", "UTF-8")); /*한 페이지 결과 수 (최소 10, 최대 9999)*/
+	        urlBuilder.append("&" + URLEncoder.encode("zcode","UTF-8") + "=" + URLEncoder.encode(zcode, "UTF-8")); /*시도 코드 (행정구역코드 앞 2자리)*/
+	        URL url = new URL(urlBuilder.toString());
+	        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+	        conn.setRequestMethod("GET");
+	        conn.setRequestProperty("Content-type", "application/json");
+	        BufferedReader rd;
+	        if(conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
+	            rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+	        } else {
+	            rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+	        }
+	        StringBuilder sb = new StringBuilder();
+	        String line;
+	        while ((line = rd.readLine()) != null) {
+	            sb.append(line);
+	        }
+	        rd.close();
+	        conn.disconnect();
+	        
+	        List<HashMap<String, String>> list = getResultMap(sb.toString());
+	        
+	        for(Map<String,String> tmpMap : list) {
+	        	ElectricCarVO vo = new ElectricCarVO();
+	        	vo.setAddr(tmpMap.get("addr"));
+	        	vo.setLat(tmpMap.get("lat"));
+	        	vo.setLng(tmpMap.get("lng"));
+	        	vo.setStatId(tmpMap.get("statId"));
+	        	vo.setStatNm(tmpMap.get("statNm"));
+	        	vo.setZcode(tmpMap.get("zcode"));
+	        	vo.setStat(tmpMap.get("stat"));
+	        	carList.add(vo);
+	        }
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return carList;
 	}	
+	
+	//--------------- xml 파싱 --------------- //
+	public static List<HashMap<String, String>> getResultMap(String data) throws Exception {
+		 
+		//결과값을 넣어줄 map을 선언해줍니다.
+		List<HashMap<String, String>> resultMap = new LinkedList<HashMap<String, String>>();
+		        
+		InputSource is = new InputSource(new StringReader(data));
+		 
+		//Document 클래스로 xml데이터를 취득합니다.
+		Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(is);
+		 
+		//xPath 팩토리로 객체를 만듭니다.
+		XPath xpath = XPathFactory.newInstance().newXPath();
+		 
+		//xPath를 컴파일한 후에 node단위로 데이터를 수집합니다.
+		NodeList nodeList = (NodeList) xpath.compile("/response/body/items/item").evaluate(document, XPathConstants.NODESET);
+		int nodeListCount = nodeList.getLength();
+		for (int i = 0; i < nodeListCount; i++) {
+		    NodeList childNode = nodeList.item(i).getChildNodes();
+		    HashMap<String, String> nodeMap = new HashMap<String, String>();
+		    int childNodeCount = childNode.getLength();
+		    for (int j = 0; j < childNodeCount; j++) {
+		        nodeMap.put(childNode.item(j).getNodeName(), childNode.item(j).getTextContent());
+		    }
+		    resultMap.add(nodeMap);
+		}
+		
+		return resultMap;
+	}
 	
 }

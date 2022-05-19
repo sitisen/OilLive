@@ -1,9 +1,11 @@
 package com.oillive.service;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
 
 import com.oillive.vo.CardVO;
+import com.oillive.vo.ElectricCarVO;
 import com.oillive.vo.UsersVO;
 
 public interface UsersService {
@@ -50,5 +52,8 @@ public interface UsersService {
 	
 	//--------------- 유저 코드값 가져오기 --------------- //
 	public int getUserCode(String userId);
+
+	//--------------- 전기차 충전소 --------------- //
+	public List<ElectricCarVO> electriccar(String zcode);
 	
 }
