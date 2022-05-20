@@ -117,6 +117,13 @@
     box-shadow: 0 0 6px 0 rgb(107, 187, 72);
 }
 
+/* ----- span 태그 CSS */
+.valid-span {
+    text-align: center;
+    color: red;
+    font-size: 14px;
+}
+
 /* ----- 카드 정보 CSS */
 .card-layout {
     margin-bottom: 2%;
