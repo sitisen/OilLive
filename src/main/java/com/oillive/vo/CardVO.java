@@ -9,8 +9,8 @@ public class CardVO {
 	private int userCode;		// 회원코드
 	private String cardCompany;	// 카드사
 	private String cardNum;		// 카드번호
-	private int cardPwd;		// 카드비밀번호
-	private int cardCvc;		// CVC번호
+	private String cardPwd;		// 카드비밀번호
+	private String cardCvc;		// CVC번호
 	private String cardDate;	// 유효기간
 	
 }
