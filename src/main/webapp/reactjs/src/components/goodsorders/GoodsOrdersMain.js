@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import UserService from "services/UserService";
 import Modal from 'react-modal';
 
@@ -9,6 +9,7 @@ import DaumPostcode from 'react-daum-postcode';
 // import css
 import GoodsOrdersMainStyle from './GoodsOrdersMain.module.css';
 import GoodsService from "services/GoodsService";
+import OrdersService from "services/OrdersService";
 
 
 const GoodsOrdersMain = () => {
@@ -19,45 +20,117 @@ const GoodsOrdersMain = () => {
     // 기타 변수
     const goodsInfo = useLocation().state.data; // 선택된 상품 정보
     const goodsSelectedAmount = goodsInfo[0].goodsSelectedAmount; // 바로 구매 시, 선택한 상품 수량
+    const goodsCode = goodsInfo[0].goodsCode; // 바로 구매 시, 선택한 상품 코드
+    const basketCode = null; // 장바구니 페이지 작성 시, '1,2,3...' 형식으로 받아질 예정
     let goodsPrice = 0; // 각 상품들의 총 금액
     let deliveryPrice = 0; // 각 상품들의 배송비
     let totalGoodsPrice = 0; // 총 상품 금액
     let totalDelivery = 0; // 총 배송비
     let userPhone = ''; // 휴대폰번호 010-1111-1111 형식으로 변경
 
+    /* useNavigate 부분 */
+    const navigate = useNavigate();
+    /* //. useNavigate 부분 */
+
     /* useState 부분 */
     const [ goodsData, setGoodsData ] = useState([]); // 상품 정보
     const [ userInfo, setUserInfo ] = useState({}); // 구매자 정보
     const [ userAddress, setUserAddress ] = useState(''); // 수령인 배송 주소
     const [ userRequest, setUserRequest ] = useState('문 앞에 놔주세요'); // 수령인 배송 요청사항
+    const [ purchaseType, setPurchaseType ] = useState(''); // 구매 타입 체크 (바로구매, 장바구니)
     const [ cardInfo, setCardInfo ] = useState({}); // 구매자 카드 정보
+    const [ searchAdd , setSearchAdd ] = useState(false); //주소지 검색 API
+    const [ cardNumCheck, setCardNumCheck ] = useState(); // 카드 번호 유효성 체크
+    const [ validateCheck, setValidateCheck ] = useState(); // 카드 유효기간 유효성 체크
+    const [ cardCvcCheck, setCardCvcCheck ] = useState(); // 카드 CVC 유효성 체크
+    const [ cardPwdCheck, setCardPwdCheck ] = useState(); // 카드 비밀번호 유효성 체크
+    const [ isReadOnly, setIsReadOnly ] = useState(false); // 기존 카드 사용 시, readOnly 부여
     const [ isChanged, setIsChanged ] = useState({ // 주소 및 요청사항 변경 버튼 클릭 상태
         addrChange: false,
         requestChange: false
     });
-    const [ searchAdd , setSearchAdd ] = useState(false); //주소지 검색 API
     const [ existCard, setExistCard ] = useState({ // 기존 카드 정보 사용 여부
-        selectValue: 'standard'
+        selectValue: ''
     });
-    const [ purchaseType, setPurchaseType ] = useState(''); // 구매 타입 체크 (바로구매, 장바구니)
     /* //. useState 부분 */
 
     /* useRef 부분 */
-    const addrInput = useRef();
-    const requestInput = useRef();
+    const addrInput = useRef();     // 배송 주소 입력창
+    const requestInput = useRef();  // 요청 사항 입력창
+    const cardCompanyInput = useRef();   // 카드사 입력창
+    const cardNumberInput = useRef([]);  // 카드번호 입력창
+    const cardDateInput = useRef();  // 카드 유효기간 입력창
+    const cardCVCInput = useRef();       // 카드 CVC 입력창
+    const cardPwdInput = useRef();  // 카드 비밀번호 입력창
     /* //. useRef 부분 */
+
+    /* useCallback 부분 */
+    /* 카드 사용 상태 이벤트 */
+    const changeCard = useCallback((id) => {
+
+        if(id === 'standard' && cardInfo.length === 0) { // 카드 정보가 존재하지 않는데, 기존 카드 사용 클릭 했을 경우
+            setExistCard({
+                selectValue: 'directly'
+            });
+            alert('현재 카드 정보가 존재하지 않습니다.\n직접 입력을 통해 결제를 진행해주세요.');
+
+        } else { // 카드 정보가 존재할 경우, radio 버튼 정상 동작
+
+            setExistCard({
+                selectValue: id
+            });
+
+            // Input 태그 값 변경 이벤트
+            switch(id) {
+                case 'standard': // 기존 카드 정보 사용 ( input 태그 값 카드 정보로 채워주기 )
+                                const data = cardInfo[0];
+                                const num0 = data.cardNum.substr(0, 4);
+                                const num1 = data.cardNum.substr(4, 4);
+                                const num2 = data.cardNum.substr(8, 4);
+                                const num3 = data.cardNum.substr(12, 4);
+
+                                cardCompanyInput.current.value = data.cardCompany; // 카드사
+                                cardNumberInput.current[0].value = num0;
+                                cardNumberInput.current[1].value = num1;
+                                cardNumberInput.current[2].value = num2;
+                                cardNumberInput.current[3].value = num3; // 카드 번호
+                                cardDateInput.current.value = data.cardDate; // 카드 유효기간
+                                cardCVCInput.current.value = data.cardCvc; // 카드 CVC
+                                cardPwdInput.current.value = data.cardPwd; // 카드 비밀번호
+                                setCardNumCheck(true); // 카드 번호 유효성 검사
+                                setValidateCheck(true); // 카드 유효기간 유효성 검사
+                                setCardCvcCheck(true); // 카드 CVC 유효성 검사
+                                setCardPwdCheck(true); // 카드 비밀번호 유효성 검사
+                                setIsReadOnly(true); // readOnly 속성 부여
+                                break;
+
+                        default : // 직접 입력 ( input 태그 값 초기화 )
+                                cardCompanyInput.current.value = '농협'; // 카드사
+                                cardNumberInput.current[0].value = '';
+                                cardNumberInput.current[1].value = '';
+                                cardNumberInput.current[2].value = '';
+                                cardNumberInput.current[3].value = ''; // 카드 번호
+                                cardDateInput.current.value = ''; // 카드 유효기간
+                                cardCVCInput.current.value = ''; // 카드 CVC
+                                cardPwdInput.current.value = ''; // 카드 비밀번호
+                                setCardNumCheck(true); // 카드 번호 유효성 검사
+                                setValidateCheck(true); // 카드 유효기간 유효성 검사
+                                setCardCvcCheck(true); // 카드 CVC 유효성 검사
+                                setCardPwdCheck(true); // 카드 비밀번호 유효성 검사
+                                setIsReadOnly(false); // readOnly 속성 해제
+            }
+        }
+
+    }, [cardInfo]);
+    /* //. useCallback 부분 */
 
     /* useEffect 부분 */
     useEffect( () => {
-        const goodsCode = goodsInfo[0].goodsCode;
-        let basketCode = 0;
 
-        if( goodsInfo[0].basketCode === undefined ) { // 장바구니 구매가 아닌 경우
-            basketCode = null;
+        if( basketCode === null ) { // 바로 구매일 경우,
             setPurchaseType('바로구매');
 
         } else { // 장바구니 구매일 경우
-            basketCode = goodsInfo[0].basketCode.join(',');
             setPurchaseType('장바구니');
         }
 
@@ -65,7 +138,7 @@ const GoodsOrdersMain = () => {
         UserService.selectUserInfo(login).then( userRes => {
             const code = userRes.data[0].userCode;
             setUserInfo(userRes.data[0]);
-            setUserAddress(userRes.data[0].userAddress.split('/')[0] + ' ' + userRes.data[0].userAddress.split('/')[1] + ' ' + userRes.data[0].userAddress.split('/')[2]);
+            setUserAddress(userRes.data[0].userAddress.split('/')[1] + ' ' + userRes.data[0].userAddress.split('/')[2]);
 
             // 특정 상품 조회 및 특정 장바구니 조회
             GoodsService.selectGoods(goodsCode, basketCode, code).then( res => {
@@ -78,7 +151,30 @@ const GoodsOrdersMain = () => {
             });
         });
 
-    }, [login, goodsInfo])
+    }, [login, goodsInfo, goodsCode])
+
+
+    useEffect( () => {
+        
+        // 카드 radio 버튼 초기 설정
+        if(cardInfo.length !== undefined) {
+
+            if( cardInfo.length === 0 ) { // 해당 사용자의 카드 정보가 존재하지 않을 경우,
+                setExistCard({
+                    selectValue: 'directly'
+                }); 
+                
+            } else { // 해당 사용자의 카드 정보가 존재할 경우,
+                setExistCard({
+                    selectValue: 'standard'
+                });
+    
+                changeCard('standard');
+            }
+
+        }
+        
+    }, [cardInfo, changeCard])
     /* //. useEffect 부분 */
 
     // 휴대폰번호와 배송지 주소를 보기 쉽게 가공하는 기능
@@ -89,14 +185,11 @@ const GoodsOrdersMain = () => {
     /* 주소지 변경 Click 이벤트 */
     const onComplete = (data) => { 
 
-        // 우편번호
-        let code = data.zonecode;
-
         // 도로명 주소
         let addr = data.roadAddress;
 
-        if(addr !== ''){
-            setUserAddress(code + ' ' + addr);
+        if(addr !== '') {
+            setUserAddress(addr);
         }
 
         setSearchAdd(false);
@@ -133,6 +226,9 @@ const GoodsOrdersMain = () => {
                 addrChange: false
             });
             addrInput.current.value = '';
+
+        } else {
+            alert('나머지 주소는 필수 입력 사항입니다.');
         }
     }
 
@@ -164,17 +260,147 @@ const GoodsOrdersMain = () => {
 
     }
 
-    /* 카드 사용 상태 이벤트 */
-    const changeCard = (e) => {
-        const id = e.target.id;
+    /* 기존 카드 사용 시, Select 태그 값 고정 */
+    const readOnlyCheck = () => {
+        if(existCard.selectValue === 'standard') {
+            cardCompanyInput.current.value = cardInfo[0].cardCompany;
+        }
+    }
 
-        setExistCard({
-            ...existCard,
-            selectValue: id
-        });
+    /* ----- 카드 관련 유효성 검사 */
+    /* 카드 번호 검사 이벤트 */
+    const cardNumChange = () => {
+        const regExp = /^[0-9]{16}$/; // 카드 번호가 숫자로만 이루어져야 함
+        const value = cardNumberInput.current[0].value + cardNumberInput.current[1].value 
+                      + cardNumberInput.current[2].value + cardNumberInput.current[3].value;
 
-   }
+        if( regExp.test(value) ) {
+            setCardNumCheck(true);
+        } else {
+            setCardNumCheck(false);
+        }
+    }
 
+    /* 카드 유효기간 검사 이벤트 */
+    const validateChange = () => {
+        const regExp = /(0[1-9]|1[0-2])[0-9]{2}/ // MMYY 형식이어야 함
+        const value = cardDateInput.current.value;
+
+        if(regExp.test(value)) {
+            const result = value.slice(0, 2) + '/' + value.slice(2, 4);
+            setValidateCheck(true);
+            cardDateInput.current.value = result; // 입력 창에 MM/YY 형식으로 변환
+        } else {
+            setValidateCheck(false);
+        }
+    }
+
+    /* 카드 CVC 검사 이벤트 */
+    const cvcChange = () => {
+        const regExp = /^[0-9]{3}$/; // CVC 가 숫자로만 이루어져야 함
+        const value = cardCVCInput.current.value;
+
+        if( regExp.test(value) ) {
+            setCardCvcCheck(true);
+        } else {
+            setCardCvcCheck(false);
+        }
+
+    }
+
+    /* 카드 비밀번호 검사 이벤트 */
+    const pwdChange = () => {
+        const regExp = /^[0-9]{4}$/; // 카드 비밀번호가 숫자로만 이루어져야 함
+        const value = cardPwdInput.current.value;
+
+        if( regExp.test(value) ) {
+            setCardPwdCheck(true);
+        } else {
+            setCardPwdCheck(false);
+        }
+
+    }
+    /* ----- //. 카드 관련 유효성 검사 */
+
+
+    // 결제하기 버튼 클릭 시, 결제 이벤트
+    const payment = () => {
+
+        if( cardNumCheck === true && validateCheck === true && 
+            cardCvcCheck === true &&  cardPwdCheck === true) { // 카드 관련 유효성 검사가 모두 true 일 경우,
+
+            // 공통 변수
+            const userCode = userInfo.userCode; // 유저 코드
+            const orderAddress = userAddress;       // 배송될 주소
+            const orderRequest = userRequest;        // 배송 요청 사항
+
+            // 상품 테이블 갱신 및 결제 테이블에 삽입될 변수
+            let selectedGoods = [];
+
+            // 카드 테이블에 삽입될 변수
+            const cardCompany = cardCompanyInput.current.value;
+            const cardNum = cardNumberInput.current[0].value + cardNumberInput.current[1].value + cardNumberInput.current[2].value + cardNumberInput.current[3].value;
+            const cardPwd = cardPwdInput.current.value + '';
+            const cardCvc = cardCVCInput.current.value + '';
+            const cardDate = cardDateInput.current.value;
+
+            // 상품 코드와 구매를 원하는 수량 설정
+            if(basketCode === null) { // 바로 구매
+                selectedGoods.push({
+                    userCode: userCode,
+                    goodsCode : goodsCode, 
+                    orderAmount : goodsSelectedAmount,
+                    orderAddress: orderAddress,
+                    orderRequest: orderRequest
+                })
+
+            } else { // 장바구니 구매
+                goodsData.map( list => (
+
+                    selectedGoods.push({
+                        userCode: userCode,
+                        goodsCode : list.goodsVO.goodsCode,
+                        orderAmount : list.basketAmount,
+                        orderAddress: orderAddress,
+                        orderRequest: orderRequest
+                    })
+         
+                ));
+            }
+
+            // GOODS 테이블 UPDATE
+            GoodsService.updateGoodsAmount(selectedGoods).then( res => {
+                const updateResult = res.data;
+
+                switch(updateResult) {
+                    case 1: // 수량 갱신에 성공했을 경우,
+
+                            // ORDERS 테이블 INSERT
+                            OrdersService.insertOrders(selectedGoods);
+
+                            // CARD 테이블 INSERT or UPDATE
+                            if(cardInfo.length === 0) { // 첫 결제일 경우, 해당 카드 정보 등록
+                                UserService.insertCard(userCode, cardCompany, cardNum, cardPwd, cardCvc, cardDate);
+
+                            } else if(existCard.selectValue === 'directly') { // 기존 카드가 존재하지만 직접 입력을 했을 경우, 해당 카드 정보 갱신
+                                UserService.updateCard(userCode, cardCompany, cardNum, cardPwd, cardCvc, cardDate);
+                            }
+
+                            alert('결제가 성공적으로 완료되었습니다.');
+                            navigate('/goods/goodslist', {replace:true} ); // 상품 목록으로 이동
+                            break;
+
+                    default: // 수량 갱신에 실패했을 경우,
+                            return alert('현재 상품 재고가 구매하시려는 수량보다 모자랍니다.');
+                }
+
+            });
+
+        } else { // 유효성 검사가 하나라도 통과되지 않았을 경우,
+            alert('카드 정보를 정상적으로 입력해주세요.');
+        }
+
+    }
 
     /* ===== 실제 페이지 렌더링 =====  */
     if( login !== null ) { // 로그인 되어있을 경우
@@ -391,36 +617,34 @@ const GoodsOrdersMain = () => {
                             <h6><b>카드 정보</b></h6>
                             <div className={GoodsOrdersMainStyle['card-layout']}>
 
-                                { cardInfo.length === 0
-                                        ? // 카드 정보가 존재하지 않을 경우
-                                            <></>
+                                <div className={GoodsOrdersMainStyle['card-status']}>
+                                    <input type='radio' 
+                                        id='standard' 
+                                        name='cardStatus'
+                                        onChange={e => changeCard(e.target.id)}
+                                        checked={existCard.selectValue === 'standard'}
+                                    /> 
+                                    <label htmlFor='standard'>기존 카드정보 사용</label>
 
-                                        : // 카드 정보가 존재할 경우
-                                            <div className={GoodsOrdersMainStyle['card-status']}>
-                                                <input type='radio' 
-                                                    id='standard' 
-                                                    name='cardStatus'
-                                                    onChange={e => changeCard(e)}
-                                                    checked={existCard.selectValue === 'standard'}
-                                                /> 
-                                                    <label htmlFor='standard'>기존 카드정보 사용</label>
-            
-                                                <input type='radio' 
-                                                    id='directly' 
-                                                    name='cardStatus'
-                                                    onChange={e => changeCard(e)}
-                                                    checked={existCard.selectValue === 'directly'}
-                                                />
-                                                    <label htmlFor='directly'>직접 입력</label>
-                                            </div>
-                                }
+                                    <input type='radio' 
+                                        id='directly' 
+                                        name='cardStatus'
+                                        onChange={e => changeCard(e.target.id)}
+                                        checked={existCard.selectValue === 'directly'}
+                                    />
+                                    <label htmlFor='directly'>직접 입력</label>
+                                </div>
+
 
                                 <table className={GoodsOrdersMainStyle['card-table']}>
                                     <tbody>
                                         <tr>
                                             <th>카드사</th>
                                             <td>
-                                                <select className={GoodsOrdersMainStyle['card-select']}>
+                                                <select className={GoodsOrdersMainStyle['card-select']}
+                                                        ref={cardCompanyInput}
+                                                        onChange={() => readOnlyCheck()}
+                                                >
                                                     <option>농협</option>
                                                     <option>국민</option>
                                                     <option>신한</option>
@@ -430,24 +654,66 @@ const GoodsOrdersMain = () => {
                                         <tr>
                                             <th>카드번호</th>
                                             <td>
-                                                <input type='text' 
-                                                    className={GoodsOrdersMainStyle['card-input']} 
-                                                    maxLength='4' 
-                                                    placeholder='4자리'
-                                                />
-                                                <input type='password' className={GoodsOrdersMainStyle['card-input']} maxLength='4' />
-                                                <input type='password' className={GoodsOrdersMainStyle['card-input']} maxLength='4' />
-                                                <input type='password' className={GoodsOrdersMainStyle['card-input']} maxLength='4' />
+                                                {[...Array( 4 )].map( (n, index) => {
+                                                    switch(index) {
+                                                        case 0: // 카드 번호 첫번째 입력 Input
+                                                            return (
+                                                                <input key={index}
+                                                                       type='text' 
+                                                                       className={GoodsOrdersMainStyle['card-input']} 
+                                                                       ref={el => (cardNumberInput.current[index] = el)}
+                                                                       onChange={() => cardNumChange()}
+                                                                       maxLength='4' 
+                                                                       placeholder='4자리'
+                                                                       readOnly={isReadOnly}
+                                                                />
+                                                            )
+                                                        
+                                                        default: // 카드 번호 나머지 입력 Input
+                                                            return (
+                                                                <input key={index}
+                                                                       type='password' 
+                                                                       className={GoodsOrdersMainStyle['card-input']} 
+                                                                       ref={el => (cardNumberInput.current[index] = el)} 
+                                                                       onChange={() => cardNumChange()}
+                                                                       maxLength='4' 
+                                                                       readOnly={isReadOnly}
+                                                                />
+                                                            )
+                                                    }
+
+                                                })}
                                             </td>
+                                        </tr>
+                                        <tr>
+                                            <th></th>
+                                            { cardNumCheck === false 
+                                                    ? // 카드번호가 올바르게 입력되지 않았을 경우,
+                                                    <td>
+                                                        <span className={GoodsOrdersMainStyle['valid-span']}>카드 번호가 올바르지 않습니다.</span>
+                                                    </td>
+                                                    : // 카드번호가 올바른 경우
+                                                        <></>
+
+                                            }
                                         </tr>
                                         <tr>
                                             <th>유효기간</th>
                                             <td>
                                                 <input type='text' 
                                                     className={GoodsOrdersMainStyle['card-input']} 
+                                                    ref={cardDateInput}
+                                                    onChange={() => validateChange()}
                                                     maxLength='4' 
                                                     placeholder='MMYY'
+                                                    readOnly={isReadOnly}
                                                 />
+                                                { validateCheck === false 
+                                                    ? // 유효기간이 올바르게 입력되지 않았을 경우,
+                                                        <span className={GoodsOrdersMainStyle['valid-span']}>유효기간이 올바르지 않습니다.</span> 
+                                                    : // 유효기간이 올바른 경우
+                                                        <></> 
+                                                }
                                             </td>
                                         </tr>
                                         <tr>
@@ -455,9 +721,18 @@ const GoodsOrdersMain = () => {
                                             <td>
                                                 <input type='password' 
                                                     className={GoodsOrdersMainStyle['card-input']} 
+                                                    ref={cardCVCInput}
+                                                    onChange={() => cvcChange()}
                                                     maxLength='3' 
                                                     placeholder='3자리'
+                                                    readOnly={isReadOnly}
                                                 />
+                                                { cardCvcCheck === false 
+                                                    ? // CVC가 올바르게 입력되지 않았을 경우,
+                                                        <span className={GoodsOrdersMainStyle['valid-span']}>CVC가 올바르지 않습니다.</span> 
+                                                    : // CVC가 올바른 경우
+                                                        <></> 
+                                                }
                                             </td>
                                         </tr>
                                         <tr>
@@ -465,9 +740,18 @@ const GoodsOrdersMain = () => {
                                             <td>
                                                 <input type='password' 
                                                     className={GoodsOrdersMainStyle['card-input']} 
+                                                    ref={cardPwdInput}
+                                                    onChange={() => pwdChange()}
                                                     maxLength='4' 
                                                     placeholder="4자리"
+                                                    readOnly={isReadOnly}
                                                 />
+                                                { cardPwdCheck === false 
+                                                    ? // 비밀번호가 올바르게 입력되지 않았을 경우,
+                                                        <span className={GoodsOrdersMainStyle['valid-span']}>비밀번호가 올바르지 않습니다.</span> 
+                                                    : // 비밀번호가 올바른 경우
+                                                        <></> 
+                                                }
                                             </td>
                                         </tr>
                                     </tbody>
@@ -478,7 +762,7 @@ const GoodsOrdersMain = () => {
                         </div> {/* //. orders-card */}
 
                         <div className={GoodsOrdersMainStyle['orders-confirm']}>
-                            <button className={`btn btn-primary ${GoodsOrdersMainStyle['orders-button']}`}>결제하기</button>
+                            <button className={`btn btn-primary ${GoodsOrdersMainStyle['orders-button']}`} onClick={() => payment()}>결제하기</button>
                             <Link to={'/goods/goodslist'}><button className={`btn btn-secondary ${GoodsOrdersMainStyle['orders-button']}`}>취소하기</button></Link>
                         </div> {/* //. orders-confirm */}
 
