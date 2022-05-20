@@ -31,7 +31,7 @@
 	<!-- 특정 장바구니 조회 -->
 	<select id="selectBasket" parameterType="Map" resultMap="basketMap">
 		SELECT user_code, basket_code, basket_amount, 
-		       goods_code, goods_name, goods_price, goods_discount
+		       goods_code, goods_name, goods_price, goods_discount, goods_amount
 		  FROM basket
 		  JOIN goods
 		 USING (goods_code)
