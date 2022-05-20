@@ -335,7 +335,7 @@ public class UsersServiceImpl implements UsersService{
 			StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/B552584/EvCharger/getChargerInfo"); /*URL*/
 	        urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "="+key); /*Service Key*/
 	        urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*페이지번호*/
-	        urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("10", "UTF-8")); /*한 페이지 결과 수 (최소 10, 최대 9999)*/
+	        urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("100", "UTF-8")); /*한 페이지 결과 수 (최소 10, 최대 9999)*/
 	        urlBuilder.append("&" + URLEncoder.encode("zcode","UTF-8") + "=" + URLEncoder.encode(zcode, "UTF-8")); /*시도 코드 (행정구역코드 앞 2자리)*/
 	        URL url = new URL(urlBuilder.toString());
 	        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -366,8 +366,12 @@ public class UsersServiceImpl implements UsersService{
 	        	vo.setStatNm(tmpMap.get("statNm"));
 	        	vo.setZcode(tmpMap.get("zcode"));
 	        	vo.setStat(tmpMap.get("stat"));
+	        	vo.setParkingFree(tmpMap.get("parkingFree"));
+	        	vo.setBusiCall(tmpMap.get("busiCall"));
+	        	vo.setUseTime(tmpMap.get("useTime"));
 	        	carList.add(vo);
 	        }
+	       
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

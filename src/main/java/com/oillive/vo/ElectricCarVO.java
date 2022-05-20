@@ -17,4 +17,7 @@ public class ElectricCarVO {
 	private	String lng; 	 // 경도		[ 위치 표시용 ]
 	private	String stat; 	 // 충전기상태 ( 1: 통신이상, 2: 충전대기, 3: 충전중, 4: 운영중지, 5: 점검중, 9: 상태미확인 ) [ 충전소 기능용 ]
 	private	String zcode;	 // 시도 코드 [ 필터 기능 및 식별값 ]
+	private String parkingFree; // 주차료
+	private String busiCall;	// 관리업체 전화번호
+	private String useTime;		// 이용가능시간
 }
