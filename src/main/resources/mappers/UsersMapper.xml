@@ -85,6 +85,23 @@
 		  FROM card
 		 WHERE user_code = #{userCode}
 	</select>
+	
+	<!-- 사용자 카드 정보 등록 -->
+	<insert id="insertCard" parameterType="CardVO">
+		INSERT INTO card 
+		     VALUES ( seq_card.NEXTVAL, #{userCode}, #{cardCompany}, #{cardNum}, #{cardPwd}, #{cardCvc}, #{cardDate} )		
+	</insert>
+	
+	<!-- 사용자 카드 정보 교체 -->
+	<update id="updateCard" parameterType="CardVO">
+		UPDATE card
+		   SET card_company = #{cardCompany},
+		       card_num = #{cardNum},
+		       card_pwd = #{cardPwd},
+		       card_cvc = #{cardCvc},
+		       card_date = #{cardDate}
+		 WHERE user_code = #{userCode}	
+	</update>
 
 	<!-- 유저코드 반환 -->
 	<select id="getUserCode" parameterType="String" resultType="int">

@@ -45,4 +45,10 @@ public interface UsersDao {
 	//--------------- 사용자 카드 정보 조회 --------------- //
 	public List<CardVO> selectCardInfo(String userCode);
 	
+	//--------------- 사용자 카드 정보 등록 --------------- //
+	public int insertCard(CardVO newCard);
+	
+	//--------------- 사용자 카드 정보 교체 --------------- //
+	public int updateCard(CardVO changeCard);
+	
 }

@@ -319,6 +319,18 @@ public class UsersServiceImpl implements UsersService{
 		return usersDao.selectCardInfo(userCode);
 	}
 
+	//--------------- 사용자 카드 정보 등록 --------------- //
+	@Override
+	public int insertCard(CardVO newCard) {
+		return usersDao.insertCard(newCard);
+	}
+	
+	//--------------- 사용자 카드 정보 교체 --------------- //
+	@Override
+	public int updateCard(CardVO changeCard) {
+		return usersDao.updateCard(changeCard);
+	}
+
 	//--------------- 유저코드 반환 --------------- //
 	@Override
 	public int getUserCode(String userId) {

@@ -13,6 +13,8 @@ const USERS_FIND_RESULT = USERS_URL + '/resultId';  // 아이디 반환
 const USERS_PWD_UPDATE = USERS_URL + '/pwdUpdate'; // 비밀번호 변경
 const USERS_SELECT_USER_INFO = USERS_URL + '/selectUserInfo'; // 사용자 정보 조회
 const USERS_SELECT_CARD_INFO = USERS_URL + '/selectCardInfo'; // 사용자 카드 정보 조회
+const USERS_INSERT_CARD = USERS_URL + '/insertCard'; // 사용자 카드 정보 등록
+const USERS_UPDATE_CARD = USERS_URL + '/updateCard'; // 사용자 카드 정보 교체
 
 /* 사용자 Service */
 const UserService = {
@@ -103,8 +105,31 @@ const UserService = {
         return axios.post(USERS_SELECT_CARD_INFO, {
             userCode : userCode
         })
-    }
+    },
 
+    /* 사용자 카드 정보 등록 */
+    insertCard(userCode, cardCompany, cardNum, cardPwd, cardCvc, cardDate) {
+        return axios.put(USERS_INSERT_CARD, {
+            userCode: userCode,
+            cardCompany: cardCompany,
+            cardNum: cardNum,
+            cardPwd: cardPwd,
+            cardCvc: cardCvc,
+            cardDate: cardDate
+        })
+    },
+
+    /* 사용자 카드 정보 교체 */
+    updateCard(userCode, cardCompany, cardNum, cardPwd, cardCvc, cardDate) {
+        return axios.patch(USERS_UPDATE_CARD, {
+            userCode: userCode,
+            cardCompany: cardCompany,
+            cardNum: cardNum,
+            cardPwd: cardPwd,
+            cardCvc: cardCvc,
+            cardDate: cardDate
+        })
+    }
 }
 
 export default UserService;

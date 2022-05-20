@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -258,6 +260,24 @@ public class UsersController {
 		List<CardVO> cardInfo = usersService.selectCardInfo(userCode);
 		
 		return cardInfo;
+	}
+	
+	//--------------- 사용자 카드 정보 등록 --------------- //
+	@PutMapping("/insertCard")
+	public int insertCard(@RequestBody CardVO newCard) {
+		
+		int result = usersService.insertCard(newCard);
+		
+		return result;
+	}
+	
+	//--------------- 사용자 카드 정보 등록 --------------- //
+	@PatchMapping("/updateCard")
+	public int updateCard(@RequestBody CardVO changeCard) {
+		
+		int result = usersService.updateCard(changeCard);
+		
+		return result;
 	}
 
 	//--------------- 전기차 충전소 --------------- //
