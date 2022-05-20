@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.oillive.vo.BasketVO;
 import com.oillive.vo.GoodsVO;
+import com.oillive.vo.OrdersVO;
 import com.oillive.vo.PaginationVO;
 
 public interface GoodsService {
@@ -22,5 +23,8 @@ public interface GoodsService {
 	
 	//--------------- 상품 목록 조회 --------------- //
 	public List<GoodsVO> selectGoodsList(String goodsName, String selectedKind, PaginationVO paging);
+	
+	//--------------- 상품 수량 갱신 --------------- //
+	public int updateGoodsAmount(List<OrdersVO> selectedGoods);
 	
 }

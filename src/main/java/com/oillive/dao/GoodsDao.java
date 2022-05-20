@@ -26,4 +26,7 @@ public interface GoodsDao {
 	//--------------- 상품 목록 조회 --------------- //
 	public List<GoodsVO> selectGoodsList(HashMap<String, String> param);
 	
+	//--------------- 상품 수량 갱신 --------------- //
+	public int updateGoodsAmount(HashMap<String, String> param);
+	
 }

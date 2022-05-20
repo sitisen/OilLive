@@ -80,4 +80,11 @@
 		 WHERE G.rnum BETWEEN #{startRow} AND #{endRow}
 	</select>
 	
+	<!-- 상품 수량 갱신 -->
+	<update id="updateGoodsAmount" parameterType="Map">
+		UPDATE goods
+		   SET goods_amount = goods_amount - #{orderAmount}
+		 WHERE goods_code = #{goodsCode}
+	</update>
+	
 </mapper>

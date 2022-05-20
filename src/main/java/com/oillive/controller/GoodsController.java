@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,9 +20,8 @@ import com.oillive.service.GoodsService;
 import com.oillive.service.PaginationService;
 import com.oillive.vo.BasketVO;
 import com.oillive.vo.GoodsVO;
+import com.oillive.vo.OrdersVO;
 import com.oillive.vo.PaginationVO;
-
-import edu.emory.mathcs.backport.java.util.Arrays;
 
 @RestController
 @RequestMapping("/goods")
@@ -43,7 +45,8 @@ public class GoodsController {
 		
 		String goodsCode = req.get("goodsCode");	// 상품 코드
 		String basketCheck = req.get("basketCode");	// 장바구니로 구매하는건지 체크
-		String userCode = req.get("userCode");		// 회원 코드
+		String userCode = "1";//req.get("userCode");		// 회원 코드
+		
 		
 		if( basketCheck == null ) { // 바로 구매일 경우,
 			
@@ -62,7 +65,6 @@ public class GoodsController {
 			basket = goodsService.selectBasket(basketCode, userCode);	
 			
 			result.put("goods", basket); // 장바구니에 담긴 상품을 출력해야하기 때문에 Key값 goods로 설정
-			
 		}
 		
 		return result;
@@ -100,6 +102,18 @@ public class GoodsController {
 		
 		result.put("paging", paging);
 		result.put("goodsList", goodsList);
+		
+		return result;
+	}
+	
+	//--------------- 상품 수량 갱신 --------------- //
+	@PatchMapping("/updateGoodsAmount")
+	public int updateGoodsAmount(@RequestBody HashMap<String, List<OrdersVO>> req) {
+
+		// 사용자가 선택한 상품 코드, 구매 수량이 담긴 List
+		List<OrdersVO> selectedGoods = new ArrayList<OrdersVO>(req.get("selectedGoods"));
+
+		int result = goodsService.updateGoodsAmount(selectedGoods);
 		
 		return result;
 	}

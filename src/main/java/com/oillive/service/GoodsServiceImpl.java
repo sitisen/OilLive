@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.oillive.dao.GoodsDao;
 import com.oillive.vo.BasketVO;
 import com.oillive.vo.GoodsVO;
+import com.oillive.vo.OrdersVO;
 import com.oillive.vo.PaginationVO;
 
 @Service
@@ -72,6 +73,31 @@ public class GoodsServiceImpl implements GoodsService {
 		param.put("endRow", String.valueOf(endRow));	
 		
 		return goodsDao.selectGoodsList(param);
+	}
+
+	//--------------- 상품 수량 갱신 --------------- //
+	@Override
+	public int updateGoodsAmount(List<OrdersVO> selectedGoods) {
+		
+		// Mapper에 쓰일 변수값 저장
+		HashMap<String, String> params = new HashMap<String, String>();
+		
+		// DB UPDATE 결과값 저장
+		int result = 0;
+		
+		// 상품 수량 갱신하는 로직
+		for(int i = 0; i < selectedGoods.size(); i++) {
+			params.put("goodsCode", String.valueOf(selectedGoods.get(i).getGoodsCode()) ); 		// 상품코드
+			params.put("orderAmount", String.valueOf(selectedGoods.get(i).getOrderAmount()) ); 	// 요청수량
+			
+			result = goodsDao.updateGoodsAmount(params);
+			
+			if(result == 0) { // 수량 갱신 중, 실패했을 경우
+				return result;
+			}
+		}
+		
+		return result;
 	}
 	
 }
