@@ -5,5 +5,12 @@
 
 <mapper namespace="com.oillive.dao.OrdersDao">
 	
+	<!-- 결제 내역 추가 -->
+	<update id="insertOrders" parameterType="Map">
+		INSERT INTO orders 
+			 VALUES ( seq_orders.NEXTVAL, #{userCode}, #{goodsCode}, 
+				 	  #{orderAmount}, #{orderAddress}, #{orderRequest}, 
+				 	  SYSDATE, DEFAULT )
+	</update>
 	
 </mapper>
