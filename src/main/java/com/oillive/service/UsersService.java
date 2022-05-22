@@ -1,6 +1,5 @@
 package com.oillive.service;
 
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -61,5 +60,8 @@ public interface UsersService {
 
 	//--------------- 전기차 충전소 --------------- //
 	public List<ElectricCarVO> electriccar(String zcode);
-	
+
+	//--------------- 사용자 장바구니 수량 조회 --------------- //
+	public int getBasketCount(int userCode);
+
 }
