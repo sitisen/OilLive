@@ -420,5 +420,11 @@ public class UsersServiceImpl implements UsersService{
 		
 		return resultMap;
 	}
-	
+
+	//--------------- 사용자 장바구니 수량 조회 --------------- //
+	@Override
+	public int getBasketCount(int userCode) {
+		return usersDao.getBasketCount(userCode);
+	}
+
 }

@@ -13,4 +13,11 @@
 				 	  SYSDATE, DEFAULT )
 	</update>
 	
+	<!-- 결제 내역 추가 -->
+	<select id="getOrderList" parameterType="int" resultType="OrdersVO">
+		SELECT *
+		FROM orders
+		WHERE user_code = #{userCode}
+	</select>
+	
 </mapper>

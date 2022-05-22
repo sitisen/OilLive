@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.oillive.vo.CardVO;
+import com.oillive.vo.OrdersVO;
 import com.oillive.vo.UsersVO;
 
 @Mapper
@@ -50,5 +51,11 @@ public interface UsersDao {
 	
 	//--------------- 사용자 카드 정보 교체 --------------- //
 	public int updateCard(CardVO changeCard);
+
+	//--------------- 사용자 장바구니 수량 조회 --------------- //
+	public int getBasketCount(int userCode);
+
+	//--------------- 사용자 결제내역 조회 --------------- //
+	public List<OrdersVO> getOrderList(String userId);
 	
 }

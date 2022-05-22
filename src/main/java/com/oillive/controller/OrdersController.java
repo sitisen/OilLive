@@ -6,12 +6,15 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.oillive.service.OrdersService;
+import com.oillive.service.UsersService;
 import com.oillive.vo.OrdersVO;
 
 @RestController
@@ -21,6 +24,9 @@ public class OrdersController {
 	
 	@Autowired
 	OrdersService ordersService;
+	
+	@Autowired
+	UsersService usersService;
 
 	//--------------- 결제 내역 추가 --------------- //
 	@PutMapping("/insertOrders")
@@ -31,6 +37,15 @@ public class OrdersController {
 		int result = ordersService.insertOrders(selectedGoods);
 
 		return result;
+	}
+	
+	//--------------- 사용자 결제목록 --------------- //
+	@GetMapping("/orderList")
+	public List<OrdersVO> orderList(@RequestParam( name = "userId" ) String userId) {
+		// 유저코드 조회
+		int userCode = usersService.getUserCode(userId);
+		
+		return ordersService.getOrderList(userCode);
 	}
 	
 }

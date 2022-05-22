@@ -39,5 +39,11 @@ public class OrdersServiceImpl implements OrdersService {
 		
 		return result;
 	}
+
+	//--------------- 사용자 결제목록 --------------- //
+	@Override
+	public List<OrdersVO> getOrderList(int userCode) {
+		return ordersDao.getOrderList(userCode);
+	}
 	
 }

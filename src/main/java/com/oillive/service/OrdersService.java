@@ -8,4 +8,7 @@ public interface OrdersService {
 
 	//--------------- 결제 내역 추가 --------------- //
 	public int insertOrders(List<OrdersVO> selectedGoods);
+
+	//--------------- 사용자 결제목록 --------------- //
+	public List<OrdersVO> getOrderList(int userCode);
 }

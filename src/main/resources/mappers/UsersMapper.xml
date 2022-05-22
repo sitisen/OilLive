@@ -109,4 +109,11 @@
 		FROM users
 		WHERE user_id = #{userid}
 	</select>
+	
+	<!-- 사용자 장바구니 수량 반환 -->
+	<select id="getBasketCount" parameterType="int" resultType="int">
+		SELECT count(*)
+		FROM basket
+		WHERE user_code = #{userCode}
+	</select>
 </mapper>

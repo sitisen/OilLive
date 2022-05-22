@@ -19,11 +19,13 @@ const Sidebar = () => {
                 <tbody>
                     <tr>
                         <td className={SidebarStyle['sidebar-td']}>
-                            <div className={SidebarStyle['myPage-img-wap']}>
-                                <img alt='mypage' src='/images/icon/mypage.png' width='35' height='35'/>
-                                <img alt='mypage-hover' src='/images/icon/mypageHover.png' width='35' height='35'/>
-                            </div>
-                            <span className={SidebarStyle['sidebar-td-span']}>마이페이지</span>
+                            <Link to='/users/myPage/' className={SidebarStyle['sidebar-link']}>
+                                <div className={SidebarStyle['myPage-img-wap']}>
+                                    <img alt='mypage' src='/images/icon/mypage.png' width='35' height='35'/>
+                                    <img alt='mypage-hover' src='/images/icon/mypageHover.png' width='35' height='35'/>
+                                </div>
+                                <span className={SidebarStyle['sidebar-td-span']}>마이페이지</span>
+                            </Link>
                         </td>    
                     </tr>
                     <tr>
@@ -42,7 +44,7 @@ const Sidebar = () => {
                                     <img alt='qna' src='/images/icon/qna.png' width='35' height='35'/>
                                     <img alt='qna-hover' src='/images/icon/qnaHover.png' width='35' height='35'/>
                                 </div>
-                            <span className={SidebarStyle['sidebar-td-span']}>문의하기</span>
+                                <span className={SidebarStyle['sidebar-td-span']}>문의하기</span>
                             </Link>
                         </td>    
                     </tr>

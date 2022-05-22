@@ -287,4 +287,13 @@ public class UsersController {
 		return usersService.electriccar(zcode);
 	}
 	
+	//--------------- 사용자 장바구니 수량 조회 --------------- //
+	@GetMapping("/basketCount")
+	public int basketCount(@RequestParam( name = "userId" ) String userId) {
+		// 유저코드 조회
+		int userCode = usersService.getUserCode(userId);
+		
+		// 장바구니 수량 반환
+		return usersService.getBasketCount(userCode);
+	}
 }
