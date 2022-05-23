@@ -38,3 +38,85 @@
     border-color: rgb(107, 187, 72);
     box-shadow: 0 0 6px 0 rgb(107, 187, 72);
 }
+
+/* 핸드폰 인증하기 버튼 */
+.certi-button {
+    margin-left: 10px;
+    height: 40px;
+    outline: none;
+    background-color: rgb(9, 187, 89);
+    border: none;
+    border-radius:5px;
+    color: white;
+}
+
+.certi-button:hover {
+    background-color:rgb(21, 196, 100);
+}
+
+/* 핸드폰 인증하기 버튼 비활성화 */
+.certi-button-fail {
+    margin-left: 10px;
+    background-color:  #dee2e6;
+    border: none;
+    border-radius:5px;
+    color: white;
+    height: 40px;
+    outline: none;
+}
+
+/* 인증번호 div */
+.certi-div {
+    margin-top: 30px;
+}
+
+.certi-div input {
+    width: 278px;
+}
+
+/* 인증번호 입력 확인, 재전송 */
+.certi-ok-button {
+    margin-left: 10px;
+    background-color: rgb(9, 187, 89);
+    height: 40px;
+    outline: none;
+    border: none;
+    border-radius:5px;
+    color: white;
+    width: 60px;
+}
+
+.certi-ok-button:hover {
+    background-color:rgb(21, 196, 100);
+}
+
+/* 휴대전화 저장하기 버튼 div */
+.phone-save-button {
+    margin-top: 60px;
+}
+
+/* 휴대전화 저장하기 버튼 */
+.phone-save {
+    height: 40px;
+    width: 70%;
+    background-color: black;
+    font-weight: bold;
+    color: white;
+}
+
+.phone-save-fail {
+    background-color:  #dee2e6;
+    border: none;
+    height: 40px;
+    width: 70%;
+}
+
+/* 취소버튼 */
+.phone-cancel {
+    border: none;
+    height: 40px;
+    width: 70%;
+    background-color: red;
+    font-weight: bold;
+    color: white;
+}

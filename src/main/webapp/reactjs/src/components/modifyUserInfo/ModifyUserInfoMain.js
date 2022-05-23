@@ -21,9 +21,10 @@ const ModifyUserInfoMain = () => {
     // 회원정보 가져오는 변수선언
     const [userInfoList, setUserInfoList] = useState([]);
 
+    // 첫 화면 렌더링
     useEffect(() => {
         var userId = sessionStorage.getItem('userId');
-        
+
         // 새로고침시 비밀번호 확인 변수 초기화
         setPwdCheck(false);
 
@@ -93,12 +94,14 @@ const ModifyUserInfoMain = () => {
             sessionStorage.setItem('state', 'address');
         }
         window.open('/users/modiWrite', '수정하기' , state);
+        sessionStorage.removeItem('state');
     }
+
 
     return (
         <>
         {/* 비밀번호 확인 전 */}
-        {/* <div className={!pwdCheck ? ModifyUserInfoMainStyle['user-modi-layout'] : ModifyUserInfoMainStyle['display-off']}><br />
+        <div className={!pwdCheck ? ModifyUserInfoMainStyle['user-modi-layout'] : ModifyUserInfoMainStyle['display-off']}><br />
             <div className={ModifyUserInfoMainStyle['pwd-form-div']}>
                 <div className={ModifyUserInfoMainStyle['pwd-form-label']}>
                     <h4>비밀번호 확인</h4>
@@ -121,9 +124,9 @@ const ModifyUserInfoMain = () => {
                     </div>
                 </div>
             </div>
-        </div> */}
+        </div>
         {/* 비밀번호 확인 성공 */}
-        <div className={!pwdCheck ? ModifyUserInfoMainStyle['user-modi-layout'] : ModifyUserInfoMainStyle['display-off']}><br />
+        <div className={pwdCheck ? ModifyUserInfoMainStyle['user-modi-layout'] : ModifyUserInfoMainStyle['display-off']}><br />
             <div className={ModifyUserInfoMainStyle['modi-form-div']}>
                 <div className={ModifyUserInfoMainStyle['modi-label-div']}>
                     <h4>개인정보 수정</h4>
@@ -172,7 +175,12 @@ const ModifyUserInfoMain = () => {
                                     <tr>
                                         <th>휴대전화</th>
                                         <td colSpan='3'>
-                                            {phone1} - {phone2} - {phone3} <img alt='modify' src='/images/icon/modify.png' width='32' onClick={modifyClick} id='phone' style={{cursor:'pointer'}} />
+                                            {
+                                                localStorage.getItem('result') !== null
+                                                ?   localStorage.getItem('result').substring(0,3) + '-' + localStorage.getItem('result').substring(3,7) + '-' + localStorage.getItem('result').substring(7,11)
+                                                :   phone1 + '-' + phone2 + '-' + phone3 
+                                            }  
+                                            <img alt='modify' src='/images/icon/modify.png' width='32' onClick={modifyClick} id='phone' style={{cursor:'pointer'}} />
                                         </td>
                                     </tr>
                                     <tr>
