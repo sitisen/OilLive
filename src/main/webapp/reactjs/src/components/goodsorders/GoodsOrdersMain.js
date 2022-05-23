@@ -1,16 +1,15 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import UserService from "services/UserService";
 import Modal from 'react-modal';
+import UserService from "services/UserService";
+import GoodsService from "services/GoodsService";
+import OrdersService from "services/OrdersService";
 
 /* import 주소찾기 api */
 import DaumPostcode from 'react-daum-postcode';
 
 // import css
 import GoodsOrdersMainStyle from './GoodsOrdersMain.module.css';
-import GoodsService from "services/GoodsService";
-import OrdersService from "services/OrdersService";
-
 
 const GoodsOrdersMain = () => {
 
@@ -40,11 +39,23 @@ const GoodsOrdersMain = () => {
     const [ purchaseType, setPurchaseType ] = useState(''); // 구매 타입 체크 (바로구매, 장바구니)
     const [ cardInfo, setCardInfo ] = useState({}); // 구매자 카드 정보
     const [ searchAdd , setSearchAdd ] = useState(false); //주소지 검색 API
-    const [ cardNumCheck, setCardNumCheck ] = useState(); // 카드 번호 유효성 체크
-    const [ validateCheck, setValidateCheck ] = useState(); // 카드 유효기간 유효성 체크
-    const [ cardCvcCheck, setCardCvcCheck ] = useState(); // 카드 CVC 유효성 체크
-    const [ cardPwdCheck, setCardPwdCheck ] = useState(); // 카드 비밀번호 유효성 체크
     const [ isReadOnly, setIsReadOnly ] = useState(false); // 기존 카드 사용 시, readOnly 부여
+    const [ cardNumCheck, setCardNumCheck ] = useState({ // 카드 번호 유효성 체크
+        status: false,
+        typeChanged: ''
+    });
+    const [ validateCheck, setValidateCheck ] = useState({ // 카드 유효기간 유효성 체크
+        status: false,
+        typeChanged: ''
+    });
+    const [ cardCvcCheck, setCardCvcCheck ] = useState({ // 카드 CVC 유효성 체크
+        status: false,
+        typeChanged: ''
+    });
+    const [ cardPwdCheck, setCardPwdCheck ] = useState({ // 카드 비밀번호 유효성 체크
+        status: false,
+        typeChanged: ''
+    });
     const [ isChanged, setIsChanged ] = useState({ // 주소 및 요청사항 변경 버튼 클릭 상태
         addrChange: false,
         requestChange: false
@@ -97,11 +108,23 @@ const GoodsOrdersMain = () => {
                                 cardDateInput.current.value = data.cardDate; // 카드 유효기간
                                 cardCVCInput.current.value = data.cardCvc; // 카드 CVC
                                 cardPwdInput.current.value = data.cardPwd; // 카드 비밀번호
-                                setCardNumCheck(true); // 카드 번호 유효성 검사
-                                setValidateCheck(true); // 카드 유효기간 유효성 검사
-                                setCardCvcCheck(true); // 카드 CVC 유효성 검사
-                                setCardPwdCheck(true); // 카드 비밀번호 유효성 검사
-                                setIsReadOnly(true); // readOnly 속성 부여
+                                setCardNumCheck({
+                                    status: true,
+                                    typeChanged: true
+                                }); // 카드 번호 유효성 검사
+                                setValidateCheck({
+                                    status: true,
+                                    typeChanged: true
+                                }); // 카드 유효기간 유효성 검사
+                                setCardCvcCheck({
+                                    status: true,
+                                    typeChanged: true
+                                }); // 카드 CVC 유효성 검사
+                                setCardPwdCheck({
+                                    status: true,
+                                    typeChanged: true
+                                }); // 카드 비밀번호 유효성 검사
+                                setIsReadOnly(false); // readOnly 속성 부여
                                 break;
 
                         default : // 직접 입력 ( input 태그 값 초기화 )
@@ -113,10 +136,22 @@ const GoodsOrdersMain = () => {
                                 cardDateInput.current.value = ''; // 카드 유효기간
                                 cardCVCInput.current.value = ''; // 카드 CVC
                                 cardPwdInput.current.value = ''; // 카드 비밀번호
-                                setCardNumCheck(true); // 카드 번호 유효성 검사
-                                setValidateCheck(true); // 카드 유효기간 유효성 검사
-                                setCardCvcCheck(true); // 카드 CVC 유효성 검사
-                                setCardPwdCheck(true); // 카드 비밀번호 유효성 검사
+                                setCardNumCheck({
+                                    status: false,
+                                    typeChanged: true
+                                }); // 카드 번호 유효성 검사
+                                setValidateCheck({
+                                    status: false,
+                                    typeChanged: true
+                                }); // 카드 유효기간 유효성 검사
+                                setCardCvcCheck({
+                                    status: false,
+                                    typeChanged: true
+                                }); // 카드 CVC 유효성 검사
+                                setCardPwdCheck({
+                                    status: false,
+                                    typeChanged: true
+                                }); // 카드 비밀번호 유효성 검사
                                 setIsReadOnly(false); // readOnly 속성 해제
             }
         }
@@ -275,9 +310,15 @@ const GoodsOrdersMain = () => {
                       + cardNumberInput.current[2].value + cardNumberInput.current[3].value;
 
         if( regExp.test(value) ) {
-            setCardNumCheck(true);
+            setCardNumCheck({
+                status: true,
+                typeChanged: false
+            });
         } else {
-            setCardNumCheck(false);
+            setCardNumCheck({
+                status: false,
+                typeChanged: false
+            });
         }
     }
 
@@ -286,12 +327,33 @@ const GoodsOrdersMain = () => {
         const regExp = /(0[1-9]|1[0-2])[0-9]{2}/ // MMYY 형식이어야 함
         const value = cardDateInput.current.value;
 
+        const year = '20' + value.slice(2, 4); // 카드 유효기간 연도
+        const month = value.slice(0, 2); // 카드 유효기간 달
+
         if(regExp.test(value)) {
-            const result = value.slice(0, 2) + '/' + value.slice(2, 4);
-            setValidateCheck(true);
-            cardDateInput.current.value = result; // 입력 창에 MM/YY 형식으로 변환
+
+            if( Number(year) >= 2022 &&
+                Number(month) > new Date().getMonth() ) { // 카드 유효기간 연도 및 월이 현재 날짜보다 크거나 같아야 true
+                
+                    const result = value.slice(0, 2) + '/' + value.slice(2, 4);
+                    setValidateCheck({
+                        status: true,
+                        typeChanged: false
+                    });
+                    cardDateInput.current.value = result; // 입력 창에 MM/YY 형식으로 변환
+                    
+            } else {
+                setValidateCheck({
+                    status: false,
+                    typeChanged: false
+                });
+            }
+            
         } else {
-            setValidateCheck(false);
+            setValidateCheck({
+                status: false,
+                typeChanged: false
+            });
         }
     }
 
@@ -301,9 +363,15 @@ const GoodsOrdersMain = () => {
         const value = cardCVCInput.current.value;
 
         if( regExp.test(value) ) {
-            setCardCvcCheck(true);
+            setCardCvcCheck({
+                status: true,
+                typeChanged: false
+            });
         } else {
-            setCardCvcCheck(false);
+            setCardCvcCheck({
+                status: false,
+                typeChanged: false
+            });
         }
 
     }
@@ -314,9 +382,15 @@ const GoodsOrdersMain = () => {
         const value = cardPwdInput.current.value;
 
         if( regExp.test(value) ) {
-            setCardPwdCheck(true);
+            setCardPwdCheck({
+                status: true,
+                typeChanged: false
+            });
         } else {
-            setCardPwdCheck(false);
+            setCardPwdCheck({
+                status: false,
+                typeChanged: false
+            });
         }
 
     }
@@ -326,13 +400,13 @@ const GoodsOrdersMain = () => {
     // 결제하기 버튼 클릭 시, 결제 이벤트
     const payment = () => {
 
-        if( cardNumCheck === true && validateCheck === true && 
-            cardCvcCheck === true &&  cardPwdCheck === true) { // 카드 관련 유효성 검사가 모두 true 일 경우,
+        if( cardNumCheck.status === true && validateCheck.status === true && 
+            cardCvcCheck.status === true &&  cardPwdCheck.status === true) { // 카드 관련 유효성 검사가 모두 true 일 경우,
 
             // 공통 변수
             const userCode = userInfo.userCode; // 유저 코드
-            const orderAddress = userAddress;       // 배송될 주소
-            const orderRequest = userRequest;        // 배송 요청 사항
+            const orderAddress = userAddress; // 배송될 주소
+            const orderRequest = userRequest; // 배송 요청 사항
 
             // 상품 테이블 갱신 및 결제 테이블에 삽입될 변수
             let selectedGoods = [];
@@ -387,7 +461,15 @@ const GoodsOrdersMain = () => {
                             }
 
                             alert('결제가 성공적으로 완료되었습니다.');
-                            navigate('/goods/goodslist', {replace:true} ); // 상품 목록으로 이동
+                            navigate('/orders/orderresult', 
+                                {
+                                    replace: true, 
+                                    state: { 
+                                            data: goodsData,
+                                            price: (totalGoodsPrice + totalDelivery),
+                                             
+                                        } 
+                                });
                             break;
 
                     default: // 수량 갱신에 실패했을 경우,
@@ -685,13 +767,18 @@ const GoodsOrdersMain = () => {
                                                 })}
                                             </td>
                                         </tr>
-                                        <tr>
+                                        <tr> 
                                             <th></th>
-                                            { cardNumCheck === false 
+                                            { cardNumCheck.status === false 
                                                     ? // 카드번호가 올바르게 입력되지 않았을 경우,
-                                                    <td>
-                                                        <span className={GoodsOrdersMainStyle['valid-span']}>카드 번호가 올바르지 않습니다.</span>
-                                                    </td>
+                                                        cardNumCheck.typeChanged === false
+                                                        ? // 카드번호 Input에 값이 존재할 경우
+                                                            <td>
+                                                                <span className={GoodsOrdersMainStyle['valid-span']}>카드 번호가 올바르지 않습니다.</span>
+                                                            </td>
+
+                                                        : // 카드번호 Input에 값이 존재하지 않을 경우
+                                                            <></>
                                                     : // 카드번호가 올바른 경우
                                                         <></>
 
@@ -708,9 +795,14 @@ const GoodsOrdersMain = () => {
                                                     placeholder='MMYY'
                                                     readOnly={isReadOnly}
                                                 />
-                                                { validateCheck === false 
+                                                { validateCheck.status === false 
                                                     ? // 유효기간이 올바르게 입력되지 않았을 경우,
-                                                        <span className={GoodsOrdersMainStyle['valid-span']}>유효기간이 올바르지 않습니다.</span> 
+                                                        validateCheck.typeChanged === false
+                                                            ? // 카드 사용 타입(기존 or 직접)이 변하지 않았을 경우
+                                                                <span className={GoodsOrdersMainStyle['valid-span']}>유효기간이 올바르지 않습니다.</span>
+
+                                                            : // 카드 사용 타입(기존 or 직접)이 변했을 경우
+                                                                <></>
                                                     : // 유효기간이 올바른 경우
                                                         <></> 
                                                 }
@@ -727,9 +819,14 @@ const GoodsOrdersMain = () => {
                                                     placeholder='3자리'
                                                     readOnly={isReadOnly}
                                                 />
-                                                { cardCvcCheck === false 
+                                                { cardCvcCheck.status === false 
                                                     ? // CVC가 올바르게 입력되지 않았을 경우,
-                                                        <span className={GoodsOrdersMainStyle['valid-span']}>CVC가 올바르지 않습니다.</span> 
+                                                        cardCvcCheck.typeChanged === false
+                                                            ? // CVC Input에 값이 존재할 경우
+                                                                <span className={GoodsOrdersMainStyle['valid-span']}>CVC가 올바르지 않습니다.</span> 
+                                                                
+                                                            : // CVC Input에 값이 존재하지 않을 경우
+                                                                <></>
                                                     : // CVC가 올바른 경우
                                                         <></> 
                                                 }
@@ -746,9 +843,14 @@ const GoodsOrdersMain = () => {
                                                     placeholder="4자리"
                                                     readOnly={isReadOnly}
                                                 />
-                                                { cardPwdCheck === false 
+                                                { cardPwdCheck.status === false 
                                                     ? // 비밀번호가 올바르게 입력되지 않았을 경우,
-                                                        <span className={GoodsOrdersMainStyle['valid-span']}>비밀번호가 올바르지 않습니다.</span> 
+                                                        cardPwdCheck.typeChanged === false
+                                                            ? // 카드 비밀번호 Input에 값이 존재할 경우
+                                                                <span className={GoodsOrdersMainStyle['valid-span']}>비밀번호가 올바르지 않습니다.</span> 
+
+                                                            : // 카드 비밀번호 Input에 값이 존재하지 않을 경우
+                                                                <></>
                                                     : // 비밀번호가 올바른 경우
                                                         <></> 
                                                 }
