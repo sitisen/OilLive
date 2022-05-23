@@ -113,6 +113,7 @@
 .goods-buy-Link {
     margin: 0 3%;
     width: 21%;
+    font-size: 14px !important;
 }
 
 /* "수량" Span CSS*/

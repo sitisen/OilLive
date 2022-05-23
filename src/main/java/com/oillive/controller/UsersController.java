@@ -287,11 +287,29 @@ public class UsersController {
 		return usersService.electriccar(zcode);
 	}
 	
+	//--------------- 사용자 장바구니 상품 추가 --------------- //
+	@PutMapping("/insertBasket")
+	public int insertBasket(@RequestBody HashMap<String, String> req) {
+		
+		// 장바구니 추가에 필요한 변수 선언
+		String userCode = String.valueOf(usersService.getUserCode(req.get("userId")));
+		String goodsCode = req.get("goodsCode");
+		String basketAmount = req.get("basketAmount");		
+
+		int duplicateCheck = usersService.getBasketCount("2");
+		
+		System.out.println(duplicateCheck);
+		
+//		int result = usersService.insertBasket(userCode, goodsCode, basketAmount);
+		
+		return duplicateCheck;
+	}
+	
 	//--------------- 사용자 장바구니 수량 조회 --------------- //
 	@GetMapping("/basketCount")
 	public int basketCount(@RequestParam( name = "userId" ) String userId) {
 		// 유저코드 조회
-		int userCode = usersService.getUserCode(userId);
+		String userCode = String.valueOf(usersService.getUserCode(userId));
 		
 		// 장바구니 수량 반환
 		return usersService.getBasketCount(userCode);

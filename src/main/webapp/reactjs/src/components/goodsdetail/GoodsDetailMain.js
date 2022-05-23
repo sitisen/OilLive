@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import GoodsService from "services/GoodsService";
+import UserService from "services/UserService";
 
 // import css
 import GoodsDetailMainStyle from './GoodsDetailMain.module.css';
@@ -76,12 +77,25 @@ const GoodsDetailMain = () => {
         e.preventDefault();
 
         if(sessionStorage.getItem('userId') === null) {
-            alert('로그인하고 이용할 수 있는 기능입니다.');
+            alert('로그인 후, 이용할 수 있는 기능입니다.');
             navigate('/users/login', {replace:true} );
+
         } else if( goodsInfo.goodsAmount === 0 ) {
+
             alert('해당 상품은 품절되었습니다.');
+
         }
-    }
+    };
+
+    // 사용자의 장바구니에 해당 상품 추가
+    const insertBasket = () => {
+        const userId = sessionStorage.getItem('userId'); // 사용자 아이디
+        const goodsCode = goodsInfo.goodsCode; // 사용자가 선택한 상품 코드
+        const basketAmount = amount; // 사용자가 선택한 상품 개수
+
+        UserService.insertBasket(userId, goodsCode, basketAmount); // 사용자 장바구니에 상품 추가
+
+    };
 
     // 결제 및 장바구니로 넘길 최종 상품 객체
     const goodsData = Object.assign({goodsCode: goodsInfo.goodsCode}, { goodsSelectedAmount: amount });
@@ -210,9 +224,8 @@ const GoodsDetailMain = () => {
                                                 >
                                                     <button className={`btn btn-secondary ${GoodsDetailMainStyle['goods-button']}`}>바로구매</button>
                                                 </Link>
-                                                <Link className={GoodsDetailMainStyle['goods-buy-Link']} to='#' onClick={(e) => purchaseClick(e)}>
-                                                    <button className={`btn btn-secondary ${GoodsDetailMainStyle['goods-button']}`}>장바구니</button>
-                                                </Link>
+
+                                                <button className={`btn btn-secondary ${GoodsDetailMainStyle['goods-button']}`} onClick={(e) => purchaseClick(e)}>장바구니</button>
                                                 
                                                 <Link className={GoodsDetailMainStyle['goods-buy-Link']} to={'/goods/goodslist'}>
                                                     <button className={`btn btn-secondary ${GoodsDetailMainStyle['goods-button']}`}>이전으로</button>
@@ -227,10 +240,9 @@ const GoodsDetailMain = () => {
                                                 >
                                                     <button className={`btn btn-success ${GoodsDetailMainStyle['goods-button']}`}>바로구매</button>
                                                 </Link>
-                                                <Link className={GoodsDetailMainStyle['goods-buy-Link']} to={'/users/home'}> {/* 장바구니 구현 후, 링크 변경 */}
-                                                    <button className={`btn btn-primary ${GoodsDetailMainStyle['goods-button']}`}>장바구니</button>
-                                                </Link>
-                                                
+
+                                                <button className={`btn btn-primary ${GoodsDetailMainStyle['goods-buy-Link']}`} onClick={() => insertBasket()}>장바구니</button>
+
                                                 <Link className={GoodsDetailMainStyle['goods-buy-Link']} to={'/goods/goodslist'}>
                                                     <button className={`btn btn-secondary ${GoodsDetailMainStyle['goods-button']}`}>이전으로</button>
                                                 </Link>

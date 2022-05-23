@@ -420,11 +420,36 @@ public class UsersServiceImpl implements UsersService{
 		
 		return resultMap;
 	}
-
+	
+	//--------------- 사용자 장바구니 상품 추가 --------------- //
+	@Override
+	public int insertBasket(String userCode, String goodsCode, String basketAmount) {
+		HashMap<String, String> param = new HashMap<String, String>();
+		
+		param.put("userCode", userCode);
+		param.put("goodsCode", goodsCode);
+		param.put("basketAmount", basketAmount);
+		
+		return usersDao.insertBasket(param);
+	}
+	
 	//--------------- 사용자 장바구니 수량 조회 --------------- //
 	@Override
-	public int getBasketCount(int userCode) {
+	public int getBasketCount(String userCode) {
+		System.out.println("1개");
 		return usersDao.getBasketCount(userCode);
+	}
+
+	//--------------- 사용자 장바구니 수량 조회 (중복 체크) --------------- //
+	@Override
+	public int getBasketCount(String userCode, String goodsCode) {
+		HashMap<String, String> param = new HashMap<String, String>();
+		
+		param.put("userCode", userCode);
+		param.put("goodsCode", goodsCode);
+
+		System.out.println("2개");
+		return usersDao.getBasketCount(param);
 	}
 
 }

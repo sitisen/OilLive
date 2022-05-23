@@ -109,11 +109,20 @@
 		FROM users
 		WHERE user_id = #{userid}
 	</select>
+
+	<!-- 사용자 장바구니 상품 추가 -->
+	<insert id="insertBasket" parameterType="Map">
+		INSERT INTO basket
+			 VALUES ( seq_basket.NEXTVAL, #{userCode}, #{goodsCode}, #{basketAmount} )
+	</insert>
 	
 	<!-- 사용자 장바구니 수량 반환 -->
-	<select id="getBasketCount" parameterType="int" resultType="int">
+	<select id="getBasketCount" parameterType="String" resultType="int">
 		SELECT count(*)
 		FROM basket
 		WHERE user_code = #{userCode}
+		<if test="goodsCode != null">
+			AND goods_code = #{goodsCode}
+		</if>
 	</select>
 </mapper>

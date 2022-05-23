@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.oillive.vo.CardVO;
 import com.oillive.vo.OrdersVO;
@@ -51,10 +52,16 @@ public interface UsersDao {
 	
 	//--------------- 사용자 카드 정보 교체 --------------- //
 	public int updateCard(CardVO changeCard);
-
+	
+	//--------------- 사용자 장바구니 상품 추가 --------------- //
+	public int insertBasket(HashMap<String, String> param);
+	
 	//--------------- 사용자 장바구니 수량 조회 --------------- //
-	public int getBasketCount(int userCode);
-
+	public int getBasketCount(String userCode);
+	
+	//--------------- 사용자 장바구니 수량 조회 (중복 체크) --------------- //
+	public int getBasketCount(HashMap<String, String> param);
+	
 	//--------------- 사용자 결제내역 조회 --------------- //
 	public List<OrdersVO> getOrderList(String userId);
 	

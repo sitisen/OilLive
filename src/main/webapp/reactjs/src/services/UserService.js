@@ -15,6 +15,8 @@ const USERS_SELECT_USER_INFO = USERS_URL + '/selectUserInfo'; // 사용자 정�
 const USERS_SELECT_CARD_INFO = USERS_URL + '/selectCardInfo'; // 사용자 카드 정보 조회
 const USERS_INSERT_CARD = USERS_URL + '/insertCard'; // 사용자 카드 정보 등록
 const USERS_UPDATE_CARD = USERS_URL + '/updateCard'; // 사용자 카드 정보 교체
+const USERS_SELECT_BASKET = USERS_URL + '/selectBasket'; // 사용자 장바구니 조회
+const USERS_INSERT_BASKET = USERS_URL + '/insertBasket'; // 사용자 장바구니 상품 추가
 const USERS_BASKET_COUNT = USERS_URL + '/basketCount'; // 사용자 장바구니 수량 조회
 
 /* 사용자 Service */
@@ -129,6 +131,23 @@ const UserService = {
             cardPwd: cardPwd,
             cardCvc: cardCvc,
             cardDate: cardDate
+        })
+    },
+
+    /* 사용자 장바구니 조회 */
+    selectBasket(userId, goodsCode) {
+        return axios.post(USERS_SELECT_BASKET, {
+            userId: userId,
+            goodsCode: goodsCode
+        });
+    },
+
+    /* 사용자 장바구니 상품 추가 */
+    insertBasket(userId, goodsCode, basketAmount) {
+        return axios.put(USERS_INSERT_BASKET, {
+            userId: userId,
+            goodsCode: goodsCode,
+            basketAmount: basketAmount
         })
     },
 
