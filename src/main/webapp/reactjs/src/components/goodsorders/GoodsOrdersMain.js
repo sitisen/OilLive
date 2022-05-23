@@ -460,7 +460,6 @@ const GoodsOrdersMain = () => {
                                 UserService.updateCard(userCode, cardCompany, cardNum, cardPwd, cardCvc, cardDate);
                             }
 
-                            alert('결제가 성공적으로 완료되었습니다.');
                             navigate('/orders/orderresult', 
                                 {
                                     replace: true, 

@@ -18,7 +18,7 @@ const OrderResultMain = () => {
 
                     <div className={OrderResultMainStyle['orderResult-container']}>
                         <div className='text-center'>
-                            <img className={OrderResultMainStyle['result-img']} alt='paymentResult' src='/images/icon/purchaseSuccess.png'></img>
+                            <img className={OrderResultMainStyle['result-img']} alt='paymentResult' src='/images/icon/purchaseSuccess.png' />
                         </div>
                         <div className='text-center'>
                             <table className={`table table-hover ${OrderResultMainStyle['result-table']}`}>
