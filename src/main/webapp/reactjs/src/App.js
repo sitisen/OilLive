@@ -15,6 +15,8 @@ import GoodsOrders from './pages/GoodsOrders';
 import OrderResult from './pages/OrderResult';
 import ElectricCar from './pages/ElectricCar';
 import MyPage from './pages/MyPage';
+import ModifyUserInfo from 'pages/ModifyUserInfo';
+import ModiWrite from 'pages/ModiWrite';
 
 // Page Routing Setting
 function App() {
@@ -34,6 +36,8 @@ function App() {
       <Route path='/orders/orderResult' element={<OrderResult />} />
       <Route path='/electriccar/electriccar' element={<ElectricCar />} />
       <Route path='/users/myPage' element={<MyPage />} />
+      <Route path='/users/modifyUserInfo' element={<ModifyUserInfo />} />
+      <Route path='/users/modiWrite' element={<ModiWrite />} />
     </Routes>
   );
 }

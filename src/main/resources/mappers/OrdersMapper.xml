@@ -13,11 +13,12 @@
 				 	  SYSDATE, DEFAULT )
 	</update>
 	
-	<!-- 결제 내역 추가 -->
+	<!-- 사용자 결제내역 -->
 	<select id="getOrderList" parameterType="int" resultType="OrdersVO">
 		SELECT *
 		FROM orders
 		WHERE user_code = #{userCode}
+		ORDER BY order_date DESC
 	</select>
 	
 </mapper>

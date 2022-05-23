@@ -1,6 +1,7 @@
 package com.oillive.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -56,6 +57,14 @@ public class QBoardController {
 	public int qBoardImgUpload(@RequestParam("files") MultipartFile file) throws IllegalStateException, IOException  {
 		// 업로드
 		return uploadService.upLoad("Q", file);
+	}
+	
+	//--------------- 사용자 문의목록 --------------- //
+	@GetMapping("/qBoardList")
+	public List<QBoardVO> qBoardList(@RequestParam( name = "userId" ) String userId) {
+		// 사용자 코드 가져옴
+		int userCode = usersService.getUserCode(userId);
+		return qBoardService.getQBoardList(userCode);
 	}
 }
 

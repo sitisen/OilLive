@@ -1,0 +1,40 @@
+/* 윈도우 창 전체 */
+.modiwrite-layout {
+    text-align: center;
+}
+
+/* 윈도우 창 label div */
+.modiwrite-label {
+    background-color: black;
+    color: white;
+    height: 50px;
+    line-height: 50px;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+/* 핸드폰 입력 div */
+.modi-phone-div {
+    text-align: left;
+    margin-left: 30px;
+    margin-top: 50px;
+}
+
+/* 핸드폰 label */
+.modi-phone-div label {
+    margin-right: 20px;
+    font-weight: bold;
+}
+
+/* 핸드폰 번호 input */
+.modi-phone-div input {
+    height: 40px;
+    padding-left: 12px;
+    border : 0.1em solid rgba(150, 150, 150, 0.5);
+    outline: none;
+}
+
+.modi-phone-div input:focus {
+    border-color: rgb(107, 187, 72);
+    box-shadow: 0 0 6px 0 rgb(107, 187, 72);
+}

@@ -1,0 +1,156 @@
+/* 전체 레이아웃 */
+.user-modi-layout {
+    text-align: center;
+    background-color: rgb(233, 235, 238);
+    padding-bottom: 174px;
+}
+
+/* 비밀번호 확인 div */
+.pwd-form-div {
+    box-shadow: 1px 1px 1px;
+    border: 0.5px solid rgba(150, 150, 150, 0.5);
+    border-radius: 12px;
+    background-color: white;
+    width: 60%;
+    margin: 0 auto;
+    margin-top: 60px;
+    padding-top: 20px;
+    padding-bottom: 40px;
+}
+
+/* 비밀번호 확인 label */
+.pwd-form-label {
+    text-align: left;
+    padding-left: 25px;
+}
+
+.pwd-form-label hr {
+    width: 98%;
+}
+
+/* 입력 div */
+.pwd-form {
+    margin: 0 auto;
+    margin-top: 80px;
+    width: 70%;
+    border: 1px solid #d3d3d3;
+    border-radius: 13px;
+    padding-top: 60px;
+    padding-bottom: 40px;
+    margin-bottom: 100px;
+}
+
+/* 비밀번호 입력 input div */
+.pwd-div {
+    margin-bottom: 50px;
+}
+
+/* input */
+.pwd-input {
+    width: 50%;
+    height: 50px;
+    border : 0.1em solid rgba(150, 150, 150, 0.5);
+    outline: none;
+    padding-left: 12px;
+}
+
+.pwd-input:focus {
+    border-color: rgb(107, 187, 72);
+    box-shadow: 0 0 6px 0 rgb(107, 187, 72);
+}
+
+/* label */
+.pwd-label {
+    margin-right: 70px;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+/* pwd button */
+.pwd-button {
+    width: 30%;
+    height: 40px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+/* diplay-off */
+.display-off {
+    display: none;
+}
+
+/* 회원정보 수정 label div */
+.modi-label-div {
+    text-align: left;
+    padding-left: 25px;
+}
+
+.modi-label-div hr {
+    width: 98%;
+}
+
+/* 회원정보 수정 div */
+.modi-form-div {
+    margin: 0 auto;
+    box-shadow: 1px 1px 1px;
+    width: 60%;
+    border: 0.5px solid rgba(150, 150, 150, 0.5);
+    border-radius: 12px;
+    background-color: white;
+    padding-left: 20px;
+    padding-top: 20px;
+    text-align: center;
+    padding-bottom: 40px;
+}
+
+/* 회원정보 table */
+.profile-table {
+    margin:0 auto;
+    text-align: center;
+    margin-top: 50px;
+    width: 95%;
+    border-top: 2px solid rgb(79, 97, 139);
+    border-bottom: 2px solid rgb(79, 97, 139);
+    margin-bottom: 60px;
+}
+
+/* 회원정보 table th */
+.profile-table th {
+    background-color: rgb(231, 241, 246);
+    text-align: left;
+    padding-left: 30px;
+    width: 200px;
+    font-size: 15px;
+}
+
+/* 회원정보 table tr */
+.profile-table tr {
+    height: 40px;
+    border-bottom: 1px solid rgb(217, 221, 223);
+}
+
+/* 회원정보 table td */
+.profile-table td {
+    font-size: 14px;
+}
+
+/* 정보수정 button div */
+.modi-button-div {
+    text-align: right;
+}
+
+/* 정보수정 저장하기, 취소 button */
+.modi-button {
+    margin-right: 30px;
+    background-color: rgb(85, 85, 85);
+    color: white;
+    font-weight: bold;
+    width: 85px;
+    height: 35px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.modi-button:hover {
+    background-color: black;
+}

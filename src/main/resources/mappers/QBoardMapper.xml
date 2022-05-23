@@ -12,4 +12,12 @@
 		 , SYSDATE , null , 'N' , 'Y')
 	</insert>
 	
+	<!-- 사용자 문의목록 -->
+	<select id="getQBoardList" parameterType="int" resultType="QBoardVO">
+		SELECT *
+		FROM q_board
+		WHERE user_code = #{userCode}
+		ORDER BY q_board_qdate DESC
+	</select>
+	
 </mapper>

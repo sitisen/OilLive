@@ -2,7 +2,7 @@
 .mypage-main-layout {
     text-align: center;
     background-color: rgb(233, 235, 238);
-    padding-bottom: 150px;
+    padding-bottom: 100px;
 }
 
 /* 마이페이지 label, form div */
@@ -163,7 +163,7 @@
 
 /* 상품구매내역 div */
 .mypage-orders {
-    margin-top: 100px;
+    margin-top: 130px;
 }
 
 /* 상품구매내역 label div */
@@ -175,7 +175,7 @@
 /* 상품구매내역 table */
 .orders-table {
     margin: 0 auto;
-    margin-top: 25px;
+    margin-top: 15px;
     border-top: 2px solid rgb(79, 97, 139);
     border-bottom: 2px solid rgb(79, 97, 139);
     width: 93.5%;
@@ -206,13 +206,12 @@
 /* 상품구매내역 table th */
 .orders-table th {
     background-color: rgb(231, 241, 246);
-    width: 200px;
     font-size: 15px;
 }
 
 /* 상품구매내역 삭제 button */
-.order-delete-button {
-    margin-left: 1145px;
+.delete-button {
+    margin-left: 1180px;
     background-color: rgb(85, 85, 85);
     color: white;
     font-weight: bold;
@@ -222,6 +221,68 @@
     font-size: 14px;
 }
 
-.order-delete-button:hover {
+.delete-button:hover {
     background-color: black;
+}
+
+/* 체크박스 td */
+.checkbox-td {
+    width: 50px;
+}
+
+/* 체크박스 input */
+.input-checkbox {
+    width: 20px;
+    height: 17px;
+}
+
+/* table 날짜 th */
+.table-date {
+    width: 250px;
+}
+
+/* 문의내역 div */
+.mypage-qna-div {
+    margin-top: 130px;
+}
+
+/* 문의내역 label div */
+.qna-label-div {
+    text-align: left;
+    margin-left: 45px;
+}
+
+/* 문의내역 table */
+.qna-table {
+    margin: 0 auto;
+    margin-top: 15px;
+    border-top: 2px solid rgb(79, 97, 139);
+    border-bottom: 2px solid rgb(79, 97, 139);
+    width: 93.5%;
+    margin-bottom: 100px;
+}
+
+/* 문의내역 table tr */
+.qna-th-tr {
+    height: 40px;
+    border-bottom: 1px solid rgb(217, 221, 223);
+    background-color: rgb(231, 241, 246);
+    font-size: 15px;
+}
+
+/* 문의내역 상태 th */
+.qna-status {
+    width: 300px;
+}
+
+/* 문의내역  td - tr */
+.qna-td-tr {
+    height: 40px;
+    border-bottom: 1px solid rgb(217, 221, 223);
+    font-size: 14px;
+}
+
+/* 문의내역 글씨크기 */
+.qna-table td {
+    font-size: 14px;
 }

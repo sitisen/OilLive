@@ -8,6 +8,7 @@ import MyPageMainStyle from './MyPageMain.module.css';
 import UserService from 'services/UserService';
 import GoodsService from 'services/GoodsService';
 import OrdersService from 'services/OrdersService';
+import QBoardService from 'services/QBoardService';
 
 const MyPageMain = () => {
     
@@ -18,6 +19,7 @@ const MyPageMain = () => {
     const [userInfo, setUserInfo] = useState([]);
     const [orderInfo, setOrderInfo] = useState([]);
     const [goodsInfo, setGoodsInfo] = useState([]);
+    const [qnaInfo, setQnaInfo] = useState([]);
 
     // 장바구니 수량 저장
     const [basketNum, setBasketNum] = useState(0);
@@ -48,10 +50,12 @@ const MyPageMain = () => {
             // 상품결제 내역 가져오기
             OrdersService.orderList(userId).then( ores => {
                 setOrderInfo(ores.data);
-                var userCode = ores.data[0].userCode;
                 
                 // 내역에 해당하는 상품정보 가져오기
                 if(ores.data.length > 0){
+                    // 결제내역 조회를 위한 userCode 변수 선언
+                    var userCode = ores.data[0].userCode;
+
                     for(var i = 0; i < ores.data.length; i++){
                         //ores.data[i].goodsCode;
                     }
@@ -60,20 +64,24 @@ const MyPageMain = () => {
                     // });
                 }
             });
+            // 문의내역 가져오기
+            QBoardService.qBoardList(userId).then( qres => {
+                setQnaInfo(qres.data);
+            });
         }
     }, [navigate]);
 
     // 회원 정보 수정하기 버튼
     const onModify = () => {
         if(window.confirm('회원정보를 수정하시겠습니까?')){
-            navigate('/users/modifyUserInfo', {replace:true} );
+            navigate('/users/modifyUserInfo');
         }
     }
 
     // 회원 상품구매내역 삭제 버튼
     const onDelete = () => {
         if(window.confirm('선택하신 주문내역을 삭제하시겠습니까?\n주문내역은 복구할 수 없습니다.')){
-            
+        
         }
     }
 
@@ -106,6 +114,45 @@ const MyPageMain = () => {
             } else {
                 myPageRef.current['allCheck'].checked = true;
             }
+        }
+    }
+
+    // 회원 문의내역 전체선택
+    const qnaChange = (e) => {
+        if(e.target.id === 'qnaAllCheck'){
+            // 문의내역 전체선택 버튼 클릭시
+            if(e.target.checked === true){
+                // 전체 선택완료
+                for(var i = 0; i<qnaInfo.length; i++){
+                    myPageRef.current['qboardCode'+[i]].checked = true;
+                }
+            } else {
+                // 전체 선택해제
+                for(var j = 0; j<qnaInfo.length; j++){
+                    myPageRef.current['qboardCode'+[j]].checked = false;
+                }
+            }
+        // 개별버튼 클릭시 전체선택 완료, 해제
+        } else {
+            var checkList = '';
+            // 배열로 True False 받아옴
+            for(var k = 0; k<qnaInfo.length; k++){
+                checkList += myPageRef.current['qboardCode'+[k]].checked;
+            }
+
+            // False가 있다면 전체선택 해제, 없다면 전체선택 이므로 완료
+            if(checkList.includes('false')){
+                myPageRef.current['qnaAllCheck'].checked = false;
+            } else {
+                myPageRef.current['qnaAllCheck'].checked = true;
+            }
+        }
+    }
+
+    // 회원 문의내역 삭제 버튼
+    const qOnDelete = () => {
+        if(window.confirm('선택하신 문의내역을 삭제하시겠습니까?')){
+            
         }
     }
 
@@ -198,41 +245,122 @@ const MyPageMain = () => {
                         <Link to='/users/basket'><button className={MyPageMainStyle['basket-button']}>장바구니</button></Link>
                     </div>
                 </div>
+
+                {/* 상품구매내역 */}
                 <div className={MyPageMainStyle['mypage-orders']}>
                     <div className={MyPageMainStyle['orders-label-div']}>
-                        <label className={MyPageMainStyle['form-label']}>상품구매내역</label>
-                        <button onClick={onDelete} className={MyPageMainStyle['order-delete-button']}>선택삭제</button>
+                        <label className={MyPageMainStyle['form-label']}>구매내역</label>
+                        <button onClick={onDelete} className={MyPageMainStyle['delete-button']}>선택삭제</button>
                     </div>
                     <table className={MyPageMainStyle['orders-table']}>
                         <thead>
                             <tr className={MyPageMainStyle['orders-th-tr']}>
-                                <th><input type='checkbox' onChange={onChange} id='allCheck' ref={el => myPageRef.current['allCheck'] = el}/></th>
-                                <th>결제일</th>
+                                <th className={MyPageMainStyle['checkbox-td']}>
+                                    <input type='checkbox' onChange={onChange} id='allCheck' className={MyPageMainStyle['input-checkbox']}
+                                        ref={el => myPageRef.current['allCheck'] = el}/>
+                                </th>
+                                <th className={MyPageMainStyle['table-date']}>결제일</th>
                                 <th>상품명</th>
                                 <th>금액</th>
                                 <th>수량</th>
                             </tr>
                         </thead>
                         {
-                            orderInfo.map((list, i) => {
+                            // 현재 구매내역이 있을때
+                            orderInfo.length > 0 ?
+                                orderInfo.map((list, i) => {
+                                    // 날짜
+                                    var date = list.orderDate.substring(0,10);
+                                    
+                                    return (
+                                        <tbody key={i}>
+                                            <tr className={MyPageMainStyle['orders-td-tr']}>
+                                                <td>
+                                                    <input type='checkbox' value={list.orderCode} className={MyPageMainStyle['input-checkbox']}
+                                                        ref={el => myPageRef.current['orderCode'+i] = el} onChange={onChange} />
+                                                </td>
+                                                <td>{date}</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td>{list.orderAmount}</td>
+                                            </tr>
+                                        </tbody>
+                                    );
+                                })
+                            : 
+                            // 현재 구매내역이 없을때
+                            <tbody>
+                                <tr className={MyPageMainStyle['orders-td-tr']}>
+                                    <td colSpan='5'>현재 구매내역이 없습니다.</td>
+                                </tr>
+                            </tbody>
+                        }
+                    </table>
+                </div>
+                {/* 문의내역 */}
+                <div className={MyPageMainStyle['mypage-qna-div']}>
+                    <div className={MyPageMainStyle['qna-label-div']}>
+                        <label className={MyPageMainStyle['form-label']}>문의내역</label>
+                        <button onClick={qOnDelete} className={MyPageMainStyle['delete-button']}>선택삭제</button>
+                    </div>
+                </div>
+                <table className={MyPageMainStyle['qna-table']}>
+                    <thead>
+                        <tr className={MyPageMainStyle['qna-th-tr']}>
+                            <th className={MyPageMainStyle['checkbox-td']}>
+                                <input type='checkbox' className={MyPageMainStyle['input-checkbox']} onChange={qnaChange} id='qnaAllCheck'
+                                    ref={el => myPageRef.current['qnaAllCheck'] = el} />
+                            </th>
+                            <th className={MyPageMainStyle['table-date']}>등록일</th>
+                            <th>제목</th>
+                            <th className={MyPageMainStyle['qna-status']}>상태</th>
+                        </tr>
+                    </thead>
+                    {
+                        // 현재 문의내역 있을때
+                        qnaInfo.length > 0 ?
+                            qnaInfo.map((list, i) => {
+
                                 // 날짜
-                                var date = list.orderDate.substring(0,10);
+                                var date = list.qboardQDate.substring(0,10);
+                                // 답변 상태
+                                var answer = false;
+
+                                if(list.qboardAStatus === 'N'){
+                                    answer = false;
+                                } else {
+                                    answer = true;
+                                }
 
                                 return (
                                     <tbody key={i}>
                                         <tr className={MyPageMainStyle['orders-td-tr']}>
-                                            <td><input type='checkbox' value={list.orderCode} ref={el => myPageRef.current['orderCode'+i] = el} onChange={onChange} /></td>
+                                            <td>
+                                                <input type='checkbox' value={list.qboardCode} className={MyPageMainStyle['input-checkbox']}
+                                                        ref={el => myPageRef.current['qboardCode'+i] = el} onChange={qnaChange} />
+                                            </td>
                                             <td>{date}</td>
-                                            <td></td>
-                                            <td></td>
-                                            <td>{list.orderAmount}</td>
+                                            <td>{list.qboardTitle}</td>
+                                            <td>
+                                                {
+                                                    answer 
+                                                    ? <span style={{color:'green', fontWeight:'bold'}}>답변완료</span>
+                                                    : <span style={{color:'red', fontWeight:'bold'}}>답변대기</span>
+                                                }
+                                            </td>
                                         </tr>
                                     </tbody>
                                 );
                             })
-                        }
-                    </table>
-                </div>
+                        :
+                        // 현재 문의내역 없을때   
+                        <tbody>
+                            <tr className={MyPageMainStyle['qna-td-tr']}>
+                                <td colSpan='4'>현재 문의내역이 없습니다.</td>
+                            </tr>
+                        </tbody>
+                    }
+                </table>
             </div>
         </div>
     );

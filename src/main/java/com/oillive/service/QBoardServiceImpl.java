@@ -1,5 +1,7 @@
 package com.oillive.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,12 @@ public class QBoardServiceImpl implements QBoardService {
 	@Override
 	public int qBoardWrite(QBoardVO vo) {
 		return qBoardDao.qBoardWrite(vo);
+	}
+
+	//--------------- 사용자 문의목록 --------------- //
+	@Override
+	public List<QBoardVO> getQBoardList(int userCode) {
+		return qBoardDao.getQBoardList(userCode);
 	}
 	
 }
