@@ -12,6 +12,7 @@ import GoodsDetail from './pages/GoodsDetail';
 import Qna from './pages/Qna';
 import QboardWrite from './pages/QboardWrite';
 import GoodsOrders from './pages/GoodsOrders';
+import OrderResult from './pages/OrderResult';
 import ElectricCar from './pages/ElectricCar';
 import MyPage from './pages/MyPage';
 
@@ -30,6 +31,7 @@ function App() {
       <Route path='/qna/qna' element={<Qna />} />
       <Route path='/qboard/qboardWrite' element={<QboardWrite />} />
       <Route path='/orders/goodsOrders' element={<GoodsOrders />} />
+      <Route path='/orders/orderResult' element={<OrderResult />} />
       <Route path='/electriccar/electriccar' element={<ElectricCar />} />
       <Route path='/users/myPage' element={<MyPage />} />
     </Routes>
