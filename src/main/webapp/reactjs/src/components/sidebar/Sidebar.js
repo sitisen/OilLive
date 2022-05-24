@@ -30,11 +30,13 @@ const Sidebar = () => {
                     </tr>
                     <tr>
                         <td className={SidebarStyle['sidebar-td']}> 
-                            <div className={SidebarStyle['basket-img-wap']}>
-                                <img alt='basket' src='/images/icon/basket.png' width='35' height='35'/>
-                                <img alt='basket-hover'src='/images/icon/basketHover.png' width='35' height='35'/>
-                            </div> 
-                            <span className={SidebarStyle['sidebar-td-span']}>장바구니</span>
+                            <Link to='/users/basket' className={SidebarStyle['sidebar-link']}>
+                                <div className={SidebarStyle['basket-img-wap']}>
+                                    <img alt='basket' src='/images/icon/basket.png' width='35' height='35'/>
+                                    <img alt='basket-hover'src='/images/icon/basketHover.png' width='35' height='35'/>
+                                </div> 
+                                <span className={SidebarStyle['sidebar-td-span']}>장바구니</span>
+                            </Link>
                         </td>    
                     </tr>
                     <tr>
