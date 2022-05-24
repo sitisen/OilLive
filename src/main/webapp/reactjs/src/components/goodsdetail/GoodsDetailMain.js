@@ -234,7 +234,7 @@ const GoodsDetailMain = () => {
                                                     <button className={`btn btn-secondary ${GoodsDetailMainStyle['goods-button']}`}>바로구매</button>
                                                 </Link>
 
-                                                <button className={`btn btn-secondary ${GoodsDetailMainStyle['goods-button']}`} onClick={(e) => purchaseClick(e)}>장바구니</button>
+                                                <button className={`btn btn-secondary ${GoodsDetailMainStyle['goods-buy-Link']}`} onClick={(e) => purchaseClick(e)}>장바구니</button>
                                                 
                                                 <Link className={GoodsDetailMainStyle['goods-buy-Link']} to={'/goods/goodslist'}>
                                                     <button className={`btn btn-secondary ${GoodsDetailMainStyle['goods-button']}`}>이전으로</button>
