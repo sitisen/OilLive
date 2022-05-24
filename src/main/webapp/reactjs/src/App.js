@@ -17,6 +17,7 @@ import ElectricCar from './pages/ElectricCar';
 import MyPage from './pages/MyPage';
 import ModifyUserInfo from 'pages/ModifyUserInfo';
 import ModiWrite from 'pages/ModiWrite';
+import Basket from 'pages/Basket';
 
 // Page Routing Setting
 function App() {
@@ -38,6 +39,7 @@ function App() {
       <Route path='/users/myPage' element={<MyPage />} />
       <Route path='/users/modifyUserInfo' element={<ModifyUserInfo />} />
       <Route path='/users/modiWrite' element={<ModiWrite />} />
+      <Route path='/users/basket' element={<Basket />} />
     </Routes>
   );
 }
