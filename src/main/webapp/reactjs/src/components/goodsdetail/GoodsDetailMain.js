@@ -93,7 +93,16 @@ const GoodsDetailMain = () => {
         const goodsCode = goodsInfo.goodsCode; // 사용자가 선택한 상품 코드
         const basketAmount = amount; // 사용자가 선택한 상품 개수
 
-        UserService.insertBasket(userId, goodsCode, basketAmount); // 사용자 장바구니에 상품 추가
+        UserService.insertBasket(userId, goodsCode, basketAmount).then( res => { // 사용자 장바구니에 상품 추가
+            const data = res.data;
+            
+            if(data === 1) { // 장바구니 추가에 성공했을 경우 
+                alert('장바구니에 해당 상품을 추가했습니다.');
+
+            } else { // 장바구니 추가에 실패했을 경우
+                alert('장바구니에 해당 상품이 이미 존재합니다.\n수량 변경은 장바구니 페이지에서 진행해주세요.');
+            }
+        });
 
     };
 

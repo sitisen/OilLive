@@ -294,22 +294,26 @@ public class UsersController {
 		// 장바구니 추가에 필요한 변수 선언
 		String userCode = String.valueOf(usersService.getUserCode(req.get("userId")));
 		String goodsCode = req.get("goodsCode");
-		String basketAmount = req.get("basketAmount");		
+		String basketAmount = req.get("basketAmount");
+		int result = 0;
 
-		int duplicateCheck = usersService.getBasketCount("2");
+		// 한 명의 사용자 장바구니에 동일한 상품이 존재하는지 확인
+		int basketExistCheck = usersService.basketExistCheck(userCode, goodsCode);
+
+		// 장바구니에 해당 상품 INSERT
+		if(basketExistCheck == 0) { // 장바구니에 해당 상품이 존재하지 않을 경우,
+			result = usersService.insertBasket(userCode, goodsCode, basketAmount);	
+
+		}
 		
-		System.out.println(duplicateCheck);
-		
-//		int result = usersService.insertBasket(userCode, goodsCode, basketAmount);
-		
-		return duplicateCheck;
+		return result;
 	}
 	
 	//--------------- 사용자 장바구니 수량 조회 --------------- //
 	@GetMapping("/basketCount")
 	public int basketCount(@RequestParam( name = "userId" ) String userId) {
 		// 유저코드 조회
-		String userCode = String.valueOf(usersService.getUserCode(userId));
+		int userCode = usersService.getUserCode(userId);
 		
 		// 장바구니 수량 반환
 		return usersService.getBasketCount(userCode);

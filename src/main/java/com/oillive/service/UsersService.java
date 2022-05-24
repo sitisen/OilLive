@@ -61,13 +61,13 @@ public interface UsersService {
 	//--------------- 전기차 충전소 --------------- //
 	public List<ElectricCarVO> electriccar(String zcode);
 	
+	//--------------- 사용자 장바구니 상품 중복 체크 --------------- //
+	public int basketExistCheck(String userCode, String goodsCode);
+	
 	//--------------- 사용자 장바구니 상품 추가 --------------- //
 	public int insertBasket(String userCode, String goodsCode, String basketAmount);
 	
 	//--------------- 사용자 장바구니 수량 조회 --------------- //
-	public int getBasketCount(String userCode);
-	
-	//--------------- 사용자 장바구니 수량 조회 (중복 체크) --------------- //
-	public int getBasketCount(String userCode, String goodsCode);
+	public int getBasketCount(int userCode);
 
 }
