@@ -159,7 +159,7 @@ const ModifyUserInfoMain = () => {
                     repwd.focus();
                 } else {
                     if(regPwd !== 2){
-                        alert('비밀번호가 정규식에 맞지 않습니다.\n다시 입력해주세요.');
+                        alert('비밀번호를 다시 입력해주세요.');
                         pwd.focus();
                     } else if(rePwdYN !== 2) {
                         alert('비밀번호가 일치하지 않습니다.\n다시 입력해주세요.');
