@@ -400,85 +400,92 @@ const GoodsOrdersMain = () => {
     // 결제하기 버튼 클릭 시, 결제 이벤트
     const payment = () => {
 
-        if( cardNumCheck.status === true && validateCheck.status === true && 
-            cardCvcCheck.status === true &&  cardPwdCheck.status === true) { // 카드 관련 유효성 검사가 모두 true 일 경우,
-
-            // 공통 변수
-            const userCode = userInfo.userCode; // 유저 코드
-            const orderAddress = userAddress; // 배송될 주소
-            const orderRequest = userRequest; // 배송 요청 사항
-
-            // 상품 테이블 갱신 및 결제 테이블에 삽입될 변수
-            let selectedGoods = [];
-
-            // 카드 테이블에 삽입될 변수
-            const cardCompany = cardCompanyInput.current.value;
-            const cardNum = cardNumberInput.current[0].value + cardNumberInput.current[1].value + cardNumberInput.current[2].value + cardNumberInput.current[3].value;
-            const cardPwd = cardPwdInput.current.value + '';
-            const cardCvc = cardCVCInput.current.value + '';
-            const cardDate = cardDateInput.current.value;
-
-            // 상품 코드와 구매를 원하는 수량 설정
-            if(basketCode === null) { // 바로 구매
-                selectedGoods.push({
-                    userCode: userCode,
-                    goodsCode : goodsCode, 
-                    orderAmount : goodsSelectedAmount,
-                    orderAddress: orderAddress,
-                    orderRequest: orderRequest
-                })
-
-            } else { // 장바구니 구매
-                goodsData.map( list => (
-
+        if( isChanged.addrChange === false ) { // 상세 주소창이 열려있지 않은 경우,
+            
+            if( cardNumCheck.status === true && validateCheck.status === true && 
+                cardCvcCheck.status === true &&  cardPwdCheck.status === true ) { // 카드 관련 유효성 검사가 모두 true 일 경우,
+    
+                // 공통 변수
+                const userCode = userInfo.userCode; // 유저 코드
+                const orderAddress = userAddress; // 배송될 주소
+                const orderRequest = userRequest; // 배송 요청 사항
+    
+                // 상품 테이블 갱신 및 결제 테이블에 삽입될 변수
+                let selectedGoods = [];
+    
+                // 카드 테이블에 삽입될 변수
+                const cardCompany = cardCompanyInput.current.value;
+                const cardNum = cardNumberInput.current[0].value + cardNumberInput.current[1].value + cardNumberInput.current[2].value + cardNumberInput.current[3].value;
+                const cardPwd = cardPwdInput.current.value + '';
+                const cardCvc = cardCVCInput.current.value + '';
+                const cardDate = cardDateInput.current.value;
+    
+                // 상품 코드와 구매를 원하는 수량 설정
+                if(basketCode === null) { // 바로 구매
                     selectedGoods.push({
                         userCode: userCode,
-                        goodsCode : list.goodsVO.goodsCode,
-                        orderAmount : list.basketAmount,
+                        goodsCode : goodsCode, 
+                        orderAmount : goodsSelectedAmount,
                         orderAddress: orderAddress,
                         orderRequest: orderRequest
                     })
-         
-                ));
+    
+                } else { // 장바구니 구매
+                    goodsData.map( list => (
+    
+                        selectedGoods.push({
+                            userCode: userCode,
+                            goodsCode : list.goodsVO.goodsCode,
+                            orderAmount : list.basketAmount,
+                            orderAddress: orderAddress,
+                            orderRequest: orderRequest
+                        })
+             
+                    ));
+                }
+    
+                // GOODS 테이블 UPDATE
+                GoodsService.updateGoodsAmount(selectedGoods).then( res => {
+                    const updateResult = res.data;
+    
+                    switch(updateResult) {
+                        case 1: // 수량 갱신에 성공했을 경우,
+    
+                                // ORDERS 테이블 INSERT
+                                OrdersService.insertOrders(selectedGoods);
+    
+                                // CARD 테이블 INSERT or UPDATE
+                                if(cardInfo.length === 0) { // 첫 결제일 경우, 해당 카드 정보 등록
+                                    UserService.insertCard(userCode, cardCompany, cardNum, cardPwd, cardCvc, cardDate);
+    
+                                } else if(existCard.selectValue === 'directly') { // 기존 카드가 존재하지만 직접 입력을 했을 경우, 해당 카드 정보 갱신
+                                    UserService.updateCard(userCode, cardCompany, cardNum, cardPwd, cardCvc, cardDate);
+                                }
+    
+                                navigate('/orders/orderresult', 
+                                    {
+                                        replace: true, 
+                                        state: { 
+                                                data: goodsData,
+                                                price: (totalGoodsPrice + totalDelivery),
+                                                 
+                                            } 
+                                    });
+                                break;
+    
+                        default: // 수량 갱신에 실패했을 경우,
+                                return alert('현재 상품 재고가 구매하시려는 수량보다 모자랍니다.');
+                    }
+    
+                });
+    
+            } else { // 유효성 검사가 하나라도 통과되지 않았을 경우,
+                alert('카드 정보를 정상적으로 입력해주세요.');
+
             }
 
-            // GOODS 테이블 UPDATE
-            GoodsService.updateGoodsAmount(selectedGoods).then( res => {
-                const updateResult = res.data;
-
-                switch(updateResult) {
-                    case 1: // 수량 갱신에 성공했을 경우,
-
-                            // ORDERS 테이블 INSERT
-                            OrdersService.insertOrders(selectedGoods);
-
-                            // CARD 테이블 INSERT or UPDATE
-                            if(cardInfo.length === 0) { // 첫 결제일 경우, 해당 카드 정보 등록
-                                UserService.insertCard(userCode, cardCompany, cardNum, cardPwd, cardCvc, cardDate);
-
-                            } else if(existCard.selectValue === 'directly') { // 기존 카드가 존재하지만 직접 입력을 했을 경우, 해당 카드 정보 갱신
-                                UserService.updateCard(userCode, cardCompany, cardNum, cardPwd, cardCvc, cardDate);
-                            }
-
-                            navigate('/orders/orderresult', 
-                                {
-                                    replace: true, 
-                                    state: { 
-                                            data: goodsData,
-                                            price: (totalGoodsPrice + totalDelivery),
-                                             
-                                        } 
-                                });
-                            break;
-
-                    default: // 수량 갱신에 실패했을 경우,
-                            return alert('현재 상품 재고가 구매하시려는 수량보다 모자랍니다.');
-                }
-
-            });
-
-        } else { // 유효성 검사가 하나라도 통과되지 않았을 경우,
-            alert('카드 정보를 정상적으로 입력해주세요.');
+        } else {
+            alert('나머지 주소는 필수 입력사항입니다.');
         }
 
     }
