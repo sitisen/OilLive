@@ -43,7 +43,7 @@ public class GoodsController {
 		
 		String goodsCode = req.get("goodsCode");	// 상품 코드
 		String basketCheck = req.get("basketCode");	// 장바구니로 구매하는건지 체크
-		String userCode = "1";//req.get("userCode");		// 회원 코드
+		String userCode = req.get("userCode");		// 회원 코드
 		
 		
 		if( basketCheck == null ) { // 바로 구매일 경우,
