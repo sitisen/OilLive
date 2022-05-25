@@ -17,6 +17,7 @@
 	    <result column="GOODS_NAME" property="goodsName"/>
 	    <result column="GOODS_PRICE" property="goodsPrice"/>
 	    <result column="GOODS_DISCOUNT" property="goodsDiscount"/>
+	   	<result column="GOODS_AMOUNT" property="goodsAmount"/>
 	</resultMap>
 	
 	
