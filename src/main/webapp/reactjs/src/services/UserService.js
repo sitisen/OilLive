@@ -18,6 +18,8 @@ const USERS_UPDATE_CARD = USERS_URL + '/updateCard'; // 사용자 카드 정보 
 const USERS_SELECT_BASKET = USERS_URL + '/selectBasket'; // 사용자 장바구니 조회
 const USERS_INSERT_BASKET = USERS_URL + '/insertBasket'; // 사용자 장바구니 상품 추가
 const USERS_BASKET_COUNT = USERS_URL + '/basketCount'; // 사용자 장바구니 수량 조회
+const USERS_UPDATE_INFO = USERS_URL + '/updateInfo'; // 사용자 정보변경
+const USERS_SEND_EMAIL = USERS_URL + '/sendEmail'; // 사용자 이메일 인증
 
 /* 사용자 Service */
 const UserService = {
@@ -159,6 +161,22 @@ const UserService = {
             params: { 
                 userId: userId
             }
+        });
+    },
+
+    /* 사용자 정보수정 */
+    updateInfo(code, info, userId){
+        return axios.post(USERS_UPDATE_INFO, {
+            code : code,
+            info : info,
+            userId : userId
+        });
+    },
+
+    /* 사용자 정보수정 - 이메일 */
+    sendEmail(email){
+        return axios.post(USERS_SEND_EMAIL,{
+            email : email
         });
     }
 }

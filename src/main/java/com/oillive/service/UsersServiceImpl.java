@@ -450,4 +450,38 @@ public class UsersServiceImpl implements UsersService{
 		return usersDao.getBasketCount(userCode);
 	}
 
+	//--------------- 사용자 정보수정 --------------- //
+	@Override
+	public int updateInfo(HashMap<String, String> req) {
+		// 변수선언
+		String userId = req.get("userId"); 
+		String code = req.get("code");
+		String info = req.get("info");
+		int result = 0;
+		
+		// 유저코드 가져옴
+		int userCode = getUserCode(userId);
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("info", info);
+		map.put("userCode", userCode);
+		
+		// 구분에 따라 업데이트
+		switch(code) {
+			// 휴대전화 업데이트
+			case "p" : 
+				result = usersDao.updatePhone(map);
+				break;
+			// 이메일 업데이트
+			case "e" :
+				result = usersDao.updateEmail(map);
+				break;
+			// 주소 업데이트
+			default :
+				result = usersDao.updateAddress(map);
+		}
+		
+		return result;
+	}
+
 }
