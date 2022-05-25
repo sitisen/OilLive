@@ -332,7 +332,7 @@ const GoodsOrdersMain = () => {
 
         if(regExp.test(value)) {
 
-            if( Number(year) >= 2022 &&
+            if( Number(year) >= new Date().getFullYear() &&
                 Number(month) > new Date().getMonth() ) { // 카드 유효기간 연도 및 월이 현재 날짜보다 크거나 같아야 true
                 
                     const result = value.slice(0, 2) + '/' + value.slice(2, 4);
