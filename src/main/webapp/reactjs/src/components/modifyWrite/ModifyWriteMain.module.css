@@ -5,10 +5,11 @@
 
 /* 윈도우 창 label div */
 .modiwrite-label {
-    background-color: black;
-    color: white;
+    text-align: left;
+    margin-left: 30px;
     height: 50px;
     line-height: 50px;
+    margin-top: 30px;
     font-weight: bold;
     font-size: 18px;
 }
@@ -18,6 +19,10 @@
     text-align: left;
     margin-left: 30px;
     margin-top: 50px;
+}
+
+.modiwrite-layout hr{
+    width: 95%;
 }
 
 /* 핸드폰 label */
@@ -119,4 +124,41 @@
     background-color: red;
     font-weight: bold;
     color: white;
+}
+
+/* 주소찾기 창 */
+.add-modal-span {
+    font-size: 17px;
+    font-weight: bold;
+    color: white;
+}
+
+.add-modal-style {
+    text-align: center;
+    margin-top: 70px;
+    border: 1px solid;
+    background-color: black;
+    border-radius: 5px;
+}
+
+/* 주소지변경 div */
+.modi-add-div {
+    text-align: left;
+    margin-left: 30px;
+    margin-top: 10px;
+}
+
+.modi-add-div input{
+    height: 40px;
+    padding-left: 12px;
+    border : 0.1em solid rgba(150, 150, 150, 0.5);
+    outline: none;
+    width: 300px;
+    margin-top: 30px;
+    margin-right: 20px;
+}
+
+.modi-add-div input:focus{
+    border-color: rgb(107, 187, 72);
+    box-shadow: 0 0 6px 0 rgb(107, 187, 72);
 }

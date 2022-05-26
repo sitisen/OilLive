@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
 import com.oillive.vo.CardVO;
 import com.oillive.vo.OrdersVO;
@@ -64,5 +63,14 @@ public interface UsersDao {
 	
 	//--------------- 사용자 결제내역 조회 --------------- //
 	public List<OrdersVO> getOrderList(String userId);
+
+	//--------------- 사용자 정보수정 : 휴대폰 --------------- //
+	public int updatePhone(HashMap<String, Object> map);
+
+	//--------------- 사용자 정보수정 : 이메일 --------------- //
+	public int updateEmail(HashMap<String, Object> map);
+
+	//--------------- 사용자 정보수정 : 주소 --------------- //
+	public int updateAddress(HashMap<String, Object> map);
 	
 }

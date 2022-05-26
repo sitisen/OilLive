@@ -130,4 +130,25 @@
 		FROM basket
 		WHERE user_code = #{userCode}
 	</select>
+	
+	<!-- 사용자 정보변경 - 핸드폰 -->
+	<update id="updatePhone" parameterType="Map">
+		UPDATE users
+		SET user_phone = #{info}
+		WHERE user_code = #{userCode}
+	</update>
+	
+	<!-- 사용자 정보변경 - 이메일 -->
+	<update id="updateEmail" parameterType="Map">
+		UPDATE users
+		SET user_email = #{info}
+		WHERE user_code = #{userCode}
+	</update>
+	
+	<!-- 사용자 정보변경 - 주소 -->
+	<update id="updateAddress" parameterType="Map">
+		UPDATE users
+		SET user_address = #{info}
+		WHERE user_code = #{userCode}
+	</update>
 </mapper>

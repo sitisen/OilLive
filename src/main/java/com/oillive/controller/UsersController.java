@@ -318,4 +318,31 @@ public class UsersController {
 		// 장바구니 수량 반환
 		return usersService.getBasketCount(userCode);
 	}
+	
+	//--------------- 사용자 정보수정 --------------- //
+	@PostMapping("/updateInfo")
+	public int updateInfo(@RequestBody HashMap<String, String> req) {
+		// 업데이트 처리
+		return usersService.updateInfo(req);
+	}
+	
+	//--------------- 사용자 이메일 인증 --------------- //
+	@PostMapping("/sendEmail")
+	public String sendEmail(@RequestBody HashMap<String, String> req) {
+		// 인증번호
+		String numStr = "";
+		
+		for(int i=0; i<4; i++) {
+			String ran = Integer.toString(rand.nextInt(10));
+			numStr+=ran;
+		}
+		
+		usersService.sendEmail(req.get("email"), numStr);
+		
+		System.out.println("인증번호 : " + numStr);
+		return numStr;
+	}
+	
 }
+
+

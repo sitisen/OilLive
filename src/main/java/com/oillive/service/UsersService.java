@@ -70,4 +70,7 @@ public interface UsersService {
 	//--------------- 사용자 장바구니 수량 조회 --------------- //
 	public int getBasketCount(int userCode);
 
+	//--------------- 사용자 정보 수정 --------------- //
+	public int updateInfo(HashMap<String, String> req);
+
 }
