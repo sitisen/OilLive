@@ -31,7 +31,7 @@ const Header = () => {
                   <td className={HeaderStyle['header-nav']}><Link className={HeaderStyle['header-link']} to='/goods/goodslist'><span className={HeaderStyle['nav-span']}>차량용품</span></Link></td>
                   <td className={HeaderStyle['header-nav']}><Link className={HeaderStyle['header-link']} to='/qna/qna'><span className={HeaderStyle['nav-span']}>이용안내</span></Link></td>
                   <td className={HeaderStyle['header-nav']}><Link className={HeaderStyle['header-link']} to='/electriccar/electriccar'><span className={HeaderStyle['nav-span']}>전기차 충전소</span></Link></td>
-                  <td className={HeaderStyle['header-nav']}><span className={HeaderStyle['nav-span']}>이벤트</span></td>
+                  <td className={HeaderStyle['header-nav']}><Link className={HeaderStyle['header-link']} to='/event/eventList'><span className={HeaderStyle['nav-span']}>이벤트</span></Link></td>
                   <td className={HeaderStyle['header-nav-button']}>
                     {
                       userId !== null 
