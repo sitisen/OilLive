@@ -1,5 +1,6 @@
 package com.oillive.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -44,6 +45,28 @@ public class OrdersServiceImpl implements OrdersService {
 	@Override
 	public List<OrdersVO> getOrderList(int userCode) {
 		return ordersDao.getOrderList(userCode);
+	}
+
+	//--------------- 사용자 결제 상품목록 --------------- //
+	@Override
+	public List<OrdersVO> orderGoodsList(List<String> orderCode) {
+		List<OrdersVO> list = new ArrayList<OrdersVO>();
+		
+		for(int i = 0; i < orderCode.size(); i++) {
+			list.add(ordersDao.orderGoodsList(orderCode.get(i)));
+		}
+		return list;
+	}
+
+	//--------------- 사용자 결제목록 삭제 --------------- //
+	@Override
+	public int deleteOrder(List<String> orderCode) {
+		int result = 0;
+		
+		for(int i = 0; i < orderCode.size(); i++) {
+			result = ordersDao.deleteOrder(orderCode.get(i));
+		}
+		return result;
 	}
 	
 }

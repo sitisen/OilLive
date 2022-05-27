@@ -16,5 +16,11 @@ public interface OrdersDao {
 
 	//--------------- 사용자 결제목록 --------------- //
 	public List<OrdersVO> getOrderList(int userCode);
+
+	//--------------- 사용자 결제 상품목록 --------------- //
+	public OrdersVO orderGoodsList(String orderCode);
+
+	//--------------- 사용자 결제목록 삭제 --------------- //
+	public int deleteOrder(String orderCode);
 	
 }

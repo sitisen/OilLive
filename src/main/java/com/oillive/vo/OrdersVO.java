@@ -15,5 +15,6 @@ public class OrdersVO {
     private String orderRequest;	//배송 요청 사항
 	private Date orderDate;			// 결제일
 	private String orderStatus;		// 상태
-	
+	private String goodsName;		// 상품명
+	private int goodsPrice;		// 상품가격
 }

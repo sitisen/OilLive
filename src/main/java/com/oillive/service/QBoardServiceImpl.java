@@ -25,5 +25,16 @@ public class QBoardServiceImpl implements QBoardService {
 	public List<QBoardVO> getQBoardList(int userCode) {
 		return qBoardDao.getQBoardList(userCode);
 	}
+
+	//--------------- 사용자 문의삭제 --------------- //
+	@Override
+	public int deleteQBoard(List<String> qboardCode) {
+		int result = 0;
+		for(int i = 0; i < qboardCode.size(); i++) {
+			result = qBoardDao.deleteQBoard(qboardCode.get(i));
+			System.out.println(result);
+		}
+		return result;
+	}
 	
 }

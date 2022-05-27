@@ -48,4 +48,15 @@ public class OrdersController {
 		return ordersService.getOrderList(userCode);
 	}
 	
+	//--------------- 사용자 결제 상품목록 --------------- //
+	@GetMapping("/orderGoodsList")
+	public List<OrdersVO> orderGoodsList(@RequestParam( name = "orderCode" ) List<String> orderCode) {
+		return ordersService.orderGoodsList(orderCode);
+	}
+	
+	//--------------- 사용자 결제목록 삭제 --------------- //
+	@GetMapping("/deleteOrder")
+	public int deleteOrder(@RequestParam( name = "orderCode" ) List<String> orderCode) {
+		return ordersService.deleteOrder(orderCode);
+	}
 }

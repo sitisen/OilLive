@@ -15,4 +15,7 @@ public interface QBoardDao {
 	//--------------- 사용자 문의목록 --------------- //
 	public List<QBoardVO> getQBoardList(int userCode);
 
+	//--------------- 사용자 문의삭제 --------------- //
+	public int deleteQBoard(String qboardCode);
+
 }

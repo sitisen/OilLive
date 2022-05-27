@@ -6,7 +6,6 @@ import MyPageMainStyle from './MyPageMain.module.css';
 
 /* import service */
 import UserService from 'services/UserService';
-import GoodsService from 'services/GoodsService';
 import OrdersService from 'services/OrdersService';
 import QBoardService from 'services/QBoardService';
 
@@ -18,17 +17,20 @@ const MyPageMain = () => {
     // 사용자 정보, 상품구매 정보, 문의내역 정보 저장
     const [userInfo, setUserInfo] = useState([]);
     const [orderInfo, setOrderInfo] = useState([]);
-    const [goodsInfo, setGoodsInfo] = useState([]);
     const [qnaInfo, setQnaInfo] = useState([]);
+    const [goodsInfo, setGoodsInfo] = useState([]);
 
     // 장바구니 수량 저장
     const [basketNum, setBasketNum] = useState(0);
 
-    // Order Code 배열
-    const [orderCode, setOrderCode] = useState([]);
-
     // Ref 선언
     const myPageRef = useRef([]);
+
+    // 상품 구매내역 삭제
+    const [orderDelete, setOrderDelete] = useState(false);
+
+    // 문의내역 삭제
+    const [qnaDelete, setQnaDelete] = useState(false);
 
     // 첫 화면 렌더링
     useEffect(() => {
@@ -53,15 +55,16 @@ const MyPageMain = () => {
                 
                 // 내역에 해당하는 상품정보 가져오기
                 if(ores.data.length > 0){
-                    // 결제내역 조회를 위한 userCode 변수 선언
-                    var userCode = ores.data[0].userCode;
+                    // 결제내역 조회를 위한 goodsCode 변수 선언
+                    var orderCode = [];
 
                     for(var i = 0; i < ores.data.length; i++){
-                        //ores.data[i].goodsCode;
+                        orderCode.push(ores.data[i].orderCode);
                     }
-                    // GoodsService.selectGoods(goodsCode, basketCode, userCode).then(gres =>{
-                        
-                    // });
+
+                    OrdersService.orderGoodsList(orderCode).then( gres => {
+                        setGoodsInfo(gres.data);
+                    });
                 }
             });
             // 문의내역 가져오기
@@ -69,8 +72,8 @@ const MyPageMain = () => {
                 setQnaInfo(qres.data);
             });
         }
-    }, [navigate]);
-
+    }, [navigate, orderDelete, qnaDelete]);
+    
     // 회원 정보 수정하기 버튼
     const onModify = () => {
         if(window.confirm('회원정보를 수정하시겠습니까?')){
@@ -81,7 +84,40 @@ const MyPageMain = () => {
     // 회원 상품구매내역 삭제 버튼
     const onDelete = () => {
         if(window.confirm('선택하신 주문내역을 삭제하시겠습니까?\n주문내역은 복구할 수 없습니다.')){
-        
+            var checkList = '';
+            var orderCode = [];
+            // 배열로 True False 받아옴
+            for(var i = 0; i<goodsInfo.length; i++){
+                checkList += myPageRef.current['orderCode'+[i]].checked;
+                if(myPageRef.current['orderCode'+[i]].checked === true){
+                    orderCode.push(myPageRef.current['orderCode'+[i]].value);
+                }
+            }
+
+            // 아무것도 선택하지않은 상태
+            if(!checkList.includes('true')){
+                alert('삭제하실 내역을 하나이상 선택해주세요.');
+            // 하나 이상 선택한 상태
+            } else {
+                OrdersService.deleteOrder(orderCode).then(res => {
+                    if(res.data === 1){
+                        alert('구매내역이 삭제되었습니다.');
+                        for(var j = 0; j<goodsInfo.length; j++){
+                            myPageRef.current['orderCode'+j].checked = false;
+                            myPageRef.current['detail'+j].className = MyPageMainStyle['display-off'];
+                        }
+                        myPageRef.current['allCheck'].checked = false;
+                        if(orderDelete === true){
+                            setOrderDelete(false);
+                        } else {
+                            setOrderDelete(true);
+                        }
+                       
+                    } else {
+                        alert('실패!');
+                    }
+                });
+            }
         }
     }
 
@@ -113,6 +149,22 @@ const MyPageMain = () => {
                 myPageRef.current['allCheck'].checked = false;
             } else {
                 myPageRef.current['allCheck'].checked = true;
+            }
+        }
+    }
+
+    // 회원 상품구매내역 상세보기 버튼 클릭 이벤트
+    const orderDetail = (index) => {
+        var on = MyPageMainStyle['order-detail-content'];
+        var off = MyPageMainStyle['display-off'];
+
+        for(var i = 0; i < orderInfo.length; i++){
+            if(index === i){
+                if(myPageRef.current['detail'+index].className === off){
+                    myPageRef.current['detail'+index].className = on;
+                } else {
+                    myPageRef.current['detail'+index].className = off;
+                }
             }
         }
     }
@@ -152,7 +204,52 @@ const MyPageMain = () => {
     // 회원 문의내역 삭제 버튼
     const qOnDelete = () => {
         if(window.confirm('선택하신 문의내역을 삭제하시겠습니까?')){
-            
+            var checkList = [];
+            var qboardCode = [];
+
+            // 배열로 True False 받아옴
+            for(var i = 0; i<qnaInfo.length; i++){
+                checkList += myPageRef.current['qboardCode'+[i]].checked;
+                if(myPageRef.current['qboardCode'+[i]].checked === true){
+                    qboardCode.push(myPageRef.current['qboardCode'+[i]].value);
+                }
+            }
+
+            // 하나도 선택하지 않은 상태
+            if(!checkList.includes('true')){
+                alert('삭제하실 내역을 하나이상 선택해주세요.');
+            // 하나 이상 선택한 상태
+            } else {
+                QBoardService.deleteQBoard(qboardCode).then(res =>{
+                    if(res === 1){
+                        alert('선택하신 문의내역이 삭제되었습니다.');
+                        if(qnaDelete === true){
+                            setQnaDelete(false);
+                        } else {
+                            setQnaDelete(true);
+                        }
+                        
+                    } else{
+                        alert('실패!');
+                    }
+                });
+            }
+        }
+    }
+
+    // 회원 문의내역 상세
+    const qnaDetail = (index) => {
+        var on = MyPageMainStyle['qna-detail'];
+        var off = MyPageMainStyle['display-off'];
+        for(var i = 0; i<qnaInfo.length; i ++){
+            if(index === i){
+                //console.log(myPageRef.current['qboard'+index].className);
+                // if(myPageRef.current['qboard'+index].className === off){
+                //     myPageRef.current['qboard'+index].className = on;
+                // } else {
+                //     myPageRef.current['qboard'+index].className = off;
+                // }
+            }
         }
     }
 
@@ -260,18 +357,18 @@ const MyPageMain = () => {
                                         ref={el => myPageRef.current['allCheck'] = el}/>
                                 </th>
                                 <th className={MyPageMainStyle['table-date']}>결제일</th>
-                                <th>상품명</th>
+                                <th className={MyPageMainStyle['table-title']}>상품명</th>
                                 <th>금액</th>
                                 <th>수량</th>
+                                <th className={MyPageMainStyle['table-bigo']}></th>
                             </tr>
                         </thead>
                         {
                             // 현재 구매내역이 있을때
                             orderInfo.length > 0 ?
-                                orderInfo.map((list, i) => {
+                                goodsInfo.map((list, i) => {
                                     // 날짜
                                     var date = list.orderDate.substring(0,10);
-                                    
                                     return (
                                         <tbody key={i}>
                                             <tr className={MyPageMainStyle['orders-td-tr']}>
@@ -280,9 +377,26 @@ const MyPageMain = () => {
                                                         ref={el => myPageRef.current['orderCode'+i] = el} onChange={onChange} />
                                                 </td>
                                                 <td>{date}</td>
-                                                <td></td>
-                                                <td></td>
+                                                <td className={MyPageMainStyle['goods-title-td']}>
+                                                    <Link to='/goods/goodsdetail' state={{ data:list.goodsCode}} className={MyPageMainStyle['goods-title']}>
+                                                        {list.goodsName}
+                                                    </Link>
+                                                </td>
+                                                <td>{(list.goodsPrice * list.orderAmount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</td>
                                                 <td>{list.orderAmount}</td>
+                                                <td><span className={MyPageMainStyle['order-detail']} onClick={() => orderDetail(i)}>상세보기</span></td>
+                                            </tr>
+                                            <tr className={MyPageMainStyle['display-off']} ref={el => myPageRef.current['detail'+i] = el}>
+                                                <td colSpan='6'><br />
+                                                    <span>배송지</span><br />
+                                                    {list.orderAddress}
+                                                    <hr />
+                                                    {
+                                                        !list.orderRequest 
+                                                        ? <div><span>요청사항</span><br />없음</div>
+                                                        : <div><span>요청사항</span><br />{list.orderRequest}<br /><br /></div>
+                                                    }
+                                                </td>
                                             </tr>
                                         </tbody>
                                     );
@@ -291,7 +405,7 @@ const MyPageMain = () => {
                             // 현재 구매내역이 없을때
                             <tbody>
                                 <tr className={MyPageMainStyle['orders-td-tr']}>
-                                    <td colSpan='5'>현재 구매내역이 없습니다.</td>
+                                    <td colSpan='6'>현재 구매내역이 없습니다.</td>
                                 </tr>
                             </tbody>
                         }
@@ -334,7 +448,7 @@ const MyPageMain = () => {
 
                                 return (
                                     <tbody key={i}>
-                                        <tr className={MyPageMainStyle['orders-td-tr']}>
+                                        <tr className={MyPageMainStyle['qna-detail-tr']} onClick={qnaDetail(i)}>
                                             <td>
                                                 <input type='checkbox' value={list.qboardCode} className={MyPageMainStyle['input-checkbox']}
                                                         ref={el => myPageRef.current['qboardCode'+i] = el} onChange={qnaChange} />
@@ -346,6 +460,23 @@ const MyPageMain = () => {
                                                     answer 
                                                     ? <span style={{color:'green', fontWeight:'bold'}}>답변완료</span>
                                                     : <span style={{color:'red', fontWeight:'bold'}}>답변대기</span>
+                                                }
+                                            </td>
+                                        </tr>
+                                        <tr className={MyPageMainStyle['display-off']}  ref={el => myPageRef.current['qboard'+i] = el}>
+                                            <td colSpan='4'>
+                                                <span className={MyPageMainStyle['qna-q']}>Q</span><br />
+                                                <textarea readOnly={true} className={MyPageMainStyle['qna-textarea']} defaultValue={list.qboardQContent} /><br />
+                                                {
+                                                    !list.qboardAContent ? null
+                                                    : 
+                                                    <>
+                                                        <hr />
+                                                        <span>
+                                                            <span className={MyPageMainStyle['qna-q']}>A</span><br />
+                                                            {list.qboardAcontent}<br /><br /><br />
+                                                        </span>
+                                                    </>
                                                 }
                                             </td>
                                         </tr>

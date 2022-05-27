@@ -20,4 +20,9 @@
 		ORDER BY q_board_qdate DESC
 	</select>
 	
+	<!-- 사용자 문의삭제 -->
+	<delete id="deleteQBoard" parameterType="String">
+		DELETE FROM q_board
+		WHERE q_board_code = #{qboardCode}
+	</delete>
 </mapper>

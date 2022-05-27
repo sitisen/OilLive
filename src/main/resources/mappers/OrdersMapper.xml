@@ -18,7 +18,22 @@
 		SELECT *
 		FROM orders
 		WHERE user_code = #{userCode}
+		AND order_status = 'Y'
 		ORDER BY order_date DESC
 	</select>
 	
+	<!-- 사용자 결제 상품목록 -->
+	<select id="orderGoodsList" parameterType="String" resultType="OrdersVO">
+		SELECT o.order_code, o.order_amount, o.order_request, o.order_date, o.order_status, o.order_address, g.goods_name, g.goods_price, g.goods_code 
+		FROM goods g, orders o
+		WHERE g.goods_code = o.goods_code
+		AND o.order_code = #{orderCode}
+	</select>
+	
+	<!-- 사용자 결제목록 삭제 -->
+	<update id="deleteOrder" parameterType="String">
+		UPDATE orders
+		SET order_status = 'N'
+		WHERE order_code = #{orderCode}
+	</update>
 </mapper>
