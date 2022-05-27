@@ -20,7 +20,7 @@ const GoodsOrdersMain = () => {
     const goodsInfo = useLocation().state.data; // 선택된 상품 정보
     const goodsSelectedAmount = goodsInfo[0].goodsSelectedAmount; // 바로 구매 시, 선택한 상품 수량
     const goodsCode = goodsInfo[0].goodsCode; // 바로 구매 시, 선택한 상품 코드
-    const basketCode = null; // 장바구니 페이지 작성 시, '1,2,3...' 형식으로 받아질 예정
+    const basketCode = goodsInfo[0].basketCode; // 장바구니 페이지 작성 시, '1,2,3...' 형식으로 받아질 예정
     let goodsPrice = 0; // 각 상품들의 총 금액
     let deliveryPrice = 0; // 각 상품들의 배송비
     let totalGoodsPrice = 0; // 총 상품 금액
@@ -186,7 +186,7 @@ const GoodsOrdersMain = () => {
             });
         });
 
-    }, [login, goodsInfo, goodsCode])
+    }, [login, goodsInfo, goodsCode, basketCode])
 
 
     useEffect( () => {
@@ -450,6 +450,13 @@ const GoodsOrdersMain = () => {
     
                     switch(updateResult) {
                         case 1: // 수량 갱신에 성공했을 경우,
+
+                                // 장바구니 구매일 경우, 장바구니에서 상품 삭제
+                                if( basketCode !== null ) {
+                                    const deleteGoods = basketCode.split(',').map(Number); // String -> Array(Number)로 가공
+
+                                    UserService.deleteBasketGoods(deleteGoods);
+                                }
     
                                 // ORDERS 테이블 INSERT
                                 OrdersService.insertOrders(selectedGoods);

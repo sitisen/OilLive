@@ -107,7 +107,7 @@ const GoodsDetailMain = () => {
     };
 
     // 결제 및 장바구니로 넘길 최종 상품 객체
-    const goodsData = Object.assign({goodsCode: goodsInfo.goodsCode}, { goodsSelectedAmount: amount });
+    const goodsData = Object.assign({goodsCode: goodsInfo.goodsCode}, { goodsSelectedAmount: amount }, { basketCode: null });
 
     /* ===== 실제 페이지 렌더링 =====  */
     return (
