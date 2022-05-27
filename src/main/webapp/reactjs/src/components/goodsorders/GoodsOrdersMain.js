@@ -443,48 +443,51 @@ const GoodsOrdersMain = () => {
              
                     ));
                 }
-    
-                // GOODS 테이블 UPDATE
-                GoodsService.updateGoodsAmount(selectedGoods).then( res => {
-                    const updateResult = res.data;
-    
-                    switch(updateResult) {
-                        case 1: // 수량 갱신에 성공했을 경우,
 
-                                // 장바구니 구매일 경우, 장바구니에서 상품 삭제
-                                if( basketCode !== null ) {
-                                    const deleteGoods = basketCode.split(',').map(Number); // String -> Array(Number)로 가공
+                if( window.confirm('정말로 구매하시겠습니까?') ) {
 
-                                    UserService.deleteBasketGoods(deleteGoods);
-                                }
-    
-                                // ORDERS 테이블 INSERT
-                                OrdersService.insertOrders(selectedGoods);
-    
-                                // CARD 테이블 INSERT or UPDATE
-                                if(cardInfo.length === 0) { // 첫 결제일 경우, 해당 카드 정보 등록
-                                    UserService.insertCard(userCode, cardCompany, cardNum, cardPwd, cardCvc, cardDate);
-    
-                                } else if(existCard.selectValue === 'directly') { // 기존 카드가 존재하지만 직접 입력을 했을 경우, 해당 카드 정보 갱신
-                                    UserService.updateCard(userCode, cardCompany, cardNum, cardPwd, cardCvc, cardDate);
-                                }
-    
-                                navigate('/orders/orderresult', 
-                                    {
-                                        replace: true, 
-                                        state: { 
-                                                data: goodsData,
-                                                price: (totalGoodsPrice + totalDelivery),
-                                                 
-                                            } 
-                                    });
-                                break;
-    
-                        default: // 수량 갱신에 실패했을 경우,
-                                return alert('현재 상품 재고가 구매하시려는 수량보다 모자랍니다.');
-                    }
-    
-                });
+                    // GOODS 테이블 UPDATE
+                    GoodsService.updateGoodsAmount(selectedGoods).then( res => {
+                        const updateResult = res.data;
+        
+                        switch(updateResult) {
+                            case 1: // 수량 갱신에 성공했을 경우,
+
+                                    // 장바구니 구매일 경우, 장바구니에서 상품 삭제
+                                    if( basketCode !== null ) {
+                                        const deleteGoods = basketCode.split(',').map(Number); // String -> Array(Number)로 가공
+
+                                        UserService.deleteBasketGoods(deleteGoods);
+                                    }
+        
+                                    // ORDERS 테이블 INSERT
+                                    OrdersService.insertOrders(selectedGoods);
+        
+                                    // CARD 테이블 INSERT or UPDATE
+                                    if(cardInfo.length === 0) { // 첫 결제일 경우, 해당 카드 정보 등록
+                                        UserService.insertCard(userCode, cardCompany, cardNum, cardPwd, cardCvc, cardDate);
+        
+                                    } else if(existCard.selectValue === 'directly') { // 기존 카드가 존재하지만 직접 입력을 했을 경우, 해당 카드 정보 갱신
+                                        UserService.updateCard(userCode, cardCompany, cardNum, cardPwd, cardCvc, cardDate);
+                                    }
+        
+                                    navigate('/orders/orderresult', 
+                                        {
+                                            replace: true, 
+                                            state: { 
+                                                    data: goodsData,
+                                                    price: (totalGoodsPrice + totalDelivery),
+                                                    
+                                                } 
+                                        });
+                                    break;
+        
+                            default: // 수량 갱신에 실패했을 경우,
+                                    return alert('현재 상품 재고가 구매하시려는 수량보다 모자랍니다.');
+                        }
+        
+                    });
+                }
     
             } else { // 유효성 검사가 하나라도 통과되지 않았을 경우,
                 alert('카드 정보를 정상적으로 입력해주세요.');
