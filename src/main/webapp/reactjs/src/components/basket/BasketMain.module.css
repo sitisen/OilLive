@@ -1,6 +1,6 @@
 /* ----- 전체 레이아웃 CSS */
 .basket-wrap {
-    padding-top: 5%;
+    padding-top: 2%;
     padding-bottom: 10%;
     box-sizing: border-box;
     background-color: rgb(233, 235, 238);
@@ -8,7 +8,7 @@
 
 /* ----- 본문 레이아웃 CSS */
 .basket-layout {
-    width: 55% !important;
+    width: 65% !important;
     height: 100%;
     box-shadow: 1px 1px 1px;
     border: 0.5px solid rgba(150, 150, 150, 0.5);
@@ -22,6 +22,12 @@
     padding: 30px 0;
 }
 
+/* ----- 장바구니 하단 레이아웃 CSS */
+.basket-footer {
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
 /* ----- 주문 금액 레이아웃 CSS  */
 .container-price {
     padding: 30px 0;
@@ -32,7 +38,7 @@
 
 /* ----- 선택한 상품 삭제 CSS */
 .delete-goods {
-    margin: 15px 0;
+    margin: 30px 0;
 }
 
 /* ----- 하단 상품 금액, 상품 배송비 CSS */
