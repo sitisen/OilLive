@@ -421,6 +421,12 @@ public class UsersServiceImpl implements UsersService{
 		return resultMap;
 	}
 	
+	//--------------- 사용자 장바구니 코드 조회 --------------- //
+	@Override
+	public List<String> selectBasketCode(String userCode) {
+		return usersDao.selectBasketCode(userCode);
+	}
+	
 	//--------------- 사용자 장바구니 상품 중복 체크 --------------- //
 	@Override
 	public int basketExistCheck(String userCode, String goodsCode) {
@@ -448,6 +454,23 @@ public class UsersServiceImpl implements UsersService{
 	@Override
 	public int getBasketCount(int userCode) {
 		return usersDao.getBasketCount(userCode);
+	}
+	
+	//--------------- 사용자 장바구니 상품 개수 갱신 --------------- //
+	@Override
+	public int updateBasketAmount(String basketCode, String amount) {
+		HashMap<String, String> param = new HashMap<String, String>();
+		
+		param.put("basketCode", basketCode);
+		param.put("amount", amount);
+		
+		return usersDao.updateBasketAmount(param);
+	}
+	
+	//--------------- 사용자 장바구니 상품 개수 갱신 --------------- //
+	@Override
+	public int deleteBasketGoods(List<String> basketCode) {
+		return usersDao.deleteBasketGoods(basketCode);
 	}
 
 	//--------------- 사용자 정보수정 --------------- //

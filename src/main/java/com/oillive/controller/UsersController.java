@@ -1,6 +1,7 @@
 package com.oillive.controller;
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -8,6 +9,7 @@ import java.util.Random;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,7 +20,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.oillive.service.GoodsService;
 import com.oillive.service.UsersService;
+import com.oillive.vo.BasketVO;
 import com.oillive.vo.CardVO;
 import com.oillive.vo.ElectricCarVO;
 import com.oillive.vo.UsersVO;
@@ -30,6 +34,9 @@ public class UsersController {
 
 	@Autowired
 	UsersService usersService;
+	
+	@Autowired
+	GoodsService goodsService;
 	
 	@Autowired
     PasswordEncoder passwordEncoder;
@@ -287,6 +294,27 @@ public class UsersController {
 		return usersService.electriccar(zcode);
 	}
 	
+	//--------------- 사용자 장바구니 조회 --------------- //
+	@PostMapping("/selectBasket")
+	public List<BasketVO> selectBasket(@RequestBody HashMap<String, String> req) {
+		
+		// 장바구니 코드 조회에 필요한 변수 선언
+		String userCode = String.valueOf(usersService.getUserCode(req.get("userId")));
+		
+		// 사용자의 장바구니 코드들 조회
+		List<String> basketCode = usersService.selectBasketCode(userCode);
+		
+		List<BasketVO> basket = new ArrayList<BasketVO>();
+		
+		if(	basketCode.size() > 0) { // 장바구니가 비어있지 않을 경우,
+			// 특정 장바구니 조회
+			basket = goodsService.selectBasket(basketCode, userCode);
+		}
+
+		
+		return basket;
+	}
+	
 	//--------------- 사용자 장바구니 상품 추가 --------------- //
 	@PutMapping("/insertBasket")
 	public int insertBasket(@RequestBody HashMap<String, String> req) {
@@ -317,6 +345,29 @@ public class UsersController {
 		
 		// 장바구니 수량 반환
 		return usersService.getBasketCount(userCode);
+	}
+	
+	//--------------- 사용자 장바구니 상품 개수 갱신 --------------- //
+	@PatchMapping("/updateBasketAmount")
+	public int updateBasketAmount(@RequestBody HashMap<String, String> req) {
+		
+		String basketCode = req.get("basketCode");
+		String amount = req.get("amount");
+		
+		int result = usersService.updateBasketAmount(basketCode, amount);
+		
+		return result;
+	}
+	
+	//--------------- 사용자 장바구니 상품 삭제 --------------- //
+	@DeleteMapping("/deleteBasketGoods")
+	public int deleteBasketGoods(@RequestBody HashMap<String, List<String>> req) {
+		
+		List<String> basketCode = req.get("basketCode");
+
+		int result = usersService.deleteBasketGoods(basketCode);
+		
+		return result;
 	}
 	
 	//--------------- 사용자 정보수정 --------------- //

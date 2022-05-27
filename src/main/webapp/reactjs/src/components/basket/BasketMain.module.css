@@ -1,14 +1,14 @@
 /* ----- 전체 레이아웃 CSS */
 .basket-wrap {
-    padding-top: 2%;
-    padding-bottom: 5%;
+    padding-top: 5%;
+    padding-bottom: 10%;
     box-sizing: border-box;
     background-color: rgb(233, 235, 238);
 }
 
 /* ----- 본문 레이아웃 CSS */
 .basket-layout {
-    width: 50% !important;
+    width: 55% !important;
     height: 100%;
     box-shadow: 1px 1px 1px;
     border: 0.5px solid rgba(150, 150, 150, 0.5);
@@ -22,9 +22,66 @@
     padding: 30px 0;
 }
 
+/* ----- 주문 금액 레이아웃 CSS  */
+.container-price {
+    padding: 30px 0;
+    text-align: center;
+    font-size: 17px;
+    border: 3px solid lightgray;
+}
+
+/* ----- 선택한 상품 삭제 CSS */
+.delete-goods {
+    margin: 15px 0;
+}
+
+/* ----- 하단 상품 금액, 상품 배송비 CSS */
+.final-goods-price,
+.final-delivery-price {
+    margin-left: 10px;
+    font-size: 19px;
+}
+
+/* ----- 하단 상품 총 주문 금액 CSS */
+.final-total-price {
+    margin-left: 10px;
+    font-size: 23px;
+    color: crimson;
+}
+
+/* ----- 하단 금액관련 기호 CSS */
+.price-sign-plus,
+.price-sign-equals {
+    margin: 0 10px;
+    padding: 0 10px;
+    border: 1px solid lightgray;
+}
+
+.price-sign-plus {
+    background-image: url('/public/images/icon/plus.png');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+
+.price-sign-equals {
+    background-image: url('/public/images/icon/equals.png');
+    background-size: 70% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
 /* ----- button 태그 CSS */
 .basket-button {
     margin: 0 3%;
+    font-size: 22px !important;
+}
+
+.basket-amount-button {
+    display: block;
+    margin: 3px auto -30px auto;
+    font-size: 14px;
+    border: 1px solid lightgray;
+    background-color: rgb(250, 250, 250);
 }
 
 /* ----- checkBox 태그 CSS */
@@ -33,6 +90,21 @@
     height: 18px;
     vertical-align: middle;
 }
+
+/* ----- input 태그 CSS */
+.amount-input {
+    margin: 0 auto;
+    padding-left: 12px;
+    border : 0.1em solid rgba(150, 150, 150, 0.5);
+    outline: none;
+    width: 50%;
+    font-size: 17px;
+}
+
+.amount-input:focus {
+    border-color: rgb(107, 187, 72);
+    box-shadow: 0 0 6px 0 rgb(107, 187, 72);
+} 
 
 /* ----- table 태그 CSS */
 .basket-table {
@@ -51,6 +123,10 @@
     font-size: 17px;
 }
 
+.basket-table>tbody tr {
+    border-top: 1px solid lightgray;
+}
+
 .table-td-1 {
     width: 5%;
 }
@@ -62,22 +138,21 @@
 
 .table-td-3 {
     width: 10%;
+    border-left: 1px solid lightgray;
 }
 
 .table-td-4 {
     width: 10%;
+    border-left: 1px solid lightgray;
 }
 
 .table-td-5 {
     width: 10%;
+    border-left: 1px solid lightgray;
 }
 
 /* ----- img 태그 CSS */
 .basket-img {
     width: 15%;
     height: 15%;
-}
-
-.test {
-    border: 1px solid red;
 }

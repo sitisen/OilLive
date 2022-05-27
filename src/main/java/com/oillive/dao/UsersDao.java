@@ -52,6 +52,9 @@ public interface UsersDao {
 	//--------------- 사용자 카드 정보 교체 --------------- //
 	public int updateCard(CardVO changeCard);
 	
+	//--------------- 사용자 장바구니 코드 조회 --------------- //
+	public List<String> selectBasketCode(String userCode);
+	
 	//--------------- 사용자 장바구니 상품 중복 체크 --------------- //
 	public int basketExistCheck(HashMap<String, String> param);
 	
@@ -60,6 +63,12 @@ public interface UsersDao {
 	
 	//--------------- 사용자 장바구니 수량 조회 --------------- //
 	public int getBasketCount(int userCode);
+	
+	//--------------- 사용자 장바구니 상품 개수 갱신 --------------- //
+	public int updateBasketAmount(HashMap<String, String> param);
+	
+	//--------------- 사용자 장바구니 상품 삭제 --------------- //
+	public int deleteBasketGoods(List<String> basketCode);
 	
 	//--------------- 사용자 결제내역 조회 --------------- //
 	public List<OrdersVO> getOrderList(String userId);

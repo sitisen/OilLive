@@ -61,6 +61,9 @@ public interface UsersService {
 	//--------------- 전기차 충전소 --------------- //
 	public List<ElectricCarVO> electriccar(String zcode);
 	
+	//--------------- 사용자 장바구니 코드 조회 --------------- //
+	public List<String> selectBasketCode(String userCode);
+	
 	//--------------- 사용자 장바구니 상품 중복 체크 --------------- //
 	public int basketExistCheck(String userCode, String goodsCode);
 	
@@ -69,7 +72,13 @@ public interface UsersService {
 	
 	//--------------- 사용자 장바구니 수량 조회 --------------- //
 	public int getBasketCount(int userCode);
+	
+	//--------------- 사용자 장바구니 상품 개수 갱신 --------------- //
+	public int updateBasketAmount(String basketCode, String amount);
 
+	//--------------- 사용자 장바구니 상품 삭제 --------------- //
+	public int deleteBasketGoods(List<String> basketCode);
+	
 	//--------------- 사용자 정보 수정 --------------- //
 	public int updateInfo(HashMap<String, String> req);
 

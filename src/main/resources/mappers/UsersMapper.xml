@@ -109,6 +109,13 @@
 		FROM users
 		WHERE user_id = #{userid}
 	</select>
+	
+	<!-- 사용자 장바구니 코드 조회 -->
+	<select id="selectBasketCode" parameterType="String" resultType="String">
+		SELECT basket_code
+		FROM basket
+		WHERE user_code = #{userCode}
+	</select>
 
 	<!-- 사용자 장바구니 상품 중복 체크 -->
 	<select id="basketExistCheck" parameterType="Map" resultType="int">
@@ -127,9 +134,25 @@
 	<!-- 사용자 장바구니 수량 반환 -->
 	<select id="getBasketCount" parameterType="int" resultType="int">
 		SELECT count(*)
-		FROM basket
-		WHERE user_code = #{userCode}
+		  FROM basket
+		 WHERE user_code = #{userCode}
 	</select>
+	
+	<!-- 사용자 장바구니 상품 개수 갱신 -->
+	<update id="updateBasketAmount" parameterType="Map">
+		UPDATE basket
+		   SET basket_amount = #{amount}
+		 WHERE basket_code = #{basketCode}
+	</update>
+	
+		<!-- 사용자 장바구니 상품 개수 갱신 -->
+	<delete id="deleteBasketGoods" parameterType="List">
+		DELETE FROM basket
+			  WHERE basket_code IN
+			<foreach collection="list" item="code" open="(" close=")" separator=",">
+				#{code}
+			</foreach>
+	</delete>
 	
 	<!-- 사용자 정보변경 - 핸드폰 -->
 	<update id="updatePhone" parameterType="Map">

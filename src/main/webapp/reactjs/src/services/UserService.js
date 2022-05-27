@@ -18,6 +18,8 @@ const USERS_UPDATE_CARD = USERS_URL + '/updateCard'; // 사용자 카드 정보 
 const USERS_SELECT_BASKET = USERS_URL + '/selectBasket'; // 사용자 장바구니 조회
 const USERS_INSERT_BASKET = USERS_URL + '/insertBasket'; // 사용자 장바구니 상품 추가
 const USERS_BASKET_COUNT = USERS_URL + '/basketCount'; // 사용자 장바구니 수량 조회
+const USERS_UPDATE_BASKET_AMOUNT = USERS_URL + '/updateBasketAmount'; // 사용자 장바구니 상품 수량 갱신
+const USERS_DELETE_BASKET_GOODS = USERS_URL + '/deleteBasketGoods'; // 사용자 장바구니 상품 삭제
 const USERS_UPDATE_INFO = USERS_URL + '/updateInfo'; // 사용자 정보변경
 const USERS_SEND_EMAIL = USERS_URL + '/sendEmail'; // 사용자 이메일 인증
 
@@ -137,10 +139,9 @@ const UserService = {
     },
 
     /* 사용자 장바구니 조회 */
-    selectBasket(userId, goodsCode) {
+    selectBasket(userId) {
         return axios.post(USERS_SELECT_BASKET, {
-            userId: userId,
-            goodsCode: goodsCode
+            userId: userId
         });
     },
 
@@ -162,6 +163,21 @@ const UserService = {
                 userId: userId
             }
         });
+    },
+
+    /* 사용자 장바구니 상품 수량 갱신 */
+    updateBasketAmount(basketCode, amount) {
+        return axios.patch(USERS_UPDATE_BASKET_AMOUNT, {
+            basketCode: basketCode,
+            amount: amount
+        })
+    },
+
+    /* 사용자 장바구니 상품 수량 갱신 */
+    deleteBasketGoods(deleteGoods) {
+        return axios.delete(USERS_DELETE_BASKET_GOODS, {
+            data: { basketCode: deleteGoods }
+        })
     },
 
     /* 사용자 정보수정 */
