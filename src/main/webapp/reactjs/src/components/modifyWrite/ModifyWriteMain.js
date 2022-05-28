@@ -168,15 +168,9 @@ const ModifyWriteMain = () => {
         var phoneNumber = modiWriteRef.current['phone'];
         if(window.confirm('인증하신 번호로 변경하시겠습니까?')){
             // 휴대전화 변경
-            UserService.updateInfo('p', phoneNumber.value, sessionStorage.getItem('userId')).then( res => {
-                if(res.data === 1){
-                    alert('변경이 완료되었습니다.');
-                    window.close();
-                } else {
-                    alert('실패!');
-                }
-            })
-            
+            alert('변경이 완료되었습니다.');
+            window.opener.changeInfo('p', phoneNumber.value);
+            window.close();
         }
     }
 
@@ -246,15 +240,9 @@ const ModifyWriteMain = () => {
         var email = modiWriteRef.current['email'];
         if(window.confirm('인증하신 이메일주소로 변경하시겠습니까?')){
             // 이메일주소 변경
-            UserService.updateInfo('e', email.value, sessionStorage.getItem('userId')).then( res => {
-                if(res.data === 1){
-                    alert('변경이 완료되었습니다.');
-                    window.close();
-                } else {
-                    alert('실패!');
-                }
-            })
-            
+            alert('변경이 완료되었습니다.');
+            window.opener.changeInfo('e', email.value);
+            window.close();
         }
     }
 
@@ -293,14 +281,9 @@ const ModifyWriteMain = () => {
             alert('주소지 검색을 눌러 주소를 입력해주세요.');
         } else {
             if(window.confirm('주소지를 변경하시겠습니까?')){
-                UserService.updateInfo('a', address, sessionStorage.getItem('userId')).then( res =>{
-                    if(res.data !== 0){
-                        alert('주소지가 변경되었습니다.');
-                        window.close();
-                    } else {
-                        alert('실패!');
-                    }
-                });
+                alert('주소지가 변경되었습니다.');
+                window.opener.changeInfo('a', address);
+                window.close();
             }
         }
     }

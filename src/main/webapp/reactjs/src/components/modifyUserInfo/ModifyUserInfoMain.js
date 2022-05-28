@@ -15,6 +15,30 @@ const ModifyUserInfoMain = () => {
     // useRef 선언
     const modifyRef = useRef([]);
 
+    // 자식에서 호출하는부분
+    const [changed, setChanged] = useState(false);
+    window.changeInfo = (code, info) => {
+        if(changed === true){
+            setChanged(false);
+        } else {
+            setChanged(true);
+        }
+   
+        switch(code){
+            case 'p' : 
+                    var phone1 = info.substring(0,3);
+                    var phone2 = info.substring(3,7);
+                    var phone3 = info.substring(7,11);
+                    modifyRef.current['phone'].innerText = phone1 + '-' + phone2 + '-' + phone3;
+                    break;
+            case 'e' : modifyRef.current['email'].innerText = info;
+                    break;
+            default  : 
+                    var address = info.split('/');
+                    modifyRef.current['address'].innerText = address[0] + ', ' + address[1] + ', ' + address[2];
+        } 
+    }
+
     // 비밀번호 확인
     const [pwdCheck, setPwdCheck] = useState(false);
 
@@ -28,9 +52,6 @@ const ModifyUserInfoMain = () => {
     useEffect(() => {
         var userId = sessionStorage.getItem('userId');
 
-        // 새로고침시 비밀번호 확인 변수 초기화
-        // setPwdCheck(false);
-
         if(sessionStorage.getItem('userId') === null){
             alert('로그인하고 이용할 수 있는 기능입니다.');
             navigate('/users/login', {replace:true} );
@@ -40,7 +61,7 @@ const ModifyUserInfoMain = () => {
                 setUserInfoList(res.data);
             });
         }
-    }, [navigate, userInfoList]);
+    }, [navigate, changed]);
 
     // 비밀번호 입력후 확인 버튼 클릭 이벤트
     const onClick = () => {
@@ -145,11 +166,26 @@ const ModifyUserInfoMain = () => {
     // 마이페이지 수정 저장하기 버튼 클릭 이벤트
     const onSave = () => {
         if(window.confirm('저장하시겠습니까?')){
+            // 비밀번호, 비밀번호 확인
+            var pwd = modifyRef.current['changePwd'];
+            var repwd = modifyRef.current['changerePwd'];
+
+            // 핸드폰 번호
+            var phoneNumber = modifyRef.current['phone'].innerText.split('-');
+            var p1 = phoneNumber[0];
+            var p2 = phoneNumber[1];
+            var p3 = phoneNumber[2];
+
+            // 이메일 주소
+            var email = modifyRef.current['email'].innerText;
+
+            // 주소지
+            var address = modifyRef.current['address'].innerText.split(', ');
+            var ad1 = address[0];
+            var ad2 = address[1];
+            var ad3 = address[2];
             // 비밀번호 변경 눌렀을 경우
             if(pwdYN){
-                var pwd = modifyRef.current['changePwd'];
-                var repwd = modifyRef.current['changerePwd'];
-
                 // 비밀번호 필수입력
                 if(pwd.value === ''){
                     alert('비밀번호를 입력해주세요.');
@@ -167,19 +203,27 @@ const ModifyUserInfoMain = () => {
                         repwd.focus();
                     // 모든 조건 만족시에 동작
                     } else {
-                        UserService.pwdUpdate(sessionStorage.getItem('userId'), pwd.value).then( res => {
-                            if(res.data === 1){
-                                alert('변경사항이 저장되었습니다.');
-                                navigate('/users/myPage', {replace:true} );
-                            } else {
-                                alert('실패!');
-                            }
-                        });
+                        // 비밀번호 변경
+                        UserService.pwdUpdate(sessionStorage.getItem('userId'), pwd.value);
+                        // 핸드폰번호 변경
+                        UserService.updateInfo('p', p1+p2+p3, sessionStorage.getItem('userId'));
+                        // 이메일주소 변경
+                        UserService.updateInfo('e', email, sessionStorage.getItem('userId'));
+                        // 주소지 변경
+                        UserService.updateInfo('a', ad1+'/'+ad2+'/'+ad3, sessionStorage.getItem('userId'));
+                        alert('변경사항이 저장되었습니다.');
+                        navigate('/users/myPage', {replace:true} );
                     }
                 }
             // 안 누른 경우
             } else {
-                alert('저장되었습니다.');
+                // 핸드폰번호 변경
+                UserService.updateInfo('p', p1+p2+p3, sessionStorage.getItem('userId'));
+                // 이메일주소 변경
+                UserService.updateInfo('e', email, sessionStorage.getItem('userId'));
+                // 주소지 변경
+                UserService.updateInfo('a', ad1+'/'+ad2+'/'+ad3, sessionStorage.getItem('userId'));
+                alert('변경사항이 저장되었습니다.');
                 navigate('/users/myPage', {replace:true} );
             }
         }
@@ -262,20 +306,22 @@ const ModifyUserInfoMain = () => {
                                     <tr>
                                         <th>휴대전화</th>
                                         <td colSpan='3'>
-                                            {phone1 + '-' + phone2 + '-' + phone3}  
+                                            <span type='text' ref={el=> modifyRef.current['phone'] = el}>{phone1 + '-' + phone2 + '-' + phone3}</span>
                                             <img alt='modify' src='/images/icon/modify.png' width='32' onClick={modifyClick} id='phone' style={{cursor:'pointer'}} />
                                         </td>
                                     </tr>
                                     <tr>
                                         <th>이메일</th>
                                         <td colSpan='3'>
-                                            {list.userEmail} <img alt='modify' src='/images/icon/modify.png' width='32' onClick={modifyClick} id='email' style={{cursor:'pointer'}} />
+                                            <span type='text' ref={el=> modifyRef.current['email'] = el}>{list.userEmail}</span>
+                                           <img alt='modify' src='/images/icon/modify.png' width='32' onClick={modifyClick} id='email' style={{cursor:'pointer'}} />
                                         </td>
                                     </tr>
                                     <tr>
                                         <th>주소</th>
                                         <td colSpan='3'>
-                                            {address[1]}, {address[2]} <img alt='modify' src='/images/icon/modify.png' width='32' onClick={modifyClick} id='address' style={{cursor:'pointer'}} />
+                                            <span type='text' ref={el=> modifyRef.current['address'] = el}>{address[0] + ', ' + address[1] + ', ' + address[2]}</span>
+                                            <img alt='modify' src='/images/icon/modify.png' width='32' onClick={modifyClick} id='address' style={{cursor:'pointer'}} />
                                         </td>
                                     </tr>
                             </tbody>
