@@ -219,7 +219,7 @@ const GoodsDetailMain = () => {
                                             </Link>
                                             
                                             <Link className={GoodsDetailMainStyle['goods-buy-Link']} to={'/goods/goodslist'}>
-                                                <button className={`btn btn-secondary ${GoodsDetailMainStyle['goods-button']}`}>이전으로</button>
+                                                <button className={`btn btn-secondary ${GoodsDetailMainStyle['goods-button']}`}>목록보기</button>
                                             </Link>
                                         </>
                                     
@@ -237,7 +237,7 @@ const GoodsDetailMain = () => {
                                                 <button className={`btn btn-secondary ${GoodsDetailMainStyle['goods-buy-Link']}`} onClick={(e) => purchaseClick(e)}>장바구니</button>
                                                 
                                                 <Link className={GoodsDetailMainStyle['goods-buy-Link']} to={'/goods/goodslist'}>
-                                                    <button className={`btn btn-secondary ${GoodsDetailMainStyle['goods-button']}`}>이전으로</button>
+                                                    <button className={`btn btn-secondary ${GoodsDetailMainStyle['goods-button']}`}>목록보기</button>
                                                 </Link>
                                             </>
 
@@ -253,7 +253,7 @@ const GoodsDetailMain = () => {
                                                 <button className={`btn btn-primary ${GoodsDetailMainStyle['goods-buy-Link']}`} onClick={() => insertBasket()}>장바구니</button>
 
                                                 <Link className={GoodsDetailMainStyle['goods-buy-Link']} to={'/goods/goodslist'}>
-                                                    <button className={`btn btn-secondary ${GoodsDetailMainStyle['goods-button']}`}>이전으로</button>
+                                                    <button className={`btn btn-secondary ${GoodsDetailMainStyle['goods-button']}`}>목록보기</button>
                                                 </Link>
                                             </>
                                 }
