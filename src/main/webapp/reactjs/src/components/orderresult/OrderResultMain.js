@@ -9,6 +9,9 @@ const OrderResultMain = () => {
     const payResult = useLocation().state.data; // 결제된 상품 정보
     const payPrice = useLocation().state.price; // 결제된 총 금액
 
+    console.log(payResult[0].basketCode === undefined)
+    // console.log(payPrice)
+
     return (
             <div className={OrderResultMainStyle['ordersResult-wrap']}>
                 <div className={`container ${OrderResultMainStyle['ordersResult-layout']}`}>
@@ -25,13 +28,23 @@ const OrderResultMain = () => {
                                 <tbody>
                                     <tr>
                                         <th>상품명</th>
-                                        {payResult.length === 1
+                                        { payResult[0].basketCode === undefined
+                                            ? payResult.length === 1 // 바로 구매일 경우,
 
-                                            ? // 구매한 상품이 1개일 경우,
-                                            <td>{payResult[0].goodsName}</td>
+                                                ? // 구매한 상품이 1개일 경우,
+                                                <td>{payResult[0].goodsName}</td>
 
-                                            : // 구매한 상품이 여러 개일 경우,
-                                            <td>{payResult[0].goodsName} 외 {payResult.length - 1}건</td>
+                                                : // 구매한 상품이 여러 개일 경우,
+                                                <td>{payResult[0].goodsName} 외 {payResult.length - 1}건</td>
+                                        
+
+                                            : payResult.length === 1 // 장바구니 구매일 경우,
+
+                                                ? // 구매한 상품이 1개일 경우,
+                                                <td>{payResult[0].goodsVO.goodsName}</td>
+
+                                                : // 구매한 상품이 여러 개일 경우,
+                                                <td>{payResult[0].goodsVO.goodsName} 외 {payResult.length - 1}건</td>
                                         }
                                     </tr>
                                     <tr>
