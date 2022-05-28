@@ -149,20 +149,23 @@ const BasketMain = () => {
     // 선택한 상품 삭제 클릭 시, 이벤트
     const onDelete = () => {
         
-        let deleteGoods = []; // 선택된 장바구니 코드가 담길 배열
+        if( window.confirm('선택한 상품을 삭제하시겠습니까?') ) {
 
-        for(let k = 0; k < basketData.length; k++) { // 선택된 상품들을 배열에 추가
+            let deleteGoods = []; // 선택된 장바구니 코드가 담길 배열
 
-            if( goodsCheckbox.current[k].checked === true) {
-                deleteGoods.push(basketData[k].basketCode);
+            for(let k = 0; k < basketData.length; k++) { // 선택된 상품들을 배열에 추가
+    
+                if( goodsCheckbox.current[k].checked === true) {
+                    deleteGoods.push(basketData[k].basketCode);
+                }
             }
-        }
-
-        // 선택된 상품이 1개 이상 존재할 경우, 장바구니에서 해당 상품 삭제
-        if(deleteGoods.length > 0) {
-            UserService.deleteBasketGoods(deleteGoods);
-            goodsCheckbox.current['allSelect'].checked = false;
-            setDeleted(true);
+    
+            // 선택된 상품이 1개 이상 존재할 경우, 장바구니에서 해당 상품 삭제
+            if(deleteGoods.length > 0) {
+                UserService.deleteBasketGoods(deleteGoods);
+                goodsCheckbox.current['allSelect'].checked = false;
+                setDeleted(true);
+            }
         }
 
     }
@@ -179,8 +182,8 @@ const BasketMain = () => {
 
             }
         }
-
-        if( purchaseGoods.length > 0 ) {
+        
+        if( purchaseGoods.length > 0 ) { // 체크된 상품이 존재할 경우,
             const basket = purchaseGoods.join(', ');
             const passData = Object.assign({goodsCode: 0}, { goodsSelectedAmount: 0}, { basketCode: basket });
             const result = [];
@@ -191,10 +194,13 @@ const BasketMain = () => {
                 replace: true, 
                 state: { data: result }
             });
+
+        } else { // 체크된 상품이 아예 없을 경우,
+            alert('상품을 선택해주세요.');
+
         }
 
     };
-
 
     /* ===== 실제 페이지 렌더링 =====  */
     return (
@@ -228,7 +234,7 @@ const BasketMain = () => {
                             { basketData.length === 0 
                                 ?  // 장바구니가 비어있을 경우
                                     <tr>
-                                        <td className={BasketMainStyle['table-td-1']} colSpan={5}>현재 장바구니가 비어있습니다.</td>
+                                        <td className={BasketMainStyle['table-td-empty']} colSpan={5}>현재 장바구니가 비어있습니다.</td>
                                     </tr>
 
                                 :  // 장바구니에 상품이 존재하는 경우
@@ -276,7 +282,9 @@ const BasketMain = () => {
 
                                                         <td className={BasketMainStyle['table-td-2']}>
                                                             <img className={BasketMainStyle['basket-img']} alt='test' src='/images/goods/Engine-Oil-S-Oil.jpg' />
-                                                            <span>{list.goodsVO.goodsName}</span>
+                                                            <Link className={BasketMainStyle['basket-link']} to='/goods/goodsdetail' state={{ data: list.goodsVO.goodsCode }}>
+                                                                <span>{list.goodsVO.goodsName}</span>
+                                                            </Link>
                                                         </td>
 
                                                         <td className={BasketMainStyle['table-td-3']}>{(goodsPrice * basketAmount).toLocaleString('ko-KR')}원</td>
@@ -328,7 +336,9 @@ const BasketMain = () => {
 
                                                         <td className={BasketMainStyle['table-td-2']}>
                                                             <img className={BasketMainStyle['basket-img']} alt='test' src='/images/goods/Engine-Oil-S-Oil.jpg' />
-                                                            <span>{list.goodsVO.goodsName}</span>
+                                                            <Link className={BasketMainStyle['basket-link']} to='/goods/goodsdetail' state={{ data: list.goodsVO.goodsCode }}>
+                                                                <span>{list.goodsVO.goodsName}</span>
+                                                            </Link>
                                                         </td>
                                                         
                                                         <td className={BasketMainStyle['table-td-3']}>{(discountPrice * basketAmount).toLocaleString('ko-KR')}원</td>
