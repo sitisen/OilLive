@@ -176,8 +176,8 @@ const GoodsOrdersMain = () => {
             setUserAddress(userRes.data[0].userAddress.split('/')[1] + ' ' + userRes.data[0].userAddress.split('/')[2]);
 
             // 특정 상품 조회 및 특정 장바구니 조회
-            GoodsService.selectGoods(goodsCode, basketCode, code).then( res => {
-                setGoodsData(res.data.goods);
+            GoodsService.selectGoods(goodsCode, basketCode, code).then( goodsRes => {
+                setGoodsData(goodsRes.data.goods);
             });
 
             // 사용자 카드 정보 조회
@@ -401,6 +401,31 @@ const GoodsOrdersMain = () => {
     const payment = () => {
 
         if( isChanged.addrChange === false ) { // 상세 주소창이 열려있지 않은 경우,
+
+            if( basketCode === null ) { // 바로 구매일 경우,
+                
+                const goods = goodsData[0].goodsName; // 상품명
+                const goodsAmount = goodsData[0].goodsAmount; // 상품 재고
+
+                if( goodsAmount <= 0 ) { // 상품의 재고가 0보다 작을 경우,
+                    return alert(goods + ' 의 재고가 부족합니다.\n해당 상품을 제외시키고 구매를 시도해주세요.');
+
+                }
+    
+            } else { // 장바구니 구매일 경우
+                
+                for(let i = 0; i < goodsData.length; i++) {
+                    
+                    const goods = goodsData[i].goodsVO.goodsName;
+                    const goodsAmount = goodsData[i].goodsVO.goodsAmount;
+
+                    if( goodsAmount <= 0 ) {
+                        return alert(goods + ' 의 재고가 부족합니다.\n해당 상품을 제외시키고 구매를 시도해주세요.');
+
+                    }
+
+                }
+            }
             
             if( cardNumCheck.status === true && validateCheck.status === true && 
                 cardCvcCheck.status === true &&  cardPwdCheck.status === true ) { // 카드 관련 유효성 검사가 모두 true 일 경우,
@@ -499,6 +524,7 @@ const GoodsOrdersMain = () => {
         }
 
     }
+
 
     /* ===== 실제 페이지 렌더링 =====  */
     if( login !== null ) { // 로그인 되어있을 경우
