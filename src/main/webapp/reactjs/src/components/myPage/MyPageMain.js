@@ -221,14 +221,18 @@ const MyPageMain = () => {
             // 하나 이상 선택한 상태
             } else {
                 QBoardService.deleteQBoard(qboardCode).then(res =>{
-                    if(res === 1){
+                    if(res !== 0){
                         alert('선택하신 문의내역이 삭제되었습니다.');
+                        for(var j = 0; j<qnaInfo.length; j++){
+                            myPageRef.current['qboardCode'+[j]].checked = false;
+                            myPageRef.current['qboard'+[j]].className = MyPageMainStyle['display-off'];
+                        }
+                        myPageRef.current['qnaAllCheck'].checked = false;
                         if(qnaDelete === true){
                             setQnaDelete(false);
                         } else {
                             setQnaDelete(true);
                         }
-                        
                     } else{
                         alert('실패!');
                     }
@@ -243,12 +247,11 @@ const MyPageMain = () => {
         var off = MyPageMainStyle['display-off'];
         for(var i = 0; i<qnaInfo.length; i ++){
             if(index === i){
-                //console.log(myPageRef.current['qboard'+index].className);
-                // if(myPageRef.current['qboard'+index].className === off){
-                //     myPageRef.current['qboard'+index].className = on;
-                // } else {
-                //     myPageRef.current['qboard'+index].className = off;
-                // }
+                if(myPageRef.current['qboard'+index].className === off){
+                    myPageRef.current['qboard'+index].className = on;
+                } else {
+                    myPageRef.current['qboard'+index].className = off;
+                }
             }
         }
     }
@@ -390,7 +393,7 @@ const MyPageMain = () => {
                                                 <td colSpan='6'><br />
                                                     <span>배송지</span><br />
                                                     {list.orderAddress}
-                                                    <hr />
+                                                    <br /><br />
                                                     {
                                                         !list.orderRequest 
                                                         ? <div><span>요청사항</span><br />없음</div>
@@ -448,13 +451,13 @@ const MyPageMain = () => {
 
                                 return (
                                     <tbody key={i}>
-                                        <tr className={MyPageMainStyle['qna-detail-tr']} onClick={qnaDetail(i)}>
+                                        <tr className={MyPageMainStyle['qna-detail-tr']}>
                                             <td>
                                                 <input type='checkbox' value={list.qboardCode} className={MyPageMainStyle['input-checkbox']}
                                                         ref={el => myPageRef.current['qboardCode'+i] = el} onChange={qnaChange} />
                                             </td>
                                             <td>{date}</td>
-                                            <td>{list.qboardTitle}</td>
+                                            <td className={MyPageMainStyle['detail-td']} onClick={() => qnaDetail(i)}>{list.qboardTitle}</td>
                                             <td>
                                                 {
                                                     answer 
@@ -465,16 +468,18 @@ const MyPageMain = () => {
                                         </tr>
                                         <tr className={MyPageMainStyle['display-off']}  ref={el => myPageRef.current['qboard'+i] = el}>
                                             <td colSpan='4'>
-                                                <span className={MyPageMainStyle['qna-q']}>Q</span><br />
-                                                <textarea readOnly={true} className={MyPageMainStyle['qna-textarea']} defaultValue={list.qboardQContent} /><br />
+                                                <br />
+                                                <span className={MyPageMainStyle['qna-q']}>Q.</span>&nbsp;&nbsp;
+                                                <span className={MyPageMainStyle['qna-q-title']}>{list.qboardTitle}</span><br /><br />
+                                                <textarea readOnly={true} className={MyPageMainStyle['qna-textarea']} defaultValue={list.qboardQContent} /><br /><br />
                                                 {
                                                     !list.qboardAContent ? null
                                                     : 
                                                     <>
-                                                        <hr />
+                                                        <hr /><br />
                                                         <span>
-                                                            <span className={MyPageMainStyle['qna-q']}>A</span><br />
-                                                            {list.qboardAcontent}<br /><br /><br />
+                                                            <span className={MyPageMainStyle['qna-q']}>A.</span><br /><br />
+                                                            <textarea readOnly={true} className={MyPageMainStyle['qna-textarea']} defaultValue={list.qboardAcontent} /><br /><br />
                                                         </span>
                                                     </>
                                                 }
@@ -484,9 +489,9 @@ const MyPageMain = () => {
                                 );
                             })
                         :
-                        // 현재 문의내역 없을때   
+                        // 현재 문의내역 없을때 
                         <tbody>
-                            <tr className={MyPageMainStyle['qna-td-tr']}>
+                            <tr className={MyPageMainStyle['orders-td-tr']}>
                                 <td colSpan='4'>현재 문의내역이 없습니다.</td>
                             </tr>
                         </tbody>

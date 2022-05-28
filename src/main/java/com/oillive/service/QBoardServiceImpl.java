@@ -32,7 +32,6 @@ public class QBoardServiceImpl implements QBoardService {
 		int result = 0;
 		for(int i = 0; i < qboardCode.size(); i++) {
 			result = qBoardDao.deleteQBoard(qboardCode.get(i));
-			System.out.println(result);
 		}
 		return result;
 	}

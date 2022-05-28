@@ -70,7 +70,6 @@ public class QBoardController {
 	//--------------- 사용자 문의삭제 --------------- //
 	@GetMapping("/deleteQBoard")
 	public int deleteQBoard(@RequestParam( name = "qboardCode" ) List<String> qboardCode) {
-		
 		return qBoardService.deleteQBoard(qboardCode);
 	}
 }
