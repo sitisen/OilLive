@@ -5,5 +5,21 @@
 
 <mapper namespace="com.oillive.dao.EventDao">
 	
+	<!-- 이벤트 개수 조회 (페이징) -->
+	<select id="selectEventCount" resultType="int">
+		SELECT count(*)
+		  FROM event
+	</select>
+	
+	<!-- 이벤트 목록 조회 -->
+	<select id="selectEventList" parameterType="Map" resultType="Map">
+		SELECT E.*
+		FROM ( SELECT ROWNUM RNUM, event_code, event_name, event_content, 
+			       	   event_startdate, event_enddate
+		         FROM event
+		            ORDER BY RNUM ASC
+		        ) E
+		WHERE E.rnum BETWEEN #{startRow} AND #{endRow}
+	</select>
 	
 </mapper>
