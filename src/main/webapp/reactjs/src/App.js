@@ -20,10 +20,14 @@ import ModiWrite from 'pages/ModiWrite';
 import Basket from 'pages/Basket';
 import EventList from 'pages/EventList';
 
+// Import admin pages
+import AdminHome from 'pages/AdminHome';
+
 // Page Routing Setting
 function App() {
   return (
     <Routes>
+      {/* 사용자 라우터 부분 */}
       <Route path='/' element={<Navigate replace to="/users/home"/>} />
       <Route path='/users/home' element={<Home />} />
       <Route path='/users/login' element={<Login />} />
@@ -42,6 +46,9 @@ function App() {
       <Route path='/users/modiWrite' element={<ModiWrite />} />
       <Route path='/users/basket' element={<Basket />} />
       <Route path='/event/eventList' element={<EventList />}/>
+
+      {/* 관리자 라우터 부분 */}
+      <Route path='/admin/home' element={<AdminHome />}/>
     </Routes>
   );
 }
