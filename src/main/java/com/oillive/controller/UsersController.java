@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.oillive.service.AdminService;
 import com.oillive.service.GoodsService;
 import com.oillive.service.UsersService;
 import com.oillive.vo.BasketVO;
@@ -37,6 +38,9 @@ public class UsersController {
 	
 	@Autowired
 	GoodsService goodsService;
+	
+	@Autowired
+	AdminService adminService;
 	
 	@Autowired
     PasswordEncoder passwordEncoder;
@@ -63,14 +67,28 @@ public class UsersController {
 	public int login(@RequestBody HashMap<Object, String> req) {
 		
 		int result = 0;
+		String userId = req.get("userId");
+		String pwd = req.get("userPwd");
 		
 		// 암호화된 비밀번호 return
-		String secuPwd = usersService.getPassword(req.get("userId"));
+		String secuPwd = usersService.getPassword(userId);
 		
 		// 암호화 비교
-		if(passwordEncoder.matches(req.get("userPwd"),secuPwd)){
+		if(passwordEncoder.matches(pwd,secuPwd)){
 			result = 1;
 		}	
+		
+		// 관리자 로그인
+		int mresult = 0; 
+		mresult = usersService.idMCheck(userId);
+		
+		// 관리자 로그인일때
+		if(mresult == 1) {
+			String mPwd = adminService.getMPassword(userId);
+			if(mPwd.equals(pwd)){
+				result = 2;
+			}
+		}		
 		
 		return result;
 	}

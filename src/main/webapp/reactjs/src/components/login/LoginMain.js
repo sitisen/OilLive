@@ -78,12 +78,17 @@ const LoginMain = () => {
       inputuserPwd.current.value = null;
       inputuserId.current.focus();
     } else {
-      // 세션 및 쿠키 저장
-      if(isRemember){
-        setCookie('rememberUsersId', userId, {maxAge: 2000});
+      if(res.data === 2){
+        sessionStorage.setItem('admin', true);
+        navigate('/admin/home', {replace:true} );
+      } else {
+        // 세션 및 쿠키 저장
+        if(isRemember){
+          setCookie('rememberUsersId', userId, {maxAge: 2000});
+        }
+        sessionStorage.setItem('userId', userId);
+        navigate('/', {replace:true} );
       }
-      sessionStorage.setItem('userId', userId);
-      navigate('/', {replace:true} );
     }}
     )
 
