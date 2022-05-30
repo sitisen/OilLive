@@ -9,9 +9,6 @@ const OrderResultMain = () => {
     const payResult = useLocation().state.data; // 결제된 상품 정보
     const payPrice = useLocation().state.price; // 결제된 총 금액
 
-    console.log(payResult[0].basketCode === undefined)
-    // console.log(payPrice)
-
     return (
             <div className={OrderResultMainStyle['ordersResult-wrap']}>
                 <div className={`container ${OrderResultMainStyle['ordersResult-layout']}`}>
