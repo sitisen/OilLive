@@ -2,3 +2,9 @@
 .admin-home-layout {
     text-align: center;
 }
+
+/* 관리자 이용자 연령 통계 div */
+.chart-div {
+    margin-top: 20px;
+    margin-left: 23%;
+}

@@ -76,7 +76,7 @@ const AdminSidebarMain = () => {
                 <hr className={AdminSidebarStyle['side-hr']}/>
                 {/* 대시보드 */}
                 <div className={AdminSidebarStyle['admin-nav']}>
-                    <button className={AdminSidebarStyle['nav-button']}>대시보드</button>
+                    <Link to='/admin/home'><button className={AdminSidebarStyle['nav-button']}>대시보드</button></Link>
                 </div>
                 {/* 회원관리 */}
                 <div className={AdminSidebarStyle['admin-nav']}>
