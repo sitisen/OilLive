@@ -19,6 +19,7 @@ import ModifyUserInfo from 'pages/ModifyUserInfo';
 import ModiWrite from 'pages/ModiWrite';
 import Basket from 'pages/Basket';
 import EventList from 'pages/EventList';
+import EventDetail from 'pages/EventDetail';
 
 // Import admin pages
 import AdminHome from 'pages/AdminHome';
@@ -46,6 +47,7 @@ function App() {
       <Route path='/users/modiWrite' element={<ModiWrite />} />
       <Route path='/users/basket' element={<Basket />} />
       <Route path='/event/eventList' element={<EventList />}/>
+      <Route path='/event/eventDetail' element={<EventDetail />}/>
 
       {/* 관리자 라우터 부분 */}
       <Route path='/admin/home' element={<AdminHome />}/>

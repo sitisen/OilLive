@@ -1,0 +1,48 @@
+/* ----- 전체 레이아웃 CSS */
+.eventDetail-wrap {
+    padding-top: 2%;
+    padding-bottom: 10%;
+    box-sizing: border-box;
+    background-color: rgb(233, 235, 238);
+}
+
+/* ----- 본문 레이아웃 CSS */
+.eventDetail-layout {
+    width: 55% !important;
+    height: 100%;
+    box-shadow: 1px 1px 1px;
+    border: 0.5px solid rgba(150, 150, 150, 0.5);
+    border-radius: 12px;
+    padding: 20px;
+    background-color: white;
+    text-align: center;
+}
+
+/* ----- 이벤트 이미지 CSS */
+.eventDetail-header>img {
+    margin-top: 20px;
+    width: 85%;
+}
+
+/* ----- 이벤트 내용 CSS */
+.eventDetail-content {
+    margin: 30px auto;
+    width: 85%;
+    text-align: left;
+    border-bottom: 1px solid lightgray;
+}
+
+.eventDetail-content p {
+    white-space: pre-wrap;
+    font-weight: bold;
+    font-size: 23px;
+}
+
+.content-info {
+    margin-left: 122px;
+}
+
+/* ----- 이벤트 목록으로 이동하는 버튼 CSS */
+.eventDetail-button {
+    font-size: 19px;
+}
