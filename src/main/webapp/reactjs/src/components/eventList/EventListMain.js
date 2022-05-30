@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import EventService from 'services/EventService';
 
 // import css
@@ -27,12 +28,12 @@ const EventListMain = () => {
     /* useEffect 부분 */
     useEffect( () => {
 
-        EventService.selectEvent(currentPage).then( res => {
+        EventService.selectEventList(filterName, currentPage).then( res => {
             setEventData(res.data.eventList);
             setPaging(res.data.paging);
         })
 
-    }, [currentPage])
+    }, [filterName, currentPage])
     /* //. useEffect 부분 */
 
     // 날짜 YYYY-MM-dd 형식으로 전환해주는 함수
@@ -45,10 +46,19 @@ const EventListMain = () => {
         return year + '/' + month + '/' + day;
     }
 
+    // 필터 클릭 이벤트 (전체, 진행중, 종료)
     const selectFilterClick = (index) => {
-        const type = filterRef.current[index].innerText;
+        const type = filterRef.current[index].innerText; // 선택한 버튼의 텍스트
 
-        setFilterName(type);
+        setFilterName(type); // 버튼 CSS 적용을 위해 State에 Set
+
+        switch(filterName !== type) { // 선택한 버튼에 따라, 
+
+            case true: setCurrentPage(1);
+                       break;
+
+            default: return '';
+        }
     }
 
     // 페이지 번호 선택 이벤트
@@ -110,7 +120,11 @@ const EventListMain = () => {
                             <div key={list.EVENT_CODE} className={EventListMainStyle['eventList-event']}>
                                 <div className={EventListMainStyle['event-img']}>
                                     <div className={EventListMainStyle['event-img-div']}>
-                                        <img alt='test' src='/images/event/event_banner.jpg' /> 
+                                        <Link to='/event/eventDetail'
+                                              state={{ data: list }}
+                                        >
+                                            <img alt='test' src='/images/event/event_banner.jpg' />
+                                        </Link>
                                     </div>
                                 </div>
                                 <div>

@@ -1,5 +1,7 @@
 package com.oillive.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -13,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.oillive.service.EventService;
 import com.oillive.service.PaginationService;
 import com.oillive.vo.EventVO;
-import com.oillive.vo.GoodsVO;
 import com.oillive.vo.PaginationVO;
 
 @RestController
@@ -29,18 +30,19 @@ public class EventController {
 	
 	//--------------- 이벤트 목록 조회 --------------- //
 	@GetMapping("/selectEventList")
-	public HashMap<String, Object> selectEventList(@RequestParam( name = "page" ) int currentPage) {
+	public HashMap<String, Object> selectEventList( @RequestParam( name = "filterName" ) String filterName,
+													@RequestParam( name = "page" ) int currentPage ) {
 		
 		// Pagination 처리 변수
-		int totalCount = eventService.selectEventCount(); // EVENT 테이블 데이터 개수
+		int totalCount = eventService.selectEventCount(filterName); // EVENT 테이블 데이터 개수
 		int pageLimit = 5;  // 페이징바의 최대 노출 번호
 		int listRange = 8; // 한 페이지당 노출시킬 데이터의 개수
-
+		
 		// 페이징 처리 객체
 		PaginationVO paging = paginationService.pagination(totalCount, pageLimit, listRange, currentPage);
 		
 		// 이벤트 목록이 담기는 리스트
-		List<EventVO> eventList = eventService.selectEventList(paging);
+		List<EventVO> eventList = eventService.selectEventList(filterName, paging);
 		
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		
