@@ -626,16 +626,22 @@ const SignupMain = () => {
                 alert('모든 약관에 동의해주세요.');
             } else{
                 /* 회원가입 처리 */
+                var temday = userInfoRef.current['day'].value;
+                if(temday < 10){
+                    temday *= 10
+                }
                 UserService.signup(userInfoRef.current['userId'].value,
                     userInfoRef.current['userPwd'].value,
                     userInfoRef.current['userName'].value,
                     userInfoRef.current['userPhone'].value,
                     userInfoRef.current['userGender'].value,
-                    userInfoRef.current['year'].value + userInfoRef.current['month'].value + userInfoRef.current['day'].value,
+                    userInfoRef.current['year'].value + userInfoRef.current['month'].value + temday,
                     userInfoRef.current['address1'].value + '/' + userInfoRef.current['address2'].value + '/' + userInfoRef.current['address3'].value,
                     userInfoRef.current['email1'].value + '@' + userInfoRef.current['email2'].value
                 ).then( res => {
-                    if(res.data === 1){
+                    if(res.data === 2){
+                        alert('이미 가입된 이메일입니다.\n다른 이메일로 가입을 진행해주세요.');
+                    } else if(res.data === 1){
                         alert('회원가입이 완료 되었습니다.\n가입하신 아이디로 로그인해주세요.');
                         navigate('/users/login', {replace:true} );
                     } else {

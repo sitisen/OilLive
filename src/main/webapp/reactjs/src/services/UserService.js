@@ -22,6 +22,8 @@ const USERS_UPDATE_BASKET_AMOUNT = USERS_URL + '/updateBasketAmount'; // 사용�
 const USERS_DELETE_BASKET_GOODS = USERS_URL + '/deleteBasketGoods'; // 사용자 장바구니 상품 삭제
 const USERS_UPDATE_INFO = USERS_URL + '/updateInfo'; // 사용자 정보변경
 const USERS_SEND_EMAIL = USERS_URL + '/sendEmail'; // 사용자 이메일 인증
+const USERS_LIST = USERS_URL + '/getUserList'; // 이용자 목록
+const USERS_COUNT = USERS_URL + '/getUserCount'; // 이용자수
 
 /* 사용자 Service */
 const UserService = {
@@ -194,7 +196,17 @@ const UserService = {
         return axios.post(USERS_SEND_EMAIL,{
             email : email
         });
+    },
+
+    /* 이용자 목록 가져오기 */
+    getUserList(){
+        return axios.get(USERS_LIST);
+    },
+
+    getUserCount(){
+        return axios.get(USERS_COUNT);
     }
+    
 }
 
 export default UserService;
