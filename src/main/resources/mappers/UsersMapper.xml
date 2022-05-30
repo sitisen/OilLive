@@ -174,4 +174,25 @@
 		SET user_address = #{info}
 		WHERE user_code = #{userCode}
 	</update>
+	
+	<!-- 이용자 목록 -->
+	<select id="getUserList" resultType="UsersVO">
+		SELECT *
+	  	FROM users
+	</select>
+	
+	<!-- 이용자 목록 -->
+	<select id="getUserEmail" parameterType="String" resultType="int">
+		SELECT count(*)
+	  	FROM users
+	  	WHERE user_email = #{email}
+	</select>
+	
+	<!-- 연령대별 이용자수 -->
+	<select id="getUserCount" parameterType="List" resultType="String">
+		SELECT count(*)
+	  	FROM users
+	  	WHERE TO_CHAR(TO_DATE(USER_BIRTH, 'yyyy/MM/DD'), 'yyyy') between #{startYear} and #{endYear}
+	</select>
+	
 </mapper>

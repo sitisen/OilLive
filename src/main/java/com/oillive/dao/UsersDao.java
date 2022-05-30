@@ -81,5 +81,14 @@ public interface UsersDao {
 
 	//--------------- 사용자 정보수정 : 주소 --------------- //
 	public int updateAddress(HashMap<String, Object> map);
+
+	//--------------- 이용자 목록 --------------- //
+	public List<UsersVO> getUserList();
+
+	//--------------- 이메일 중복 --------------- //
+	public int getUserEmail(String email);
+
+	//--------------- 이용자 연령별 --------------- //
+	public String getUserCount(HashMap<String, Integer> m);
 	
 }

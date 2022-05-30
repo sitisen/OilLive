@@ -7,6 +7,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -505,6 +506,40 @@ public class UsersServiceImpl implements UsersService{
 		}
 		
 		return result;
+	}
+
+	//--------------- 이용자 목록 --------------- //
+	@Override
+	public List<UsersVO> getUserList() {
+		return usersDao.getUserList();
+	}
+
+	//--------------- 이메일 중복여부 --------------- //
+	@Override
+	public int getUserEmail(String email) {
+		return usersDao.getUserEmail(email);
+	}
+
+	//--------------- 이용자수 --------------- //
+	@Override
+	public List<String> getUserCount() {
+		List<String> list = new ArrayList<String>();
+		
+		HashMap<String, Integer> m = new HashMap<String, Integer>();
+		
+		int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+		int startYear = 0;
+		int endYear = 0;
+		
+		// 10 ~ 50대까지 가져옴
+		for(int i = 10; i < 100; i += 10) {
+			endYear = currentYear-i; 
+			startYear = startYear - 9;
+			m.put("startYear", startYear);
+			m.put("endYear", endYear);
+			list.add(usersDao.getUserCount(m));
+		}
+		return list;
 	}
 
 }

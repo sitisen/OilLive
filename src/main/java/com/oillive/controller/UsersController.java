@@ -150,10 +150,18 @@ public class UsersController {
 		map.put("userPhone", req.get("userPhone"));
 		map.put("userGender", req.get("userGender"));
 		map.put("userBirth", req.get("userBirth"));
-		map.put("userAddress", req.get("userAddress"));
-		map.put("userEmail", req.get("userEmail"));
 		
-		result = usersService.signup(map);
+		// 이메일 중복확인
+		int eCount = 0;
+		eCount = usersService.getUserEmail(req.get("userEmail"));
+		
+		if(eCount == 1) {
+			result = 2;
+		} else {
+			map.put("userEmail", req.get("userEmail"));
+			map.put("userAddress", req.get("userAddress"));
+			result = usersService.signup(map);
+		}
 		
 		return result;
 	}
@@ -410,6 +418,18 @@ public class UsersController {
 		
 		System.out.println("인증번호 : " + numStr);
 		return numStr;
+	}
+	
+	//--------------- 이용자 목록 --------------- //
+	@GetMapping("/getUserList")
+	public List<UsersVO> getUserList(){
+		return usersService.getUserList();
+	}
+	
+	//--------------- 이용자수 --------------- //
+	@GetMapping("/getUserCount")
+	public List<String> getUserCount(){
+		return usersService.getUserCount();
 	}
 	
 }

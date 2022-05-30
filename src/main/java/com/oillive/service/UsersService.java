@@ -82,4 +82,13 @@ public interface UsersService {
 	//--------------- 사용자 정보 수정 --------------- //
 	public int updateInfo(HashMap<String, String> req);
 
+	//--------------- 이용자 목록 --------------- //
+	public List<UsersVO> getUserList();
+
+	//--------------- 이메일 중복여부 --------------- //	
+	public int getUserEmail(String email);
+
+	//--------------- 이용자수 --------------- //	
+	public List<String> getUserCount();
+	
 }
