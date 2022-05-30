@@ -79,7 +79,7 @@ const LoginMain = () => {
       inputuserId.current.focus();
     } else {
       if(res.data === 2){
-        sessionStorage.setItem('admin', true);
+        sessionStorage.setItem('admin', inputuserId.current.value);
         navigate('/admin/home', {replace:true} );
       } else {
         // 세션 및 쿠키 저장

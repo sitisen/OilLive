@@ -1,13 +1,19 @@
 import React from 'react';
 
 // import Components
+import AdminSidebarMain from 'components/adminSidebar/AdminSidebarMain';
+
+// import CSS
 import AdminHomeMainStyle from './AdminHomeMain.module.css';
 
 const AdminHomeMain = () => {
     
     return (
-        <div className={AdminHomeMainStyle['a']}>
-            관리자메인입니다.
+        <div>
+            <AdminSidebarMain />
+            <div className={AdminHomeMainStyle['admin-home-layout']}>
+                관리자메인
+            </div>
         </div>  
     );
 };
