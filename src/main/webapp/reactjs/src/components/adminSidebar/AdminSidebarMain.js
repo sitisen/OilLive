@@ -117,7 +117,7 @@ const AdminSidebarMain = () => {
                 </div>
                 {/* 이벤트 관리 */}
                 <div className={AdminSidebarStyle['admin-nav']}>
-                    <button className={AdminSidebarStyle['nav-button']}>이벤트 관리</button>
+                    <Link to='/admin/eventList'><button className={AdminSidebarStyle['nav-button']}>이벤트 관리</button></Link>
                 </div>
             </div>
         </div>
