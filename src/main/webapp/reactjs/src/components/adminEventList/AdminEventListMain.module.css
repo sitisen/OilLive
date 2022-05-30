@@ -1,0 +1,46 @@
+/* ----- 전체 레이아웃 CSS */
+.adminEvent-wrap {
+    display: flex;
+    height: 95vh;
+}
+
+/* ----- 사이드바 공간 CSS */
+.adminEvent-side {
+    width: 17.2%;
+    height: 100%;
+}
+
+/* ----- 본문 레이아웃 CSS */
+.adminEvent-layout {
+    padding: 30px;
+    width: 82.8%;
+    height: 100%;
+}
+
+/* ----- 검색창 레이아웃 CSS */
+.adminEvent-search {
+    margin-top: 50px;
+    display: flex;
+    justify-content: end;
+    height: 35px;
+}
+
+/* 검색창 Input CSS */
+.adminEvent-input {
+    width: 20%;
+    border: 0.1em solid rgba(150, 150, 150, 0.5);
+    outline: none;
+    padding-left: 10px;
+}
+
+.adminEvent-input:focus {
+    border-color: rgb(107, 187, 72);
+    box-shadow: 0 0 6px 0 rgb(107, 187, 72);
+}
+
+/* 페이징바 CSS */
+.admin-paging {
+    margin-top: 3%;
+    justify-content: center;
+    align-items: center;
+}
