@@ -428,7 +428,7 @@ public class UsersController {
 	
 	//--------------- 이용자수 --------------- //
 	@GetMapping("/getUserCount")
-	public List<String> getUserCount(){
+	public List<Integer> getUserCount(){
 		return usersService.getUserCount();
 	}
 	

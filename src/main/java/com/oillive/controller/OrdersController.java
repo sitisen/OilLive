@@ -59,4 +59,10 @@ public class OrdersController {
 	public int deleteOrder(@RequestParam( name = "orderCode" ) List<String> orderCode) {
 		return ordersService.deleteOrder(orderCode);
 	}
+	
+	//--------------- 전체 결제목록 --------------- //
+	@GetMapping("/orderAllList")
+	public List<OrdersVO> orderAllList() {
+		return ordersService.orderAllList();
+	}
 }

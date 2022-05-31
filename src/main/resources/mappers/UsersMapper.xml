@@ -189,7 +189,7 @@
 	</select>
 	
 	<!-- 연령대별 이용자수 -->
-	<select id="getUserCount" parameterType="List" resultType="String">
+	<select id="getUserCount" parameterType="List" resultType="int">
 		SELECT count(*)
 	  	FROM users
 	  	WHERE TO_CHAR(TO_DATE(USER_BIRTH, 'yyyy/MM/DD'), 'yyyy') between #{startYear} and #{endYear}

@@ -89,6 +89,6 @@ public interface UsersDao {
 	public int getUserEmail(String email);
 
 	//--------------- 이용자 연령별 --------------- //
-	public String getUserCount(HashMap<String, Integer> m);
+	public Integer getUserCount(HashMap<String, Integer> m);
 	
 }

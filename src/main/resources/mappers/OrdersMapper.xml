@@ -34,6 +34,14 @@
 	<update id="deleteOrder" parameterType="String">
 		UPDATE orders
 		SET order_status = 'N'
-		WHERE order_code = #{orderCode}
+		WHERE order_code = #{orderCode}orderAllList
 	</update>
+	
+	<!-- 전체 판매목록 -->
+	<select id="orderAllList" resultType="OrdersVO">
+		SELECT g.goods_kind, g.goods_price, g.goods_discount, o.order_amount
+		FROM goods g, orders o
+		WHERE g.goods_code = o.goods_code
+	</select>
+	
 </mapper>

@@ -17,4 +17,7 @@ public interface OrdersService {
 
 	//--------------- 사용자 결제목록 삭제 --------------- //
 	public int deleteOrder(List<String> orderCode);
+
+	//--------------- 전체 결제목록 --------------- //
+	public List<OrdersVO> orderAllList();
 }

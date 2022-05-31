@@ -17,4 +17,6 @@ public class OrdersVO {
 	private String orderStatus;		// 상태
 	private String goodsName;		// 상품명
 	private int goodsPrice;			// 상품가격
+	private int goodsDiscount;	    // 상품 할인율
+	private String goodsKind;	 	// 상품종류 ( 실내용품, 세차용품, 엔진오일, 차량 광택제 )
 }

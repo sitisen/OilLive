@@ -22,5 +22,8 @@ public interface OrdersDao {
 
 	//--------------- 사용자 결제목록 삭제 --------------- //
 	public int deleteOrder(String orderCode);
+
+	//--------------- 전체 판매목록 --------------- //
+	public List<OrdersVO> orderAllList();
 	
 }

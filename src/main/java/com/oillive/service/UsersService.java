@@ -89,6 +89,6 @@ public interface UsersService {
 	public int getUserEmail(String email);
 
 	//--------------- 이용자수 --------------- //	
-	public List<String> getUserCount();
+	public List<Integer> getUserCount();
 	
 }

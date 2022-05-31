@@ -1,10 +1,84 @@
 /* 관리자 메인페이지 전체 레이아웃 */
 .admin-home-layout {
     text-align: center;
+    display: flex;
+    background-color: rgb(233, 235, 238);
+}
+
+.bottom {
+    height: 19.5vh;
+    background-color: rgb(233, 235, 238);
+}
+
+.admin-home-label {
+    text-align: left;
+    margin-top: 10px;
+    margin-left: 55.5%;
+    line-height: 50px;
+    height: 50px;
+    font-size: 20px;
+    font-weight: bold;
 }
 
 /* 관리자 이용자 연령 통계 div */
 .chart-div {
-    margin-top: 20px;
-    margin-left: 23%;
+    margin-top: 8%;
+    margin-left: 19%;
+    border: 0.5px solid rgba(150, 150, 150, 0.5);
+    border-radius: 12px;
+    width: 730px;
+    height: 500px;
+    background-color: white;
+}
+
+/* 관리자 상품별 매출통계 */
+.order-div {
+    margin-top: 8%;
+    border: 0.5px solid rgba(150, 150, 150, 0.5);
+    border-radius: 12px;
+    width: 730px;
+    margin-left: 50px;
+    height: 500px;
+    background-color: white;
+}
+
+/* 관리자 매출통계 기간별 select box div */
+.order-select {
+    padding-top: 30px;
+    padding-right: 495px;
+    text-align: right;
+    height: 30vh;
+    background-color: rgb(233, 235, 238);
+}
+
+.order-select label {
+    font-size: 18px;
+    font-weight: bold;
+    border: 0.5px solid rgba(150, 150, 150, 0.5);
+    border-radius: 5px;
+    padding: 10px;
+}
+
+/* select box */
+.selectbox {
+    width: 100px;
+    text-align: center;
+    height: 30px;
+    border: 0.5px solid rgba(150, 150, 150, 0.5);
+    outline: none;
+    font-weight: bold;
+    margin-left: 20px;
+}
+
+.selectbox option{
+    font-weight: bold;
+}
+
+.selectbox:hover {
+    border-color: rgb(107, 187, 72);
+}
+
+.selectbox:focus {
+    border-color: rgb(107, 187, 72);
+    box-shadow: 0 0 6px 0 rgb(107, 187, 72);
 }

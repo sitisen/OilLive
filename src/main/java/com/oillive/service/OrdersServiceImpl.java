@@ -68,5 +68,12 @@ public class OrdersServiceImpl implements OrdersService {
 		}
 		return result;
 	}
+
+	//--------------- 전체 결제목록 --------------- //
+	@Override
+	public List<OrdersVO> orderAllList() {
+		
+		return ordersDao.orderAllList();
+	}
 	
 }

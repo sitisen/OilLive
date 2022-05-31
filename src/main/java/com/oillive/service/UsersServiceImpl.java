@@ -522,8 +522,8 @@ public class UsersServiceImpl implements UsersService{
 
 	//--------------- 이용자수 --------------- //
 	@Override
-	public List<String> getUserCount() {
-		List<String> list = new ArrayList<String>();
+	public List<Integer> getUserCount() {
+		List<Integer> list = new ArrayList<Integer>();
 		
 		HashMap<String, Integer> m = new HashMap<String, Integer>();
 		
@@ -532,9 +532,9 @@ public class UsersServiceImpl implements UsersService{
 		int endYear = 0;
 		
 		// 10 ~ 50대까지 가져옴
-		for(int i = 10; i < 100; i += 10) {
+		for(int i = 10; i < 101; i += 10) {
 			endYear = currentYear-i; 
-			startYear = startYear - 9;
+			startYear = endYear - 9;
 			m.put("startYear", startYear);
 			m.put("endYear", endYear);
 			list.add(usersDao.getUserCount(m));
