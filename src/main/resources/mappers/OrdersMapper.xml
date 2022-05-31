@@ -40,8 +40,10 @@
 	<!-- 전체 판매목록 -->
 	<select id="orderAllList" resultType="OrdersVO">
 		SELECT g.goods_kind, g.goods_price, g.goods_discount, o.order_amount
-		FROM goods g, orders o
-		WHERE g.goods_code = o.goods_code
+        FROM goods g, orders o
+        WHERE g.goods_code = o.goods_code 
+        AND o.order_date BETWEEN EXTRACT(YEAR FROM (SYSDATE - INTERVAL '1' YEAR))|| '/01/01' 
+        AND EXTRACT(YEAR FROM SYSDATE) || '/12/31'
 	</select>
 	
 </mapper>

@@ -28,6 +28,7 @@ const AdminHomeMain = () => {
     const [secha, setSecha] = useState(0);       // 세차용품
     const [engin, setEngin] = useState(0);       // 엔진오일
     const [gwang, setGwang] = useState(0);       // 차량 광택제
+    const [allTotal, setAllTotal] = useState(0); // 총액
 
     // 막대그래프 옵션
     var options = {
@@ -104,7 +105,6 @@ const AdminHomeMain = () => {
           colors: ["#304758"]
         }
       },
-      
       xaxis: {
         categories: ['실내용품','세차용품','엔진오일','차량 광택제'],
         position: 'top',
@@ -143,7 +143,7 @@ const AdminHomeMain = () => {
       
       },
       title: {
-        text: '오일라이브 2022년 판매액',
+        text: '오일라이브 판매액(1년기준)',
         floating: true,
         offsetY: 330,
         align: 'center',
@@ -211,6 +211,7 @@ const AdminHomeMain = () => {
             setSecha(sechaTotal);
             setEngin(engenTotal);
             setGwang(gwangTotal);
+            setAllTotal(silTotal+sechaTotal+engenTotal+gwangTotal);
         });
     }, [navigate]);
 
@@ -237,6 +238,8 @@ const AdminHomeMain = () => {
                         type="bar"
                         width="700"
                     />
+                    <br />
+                    <b>총 매출 : </b><span style={{color:'red',fontWeight:'bold'}}>{allTotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span><b>원</b>
                 </div>
             </div>
             <div className={AdminHomeMainStyle['bottom']}>
