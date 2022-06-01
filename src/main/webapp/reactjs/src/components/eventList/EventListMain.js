@@ -28,7 +28,7 @@ const EventListMain = () => {
     /* useEffect 부분 */
     useEffect( () => {
 
-        EventService.selectEventList(filterName, currentPage).then( res => {
+        EventService.selectEventList('', filterName, currentPage).then( res => {
             setEventData(res.data.eventList);
             setPaging(res.data.paging);
         })
