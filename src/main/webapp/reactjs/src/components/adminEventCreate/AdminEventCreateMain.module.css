@@ -1,0 +1,133 @@
+/* ----- 전체 레이아웃 CSS */
+.adminEventCreate-wrap {
+    display: flex;
+    height: 95vh;
+}
+
+/* ----- 사이드바 공간 CSS */
+.adminEventCreate-side {
+    width: 17.2%;
+    height: 100%;
+}
+
+/* ----- 본문 레이아웃 CSS */
+.adminEventCreate-layout {
+    padding: 30px;
+    width: 82.8%;
+    height: 100%;
+}
+
+/* 이벤트 등록 레이아웃 CSS */
+.adminEventCreate-container {
+    margin: 30px 0;
+    display: flex;
+}
+
+/* 이벤트 하단 레이아웃 CSS */
+.adminEventCreate-footer {
+    display: flex;
+    justify-content: center;
+}
+
+.adminEventCreate-footer button {
+    margin: 3% 3%;
+    padding: 5px 2%;
+    font-size: 19px;
+}
+
+/* 이벤트 등록 왼쪽 레이아웃 CSS ( 이미지 등록, 이미지 ) */
+.adminCreateContainer-left {
+    width: 50%;
+}
+
+.left-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.left-img {
+    height: 470px;
+    text-align: center;
+    border: 1px solid lightgray;
+}
+
+.left-img>img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+/* 이벤트 등록 오른쪽 레이아웃 CSS ( 등록할 개체 정보 Input ) */
+.adminCreateContainer-right {
+    width: 50%;
+    height: 100%;
+}
+
+.adminCreateContainer-right-1,
+.adminCreateContainer-right-2,
+.adminCreateContainer-right-3,
+.adminCreateContainer-right-4 {
+    display: flex;
+    flex-direction: column;
+    align-content: space-around;
+    margin-top: 35px;
+    margin-left: 5%;
+}
+
+/* 이미지 등록 버튼 CSS */
+.adminCreate-button {
+    padding: 5px 10px;
+    outline: none;
+    border: none;
+    border-radius: 5px;
+    background-color: orange;
+    color: white;
+}
+
+/* Span 태그 CSS */
+.adminCreate-span {
+    font-size: 18px;
+}
+
+/* Input 태그 CSS */
+.adminCreate-input,
+.adminCreate-long-input {
+    height: 40px;
+    border: 0.1em solid rgba(150, 150, 150, 0.5);
+    outline: none;
+    padding-left: 10px;
+}
+
+.adminCreate-input:focus,
+.adminCreate-long-input:focus,
+.adminCreate-textarea:focus {
+    border-color: rgb(107, 187, 72);
+    box-shadow: 0 0 6px 0 rgb(107, 187, 72);
+}
+
+.adminCreate-input {
+    width: 20%;
+}
+
+/* textarea 태그 CSS */
+.adminCreate-textarea {
+    border: 0.1em solid rgba(150, 150, 150, 0.5);
+    outline: none;
+    padding-left: 10px;
+    resize: none;
+}
+
+/* Select 태그 CSS */
+.adminCreate-select {
+    margin: 0 15px;
+    width: 10%;
+    height: 41.8px;
+    border: 0.1em solid rgba(150, 150, 150, 0.5);
+    outline: none;
+    padding-left: 10px;
+}
+
+.adminCreate-select:focus {
+    border-color: rgb(107, 187, 72);
+    box-shadow: 0 0 6px 0 rgb(107, 187, 72);
+}

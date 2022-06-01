@@ -24,6 +24,7 @@ import EventDetail from 'pages/EventDetail';
 // Import admin pages
 import AdminHome from 'pages/AdminHome';
 import AdminEventList from 'pages/AdminEventList';
+import AdminEventCreate from 'pages/AdminEventCreate';
 
 // Page Routing Setting
 function App() {
@@ -53,6 +54,7 @@ function App() {
       {/* 관리자 라우터 부분 */}
       <Route path='/admin/home' element={<AdminHome />}/>
       <Route path='/admin/eventList' element={<AdminEventList />}/>
+      <Route path='/admin/eventCreate' element={<AdminEventCreate />}/>
     </Routes>
   );
 }

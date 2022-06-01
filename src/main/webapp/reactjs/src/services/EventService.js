@@ -7,9 +7,10 @@ const EVENT_SELECT_EVENT_LIST = EVENT_URL + '/selectEventList'; // 이벤트 목
 /* 이벤트 Service */
 const EventService = {
 
-    selectEventList (filterName, currentPage) {
+    selectEventList (eventName, filterName, currentPage) {
         return axios.get(EVENT_SELECT_EVENT_LIST, {
             params: { 
+                        title: eventName,
                         filterName: filterName,
                         page: currentPage
                     }
