@@ -30,11 +30,12 @@ public class EventController {
 	
 	//--------------- 이벤트 목록 조회 --------------- //
 	@GetMapping("/selectEventList")
-	public HashMap<String, Object> selectEventList( @RequestParam( name = "filterName" ) String filterName,
+	public HashMap<String, Object> selectEventList( @RequestParam( name = "title" ) String eventName,
+													@RequestParam( name = "filterName" ) String filterName,
 													@RequestParam( name = "page" ) int currentPage ) {
 		
 		// Pagination 처리 변수
-		int totalCount = eventService.selectEventCount(filterName); // EVENT 테이블 데이터 개수
+		int totalCount = eventService.selectEventCount(eventName, filterName); // EVENT 테이블 데이터 개수
 		int pageLimit = 5;  // 페이징바의 최대 노출 번호
 		int listRange = 8; // 한 페이지당 노출시킬 데이터의 개수
 		
@@ -42,7 +43,7 @@ public class EventController {
 		PaginationVO paging = paginationService.pagination(totalCount, pageLimit, listRange, currentPage);
 		
 		// 이벤트 목록이 담기는 리스트
-		List<EventVO> eventList = eventService.selectEventList(filterName, paging);
+		List<EventVO> eventList = eventService.selectEventList(eventName, filterName, paging);
 		
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		

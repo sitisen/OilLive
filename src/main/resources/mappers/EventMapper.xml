@@ -9,11 +9,15 @@
 	<select id="selectEventCount" parameterType="Map" resultType="int">
 		SELECT count(*)
 		  FROM event
+		 WHERE 1 = 1
+		    <if test="! eventName.isEmpty()">
+		    	AND event_name LIKE '%' || #{eventName} || '%'
+		    </if>
 		  	<if test="filterName.equals('진행중')">
-				WHERE event_enddate >= TO_DATE(#{today}, 'yyyy/MM/DD')		    	
+				AND event_enddate >= TO_DATE(#{today}, 'yyyy/MM/DD')		    	
 		   	</if>
 		   	<if test="filterName.equals('종료')">
-		   		<![CDATA[ WHERE event_enddate < TO_DATE(#{today}, 'yyyy/MM/DD') ]]>    	
+		   		<![CDATA[ AND event_enddate < TO_DATE(#{today}, 'yyyy/MM/DD') ]]>    	
 		   	</if>
 	</select>
 	
@@ -22,14 +26,20 @@
 		SELECT E.*
 		FROM ( SELECT ROWNUM RNUM, event_code, event_name, event_content, 
 			       	   event_startdate, event_enddate
-		         FROM event
+		         FROM ( SELECT * 
+			       	   	FROM event	   
+			       	   	ORDER BY event_enddate DESC
+			       	   )
+		         WHERE 1 = 1
+		    <if test="! eventName.isEmpty()">
+		    	AND event_name LIKE '%' || #{eventName} || '%'
+		    </if>
 		   	<if test="filterName.equals('진행중')">
-				WHERE event_enddate >= TO_DATE(#{today}, 'yyyy/MM/DD')		    	
+				AND event_enddate >= TO_DATE(#{today}, 'yyyy/MM/DD')		    	
 		   	</if>
 		   	<if test="filterName.equals('종료')">
-		   		<![CDATA[ WHERE event_enddate < TO_DATE(#{today}, 'yyyy/MM/DD') ]]>    	
+		   		<![CDATA[ AND event_enddate < TO_DATE(#{today}, 'yyyy/MM/DD') ]]>    	
 		   	</if>
-		            ORDER BY event_enddate DESC
 		        ) E
 		WHERE E.rnum BETWEEN #{startRow} AND #{endRow}
 	</select>
