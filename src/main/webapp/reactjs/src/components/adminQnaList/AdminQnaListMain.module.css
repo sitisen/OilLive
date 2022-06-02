@@ -1,0 +1,128 @@
+/* qna 페이지 전체 레이아웃 */
+.admin-qna-layout {
+    height: 95vh;
+}
+
+/* 전체 제목 div */
+.admin-qna-label {
+    margin-left: 18%;
+    padding:30px;
+}
+
+/* 전체 테이블 div */
+.admin-qna-list {
+    margin-left: 18%;
+    padding:30px;
+}
+
+/* 총 total div */
+.admin-qna-total {
+    text-align: center;
+}
+
+/* 게시글 수 label */
+.admin-total-label {
+    width: 50%;
+    text-align: left;
+}
+
+/* qna 검색 */
+.admin-search {
+    width: 100%;
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+/* 검색 input */
+.admin-input {
+    width: 20%;
+    border: 0.1em solid rgba(150, 150, 150, 0.5);
+    outline: none;
+    height: 40px;
+    padding-left: 10px;
+}
+
+.admin-input:focus {
+    border-color: rgb(107, 187, 72);
+    box-shadow: 0 0 6px 0 rgb(107, 187, 72);
+}
+
+/* 테이블 css */
+.admin-qna-table {
+    width: 100%;
+    text-align: center;
+}   
+
+/* th */
+.admin-qna-table th {
+    height: 50px;
+    width: 33.3%;
+    border-bottom: 1px solid;
+    border-top: 1px solid;
+}
+
+/* td */
+.admin-qna-table td {
+    height: 50px;
+    text-overflow: ellipsis;
+    white-space : nowrap;
+    overflow: hidden; 
+}
+
+/* tr */
+.admin-qna-table-tr {
+    border-bottom: 0.5px solid rgba(150, 150, 150, 0.5);
+}
+
+.admin-qna-table-tr:hover {
+    background-color: rgb(234, 234, 234);
+}
+
+/* 수정버튼 */
+.modiBtn {
+    margin-right: 20px;
+    width: 70px;
+    height: 40px;
+    border: none;
+    background-color: rgb(10, 157, 10);
+    color: white;
+}
+
+.modiBtn:hover {
+    background-color: rgb(7, 173, 7);
+}
+
+/* 식제버튼 */
+.deleBtn {
+    width: 70px;
+    height: 40px;
+    border: none;
+    background-color: gray;
+    color: white;
+}
+
+.deleBtn:hover {
+    background-color: rgb(109, 107, 107);
+}
+
+/* 페이지버튼 */
+.page-button {
+    color: rgb(82, 167, 67) !important;
+    font-size: 18px;
+}
+
+.page-button:active,
+.page-button:focus {
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+.page-active {
+    background-color: #7CC135 !important;
+    color: white !important;
+}
+
+.page-div {
+    margin-left: 50%;
+    margin-top: 30px;
+}

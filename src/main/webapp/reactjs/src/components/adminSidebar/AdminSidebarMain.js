@@ -105,7 +105,7 @@ const AdminSidebarMain = () => {
                         qnaYN 
                         ?  <>
                             <div className={AdminSidebarStyle['nav-button-option']}>
-                                -&nbsp;<Link to='' className={AdminSidebarStyle['nav-link']}><span>QnA관리</span></Link>
+                                -&nbsp;<Link to='/admin/qnaList' className={AdminSidebarStyle['nav-link']}><span>QnA관리</span></Link>
                             </div>
                             <div className={AdminSidebarStyle['nav-button-option']}>
                                 -&nbsp;<Link to='' className={AdminSidebarStyle['nav-link']}><span>문의/답변관리</span></Link>

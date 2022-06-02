@@ -25,6 +25,7 @@ import EventDetail from 'pages/EventDetail';
 import AdminHome from 'pages/AdminHome';
 import AdminEventList from 'pages/AdminEventList';
 import AdminEventCreate from 'pages/AdminEventCreate';
+import AdminQnaList from 'pages/AdminQnaList';
 
 // Page Routing Setting
 function App() {
@@ -55,6 +56,7 @@ function App() {
       <Route path='/admin/home' element={<AdminHome />}/>
       <Route path='/admin/eventList' element={<AdminEventList />}/>
       <Route path='/admin/eventCreate' element={<AdminEventCreate />}/>
+      <Route path='/admin/qnaList' element={<AdminQnaList />}/>
     </Routes>
   );
 }
