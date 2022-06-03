@@ -78,6 +78,7 @@ const EventListMain = () => {
         setCurrentPage(currentPage + 1);
     }
 
+    console.log(eventData)
 
     /* ===== 실제 페이지 렌더링 =====  */
     return (
@@ -131,7 +132,7 @@ const EventListMain = () => {
                                             <Link to='/event/eventDetail'
                                                 state={{ data: list }}
                                             >
-                                                <img alt='test' src='/images/event/event_banner.jpg' />
+                                                <img alt='eventListImg' src={list.PHOTO_PATH + list.PHOTO_RENAME} />
                                             </Link>
                                         </div>
                                     </div>
