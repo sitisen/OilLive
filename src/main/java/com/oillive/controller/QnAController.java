@@ -43,9 +43,6 @@ public class QnAController {
 	public HashMap<String, Object> selectEventList( @RequestParam( name = "qnaName" ) String qnaName,
 			@RequestParam( name = "page" ) int currentPage ) {
 		
-		System.out.println("qnaName : " + qnaName);
-		System.out.println("page : " + currentPage);
-		
 		// Pagination 처리 변수
 		int totalCount = qnaService.selectQnaCount(qnaName); // Qna 테이블 데이터 개수
 		int pageLimit = 5;  // 페이징바의 최대 노출 번호
@@ -55,14 +52,60 @@ public class QnAController {
 		PaginationVO paging = paginationService.pagination(totalCount, pageLimit, listRange, currentPage);
 		
 		// qna 목록이 담기는 리스트
-		List<QnaVO> eventList = qnaService.selectQnaList(qnaName, paging);
+		List<QnaVO> qnaList = qnaService.selectQnaList(qnaName, paging);
 		
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		
 		result.put("paging", paging);
-		result.put("eventList", eventList);
+		result.put("qnaList", qnaList);
 		
 		return result;
 	}
 	
+	//--------------- Qna 전체 개수 --------------- //
+	@GetMapping("/qnaCount")
+	public int qnaCount() {
+		return qnaService.qnaCount();
+	}
+	
+	//--------------- Qna 삭제 --------------- //
+	@GetMapping("/qnaDelete")
+	public int qnaDelete(@RequestParam( name = "qnaCode" ) int qnaCode) {
+		return qnaService.qnaDelete(qnaCode);
+	}
+	
+	//--------------- Qna 수정 상세페이지 --------------- //
+	@GetMapping("/qnaDetail")
+	public QnaVO qnaDetail(@RequestParam( name = "qnaCode" ) int qnaCode) {
+		return qnaService.qnaDetail(qnaCode);
+	}
+	
+	//--------------- Qna 수정하기 --------------- //
+	@GetMapping("/qnaModify")
+	public int qnaModify(@RequestParam( name = "qnaCode" ) int qnaCode,
+			@RequestParam( name = "qnaTitle" ) String qnaTitle,
+			@RequestParam( name = "qnaContent" ) String qnaContent
+			) {
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("qnaCode", qnaCode);
+		map.put("qnaTitle", qnaTitle);
+		map.put("qnaContent", qnaContent);
+		
+		return qnaService.qnaModify(map);
+	}
+	
+	//--------------- Qna 수정 상세페이지 --------------- //
+	@GetMapping("/qnaWrite")
+	public int qnaWrite(@RequestParam( name = "qnaTitle" ) String qnaTitle,
+					@RequestParam( name = "qnaContent" ) String qnaContent) {
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("qnaTitle", qnaTitle);
+		map.put("qnaContent", qnaContent);
+		
+		return qnaService.qnaWrite(map);
+	}
 }

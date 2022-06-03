@@ -25,12 +25,45 @@
 	<select id="selectQnaList" parameterType="Map" resultType="Map">
 		SELECT E.*
 		FROM ( SELECT ROWNUM RNUM, qna_code, qna_title, qna_content
+			FROM qna
         	WHERE 1 = 1
 		    <if test="! qnaName.isEmpty()">
 		    	AND qna_title LIKE '%' || #{qnaName} || '%'
 		    </if>
 		        ) E
 		WHERE E.rnum BETWEEN #{startRow} AND #{endRow}
+		ORDER BY RNUM
 	</select>
 	
+	<!-- qna 전체 개수 -->
+	<select id="qnaCount" resultType="int">
+		SELECT count(*)
+		FROM qna
+	</select>
+	
+	<!-- qna 삭제 -->
+	<delete id="qnaDelete" parameterType="int">
+		DELETE FROM qna
+		WHERE qna_code = #{qnaCode}
+	</delete>
+	
+	<!-- qna 수정 상세페이지 -->
+	<select id="qnaDetail" parameterType="int" resultType="QnAVO">
+		SELECT qna_code, qna_title, qna_content
+		FROM qna
+		WHERE qna_code = #{qnaCode}
+	</select>
+	
+	<!-- qna 수정하기 -->
+	<update id="qnaModify" parameterType="Map">
+		UPDATE qna
+		SET qna_title = #{qnaTitle}, qna_content = #{qnaContent}
+		WHERE qna_code = #{qnaCode}
+	</update>
+	
+	<!-- qna 작성 -->
+	<insert id="qnaWrite" parameterType="Map">
+		INSERT INTO qna
+		VALUES (seq_qna.NEXTVAL, #{qnaTitle}, #{qnaContent})
+	</insert>
 </mapper>

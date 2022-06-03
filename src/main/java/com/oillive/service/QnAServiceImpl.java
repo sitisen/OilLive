@@ -34,7 +34,7 @@ public class QnAServiceImpl implements QnAService {
 		return qnaDao.selectQnaCount(param);
 	}
 
-	//--------------- qna 목록 --------------- //
+	//--------------- qna 목록 페이징 --------------- //
 	@Override
 	public List<QnaVO> selectQnaList(String qnaName, PaginationVO paging) {
 		// 한 페이지 당 8개의 상품 정보를 보여주기 위해 WHERE 절에 쓰일 변수
@@ -49,6 +49,36 @@ public class QnAServiceImpl implements QnAService {
 		param.put("endRow", String.valueOf(endRow));	
 		
 		return qnaDao.selectQnaList(param);
+	}
+
+	//--------------- qna 전체 개수 --------------- //
+	@Override
+	public int qnaCount() {
+		return qnaDao.qnaCount();
+	}
+
+	//--------------- qna 삭제 --------------- //
+	@Override
+	public int qnaDelete(int qnaCode) {
+		return qnaDao.qnaDelete(qnaCode);
+	}
+
+	//--------------- qna 수정 상세페이지 --------------- //
+	@Override
+	public QnaVO qnaDetail(int qnaCode) {
+		return qnaDao.qnaDetail(qnaCode);
+	}
+
+	//--------------- qna 수정하기 --------------- //
+	@Override
+	public int qnaModify(HashMap<String, Object> map) {
+		return qnaDao.qnaModify(map);
+	}
+
+	//--------------- qna 작성 --------------- //
+	@Override
+	public int qnaWrite(HashMap<String, Object> map) {
+		return qnaDao.qnaWrite(map);
 	}
 
 }
