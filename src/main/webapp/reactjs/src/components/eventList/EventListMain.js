@@ -114,32 +114,41 @@ const EventListMain = () => {
 
                 <div className={`container ${EventListMainStyle['eventList-container']}`}>
 
-                    { eventData.map( list => {
-                       
-                       return (
-                            <div key={list.EVENT_CODE} className={EventListMainStyle['eventList-event']}>
-                                <div className={EventListMainStyle['event-img']}>
-                                    <div className={EventListMainStyle['event-img-div']}>
-                                        <Link to='/event/eventDetail'
-                                              state={{ data: list }}
-                                        >
-                                            <img alt='test' src='/images/event/event_banner.jpg' />
-                                        </Link>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div>
-                                        <span className={EventListMainStyle['event-title']}>{list.EVENT_NAME}</span>
-                                    </div>
-                                    <div>
-                                        <span className={EventListMainStyle['event-date']}>
-                                            {dateFormat(list.EVENT_STARTDATE)} ~ {dateFormat(list.EVENT_ENDDATE)}
-                                        </span>
-                                    </div>
-                                </div>
+                    { eventData.length === 0
+                        ? // 이벤트가 존재하지 않을 경우,
+                            <div>
+                                <h5>현재 존재하는 이벤트가 없습니다.</h5>
                             </div>
-                        )
-                    }) }
+
+                        : // 이벤트가 존재할 경우,  
+                    
+                        eventData.map( list => {
+                       
+                            return (
+                                <div key={list.EVENT_CODE} className={EventListMainStyle['eventList-event']}>
+                                    <div className={EventListMainStyle['event-img']}>
+                                        <div className={EventListMainStyle['event-img-div']}>
+                                            <Link to='/event/eventDetail'
+                                                state={{ data: list }}
+                                            >
+                                                <img alt='test' src='/images/event/event_banner.jpg' />
+                                            </Link>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div>
+                                            <span className={EventListMainStyle['event-title']}>{list.EVENT_NAME}</span>
+                                        </div>
+                                        <div>
+                                            <span className={EventListMainStyle['event-date']}>
+                                                {dateFormat(list.EVENT_STARTDATE)} ~ {dateFormat(list.EVENT_ENDDATE)}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            )
+                        }) 
+                    }
 
                 </div> {/* //. eventList-container */}
 
