@@ -1,35 +1,35 @@
 /* ----- 전체 레이아웃 CSS */
-.adminEventCreate-wrap {
+.adminEventControl-wrap {
     display: flex;
     height: 95vh;
 }
 
 /* ----- 사이드바 공간 CSS */
-.adminEventCreate-side {
+.adminEventControl-side {
     width: 17.2%;
     height: 100%;
 }
 
 /* ----- 본문 레이아웃 CSS */
-.adminEventCreate-layout {
+.adminEventControl-layout {
     padding: 30px;
     width: 82.8%;
     height: 100%;
 }
 
 /* 이벤트 등록 레이아웃 CSS */
-.adminEventCreate-container {
+.adminEventControl-container {
     margin: 30px 0;
     display: flex;
 }
 
 /* 이벤트 하단 레이아웃 CSS */
-.adminEventCreate-footer {
+.adminEventControl-footer {
     display: flex;
     justify-content: center;
 }
 
-.adminEventCreate-footer a {
+.adminEventControl-footer a {
     width: 0;
     height: 0;
     outline: 0;

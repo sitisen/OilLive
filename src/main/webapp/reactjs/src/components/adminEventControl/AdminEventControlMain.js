@@ -351,10 +351,10 @@ const AdminEventControlMain = () => {
     }
 
     return (
-        <div className={AdminEventControlMainStyle['adminEventCreate-wrap']}>
-            <div className={AdminEventControlMainStyle['adminEventCreate-side']} />
-            <div className={AdminEventControlMainStyle['adminEventCreate-layout']}>
-                <div className={AdminEventControlMainStyle['adminEventCreate-header']}>
+        <div className={AdminEventControlMainStyle['adminEventControl-wrap']}>
+            <div className={AdminEventControlMainStyle['adminEventControl-side']} />
+            <div className={AdminEventControlMainStyle['adminEventControl-layout']}>
+                <div className={AdminEventControlMainStyle['adminEventControl-header']}>
                     { locationType === 'insert' 
                         ? // 이벤트 등록일 경우,
                             <h2>이벤트 등록</h2>
@@ -363,9 +363,9 @@ const AdminEventControlMain = () => {
                             <h2>이벤트 수정</h2>
                     }
                     <hr />
-                </div> {/* //. adminEventCreate-header */}
+                </div> {/* //. adminEventControl-header */}
 
-                <div className={AdminEventControlMainStyle['adminEventCreate-container']}>
+                <div className={AdminEventControlMainStyle['adminEventControl-container']}>
                     <div className={AdminEventControlMainStyle['adminCreateContainer-left']}>
                         <div className={AdminEventControlMainStyle['left-header']}>
                             <h5>이벤트 이미지</h5>
@@ -477,9 +477,9 @@ const AdminEventControlMain = () => {
                             </div>
                         </div>
                     </div>
-                </div> {/* //. adminEventCreate-container */}
+                </div> {/* //. adminEventControl-container */}
 
-                <div className={AdminEventControlMainStyle['adminEventCreate-footer']}>
+                <div className={AdminEventControlMainStyle['adminEventControl-footer']}>
                     { locationType === 'insert' 
                         ? // 이벤트 등록일 경우,
                         <button className={`btn btn-primary ${AdminEventControlMainStyle['adminCreate-footer-button']}`}
@@ -498,9 +498,9 @@ const AdminEventControlMain = () => {
                     <Link to='/admin/eventList'>
                         <button className={`btn btn-secondary ${AdminEventControlMainStyle['adminCreate-footer-button']}`}>취소</button>
                     </Link>
-                </div> {/* //. adminEventCreate-footer */}
-            </div> {/* //. adminEventCreate-layout */}
-        </div> /* //. adminEventCreate-wrap */
+                </div> {/* //. adminEventControl-footer */}
+            </div> {/* //. adminEventControl-layout */}
+        </div> /* //. adminEventControl-wrap */
     );
 };
 
