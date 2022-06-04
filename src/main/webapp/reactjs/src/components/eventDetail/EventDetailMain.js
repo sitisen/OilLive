@@ -23,7 +23,7 @@ const EventDetailMain = () => {
             <div className={EventDetailMainStyle['eventDetail-wrap']}>
                 <div className={`container ${EventDetailMainStyle['eventDetail-layout']}`}>
                     <div className={`container ${EventDetailMainStyle['eventDetail-header']}`}>
-                        <img alt='test' src='/images/event/event_banner.jpg' />
+                        <img alt='eventImg' src={eventData.PHOTO_PATH + eventData.PHOTO_RENAME} />
                     </div> {/* //. eventDetail-header */}
 
                     <div className={`container ${EventDetailMainStyle['eventDetail-container']}`}>
