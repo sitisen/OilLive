@@ -89,7 +89,7 @@ const AdminSidebarMain = () => {
                         goodsYN 
                         ?  <>
                             <div className={AdminSidebarStyle['nav-button-option']}>
-                                -&nbsp;<Link to='' className={AdminSidebarStyle['nav-link']}><span>상품목록</span></Link>
+                                -&nbsp;<Link to='/admin/goodsList' className={AdminSidebarStyle['nav-link']}><span>상품목록</span></Link>
                             </div>
                             <div className={AdminSidebarStyle['nav-button-option']}>
                                 -&nbsp;<Link to='' className={AdminSidebarStyle['nav-link']}><span>판매내역</span></Link>
