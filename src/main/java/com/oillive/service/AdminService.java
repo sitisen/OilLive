@@ -11,8 +11,8 @@ public interface AdminService {
 	//--------------- 관리자 이벤트 변경 --------------- //
 	public int updateEvent(String eventCode, String eventName, String eventContent, String eventStartDate, String eventEndDate);
 	
-	//--------------- 관리자 이벤트 삭제 (이미지) --------------- //
-	public int deleteEventPhoto(String photoCode, String photoPath, String photoRename);
+	//--------------- 관리자 이벤트 이미지 삭제 --------------- //
+	public int deleteEventPhoto(String photoCode, String photoPath, String photoReName);
 	
 	//--------------- 관리자 이벤트 삭제 --------------- //
 	public int deleteEvent(String eventCode);

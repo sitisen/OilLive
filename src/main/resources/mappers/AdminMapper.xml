@@ -28,7 +28,7 @@
 		 WHERE event_code = #{eventCode}
 	</update>
 	
-	<!-- 관리자 이벤트 삭제 (이미지) -->
+	<!-- 관리자 이벤트 이미지 삭제 -->
 	<delete id="deleteEventPhoto" parameterType="String">
 		DELETE FROM photo
 		      WHERE photo_code = #{photoCode}

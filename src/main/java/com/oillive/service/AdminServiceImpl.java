@@ -47,19 +47,19 @@ public class AdminServiceImpl implements AdminService {
 		return adminDao.updateEvent(params);
 	}
 
-	//--------------- 관리자 이벤트 삭제 (이미지) --------------- //
+	//--------------- 관리자 이벤트 이미지 삭제 --------------- //
 	@Override
-	public int deleteEventPhoto(String photoCode, String photoPath, String photoRename) {
+	public int deleteEventPhoto(String photoCode, String photoPath, String photoReName) {
 		
 		// 삭제 요청된 이미지 파일 삭제 로직
 		String uploads = ""; // 이미지가 업로드된 폴더 경로
 		String separator = System.getProperty("file.separator"); // 시스템 경로 구분자 ("/" 또는 "\")
 		
 		if( separator.contains("/") ) { // OS가 Linux 타입일 경우 (CentOS, Mac, SunOS....)
-			uploads = "src/main/webapp/reactjs/public" + photoPath + photoRename;
+			uploads = "src/main/webapp/reactjs/public" + photoPath + photoReName;
 			
 		} else { // OS가 Window 타입일 경우
-			uploads = "src\\main\\webapp\\reactjs\\public" + photoPath + photoRename;
+			uploads = "src\\main\\webapp\\reactjs\\public" + photoPath + photoReName;
 			
 		}
 		

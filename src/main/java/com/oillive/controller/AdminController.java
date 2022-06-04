@@ -112,15 +112,17 @@ public class AdminController {
 		return result;
 	}
 	
-	//--------------- 관리자 이벤트 수정 (이미지 수정) --------------- //
+	//--------------- 관리자 이벤트 변경 (이미지 수정) --------------- //
 	@PostMapping("/updateEventUpload")
 	public int updateEventUpload(@RequestParam("img") MultipartFile file,
-								 @RequestParam("photoCode") String photoCode ) {
-	
+								 @RequestParam("photoCode") String photoCode,
+								 @RequestParam("photoPath") String photoPath,
+								 @RequestParam("photoReName") String photoReName ) {
 		int result = 0;
-
+		
+		// 해당 이벤트 이미지 변경
 		try {
-			result = uploadService.upLoad("U", file, photoCode);
+			result = uploadService.upLoad("U", file, photoCode, photoPath, photoReName);
 			
 		} catch (IllegalStateException | IOException e) {
 			e.printStackTrace();
@@ -137,10 +139,10 @@ public class AdminController {
 		String eventCode = req.get("eventCode"); // 삭제 요청된 이벤트 코드
 		String photoCode = req.get("photoCode"); // 삭제 요청된 사진 코드
 		String photoPath = req.get("photoPath"); // 삭제 요청된 사진 경로
-		String photoRename = req.get("photoRename"); // 삭제 요청된 사진 이름
+		String photoReName = req.get("photoReName"); // 삭제 요청된 사진 이름
 		
 		// 해당 이벤트 이미지 삭제
-		int result = adminService.deleteEventPhoto(photoCode, photoPath, photoRename);
+		int result = adminService.deleteEventPhoto(photoCode, photoPath, photoReName);
 		
 		// 해당 이벤트 삭제
 		if( result == 1 ) { // 이벤트 이미지 삭제 성공 시,
