@@ -10,10 +10,11 @@
 		SELECT count(*)
 		  FROM event
 		 WHERE 1 = 1
-		    <if test="! eventName.isEmpty()">
+		    <if test="! eventName.isEmpty()"> <!-- 관리자 검색 기능 -->
 		    	AND event_name LIKE '%' || #{eventName} || '%'
 		    </if>
-		  	<if test="filterName.equals('진행중')">
+		  	<if test="filterName.equals('진행중')"> <!-- 사용자 이벤트 필터 -->
+		   		<![CDATA[ AND event_startdate <= TO_DATE(#{today}, 'yyyy/MM/DD') ]]>  
 				AND event_enddate >= TO_DATE(#{today}, 'yyyy/MM/DD')		    	
 		   	</if>
 		   	<if test="filterName.equals('종료')">
@@ -37,6 +38,7 @@
 		    	AND event_name LIKE '%' || #{eventName} || '%'
 		    </if>
 		   	<if test="filterName.equals('진행중')">
+		   		<![CDATA[ AND event_startdate <= TO_DATE(#{today}, 'yyyy/MM/DD') ]]>  
 				AND event_enddate >= TO_DATE(#{today}, 'yyyy/MM/DD')		    	
 		   	</if>
 		   	<if test="filterName.equals('종료')">
