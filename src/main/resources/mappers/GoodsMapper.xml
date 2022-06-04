@@ -67,8 +67,14 @@
 	<select id="selectGoodsList" parameterType="Map" resultType="Map">
 		SELECT G.*
 		  FROM (  SELECT ROWNUM RNUM, goods_code, goods_name, goods_kind, goods_price, 
-		                 goods_amount, goods_content, goods_discount, goods_date
-        		    FROM goods
+		                 goods_amount, goods_content, goods_discount, goods_date,
+		                 photo_code, photo_rename, photo_path
+        		    FROM ( 	 SELECT * 
+                               FROM goods	   
+                           ORDER BY goods_code DESC
+                         )
+                    JOIN photo
+                    USING (goods_code)
         		    WHERE 1 = 1
 		<if test="! goodsName.isEmpty()">
 					  AND goods_name LIKE '%' || #{goodsName} || '%'
