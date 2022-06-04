@@ -78,7 +78,6 @@ const EventListMain = () => {
         setCurrentPage(currentPage + 1);
     }
 
-    console.log(eventData)
 
     /* ===== 실제 페이지 렌더링 =====  */
     return (
