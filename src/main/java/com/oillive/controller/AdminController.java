@@ -13,15 +13,16 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.oillive.service.AdminService;
 import com.oillive.service.EventService;
+import com.oillive.service.GoodsService;
 import com.oillive.service.PaginationService;
 import com.oillive.service.UploadService;
 import com.oillive.vo.EventVO;
+import com.oillive.vo.GoodsVO;
 import com.oillive.vo.PaginationVO;
 
 @RestController
@@ -34,6 +35,9 @@ public class AdminController {
 	
 	@Autowired
 	EventService eventService;
+	
+	@Autowired
+	GoodsService goodsService;
 	
 	@Autowired
 	PaginationService paginationService;
@@ -149,6 +153,29 @@ public class AdminController {
 			result = adminService.deleteEvent(eventCode);
 			
 		}
+		
+		return result;
+	}
+	
+	//--------------- 상품 목록 조회 --------------- //
+	@GetMapping("/selectGoodsList")
+	public HashMap<String, Object> selectGoodsList( @RequestParam( name = "title" ) String goodsName,
+													@RequestParam( name = "kind" ) String selectedKind,
+										  			@RequestParam( name = "page" ) int currentPage  ) {
+		
+		// Pagination 처리 변수
+		int totalCount = goodsService.selectGoodsCount(goodsName, selectedKind); // GOODS 테이블 데이터 개수
+		int pageLimit = 5;  // 페이징바의 최대 노출 번호
+		int listRange = 5; // 한 페이지당 노출시킬 데이터의 개수
+
+		PaginationVO paging = paginationService.pagination(totalCount, pageLimit, listRange, currentPage);
+		
+		List<GoodsVO> goodsList = goodsService.selectGoodsList(goodsName, selectedKind, paging);
+		
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		
+		result.put("paging", paging);
+		result.put("goodsList", goodsList);
 		
 		return result;
 	}

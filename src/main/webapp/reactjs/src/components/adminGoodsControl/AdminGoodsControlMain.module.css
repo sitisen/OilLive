@@ -1,0 +1,149 @@
+/* ----- 전체 레이아웃 CSS */
+.adminGoodsControl-wrap {
+    display: flex;
+    height: 95vh;
+}
+
+/* ----- 사이드바 공간 CSS */
+.adminGoodsControl-side {
+    width: 17.2%;
+    height: 100%;
+}
+
+/* ----- 본문 레이아웃 CSS */
+.adminGoodsControl-layout {
+    padding: 30px;
+    width: 82.8%;
+    height: 100%;
+}
+
+/* 이벤트 등록 레이아웃 CSS */
+.adminGoodsControl-container {
+    margin: 30px 0;
+    display: flex;
+}
+
+/* 이벤트 하단 레이아웃 CSS */
+.adminGoodsControl-footer {
+    display: flex;
+    justify-content: center;
+}
+
+.adminGoodsControl-footer a {
+    width: 0;
+    height: 0;
+    outline: 0;
+}
+
+/* 이벤트 등록 왼쪽 레이아웃 CSS ( 이미지 등록, 이미지 ) */
+.adminGoodsControlContainer-left {
+    width: 50%;
+}
+
+.left-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.left-img {
+    height: 510px;
+    line-height: 510px;
+    text-align: center;
+    border: 1px solid lightgray;
+}
+
+.left-img>img {
+    vertical-align: middle;
+    max-width: 100%;
+    max-height: 95%;
+}
+
+/* 이벤트 등록 오른쪽 레이아웃 CSS ( 등록할 개체 정보 Input ) */
+.adminGoodsControlContainer-right {
+    width: 50%;
+    height: 100%;
+}
+
+.adminGoodsControlContainer-right-1,
+.adminGoodsControlContainer-right-2,
+.adminGoodsControlContainer-right-3,
+.adminGoodsControlContainer-right-4 {
+    display: flex;
+    flex-direction: column;
+    margin-top: 35px;
+    margin-left: 5%;
+}
+
+/* 이미지 등록 버튼 CSS */
+.adminGoodsControl-button {
+    padding: 6px 25px;
+    background-color:#FF6600;
+    border-radius: 4px;
+    font-size: 18px;
+    color: white;
+    cursor: pointer;
+}
+
+/* 하단 등록, 취소 버튼 CSS */
+.adminGoodsControl-footer-button {
+    margin-top: 30px;
+    margin-left: -50px;
+    margin-right: 150px;
+    width: 100px;
+    font-size: 20px !important;
+}
+
+/* Span 태그 CSS */
+.adminGoodsControl-span {
+    font-size: 18px;
+}
+
+.validate-span {
+    display: block;
+    font-size: 16px;
+    color: red;
+}
+
+/* Input 태그 CSS */
+.adminGoodsControl-input,
+.adminGoodsControl-long-input {
+    height: 40px;
+    border: 0.1em solid rgba(150, 150, 150, 0.5);
+    outline: none;
+    padding-left: 10px;
+}
+
+.adminGoodsControl-input:focus,
+.adminGoodsControl-long-input:focus,
+.adminGoodsControl-textarea:focus {
+    border-color: rgb(107, 187, 72);
+    box-shadow: 0 0 6px 0 rgb(107, 187, 72);
+}
+
+.adminGoodsControl-input {
+    width: 20%;
+}
+
+/* textarea 태그 CSS */
+.adminGoodsControl-textarea {
+    border: 0.1em solid rgba(150, 150, 150, 0.5);
+    outline: none;
+    padding-left: 10px;
+    resize: none;
+}
+
+/* Select 태그 CSS */
+.adminGoodsControl-select {
+    margin: 0 15px;
+    width: 10%;
+    height: 41.8px;
+    border: 0.1em solid rgba(150, 150, 150, 0.5);
+    outline: none;
+    padding-left: 10px;
+}
+
+.adminGoodsControl-select:focus {
+    border-color: rgb(107, 187, 72);
+    box-shadow: 0 0 6px 0 rgb(107, 187, 72);
+}

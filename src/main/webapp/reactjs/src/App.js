@@ -27,6 +27,8 @@ import AdminEventList from 'pages/AdminEventList';
 import AdminEventControl from 'pages/AdminEventControl';
 import AdminQnaList from 'pages/AdminQnaList';
 import AdminQnaWrite from 'pages/AdminQnaWrite';
+import AdminGoodsList from 'pages/AdminGoodsList';
+import AdminGoodsControl from 'pages/AdminGoodsControl';
 
 // Page Routing Setting
 function App() {
@@ -59,6 +61,8 @@ function App() {
       <Route path='/admin/eventControl' element={<AdminEventControl />}/>
       <Route path='/admin/qnaList' element={<AdminQnaList />}/>
       <Route path='/admin/qnaWrite' element={<AdminQnaWrite />}/>
+      <Route path='/admin/goodsList' element={<AdminGoodsList />} />
+      <Route path='/admin/goodsControl' element={<AdminGoodsControl />}/>
     </Routes>
   );
 }

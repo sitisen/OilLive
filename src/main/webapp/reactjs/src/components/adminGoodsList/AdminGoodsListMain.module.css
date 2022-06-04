@@ -1,0 +1,119 @@
+/* ----- 전체 레이아웃 CSS */
+.adminGoods-wrap {
+    display: flex;
+    height: 95vh;
+}
+
+/* ----- 사이드바 공간 CSS */
+.adminGoods-side {
+    width: 17.2%;
+    height: 100%;
+}
+
+/* ----- 본문 레이아웃 CSS */
+.adminGoods-layout {
+    padding: 30px;
+    width: 82.8%;
+    height: 100%;
+}
+
+/* ----- 검색창 레이아웃 CSS */
+.adminGoods-search {
+    margin-top: 30px;
+    display: flex;
+    justify-content: flex-end;
+    height: 40px;
+}
+
+/* 검색창 Input CSS */
+.adminGoods-input {
+    width: 20%;
+    border: 0.1em solid rgba(150, 150, 150, 0.5);
+    outline: none;
+    padding-left: 10px;
+}
+
+.adminGoods-input:focus {
+    border-color: rgb(107, 187, 72);
+    box-shadow: 0 0 6px 0 rgb(107, 187, 72);
+}
+
+/* ----- 이벤트 목록 테이블 CSS */
+.adminGoods-table {
+    text-align: center;
+    vertical-align: middle !important;
+    font-size: 18px;
+    table-layout: fixed;
+}
+
+.adminGoods-td-empty {
+    width: 10%;
+}
+
+.adminGoods-td-1:hover {
+    cursor: pointer;
+}
+
+.adminGoods-td-2 {
+    width: 25%;
+    text-overflow: ellipsis; 
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.adminGoods-td-3 {
+    width: 33%;
+    text-overflow: ellipsis; 
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+/* Img 태그 CSS */
+.adminGoods-img {
+    width: 40%;
+    max-height: 100%;
+}
+
+.modal-img {
+    width: 100%;
+}
+
+/* 관리자 이벤트 목록 버튼 CSS */
+.admin-button {
+    margin: 5px 10px;
+    font-size: 18px;
+}
+
+/* 관리자 이벤트 등록 버튼 CSS */
+.event-create {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.event-create-button {
+    font-size: 20px;
+}
+
+/* 페이징바 CSS */
+.admin-paging { /* ul태그 */
+    margin: 10px 0;
+    justify-content: center;
+    align-items: center;
+}
+
+.page-button {
+    color: rgb(82, 167, 67) !important;
+    font-size: 18px;
+}
+
+.page-button:active,
+.page-button:focus {
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+.page-active {
+    background-color: #7CC135 !important;
+    color: white !important;
+}
+
