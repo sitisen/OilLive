@@ -43,13 +43,10 @@
     text-align: center;
     vertical-align: middle !important;
     font-size: 18px;
+    table-layout: fixed;
 }
 
 .adminEvent-td-empty {
-    width: 10%;
-}
-
-.adminEvent-td-1 {
     width: 10%;
 }
 
@@ -59,27 +56,21 @@
 
 .adminEvent-td-2 {
     width: 25%;
+    text-overflow: ellipsis; 
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 .adminEvent-td-3 {
     width: 33%;
-}
-
-.adminEvent-td-4 {
-    width: 10%;
-}
-
-.adminEvent-td-5 {
-    width: 10%;
-}
-
-.adminEvent-td-6 {
-    width: 12%;
+    text-overflow: ellipsis; 
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 /* Img 태그 CSS */
 .adminEvent-img {
-    width: 70%;
+    width: 35%;
     max-height: 100%;
 }
 

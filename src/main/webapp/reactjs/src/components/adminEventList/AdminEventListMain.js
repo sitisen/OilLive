@@ -158,13 +158,13 @@ const AdminEventListMain = () => {
                                                 <td className={AdminEventListMainStyle['adminEvent-td-3']}>
                                                     {EVENT_CONTENT}
                                                 </td>
-                                                <td className={AdminEventListMainStyle['adminEvent-td-4']}>
+                                                <td>
                                                     {dateFormat(EVENT_STARTDATE)}
                                                 </td>
-                                                <td className={AdminEventListMainStyle['adminEvent-td-5']}>
+                                                <td>
                                                     {dateFormat(EVENT_ENDDATE)}
                                                 </td>
-                                                <td className={AdminEventListMainStyle['adminEvent-td-6']}>
+                                                <td>
                                                     <Link to={'/admin/eventControl'}
                                                           state={{ data: list, type: 'update' }}
                                                     >
