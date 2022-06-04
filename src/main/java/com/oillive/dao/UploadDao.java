@@ -15,4 +15,8 @@ public interface UploadDao {
 	
 	// 이벤트 등록 이미지 저장
 	public int upLoadE(PhotoVO vo);
+	
+	// 업로드된 파일 변경
+	public int upLoadU(PhotoVO vo);
+
 }

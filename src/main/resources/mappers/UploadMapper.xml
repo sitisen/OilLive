@@ -22,4 +22,14 @@
 		INSERT INTO photo 
 		VALUES (seq_photo.NEXTVAL, null, null, seq_event.CURRVAL, #{photoName}, #{photoReName}, #{photoPath})
 	</insert>
+	
+	<!-- 업로드된 파일 변경 -->
+	<update id="upLoadU" parameterType="PhotoVO">
+		 UPDATE photo
+			SET PHOTO_NAME = #{photoName},
+	     		PHOTO_RENAME = #{photoReName},
+	     		PHOTO_PATH = #{photoPath}
+	 	  WHERE PHOTO_CODE = #{photoCode}
+	</update>
+
 </mapper>

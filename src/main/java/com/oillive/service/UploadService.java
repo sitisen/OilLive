@@ -7,6 +7,9 @@ import org.springframework.web.multipart.MultipartFile;
 public interface UploadService {
 
 	//--------------- 파일 업로드 --------------- //
-	public int upLoad(String string, MultipartFile file) throws IllegalStateException, IOException;
+	public int upLoad(String kind, MultipartFile file) throws IllegalStateException, IOException;
+	
+	//--------------- 업로드된 파일 변경 --------------- //
+	public int upLoad(String kind, MultipartFile file, String photoCode) throws IllegalStateException, IOException;	
 
 }
