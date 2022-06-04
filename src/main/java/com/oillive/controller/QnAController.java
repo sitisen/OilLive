@@ -40,7 +40,7 @@ public class QnAController {
 	
 	//--------------- Qna목록 페이징 --------------- //
 	@GetMapping("/qnaListPage")
-	public HashMap<String, Object> selectEventList( @RequestParam( name = "qnaName" ) String qnaName,
+	public HashMap<String, Object> qnaListPage( @RequestParam( name = "qnaName" ) String qnaName,
 			@RequestParam( name = "page" ) int currentPage ) {
 		
 		// Pagination 처리 변수

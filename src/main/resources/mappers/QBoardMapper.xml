@@ -25,4 +25,56 @@
 		DELETE FROM q_board
 		WHERE q_board_code = #{qboardCode}
 	</delete>
+	
+	<!-- 관리자 문의글 전체개수 -->
+	<select id="qboardAllCount" resultType="int">
+		SELECT count(*)
+		FROM q_board
+	</select>
+	
+	<!-- 관리자 문의글 답변완료 개수 -->
+	<select id="qboardFinishCount" resultType="int">
+		SELECT count(*)
+		FROM q_board
+		WHERE q_board_Astatus = 'Y'
+	</select>
+	
+	<!-- 관리자 문의글 목록 페이징 개수 -->
+	<select id="selectQboradCount" resultType="int">
+		SELECT count(*)
+		FROM q_board q, users u
+		WHERE q.user_code = u.user_code
+		    <if test="! userId.isEmpty()">
+		    	AND u.user_Id LIKE '%' || #{userId} || '%'
+		    </if>
+	</select>
+	
+	<!-- 관리자 문의글 목록 페이징 -->
+	<select id="selectQboardList" parameterType="Map" resultType="Map">
+		SELECT E.*
+		FROM ( SELECT ROWNUM RNUM,  q.q_board_code, 
+					u.user_id, q.q_board_title, q.q_board_qcontent, 
+					q.q_board_acontent, q.q_board_qdate, q.q_board_astatus
+			FROM q_board q, users u
+        	WHERE q.user_code = u.user_code
+		    <if test="! userId.isEmpty()">
+		    	AND u.user_Id LIKE '%' || #{userId} || '%'
+		    </if>
+		        ) E
+		WHERE E.rnum BETWEEN #{startRow} AND #{endRow}
+	</select>
+	
+	<!-- 관리자 문의글 삭제 -->
+	<delete id="qboardRemove" parameterType="String">
+		DELETE FROM q_board
+		WHERE q_board_code = #{qboardCode}
+	</delete>
+	
+	<!-- 관리자 문의글 첨부파일 가져오기 -->
+	<select id="getAttached" parameterType="String" resultType="PhotoVO">
+		SELECT *
+		FROM photo
+		WHERE q_board_code = #{qboardCode}
+	</select>
+	
 </mapper>

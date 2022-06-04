@@ -1,0 +1,151 @@
+/* 전체 레이아웃 */
+.admin-qboard-layout {
+    height: 95vh;
+}
+
+/* 전체 제목 div */
+.admin-qboard-label {
+    margin-left: 18%;
+    padding:30px;
+}
+
+/* 전체 문의 내역 div */
+.qboard-total {
+    margin-top: 40px;
+    border-radius: 10px;
+    border: 0.1em solid rgba(150, 150, 150, 0.5);
+    outline: none;
+    height: 100px;
+    line-height: 100px;
+    display: flex;
+    text-align: center;
+}
+
+/* 문의수 하나하나 div */
+.total-sub {
+    width: 33.3%;
+}
+
+/* 문의수 span */
+.total-span {
+    margin-left: 20px;
+    font-weight: bold;
+    font-size: 17px;
+}
+
+/* 페이지버튼 */
+.page-button {
+    color: rgb(82, 167, 67) !important;
+    font-size: 18px;
+}
+
+.page-button:active,
+.page-button:focus {
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+.page-active {
+    background-color: #7CC135 !important;
+    color: white !important;
+}
+
+.page-div {
+    margin-left: 55%;
+    margin-top: 30px;
+}
+
+/* table */
+.admin-qboard-table {
+    margin-top: 30px;
+    width: 100%;
+    text-align: center;
+}
+
+/* th */
+.admin-qboard-table th {
+    height: 50px;
+    border-bottom: 1px solid;
+    border-top: 1px solid;
+    width: 20%;
+}
+
+/* td */
+.admin-qboard-table td {
+    height: 60px;
+    text-overflow: ellipsis;
+    white-space : nowrap;
+    overflow: hidden; 
+}
+
+/* tr */
+.admin-qboard-table-tr {
+    border-bottom: 0.5px solid rgba(150, 150, 150, 0.5);
+}
+
+.admin-qboard-table-tr:hover {
+    background-color: rgb(234, 234, 234);
+}
+
+/* qna 검색 */
+.admin-search {
+    width: 100%;
+    text-align: right;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+/* 검색 input */
+.admin-input {
+    width: 20%;
+    border: 0.1em solid rgba(150, 150, 150, 0.5);
+    outline: none;
+    height: 40px;
+    padding-left: 10px;
+}
+
+.admin-input:focus {
+    border-color: rgb(107, 187, 72);
+    box-shadow: 0 0 6px 0 rgb(107, 187, 72);
+}
+
+/* 삭제하기 버튼 */
+.deleBtn {
+    width: 85px;
+    height: 40px;
+    border: none;
+    margin-right: 10px;
+    background-color: rgb(107, 105, 105);
+    border-radius: 8px;
+    color: white;
+}
+
+.deleBtn:hover {
+    background-color: rgb(78, 76, 76);
+}
+
+/* 관리자 문의내용 */
+.qboard-content {
+    width: 100%;
+    text-align: center;
+    border: 1px solid;
+}
+
+.display-off {
+    display: none;
+}
+
+/* 답변하기 버튼 */
+.answerBtn {
+    width: 85px;
+    height: 40px;
+    border: none;
+    margin-left: 10px;
+    background-color: rgb(123, 164, 226);
+    border-radius: 8px;
+    color: white;
+}
+
+.answerBtn:hover {
+    background-color: rgb(80, 132, 211); 
+}

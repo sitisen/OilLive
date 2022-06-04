@@ -29,6 +29,7 @@ import AdminQnaList from 'pages/AdminQnaList';
 import AdminQnaWrite from 'pages/AdminQnaWrite';
 import AdminGoodsList from 'pages/AdminGoodsList';
 import AdminGoodsControl from 'pages/AdminGoodsControl';
+import AdminQboard from 'pages/AdminQboard';
 
 // Page Routing Setting
 function App() {
@@ -63,6 +64,7 @@ function App() {
       <Route path='/admin/qnaWrite' element={<AdminQnaWrite />}/>
       <Route path='/admin/goodsList' element={<AdminGoodsList />} />
       <Route path='/admin/goodsControl' element={<AdminGoodsControl />}/>
+      <Route path='/admin/qboard' element={<AdminQboard />}/>
     </Routes>
   );
 }
