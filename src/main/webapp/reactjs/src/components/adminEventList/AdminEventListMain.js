@@ -9,7 +9,7 @@ import AdminEventListMainStyle from './AdminEventListMain.module.css';
 const AdminEventListMain = () => {
 
     /* useState 부분 */
-    const [ eventData, setEventData ] = useState([]); // 사용자의 장바구니 상품
+    const [ eventData, setEventData ] = useState([]); // 조회한 이벤트 목록
     const [ eventName, setEventName ] = useState(''); // 관리자가 검색한 이벤트 이름
     const [ isDelete, setIsDelete ] = useState(false); // 삭제 시, 화면 갱신용
     const [ imgData, setImgData ] = useState(''); // 이미지 경로 (Modal)
