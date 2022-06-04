@@ -165,7 +165,7 @@ const AdminEventListMain = () => {
                                                     {dateFormat(EVENT_ENDDATE)}
                                                 </td>
                                                 <td className={AdminEventListMainStyle['adminEvent-td-6']}>
-                                                    <Link to={'/admin/eventCreate'}
+                                                    <Link to={'/admin/eventControl'}
                                                           state={{ data: list, type: 'update' }}
                                                     >
                                                         <button className={`btn btn-warning ${AdminEventListMainStyle['admin-button']}`}>
@@ -197,7 +197,7 @@ const AdminEventListMain = () => {
                     </Modal> 
 
                     <div className={AdminEventListMainStyle['event-create']}>
-                        <Link to='/admin/eventCreate'
+                        <Link to='/admin/eventControl'
                               state={{ data: '', type: 'insert' }}
                         >
                             <button className={`btn btn-primary ${AdminEventListMainStyle['event-create-button']}`}>

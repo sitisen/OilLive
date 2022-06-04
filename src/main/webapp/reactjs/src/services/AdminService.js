@@ -50,13 +50,13 @@ const AdminService = {
         return axios.post(EVENT_UPDATE_EVENT_UPLOAD, formData);
     },
 
-    deleteEvent (eventCode, photoCode, photoPath, photoRename) {
+    deleteEvent (eventCode, photoCode, photoPath, photoReName) {
         return axios.delete(EVENT_DELETE_EVENT, {
             data: { 
                     eventCode: eventCode, 
                     photoCode: photoCode,
                     photoPath: photoPath,
-                    photoRename: photoRename
+                    photoReName: photoReName
                 }
         });
     }
