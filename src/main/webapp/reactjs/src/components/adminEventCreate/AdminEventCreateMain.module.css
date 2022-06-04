@@ -29,10 +29,10 @@
     justify-content: center;
 }
 
-.adminEventCreate-footer button {
-    margin: 3% 3%;
-    padding: 5px 2%;
-    font-size: 19px;
+.adminEventCreate-footer a {
+    width: 0;
+    height: 0;
+    outline: 0;
 }
 
 /* 이벤트 등록 왼쪽 레이아웃 CSS ( 이미지 등록, 이미지 ) */
@@ -47,14 +47,16 @@
 }
 
 .left-img {
-    height: 470px;
+    height: 510px;
+    line-height: 510px;
     text-align: center;
     border: 1px solid lightgray;
 }
 
 .left-img>img {
+    vertical-align: middle;
     max-width: 100%;
-    max-height: 100%;
+    max-height: 95%;
 }
 
 /* 이벤트 등록 오른쪽 레이아웃 CSS ( 등록할 개체 정보 Input ) */
@@ -69,24 +71,38 @@
 .adminCreateContainer-right-4 {
     display: flex;
     flex-direction: column;
-    align-content: space-around;
     margin-top: 35px;
     margin-left: 5%;
 }
 
 /* 이미지 등록 버튼 CSS */
 .adminCreate-button {
-    padding: 5px 10px;
-    outline: none;
-    border: none;
-    border-radius: 5px;
-    background-color: orange;
+    padding: 6px 25px;
+    background-color:#FF6600;
+    border-radius: 4px;
+    font-size: 18px;
     color: white;
+    cursor: pointer;
+}
+
+/* 하단 등록, 취소 버튼 CSS */
+.adminCreate-footer-button {
+    margin-top: 30px;
+    margin-left: -50px;
+    margin-right: 150px;
+    width: 100px;
+    font-size: 20px !important;
 }
 
 /* Span 태그 CSS */
 .adminCreate-span {
     font-size: 18px;
+}
+
+.validate-span {
+    display: block;
+    font-size: 16px;
+    color: red;
 }
 
 /* Input 태그 CSS */

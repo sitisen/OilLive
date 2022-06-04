@@ -11,8 +11,9 @@ const AdminEventListMain = () => {
     /* useState 부분 */
     const [ eventData, setEventData ] = useState([]); // 사용자의 장바구니 상품
     const [ eventName, setEventName ] = useState(''); // 관리자가 검색한 이벤트 이름
+    const [ isDelete, setIsDelete ] = useState(false); // 삭제 시, 화면 갱신용
     const [ imgData, setImgData ] = useState(''); // 이미지 경로 (Modal)
-    const [ imgZoom, setImgZoom ] = useState(false); // 이미지 확대 여부 (Modal)
+    const [ imgZoom, setImgZoom ] = useState(false); // 이미지 확대 모달창 열기 (Modal)
     const [ currentPage, setCurrentPage ] = useState(1); // 현재 페이지 번호 (Pagination)
     const [ paging, setPaging ] = useState([]); // 페이징 관련 값 (Pagination)
     /* //. useState 부분 */
@@ -31,9 +32,13 @@ const AdminEventListMain = () => {
             if( eventName !== '' ) { // 검색창 이용 시, 이전 currentPage가 유지되는 현상 제거
                 setCurrentPage(1);
             }
-        })
+        });
 
-    }, [eventName, currentPage])
+        if( isDelete === true ) {
+            setIsDelete(false);
+        }
+
+    }, [eventName, currentPage, isDelete])
     /* //. useEffect 부분 */
 
     // 날짜 YYYY-MM-dd 형식으로 전환해주는 함수
@@ -53,6 +58,21 @@ const AdminEventListMain = () => {
         setEventName(name);
     }
 
+    // 이벤트 삭제
+    const eventDelete = (eventCode, photoCode, eventName, photoPath, photoRename) => {
+
+        if(window.confirm(eventName + '\n정말로 삭제하시겠습니까?')) {
+            AdminService.deleteEvent(eventCode, photoCode, photoPath, photoRename).then( res => {
+
+                if(res.data === 1) {
+                    setIsDelete(true);
+
+                }
+            })
+        }
+
+    }
+
     // 사진 클릭 시, 확대 이벤트 (Modal)
     const imgClicked = (imgPath) => {
         setImgZoom(true);
@@ -61,7 +81,7 @@ const AdminEventListMain = () => {
 
     // Modal 창 닫기 이벤트 (Modal)
     const handleCloseModal = () => {
-        setImgZoom(false);
+        setImgZoom(false); // 이미지 확대 Modal 종료
     }
 
     // 페이지 번호 선택 이벤트 (Pagination)
@@ -80,6 +100,7 @@ const AdminEventListMain = () => {
     const nextPage = () => { // 다음 페이지 번호로 이동
         setCurrentPage(currentPage + 1);
     }
+
 
     return (
         <div className={AdminEventListMainStyle['adminEvent-wrap']}>
@@ -112,40 +133,58 @@ const AdminEventListMain = () => {
                         </thead>
 
                         <tbody>
-                            { eventData.map( (list, index) => {
-                                const { EVENT_NAME, EVENT_CONTENT, EVENT_STARTDATE, EVENT_ENDDATE} = list;
-
-                                return (                                
-                                    <tr key={list.EVENT_CODE}>
-                                        <td className={AdminEventListMainStyle['adminEvent-td-1']} onClick={() => imgClicked(imgRef.current[index])}>
-                                            <img className={AdminEventListMainStyle['adminEvent-img']} 
-                                                ref={el => imgRef.current[index] = el}
-                                                alt='test' 
-                                                src='/images/icon/qna.png' 
-                                            />
-                                        </td>
-                                        <td className={AdminEventListMainStyle['adminEvent-td-2']}>
-                                            {EVENT_NAME}
-                                        </td>
-                                        <td className={AdminEventListMainStyle['adminEvent-td-3']}>
-                                            {EVENT_CONTENT}
-                                        </td>
-                                        <td className={AdminEventListMainStyle['adminEvent-td-4']}>
-                                            {dateFormat(EVENT_STARTDATE)}
-                                        </td>
-                                        <td className={AdminEventListMainStyle['adminEvent-td-5']}>
-                                            {dateFormat(EVENT_ENDDATE)}
-                                        </td>
-                                        <td className={AdminEventListMainStyle['adminEvent-td-6']}>
-                                        <button className={`btn btn-warning ${AdminEventListMainStyle['admin-button']}`}>수정</button>
-                                            <button className={`btn btn-danger ${AdminEventListMainStyle['admin-button']}`}>삭제</button>
-                                        </td>
+                            { eventData.length === 0
+                                ? // 이벤트가 존재하지 않을 경우,
+                                    <tr>
+                                        <td className={AdminEventListMainStyle['adminEvent-td-empty']} colSpan={6}>현재 존재하는 이벤트가 없습니다.</td>
                                     </tr>
-                                )
-                            })}
+
+                                : // 이벤트가 존재할 경우,                            
+                                    eventData.map( (list, index) => {
+                                        const { EVENT_NAME, EVENT_CONTENT, EVENT_STARTDATE, EVENT_ENDDATE, PHOTO_PATH, PHOTO_RENAME} = list;
+
+                                        return (                                
+                                            <tr key={list.EVENT_CODE}>
+                                                <td className={AdminEventListMainStyle['adminEvent-td-1']} onClick={() => imgClicked(imgRef.current[index])}>
+                                                    <img className={AdminEventListMainStyle['adminEvent-img']} 
+                                                        ref={el => imgRef.current[index] = el}
+                                                        alt='adminEventImg' 
+                                                        src={PHOTO_PATH + PHOTO_RENAME}
+                                                    />
+                                                </td>
+                                                <td className={AdminEventListMainStyle['adminEvent-td-2']}>
+                                                    {EVENT_NAME}
+                                                </td>
+                                                <td className={AdminEventListMainStyle['adminEvent-td-3']}>
+                                                    {EVENT_CONTENT}
+                                                </td>
+                                                <td className={AdminEventListMainStyle['adminEvent-td-4']}>
+                                                    {dateFormat(EVENT_STARTDATE)}
+                                                </td>
+                                                <td className={AdminEventListMainStyle['adminEvent-td-5']}>
+                                                    {dateFormat(EVENT_ENDDATE)}
+                                                </td>
+                                                <td className={AdminEventListMainStyle['adminEvent-td-6']}>
+                                                    <Link to={'/admin/eventCreate'}
+                                                          state={{ data: list, type: 'update' }}
+                                                    >
+                                                        <button className={`btn btn-warning ${AdminEventListMainStyle['admin-button']}`}>
+                                                            수정
+                                                        </button>
+                                                    </Link>
+                                                    <button className={`btn btn-danger ${AdminEventListMainStyle['admin-button']}`} 
+                                                            onClick={() => eventDelete(list.EVENT_CODE, list.PHOTO_CODE, EVENT_NAME, PHOTO_PATH, PHOTO_RENAME)}> {/* 이벤트 코드, 사진 코드, 사진 경로, 사진 이름 */}
+                                                                삭제
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        )
+                                    })
+                            }
                         </tbody>
                     </table>
 
+                    {/* 이미지 확대 Modal */}
                     <Modal show={imgZoom} onHide={handleCloseModal}> 
                         <Modal.Body>
                             <img className={AdminEventListMainStyle['modal-img']} alt='test' src={imgData} />
@@ -158,7 +197,9 @@ const AdminEventListMain = () => {
                     </Modal> 
 
                     <div className={AdminEventListMainStyle['event-create']}>
-                        <Link to='/admin/eventCreate'>
+                        <Link to='/admin/eventCreate'
+                              state={{ data: '', type: 'insert' }}
+                        >
                             <button className={`btn btn-primary ${AdminEventListMainStyle['event-create-button']}`}>
                                 이벤트 등록
                             </button>

@@ -45,6 +45,10 @@
     font-size: 18px;
 }
 
+.adminEvent-td-empty {
+    width: 10%;
+}
+
 .adminEvent-td-1 {
     width: 10%;
 }
