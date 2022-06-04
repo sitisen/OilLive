@@ -24,7 +24,7 @@ import EventDetail from 'pages/EventDetail';
 // Import admin pages
 import AdminHome from 'pages/AdminHome';
 import AdminEventList from 'pages/AdminEventList';
-import AdminEventCreate from 'pages/AdminEventCreate';
+import AdminEventControl from 'pages/AdminEventControl';
 import AdminQnaList from 'pages/AdminQnaList';
 import AdminQnaWrite from 'pages/AdminQnaWrite';
 
@@ -56,7 +56,7 @@ function App() {
       {/* 관리자 라우터 부분 */}
       <Route path='/admin/home' element={<AdminHome />}/>
       <Route path='/admin/eventList' element={<AdminEventList />}/>
-      <Route path='/admin/eventCreate' element={<AdminEventCreate />}/>
+      <Route path='/admin/eventControl' element={<AdminEventControl />}/>
       <Route path='/admin/qnaList' element={<AdminQnaList />}/>
       <Route path='/admin/qnaWrite' element={<AdminQnaWrite />}/>
     </Routes>

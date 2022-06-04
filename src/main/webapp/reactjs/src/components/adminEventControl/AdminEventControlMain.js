@@ -4,9 +4,9 @@ import AdminService from 'services/AdminService';
 
 
 // import CSS
-import AdminEventCreateMainStyle from './AdminEventCreateMain.module.css';
+import AdminEventControlMainStyle from './AdminEventControlMain.module.css';
 
-const AdminEventCreateMain = () => {
+const AdminEventControlMain = () => {
 
     // Select 태그 Option 에 쓰일 배열
     const month = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
@@ -307,6 +307,8 @@ const AdminEventCreateMain = () => {
         } else if( locationType === 'update' ) { // 이벤트 수정일 경우,
             const eventCode = locationData.EVENT_CODE;
             const photoCode = locationData.PHOTO_CODE;
+            const photoPath = locationData.PHOTO_PATH;
+            const photoReName = locationData.PHOTO_RENAME;
 
             if(window.confirm('해당 이벤트를 수정하시겠습니까?')) {
                 
@@ -327,6 +329,8 @@ const AdminEventCreateMain = () => {
                                 let formData = new FormData();
                                 formData.append('img', file[0]);
                                 formData.append('photoCode', photoCode);
+                                formData.append('photoPath', photoPath);
+                                formData.append('photoReName', photoReName);
 
                                 AdminService.updateEvent(eventCode, eventName.value, eventContent.value, startDate, endDate).then( () => {
 
@@ -347,10 +351,10 @@ const AdminEventCreateMain = () => {
     }
 
     return (
-        <div className={AdminEventCreateMainStyle['adminEventCreate-wrap']}>
-            <div className={AdminEventCreateMainStyle['adminEventCreate-side']} />
-            <div className={AdminEventCreateMainStyle['adminEventCreate-layout']}>
-                <div className={AdminEventCreateMainStyle['adminEventCreate-header']}>
+        <div className={AdminEventControlMainStyle['adminEventCreate-wrap']}>
+            <div className={AdminEventControlMainStyle['adminEventCreate-side']} />
+            <div className={AdminEventControlMainStyle['adminEventCreate-layout']}>
+                <div className={AdminEventControlMainStyle['adminEventCreate-header']}>
                     { locationType === 'insert' 
                         ? // 이벤트 등록일 경우,
                             <h2>이벤트 등록</h2>
@@ -361,16 +365,16 @@ const AdminEventCreateMain = () => {
                     <hr />
                 </div> {/* //. adminEventCreate-header */}
 
-                <div className={AdminEventCreateMainStyle['adminEventCreate-container']}>
-                    <div className={AdminEventCreateMainStyle['adminCreateContainer-left']}>
-                        <div className={AdminEventCreateMainStyle['left-header']}>
+                <div className={AdminEventControlMainStyle['adminEventCreate-container']}>
+                    <div className={AdminEventControlMainStyle['adminCreateContainer-left']}>
+                        <div className={AdminEventControlMainStyle['left-header']}>
                             <h5>이벤트 이미지</h5>
-                            <label className={AdminEventCreateMainStyle['adminCreate-button']} htmlFor='input-file'>
+                            <label className={AdminEventControlMainStyle['adminCreate-button']} htmlFor='input-file'>
                                 업로드
                             </label>
                             <input type='file' id='input-file' onChange={() => createThumbnail()} style={{display:"none"}} ref={attachRef} accept='image/*' />
                         </div>
-                        <div className={AdminEventCreateMainStyle['left-img']}>
+                        <div className={AdminEventControlMainStyle['left-img']}>
                             {/* 썸네일 이미지 */}
                             { thumbnail.length === 0
                                 ? // 첨부파일이 등록되어있지 않을 경우,
@@ -385,29 +389,29 @@ const AdminEventCreateMain = () => {
                         </div>
                     </div>
 
-                    <div className={AdminEventCreateMainStyle['adminCreateContainer-right']}>
-                        <div className={AdminEventCreateMainStyle['adminCreateContainer-right-1']}>
-                            <span className={AdminEventCreateMainStyle['adminCreate-span']}>이벤트명</span>
-                            <input className={AdminEventCreateMainStyle['adminCreate-long-input']} 
+                    <div className={AdminEventControlMainStyle['adminCreateContainer-right']}>
+                        <div className={AdminEventControlMainStyle['adminCreateContainer-right-1']}>
+                            <span className={AdminEventControlMainStyle['adminCreate-span']}>이벤트명</span>
+                            <input className={AdminEventControlMainStyle['adminCreate-long-input']} 
                                    type='text' 
                                    ref={eventNameRef}
                                    maxLength='16' 
                                    placeholder='이벤트 명 입력' 
                             />
                         </div>
-                        <div className={AdminEventCreateMainStyle['adminCreateContainer-right-2']}>
-                            <span className={AdminEventCreateMainStyle['adminCreate-span']}>이벤트 내용</span>
-                            <textarea className={AdminEventCreateMainStyle['adminCreate-textarea']} 
+                        <div className={AdminEventControlMainStyle['adminCreateContainer-right-2']}>
+                            <span className={AdminEventControlMainStyle['adminCreate-span']}>이벤트 내용</span>
+                            <textarea className={AdminEventControlMainStyle['adminCreate-textarea']} 
                                       ref={eventContentRef}
                                       rows='5' 
                                       maxLength='300' 
                                       placeholder='이벤트 내용 입력' 
                             />
                         </div>
-                        <div className={AdminEventCreateMainStyle['adminCreateContainer-right-3']}>
-                            <span className={AdminEventCreateMainStyle['adminCreate-span']}>시작일</span>
+                        <div className={AdminEventControlMainStyle['adminCreateContainer-right-3']}>
+                            <span className={AdminEventControlMainStyle['adminCreate-span']}>시작일</span>
                             <div>
-                                <input className={AdminEventCreateMainStyle['adminCreate-input']}
+                                <input className={AdminEventControlMainStyle['adminCreate-input']}
                                        type='text' 
                                        id='startDate'
                                        ref={el => startDateRef.current[0] = el}
@@ -415,7 +419,7 @@ const AdminEventCreateMain = () => {
                                        maxLength='4' 
                                        placeholder='연도 입력' 
                                 />
-                                <select className={AdminEventCreateMainStyle['adminCreate-select']} 
+                                <select className={AdminEventControlMainStyle['adminCreate-select']} 
                                         id='startDate'
                                         ref={el => startDateRef.current[1] = el}
                                         onChange={(e) => dateCheck(e)}
@@ -427,7 +431,7 @@ const AdminEventCreateMain = () => {
                                         )
                                     })}
                                 </select>
-                                <input className={AdminEventCreateMainStyle['adminCreate-input']} 
+                                <input className={AdminEventControlMainStyle['adminCreate-input']} 
                                        type='text' 
                                        id='startDate'
                                        ref={el => startDateRef.current[2] = el}
@@ -435,13 +439,13 @@ const AdminEventCreateMain = () => {
                                        maxLength='2' 
                                        placeholder='일자 입력' 
                                 /> 
-                                <span className={AdminEventCreateMainStyle['validate-span']}>{validateMsg.start}</span>
+                                <span className={AdminEventControlMainStyle['validate-span']}>{validateMsg.start}</span>
                             </div>
                         </div>
-                        <div className={AdminEventCreateMainStyle['adminCreateContainer-right-4']}>
-                            <span className={AdminEventCreateMainStyle['adminCreate-span']}>종료일</span>
+                        <div className={AdminEventControlMainStyle['adminCreateContainer-right-4']}>
+                            <span className={AdminEventControlMainStyle['adminCreate-span']}>종료일</span>
                             <div>
-                                <input className={AdminEventCreateMainStyle['adminCreate-input']} 
+                                <input className={AdminEventControlMainStyle['adminCreate-input']} 
                                        type='text' 
                                        id='endDate'
                                        ref={el => endDateRef.current[0] = el}
@@ -449,7 +453,7 @@ const AdminEventCreateMain = () => {
                                        maxLength='4' 
                                        placeholder='연도 입력' 
                                 />
-                                <select className={AdminEventCreateMainStyle['adminCreate-select']}
+                                <select className={AdminEventControlMainStyle['adminCreate-select']}
                                         id='endDate'
                                         ref={el => endDateRef.current[1] = el}
                                         onChange={(e) => dateCheck(e)}
@@ -461,7 +465,7 @@ const AdminEventCreateMain = () => {
                                         )
                                     })}
                                 </select>
-                                <input className={AdminEventCreateMainStyle['adminCreate-input']} 
+                                <input className={AdminEventControlMainStyle['adminCreate-input']} 
                                        type='text' 
                                        id='endDate'
                                        ref={el => endDateRef.current[2] = el}
@@ -469,30 +473,30 @@ const AdminEventCreateMain = () => {
                                        maxLength='2' 
                                        placeholder='일자 입력' 
                                 />
-                                <span className={AdminEventCreateMainStyle['validate-span']}>{validateMsg.end}</span>
+                                <span className={AdminEventControlMainStyle['validate-span']}>{validateMsg.end}</span>
                             </div>
                         </div>
                     </div>
                 </div> {/* //. adminEventCreate-container */}
 
-                <div className={AdminEventCreateMainStyle['adminEventCreate-footer']}>
+                <div className={AdminEventControlMainStyle['adminEventCreate-footer']}>
                     { locationType === 'insert' 
                         ? // 이벤트 등록일 경우,
-                        <button className={`btn btn-primary ${AdminEventCreateMainStyle['adminCreate-footer-button']}`}
+                        <button className={`btn btn-primary ${AdminEventControlMainStyle['adminCreate-footer-button']}`}
                                 onClick={() => confirm()}
                         >
                             등록
                         </button>
 
                         : // 이벤트 수정일 경우,
-                        <button className={`btn btn-warning ${AdminEventCreateMainStyle['adminCreate-footer-button']}`}
+                        <button className={`btn btn-warning ${AdminEventControlMainStyle['adminCreate-footer-button']}`}
                             onClick={() => confirm()}
                         >
                             수정
                         </button>
                     }
                     <Link to='/admin/eventList'>
-                        <button className={`btn btn-secondary ${AdminEventCreateMainStyle['adminCreate-footer-button']}`}>취소</button>
+                        <button className={`btn btn-secondary ${AdminEventControlMainStyle['adminCreate-footer-button']}`}>취소</button>
                     </Link>
                 </div> {/* //. adminEventCreate-footer */}
             </div> {/* //. adminEventCreate-layout */}
@@ -500,4 +504,4 @@ const AdminEventCreateMain = () => {
     );
 };
 
-export default AdminEventCreateMain;
+export default AdminEventControlMain;

@@ -1,17 +1,17 @@
 import React from 'react';
 
 // import Components
-import AdminEventCreateMain from 'components/adminEventCreate/AdminEventCreateMain';
+import AdminEventControlMain from 'components/adminEventControl/AdminEventControlMain';
 import AdminSidebarMain from 'components/adminSidebar/AdminSidebarMain';
 
-const AdminEventCreate = () => {
+const AdminEventControl = () => {
     
     return (
         <div>
             <AdminSidebarMain />
-            <AdminEventCreateMain />
+            <AdminEventControlMain />
         </div>  
     );
 };
 
-export default AdminEventCreate;
+export default AdminEventControl;
