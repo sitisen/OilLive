@@ -79,11 +79,6 @@ public class AdminController {
 		String eventStartDate = req.get("startDate");
 		String eventEndDate = req.get("endDate");
 		
-		System.out.println(eventName);
-		System.out.println(eventContent);
-		System.out.println(eventStartDate);
-		System.out.println(eventEndDate);
-		
 		int result = adminService.insertEvent(eventName, eventContent, eventStartDate, eventEndDate);
 		
 		return result;
