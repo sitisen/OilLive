@@ -66,13 +66,24 @@
 }
 
 .adminGoodsControlContainer-right-1,
-.adminGoodsControlContainer-right-2,
-.adminGoodsControlContainer-right-3,
-.adminGoodsControlContainer-right-4 {
+.adminGoodsControlContainer-right-2 {
     display: flex;
     flex-direction: column;
     margin-top: 35px;
     margin-left: 5%;
+}
+
+.adminGoodsControlContainer-right-3,
+.adminGoodsControlContainer-right-4 {
+    display: flex;
+    flex-direction: row;
+    margin-top: 60px;
+    margin-left: 5%;
+}
+
+.adminGoodsControlContainer-right-3 div,
+.adminGoodsControlContainer-right-4 div {
+    width: 90%;
 }
 
 /* 이미지 등록 버튼 CSS */
@@ -96,6 +107,7 @@
 
 /* Span 태그 CSS */
 .adminGoodsControl-span {
+    display: block;
     font-size: 18px;
 }
 
@@ -122,7 +134,7 @@
 }
 
 .adminGoodsControl-input {
-    width: 20%;
+    width: 80%;
 }
 
 /* textarea 태그 CSS */
@@ -135,8 +147,7 @@
 
 /* Select 태그 CSS */
 .adminGoodsControl-select {
-    margin: 0 15px;
-    width: 10%;
+    width: 80%;
     height: 41.8px;
     border: 0.1em solid rgba(150, 150, 150, 0.5);
     outline: none;

@@ -18,8 +18,13 @@ const AdminGoodsControlMain = () => {
     /* //. useNavigate 부분 */
 
     /* useState 부분 */
-    const [ goodsKind, setGoodsKind ] = useState([]);
+    const [ goodsKind, setGoodsKind ] = useState([]); // select 태그 상품 종류
     const [ thumbnail, setThumbnail ] = useState([]); // 이미지 썸네일
+    const [ validateMsg, setValidateMsg ] = useState({ // 유효성 검사 경고문구
+        price: '',
+        discount: '',
+        amount: ''
+    });
     /* //. useState 부분 */
 
     /* useRef 부분 */
@@ -57,9 +62,112 @@ const AdminGoodsControlMain = () => {
 
             }
         }
+    }
+
+    // 상품 가격, 할인율, 수량 입력 시 유효성 검사
+    const validCheck = (e) => {
+        const regExpPrice = /^[0-9|,]+$/g; // 상품 가격 정규식
+        const regExpDiscount = /^[0-9]+$/g; // 할인율 정규식
+        const regExpAmount = /^[0-9|,]+$/g; // 수량 정규식
+        const id = e.target.id;  // 입력된 값 (상품 가격, 할인율, 수량) 구분자
+        const value = e.target.value; // 현재 입력 중인 Input 태그 값
+        const priceMsg = validateMsg.price; // 상품 가격 경고 문구
+        const discountMsg = validateMsg.discount; // 할인율 경고 문구
+        const amountMsg = validateMsg.amount; // 수량 경고 문구
+
+        if( id === 'price') { // 상품 가격 입력 중일 경우,
+            // 정규표현식 검사
+            if( regExpPrice.test(value) !== true ) {
+                return setValidateMsg({
+                    price: '숫자만 입력 가능합니다.',
+                    discount: discountMsg,
+                    amount: amountMsg
+                });
+            }
+
+            // 상품 가격이 0원인지 확인
+            if( value === 0 ) {
+                return setValidateMsg({
+                    price: '상품 가격은 0원보다 커야 합니다.',
+                    discount: discountMsg,
+                    amount: amountMsg
+                });
+            }
+
+            // 값이 유효할 경우
+            return setValidateMsg({
+                    price: '',
+                    discount: discountMsg,
+                    amount: amountMsg
+                }); 
+
+        } else if( id === 'discount') { // 할인율 입력 중일 경우,
+            // 정규표현식 검사
+            if( regExpDiscount.test(value) !== true ) {
+                return setValidateMsg({
+                    price: priceMsg,
+                    discount: '숫자만 입력 가능합니다.',
+                    amount: amountMsg
+                });
+            }
+
+            // 할인율 경고 문구 이벤트
+            if(value > 100) { // 할인율이 100%를 넘겼을 경우,
+                return setValidateMsg({
+                        price: priceMsg,
+                        discount: '할인율은 100%를 넘길 수 없습니다.',
+                        amount: amountMsg
+                    });
+
+            }
+
+            // 값이 유효할 경우
+            return setValidateMsg({
+                    price: priceMsg,
+                    discount: '',
+                    amount: amountMsg
+                });
+
+        } else { // 수량 입력 중일 경우,
+            // 정규표현식 검사
+            if( regExpAmount.test(value) !== true ) {
+                return setValidateMsg({
+                    price: priceMsg,
+                    discount: discountMsg,
+                    amount: '숫자만 입력 가능합니다.'
+                });
+            }
+
+            // 값이 유효할 경우
+            return setValidateMsg({
+                price: priceMsg,
+                discount: discountMsg,
+                amount: ''
+            });
+
+        }
 
     }
 
+    // 입력창에서 벗어났을 경우, 포맷 변경
+    const formatChange = (e) => {
+        let value = e.target.value; // 현재 입력 중인 Input 태그 값
+
+        value = Number(value.replaceAll(',', ''));
+        
+        if( isNaN(value) ) {
+            e.target.value = 0;
+            
+        } else {
+            const formatValue = value.toLocaleString('ko-KR');
+            e.target.value = formatValue;
+        }
+    }
+
+    const test = (e) => {
+        // 서버로 전송하기 전 포맷 변경
+        console.log(e.target.value.replaceAll(',', ''));
+    }
 
     return (
         <div className={AdminGoodsControlMainStyle['adminGoodsControl-wrap']}>
@@ -112,44 +220,60 @@ const AdminGoodsControlMain = () => {
                         <div className={AdminGoodsControlMainStyle['adminGoodsControlContainer-right-2']}>
                             <span className={AdminGoodsControlMainStyle['adminGoodsControl-span']}>상품 설명</span>
                             <textarea className={AdminGoodsControlMainStyle['adminGoodsControl-textarea']} 
-                                      rows='2' 
+                                      rows='3' 
                                       maxLength='80' 
                                       placeholder='상품 설명 입력' 
                             />
                         </div>
-                        <div className={AdminGoodsControlMainStyle['adminGoodsControlContainer-right-1']}>
-                            <span className={AdminGoodsControlMainStyle['adminGoodsControl-span']}>상품 종류</span>
-                            <select>
-                                {goodsKind.map( (list, index) => {
-                                    return (
-                                        <option key={index} value={list}>{list}</option>
-                                    )
-                                } )}
-                            </select>
+                        <div className={AdminGoodsControlMainStyle['adminGoodsControlContainer-right-3']}>
+                            <div>
+                                <span className={AdminGoodsControlMainStyle['adminGoodsControl-span']}>상품 종류</span>
+                                <select className={AdminGoodsControlMainStyle['adminGoodsControl-select']}>
+                                    <option value='00'>선택</option>
+                                    {goodsKind.filter( idx => idx !== '전체' ).map( (list, index) => {
+                                        return (
+                                            <option key={index} value={list}>{list}</option>
+                                        )
+                                    } )}
+                                </select>
+                            </div>
+                            <div>
+                                <span className={AdminGoodsControlMainStyle['adminGoodsControl-span']}>상품 가격</span>
+                                <input className={AdminGoodsControlMainStyle['adminGoodsControl-input']} 
+                                    type='text'
+                                    id='price'
+                                    onChange={(e) => validCheck(e)}
+                                    onKeyUp={(e) => formatChange(e)}
+                                    maxLength='10'
+                                    placeholder='상품 가격 입력' 
+                                />
+                                <span className={AdminGoodsControlMainStyle['validate-span']}>{validateMsg.price}</span>
+                            </div>
                         </div>
-                        <div className={AdminGoodsControlMainStyle['adminGoodsControlContainer-right-1']}>
-                            <span className={AdminGoodsControlMainStyle['adminGoodsControl-span']}>상품 가격</span>
-                            <input className={AdminGoodsControlMainStyle['adminGoodsControl-long-input']} 
-                                   type='number' 
-                                   maxLength='10'
-                                   placeholder='상품 가격 입력' 
-                            />
-                        </div>
-                        <div className={AdminGoodsControlMainStyle['adminGoodsControlContainer-right-1']}>
-                            <span className={AdminGoodsControlMainStyle['adminGoodsControl-span']}>할인율</span>
-                            <input className={AdminGoodsControlMainStyle['adminGoodsControl-long-input']} 
-                                   type='number' 
-                                   maxLength='3' 
-                                   placeholder='할인율 입력' 
-                            />
-                        </div>
-                        <div className={AdminGoodsControlMainStyle['adminGoodsControlContainer-right-1']}>
-                            <span className={AdminGoodsControlMainStyle['adminGoodsControl-span']}>수량</span>
-                            <input className={AdminGoodsControlMainStyle['adminGoodsControl-long-input']} 
-                                   type='number' 
-                                   maxLength='10' 
-                                   placeholder='수량 입력' 
-                            />
+                        <div className={AdminGoodsControlMainStyle['adminGoodsControlContainer-right-4']}>
+                            <div>
+                                <span className={AdminGoodsControlMainStyle['adminGoodsControl-span']}>할인율</span>
+                                <input className={AdminGoodsControlMainStyle['adminGoodsControl-input']} 
+                                    type='text' 
+                                    id='discount'
+                                    onChange={(e) => validCheck(e)}
+                                    maxLength='3' 
+                                    placeholder='할인율 입력' 
+                                />
+                                <span className={AdminGoodsControlMainStyle['validate-span']}>{validateMsg.discount}</span>
+                            </div>
+                            <div>
+                                <span className={AdminGoodsControlMainStyle['adminGoodsControl-span']}>수량</span>
+                                <input className={AdminGoodsControlMainStyle['adminGoodsControl-input']} 
+                                    type='text' 
+                                    id='amount'
+                                    onChange={(e) => validCheck(e)}
+                                    onKeyUp={(e) => formatChange(e)}
+                                    maxLength='6' 
+                                    placeholder='수량 입력' 
+                                />
+                                <span className={AdminGoodsControlMainStyle['validate-span']}>{validateMsg.amount}</span>
+                            </div>
                         </div>
                     </div>
                 </div> {/* //. adminGoodsControl-container */}
