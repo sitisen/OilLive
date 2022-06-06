@@ -307,7 +307,7 @@ const BasketMain = () => {
                                                                     className={BasketMainStyle['amount-input']}
                                                                     ref={el => amountCount.current[goodsCode] = el}
                                                                     onChange={(e) => validCheck(e, goodsCode)} // 수량 예외 처리 이벤트 (최댓값, 최솟값)
-                                                                    onKeyDown={(e) => symbolCheck(e, goodsCode)} // 특수문자 예외처리 이벤트
+                                                                    onKeyUp={(e) => symbolCheck(e, goodsCode)} // 특수문자 예외처리 이벤트
                                                                     min='1'
                                                                     max={list.goodsVO.goodsAmount}
                                                                 />
@@ -359,7 +359,7 @@ const BasketMain = () => {
                                                                     className={BasketMainStyle['amount-input']}
                                                                     ref={el => amountCount.current[goodsCode] = el}
                                                                     onChange={(e) => validCheck(e, goodsCode)} // 수량 예외 처리 이벤트 (최댓값, 최솟값)
-                                                                    onKeyDown={(e) => symbolCheck(e, goodsCode)} // 특수문자 예외처리 이벤트
+                                                                    onKeyUp={(e) => symbolCheck(e, goodsCode)} // 특수문자 예외처리 이벤트
                                                                     min='1'
                                                                     max={list.goodsVO.goodsAmount}
                                                                 />
