@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import AdminService from 'services/AdminService';
-import GoodsService from 'services/GoodsService';
 
 
 // import CSS
@@ -18,7 +17,6 @@ const AdminGoodsControlMain = () => {
     /* //. useNavigate 부분 */
 
     /* useState 부분 */
-    const [ goodsKind, setGoodsKind ] = useState([]); // select 태그 상품 종류
     const [ thumbnail, setThumbnail ] = useState([]); // 이미지 썸네일
     const [ validateMsg, setValidateMsg ] = useState({ // 유효성 검사 경고문구
         price: '',
@@ -28,15 +26,13 @@ const AdminGoodsControlMain = () => {
     /* //. useState 부분 */
 
     /* useRef 부분 */
+    const goodsRef = useRef([]); // 상품 정보 Ref
     const attachRef = useRef(); // 이미지 첨부 Input Ref
     /* //. useRef 부분 */
 
     /* useEffect 부분 */
     useEffect( () => {
 
-        GoodsService.selectGoodsKind().then( res => {
-            setGoodsKind(res.data);
-        })
 
     }, []);
     /* //. useEffect 부분 */
@@ -164,9 +160,88 @@ const AdminGoodsControlMain = () => {
         }
     }
 
-    const test = (e) => {
-        // 서버로 전송하기 전 포맷 변경
-        console.log(e.target.value.replaceAll(',', ''));
+    // 상품 등록 버튼 이벤트
+    const confirm = () => {
+        const goodsName = goodsRef.current['goodsName'];
+        const goodsContent = goodsRef.current['goodsContent'];
+        const goodsKind = goodsRef.current['goodsKind'];
+        const goodsPrice = goodsRef.current['goodsPrice'];
+        const goodsDiscount = goodsRef.current['goodsDiscount'];
+        const goodsAmount = goodsRef.current['goodsAmount'];
+        const file = attachRef.current.files;
+
+        // 상품 등록 전, 상품 제목이 비어있는지 검사
+        if( goodsName.value === '' ) {
+            goodsName.focus();
+            return alert('상품 제목은 필수 입력 사항입니다.');
+        }
+
+        // 상품 등록 전, 상품 설명이 비어있는지 검사
+        if( goodsContent.value === '' ) {
+            goodsContent.focus();
+            return alert('상품 설명은 필수 입력 사항입니다.');
+        }
+
+        // 상품 등록 전, 상품 종류가 선택되었는지 검사
+        if( goodsKind.value === '00' ) {
+            return alert('상품 종류는 필수 선택 사항입니다.');
+        }
+
+        // 상품 등록 전, 상품 가격이 비어있는지 검사
+        if( goodsPrice.value === '' ) {
+            goodsPrice.focus();
+            return alert('상품 가격은 필수 입력 사항입니다.');
+        }
+
+        // 상품 등록 전, 할인율이 비어있는지 검사
+        if( goodsDiscount.value === '' ) {
+            goodsDiscount.focus();
+            return alert('할인율은 필수 입력 사항입니다.');
+        }
+
+        // 상품 등록 전, 수량이 비어있는지 검사
+        if( goodsAmount.value === '' ) {
+            goodsAmount.focus();
+            return alert('수량는 필수 입력 사항입니다.');
+        }
+
+        // 상품 등록 전, 유효성 검사가 모두 통과되었는지 확인
+        if( validateMsg.price !== '' && validateMsg.discount !== '' && validateMsg.amount !== '' ) {
+            return alert('입력한 값이 유효한지 확인해주세요.');
+        }
+
+        // 서버로 전송하기 전, 상품 가격/수량 포맷 변경
+
+        // 상품 등록, 수정인지 판별
+        if( locationType === 'insert' ) { // 상품 등록일 경우,
+
+            // 상품 등록 전, 첨부파일이 등록되어있는지 검사
+            if( file.length === 0 ) {
+                return alert('이미지 업로드는 필수 사항입니다.');
+            }
+
+            if(window.confirm('해당 상품을 등록하시겠습니까?')) {
+                let formData = new FormData();
+                formData.append('img', file[0]);
+
+                // // 상품 등록
+                AdminService.insertGoods(goodsName.value, goodsContent.value, goodsKind.value, 
+                                         goodsPrice.value.replaceAll(',', ''), goodsDiscount.value, goodsAmount.value.replaceAll(',', '')).then( () => {
+
+                        // // 상품 이미지 등록
+                        AdminService.insertGoodsUpload(formData).then( res => {
+
+                            if(res.data === 1) {
+                                alert('상품 등록 성공');
+                                navigate('/admin/goodsList', { replace: true } );
+                            }
+
+                        });
+                    }
+                );    
+            }
+
+        }
     }
 
     return (
@@ -213,6 +288,7 @@ const AdminGoodsControlMain = () => {
                             <span className={AdminGoodsControlMainStyle['adminGoodsControl-span']}>상품명</span>
                             <input className={AdminGoodsControlMainStyle['adminGoodsControl-long-input']} 
                                    type='text' 
+                                   ref={el => goodsRef.current['goodsName'] = el}
                                    maxLength='16' 
                                    placeholder='상품 명 입력' 
                             />
@@ -221,6 +297,7 @@ const AdminGoodsControlMain = () => {
                             <span className={AdminGoodsControlMainStyle['adminGoodsControl-span']}>상품 설명</span>
                             <textarea className={AdminGoodsControlMainStyle['adminGoodsControl-textarea']} 
                                       rows='3' 
+                                      ref={el => goodsRef.current['goodsContent'] = el}
                                       maxLength='80' 
                                       placeholder='상품 설명 입력' 
                             />
@@ -228,19 +305,21 @@ const AdminGoodsControlMain = () => {
                         <div className={AdminGoodsControlMainStyle['adminGoodsControlContainer-right-3']}>
                             <div>
                                 <span className={AdminGoodsControlMainStyle['adminGoodsControl-span']}>상품 종류</span>
-                                <select className={AdminGoodsControlMainStyle['adminGoodsControl-select']}>
+                                <select className={AdminGoodsControlMainStyle['adminGoodsControl-select']}
+                                        ref={el => goodsRef.current['goodsKind'] = el}
+                                >
                                     <option value='00'>선택</option>
-                                    {goodsKind.filter( idx => idx !== '전체' ).map( (list, index) => {
-                                        return (
-                                            <option key={index} value={list}>{list}</option>
-                                        )
-                                    } )}
+                                    <option value='실내용품'>실내용품</option>
+                                    <option value='세차용품'>세차용품</option>
+                                    <option value='엔진오일'>엔진오일</option>
+                                    <option value='차량 광택제'>차량 광택제</option>
                                 </select>
                             </div>
                             <div>
                                 <span className={AdminGoodsControlMainStyle['adminGoodsControl-span']}>상품 가격</span>
                                 <input className={AdminGoodsControlMainStyle['adminGoodsControl-input']} 
                                     type='text'
+                                    ref={el => goodsRef.current['goodsPrice'] = el}
                                     id='price'
                                     onChange={(e) => validCheck(e)}
                                     onKeyUp={(e) => formatChange(e)}
@@ -255,6 +334,7 @@ const AdminGoodsControlMain = () => {
                                 <span className={AdminGoodsControlMainStyle['adminGoodsControl-span']}>할인율</span>
                                 <input className={AdminGoodsControlMainStyle['adminGoodsControl-input']} 
                                     type='text' 
+                                    ref={el => goodsRef.current['goodsDiscount'] = el}
                                     id='discount'
                                     onChange={(e) => validCheck(e)}
                                     maxLength='3' 
@@ -266,6 +346,7 @@ const AdminGoodsControlMain = () => {
                                 <span className={AdminGoodsControlMainStyle['adminGoodsControl-span']}>수량</span>
                                 <input className={AdminGoodsControlMainStyle['adminGoodsControl-input']} 
                                     type='text' 
+                                    ref={el => goodsRef.current['goodsAmount'] = el}
                                     id='amount'
                                     onChange={(e) => validCheck(e)}
                                     onKeyUp={(e) => formatChange(e)}
@@ -282,6 +363,7 @@ const AdminGoodsControlMain = () => {
                     { locationType === 'insert' 
                         ? // 상품 등록일 경우,
                         <button className={`btn btn-primary ${AdminGoodsControlMainStyle['adminGoodsControl-footer-button']}`}
+                                onClick={() => confirm()}
                         >
                             등록
                         </button>
