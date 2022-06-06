@@ -10,6 +10,4 @@ public class BasketVO {
 	private int goodsCode;		// 차량용품 코드
 	private int basketAmount;	// 장바구니 수량
 	
-	private GoodsVO goodsVO;	// ResultMap 사용을 위해 GoodsVO Import
-	
 }
