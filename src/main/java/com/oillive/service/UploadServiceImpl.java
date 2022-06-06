@@ -47,6 +47,7 @@ public class UploadServiceImpl implements UploadService{
 		// 폴더가 존재하지 않을때 폴더생성
 		if(!fe.exists()) {
 			fe.mkdir();
+			file.transferTo(dest);
 		// 폴더가 존재하면 파일 생성
 		} else {
 	        file.transferTo(dest);
