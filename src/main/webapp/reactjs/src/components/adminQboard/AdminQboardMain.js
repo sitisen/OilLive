@@ -104,7 +104,7 @@ const AdminQboardMain = () => {
             }
         }
     }
-
+    console.log(qboardList);
    
     return (
         <div className={AdminQboardStyle['admin-qboard-layout']}>
@@ -139,21 +139,10 @@ const AdminQboardMain = () => {
                     </thead>
                     {
                         qboardList.map((list, index) => {
-                            const {USER_ID, Q_BOARD_ASTATUS, Q_BOARD_QDATE, Q_BOARD_CODE, Q_BOARD_QCONTENT, Q_BOARD_TITLE} = list
+                            const {USER_ID, Q_BOARD_ASTATUS, Q_BOARD_QDATE, Q_BOARD_CODE, Q_BOARD_QCONTENT, Q_BOARD_TITLE, PHOTO_PATH, PHOTO_RENAME, PHOTO_NAME} = list
                            
                             // 등록일
                             var date = Q_BOARD_QDATE.substring(0,10);
-                           
-                            // QBoardService.getAttached(Q_BOARD_CODE).then(res => {
-                            //     var name = adminQboardRef.current['name'];
-                            //     var rename = adminQboardRef.current['rename'];
-                            //     var path = adminQboardRef.current['path'];
-                                
-                            //     console.log(res.data);
-                            //     name.innerText = res.data.photoName;
-                            //     rename.innerText = res.data.photoReName;
-                            //     path.innerText = res.data.photoPath;
-                            // });
                                 return (
                                     <tbody key={index}>
                                         <tr className={AdminQboardStyle['admin-qboard-table-tr']}>
@@ -171,10 +160,8 @@ const AdminQboardMain = () => {
                                         </tr>
                                         <tr className={AdminQboardStyle['display-off']} ref={el => adminQboardRef.current['content'+index] = el}>
                                             <td colSpan={5}>
-                                                <span>문의 내용</span>{Q_BOARD_QCONTENT}<br />
-                                                <span ref={el => adminQboardRef.current['name'+index] = el}></span><br />
-                                                <span ref={el => adminQboardRef.current['rename'+index] = el}></span><br />
-                                                <span ref={el => adminQboardRef.current['path'+index] = el}></span><br />
+                                                <span>문의 내용:  </span>{Q_BOARD_QCONTENT}<br />
+                                                <a href={PHOTO_PATH+PHOTO_RENAME} download>{PHOTO_NAME}</a>
                                             </td>
 
                                         </tr>

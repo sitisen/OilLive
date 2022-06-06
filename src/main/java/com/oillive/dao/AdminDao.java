@@ -16,9 +16,6 @@ public interface AdminDao {
 	//--------------- 관리자 이벤트 변경 --------------- //
 	public int updateEvent(HashMap<String, String> params);
 	
-	//--------------- 관리자 이벤트 이미지 삭제 --------------- //
-	public int deleteEventPhoto(String photoCode);
-	
 	//--------------- 관리자 이벤트 삭제 --------------- //
 	public int deleteEvent(String eventCode);
 

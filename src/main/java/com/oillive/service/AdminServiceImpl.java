@@ -1,6 +1,5 @@
 package com.oillive.service;
 
-import java.io.File;
 import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,34 +44,6 @@ public class AdminServiceImpl implements AdminService {
 		params.put("eventEndDate", eventEndDate);
 		
 		return adminDao.updateEvent(params);
-	}
-
-	//--------------- 관리자 이벤트 이미지 삭제 --------------- //
-	@Override
-	public int deleteEventPhoto(String photoCode, String photoPath, String photoReName) {
-		
-		// 삭제 요청된 이미지 파일 삭제 로직
-		String uploads = ""; // 이미지가 업로드된 폴더 경로
-		String separator = System.getProperty("file.separator"); // 시스템 경로 구분자 ("/" 또는 "\")
-		
-		if( separator.contains("/") ) { // OS가 Linux 타입일 경우 (CentOS, Mac, SunOS....)
-			uploads = "src/main/webapp/reactjs/public" + photoPath + photoReName;
-			
-		} else { // OS가 Window 타입일 경우
-			uploads = "src\\main\\webapp\\reactjs\\public" + photoPath + photoReName;
-			
-		}
-		
-		File deleteFile = new File(System.getProperty("user.dir") + separator + uploads);
-		
-		if( deleteFile.exists() ) { // 파일이 존재하면, true
-			
-			deleteFile.delete(); // 해당 파일 삭제
-			
-		}
-
-		
-		return adminDao.deleteEventPhoto(photoCode);
 	}
 
 	//--------------- 관리자 이벤트 삭제 --------------- //

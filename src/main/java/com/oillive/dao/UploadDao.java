@@ -19,4 +19,6 @@ public interface UploadDao {
 	// 업로드된 파일 변경
 	public int upLoadU(PhotoVO vo);
 
+	// 이미지 삭제
+	public int deletePhoto(String photoCode);
 }

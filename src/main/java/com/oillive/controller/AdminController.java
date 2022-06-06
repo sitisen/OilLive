@@ -146,7 +146,7 @@ public class AdminController {
 		String photoReName = req.get("photoReName"); // 삭제 요청된 사진 이름
 		
 		// 해당 이벤트 이미지 삭제
-		int result = adminService.deleteEventPhoto(photoCode, photoPath, photoReName);
+		int result = uploadService.deletePhoto(photoCode, photoPath, photoReName);
 		
 		// 해당 이벤트 삭제
 		if( result == 1 ) { // 이벤트 이미지 삭제 성공 시,

@@ -31,5 +31,11 @@
 	     		PHOTO_PATH = #{photoPath}
 	 	  WHERE PHOTO_CODE = #{photoCode}
 	</update>
+	
+	<!-- 이미지 삭제 -->
+	<delete id="deletePhoto" parameterType="String">
+		DELETE FROM photo
+		      WHERE photo_code = #{photoCode}
+	</delete>
 
 </mapper>

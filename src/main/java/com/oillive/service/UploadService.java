@@ -12,4 +12,6 @@ public interface UploadService {
 	//--------------- 업로드된 파일 변경 --------------- //
 	public int upLoad(String kind, MultipartFile file, String photoCode, String photoPath, String photoReName) throws IllegalStateException, IOException;	
 
+	//--------------- 이미지 삭제 --------------- //
+	public int deletePhoto(String photoCode, String photoPath, String photoReName);
 }

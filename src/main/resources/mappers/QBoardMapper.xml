@@ -54,9 +54,10 @@
 		SELECT E.*
 		FROM ( SELECT ROWNUM RNUM,  q.q_board_code, 
 					u.user_id, q.q_board_title, q.q_board_qcontent, 
-					q.q_board_acontent, q.q_board_qdate, q.q_board_astatus
-			FROM q_board q, users u
+					q.q_board_acontent, q.q_board_qdate, q.q_board_astatus, p.photo_path, p.photo_rename, p.photo_code, p.photo_name
+			FROM q_board q, users u, photo p
         	WHERE q.user_code = u.user_code
+        	AND q.q_board_code = p.q_board_code
 		    <if test="! userId.isEmpty()">
 		    	AND u.user_Id LIKE '%' || #{userId} || '%'
 		    </if>
