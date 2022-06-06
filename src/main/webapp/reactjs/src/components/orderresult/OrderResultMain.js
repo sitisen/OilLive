@@ -25,23 +25,23 @@ const OrderResultMain = () => {
                                 <tbody>
                                     <tr>
                                         <th>상품명</th>
-                                        { payResult[0].basketCode === undefined
+                                        { payResult[0].BASKET_CODE === undefined
                                             ? payResult.length === 1 // 바로 구매일 경우,
 
                                                 ? // 구매한 상품이 1개일 경우,
-                                                <td>{payResult[0].goodsName}</td>
+                                                <td>{payResult[0].GOODS_NAME}</td>
 
                                                 : // 구매한 상품이 여러 개일 경우,
-                                                <td>{payResult[0].goodsName} 외 {payResult.length - 1}건</td>
+                                                <td>{payResult[0].GOODS_NAME} 외 {payResult.length - 1}건</td>
                                         
 
                                             : payResult.length === 1 // 장바구니 구매일 경우,
 
                                                 ? // 구매한 상품이 1개일 경우,
-                                                <td>{payResult[0].goodsVO.goodsName}</td>
+                                                <td>{payResult[0].GOODS_NAME}</td>
 
                                                 : // 구매한 상품이 여러 개일 경우,
-                                                <td>{payResult[0].goodsVO.goodsName} 외 {payResult.length - 1}건</td>
+                                                <td>{payResult[0].GOODS_NAME} 외 {payResult.length - 1}건</td>
                                         }
                                     </tr>
                                     <tr>

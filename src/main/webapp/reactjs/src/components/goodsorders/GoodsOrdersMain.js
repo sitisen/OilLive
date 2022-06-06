@@ -404,8 +404,8 @@ const GoodsOrdersMain = () => {
 
             if( basketCode === null ) { // 바로 구매일 경우,
                 
-                const goods = goodsData[0].goodsName; // 상품명
-                const goodsAmount = goodsData[0].goodsAmount; // 상품 재고
+                const goods = goodsData[0].GOODS_NAME; // 상품명
+                const goodsAmount = goodsData[0].GOODS_AMOUNT; // 상품 재고
 
                 if( goodsAmount <= 0 ) { // 상품의 재고가 0보다 작을 경우,
                     return alert(goods + ' 의 재고가 부족합니다.\n해당 상품을 제외시키고 구매를 시도해주세요.');
@@ -416,8 +416,8 @@ const GoodsOrdersMain = () => {
                 
                 for(let i = 0; i < goodsData.length; i++) {
                     
-                    const goods = goodsData[i].goodsVO.goodsName;
-                    const goodsAmount = goodsData[i].goodsVO.goodsAmount;
+                    const goods = goodsData[i].GOODS_NAME;
+                    const goodsAmount = goodsData[i].GOODS_AMOUNT;
 
                     if( goodsAmount <= 0 ) {
                         return alert(goods + ' 의 재고가 부족합니다.\n해당 상품을 제외시키고 구매를 시도해주세요.');
