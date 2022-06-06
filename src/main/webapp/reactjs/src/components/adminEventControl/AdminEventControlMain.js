@@ -201,22 +201,34 @@ const AdminEventControlMain = () => {
                 });
             }
 
-            // 시작일이 종료일보다 큰지 검사
-            if( startDate > (endYear + '/' + endMonth + '/' + endDay) ) {
-                return setValidateMsg({
-                    start: startMsg,
-                    end: '종료일은 시작일보다 크거나 같아야 합니다.'
-                });
-            }
-
             // 일자 포맷 변경
             if( endDay.length === 1 ) { // 일자가 1 ~ 9일 경우,
+
+                // 시작일이 종료일보다 큰지 검사
+                if( startDate > (endYear + '/' + endMonth + '/0' + endDay) ) {
+                    return setValidateMsg({
+                        start: startMsg,
+                        end: '종료일은 시작일보다 크거나 같아야 합니다.'
+                    });
+                }
+
                 result = endYear + '/' + endMonth + '/0' + endDay;
 
+
             } else { // 일자가 2자리일 경우,
+
+                // 시작일이 종료일보다 큰지 검사
+                if( startDate > (endYear + '/' + endMonth + '/' + endDay) ) {
+                    return setValidateMsg({
+                        start: startMsg,
+                        end: '종료일은 시작일보다 크거나 같아야 합니다.'
+                    });
+                }
+
                 result = endYear + '/' + endMonth + '/' + endDay;
 
             }
+
 
             // 입력한 값 세팅
             setEndDate(result);
