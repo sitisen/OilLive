@@ -13,13 +13,13 @@
 	</select>
 	
 	<!-- 관리자 이벤트 등록 -->
-	<insert id="insertEvent" parameterType="Map">
+	<insert id="insertEvent" parameterType="EventVO">
 		INSERT INTO event 
 		     VALUES (seq_event.NEXTVAL, #{eventName}, #{eventContent}, #{eventStartDate}, #{eventEndDate})
 	</insert>
 
 	<!-- 관리자 이벤트 변경 -->
-	<update id="updateEvent" parameterType="Map">
+	<update id="updateEvent" parameterType="EventVO">
 		UPDATE event
 		   SET event_name = #{eventName},
 		       event_content = #{eventContent},
@@ -32,6 +32,18 @@
 	<delete id="deleteEvent" parameterType="String">
 		DELETE FROM event
 			  WHERE event_code = #{eventCode}
+	</delete>
+	
+	<!-- 관리자 상품 등록 -->
+	<insert id="insertGoods" parameterType="GoodsVO">
+		INSERT INTO goods 
+			 VALUES ( seq_goods.NEXTVAL, #{goodsName}, #{goodsKind}, #{goodsPrice}, #{goodsAmount}, #{goodsContent}, #{goodsDiscount}, SYSDATE)
+	</insert>
+	
+	<!-- 관리자 이벤트 삭제 -->
+	<delete id="deleteGoods" parameterType="String">
+		DELETE FROM goods
+			  WHERE goods_code = #{goodsCode}
 	</delete>
 	
 </mapper>

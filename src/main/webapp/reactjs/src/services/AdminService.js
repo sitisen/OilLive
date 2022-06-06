@@ -2,16 +2,25 @@ import axios from 'axios';
 
 
 const ADMIN_URL = 'http://localhost:9090/admin';
+const ADMIN_UPDATE_UPLOAD = ADMIN_URL + '/updateUpload'; // 관리자 이미지 변경
+/* 이벤트 관련 */
 const ADMIN_SELECT_EVENT_LIST = ADMIN_URL + '/selectEventList'; // 이벤트 목록 조회
 const ADMIN_INSERT_EVENT = ADMIN_URL + '/insertEvent'; // 관리자 이벤트 등록
 const ADMIN_INSERT_EVENT_UPLOAD = ADMIN_URL + '/insertEventUpload'; // 관리자 이벤트 등록 (이미지 업로드)
 const ADMIN_UPDATE_EVENT = ADMIN_URL + '/updateEvent'; // 관리자 이벤트 변경
-const ADMIN_UPDATE_EVENT_UPLOAD = ADMIN_URL + '/updateEventUpload'; // 관리자 이벤트 변경 (이미지 업로드)
 const ADMIN_DELETE_EVENT = ADMIN_URL + '/deleteEvent'; // 관리자 이벤트 삭제
+/* 상품 관련 */
 const ADMIN_SELECT_GOODS_LIST = ADMIN_URL + '/selectGoodsList'; // 상품 목록 조회
+const ADMIN_INSERT_GOODS = ADMIN_URL + '/insertGoods'; // 관리자 상품 등록
+const ADMIN_INSERT_GOODS_UPLOAD = ADMIN_URL + '/insertGoodsUpload'; // 관리자 상품 등록 (이미지)
+const ADMIN_DELETE_GOODS = ADMIN_URL + '/deleteGoods';  // 관리자 상품 삭제
 
 /* 관리자 Service */
 const AdminService = {
+
+    updateUpload (formData) {
+        return axios.post(ADMIN_UPDATE_UPLOAD, formData);
+    },
 
     selectEventList (eventName, filterName, currentPage) {
         return axios.get(ADMIN_SELECT_EVENT_LIST, {
@@ -27,8 +36,8 @@ const AdminService = {
         return axios.put(ADMIN_INSERT_EVENT, {
                 eventName: eventName, 
                 eventContent: eventContent, 
-                startDate: startDate, 
-                endDate: endDate
+                eventStartDate: startDate, 
+                eventEndDate: endDate
             }
         );
     },
@@ -42,13 +51,9 @@ const AdminService = {
             eventCode: eventCode,
             eventName: eventName,
             eventContent: eventContent,
-            startDate: startDate,
-            endDate: endDate
+            eventStartDate: startDate,
+            eventEndDate: endDate
         });
-    },
-
-    updateEventUpload (formData) {
-        return axios.post(ADMIN_UPDATE_EVENT_UPLOAD, formData);
     },
 
     deleteEvent (eventCode, photoCode, photoPath, photoReName) {
@@ -69,6 +74,33 @@ const AdminService = {
                         kind: selectedKind,
                         page: currentPage
                     }
+        });
+    },
+
+    insertGoods (goodsName, goodsContent, goodsKind, 
+                 goodsPrice, goodsDiscount, goodsAmount) {
+        return axios.put(ADMIN_INSERT_GOODS, {
+            goodsName: goodsName,
+            goodsContent: goodsContent,
+            goodsKind: goodsKind,
+            goodsPrice: goodsPrice,
+            goodsDiscount: goodsDiscount,
+            goodsAmount: goodsAmount
+        });
+    },
+
+    insertGoodsUpload (formData) {
+        return axios.post(ADMIN_INSERT_GOODS_UPLOAD, formData);
+    },
+
+    deleteGoods (goodsCode, photoCode, photoPath, photoReName) {
+        return axios.delete(ADMIN_DELETE_GOODS, {
+            data: { 
+                    goodsCode: goodsCode, 
+                    photoCode: photoCode,
+                    photoPath: photoPath,
+                    photoReName: photoReName
+                }
         });
     }
     

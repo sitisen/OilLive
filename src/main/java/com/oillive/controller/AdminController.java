@@ -45,6 +45,26 @@ public class AdminController {
 	@Autowired
 	UploadService uploadService;
 	
+	//--------------- 관리자 이미지 변경 --------------- //
+	@PostMapping("/updateUpload")
+	public int updateUpload(@RequestParam("img") MultipartFile file,
+							@RequestParam("photoCode") String photoCode,
+							@RequestParam("photoPath") String photoPath,
+							@RequestParam("photoReName") String photoReName ) {
+		int result = 0;
+		
+		// 해당 이벤트 이미지 변경
+		try {
+			result = uploadService.upLoad("U", file, photoCode, photoPath, photoReName);
+			
+		} catch (IllegalStateException | IOException e) {
+			e.printStackTrace();
+			
+		}
+		
+		return result;
+	}
+	
 	//--------------- 이벤트 목록 조회 --------------- //
 	@GetMapping("/selectEventList")
 	public HashMap<String, Object> selectEventList( @RequestParam( name = "title" ) String eventName,
@@ -72,14 +92,9 @@ public class AdminController {
 	
 	//--------------- 관리자 이벤트 등록 --------------- //
 	@PutMapping("/insertEvent")
-	public int insertEvent(@RequestBody HashMap<String, String> req) {
-
-		String eventName = req.get("eventName");
-		String eventContent = req.get("eventContent");
-		String eventStartDate = req.get("startDate");
-		String eventEndDate = req.get("endDate");
+	public int insertEvent(@RequestBody EventVO event) {
 		
-		int result = adminService.insertEvent(eventName, eventContent, eventStartDate, eventEndDate);
+		int result = adminService.insertEvent(event);
 		
 		return result;
 	}
@@ -103,35 +118,9 @@ public class AdminController {
 	
 	//--------------- 관리자 이벤트 변경 --------------- //
 	@PutMapping("/updateEvent")
-	public int  updateEvent(@RequestBody HashMap<String, String> req) {
+	public int  updateEvent(@RequestBody EventVO event) {
 		
-		String eventCode = req.get("eventCode");
-		String eventName = req.get("eventName");
-		String eventContent = req.get("eventContent");
-		String eventStartDate = req.get("startDate");
-		String eventEndDate = req.get("endDate");
-		
-		int result = adminService.updateEvent(eventCode, eventName, eventContent, eventStartDate, eventEndDate);
-		
-		return result;
-	}
-	
-	//--------------- 관리자 이벤트 변경 (이미지 수정) --------------- //
-	@PostMapping("/updateEventUpload")
-	public int updateEventUpload(@RequestParam("img") MultipartFile file,
-								 @RequestParam("photoCode") String photoCode,
-								 @RequestParam("photoPath") String photoPath,
-								 @RequestParam("photoReName") String photoReName ) {
-		int result = 0;
-		
-		// 해당 이벤트 이미지 변경
-		try {
-			result = uploadService.upLoad("U", file, photoCode, photoPath, photoReName);
-			
-		} catch (IllegalStateException | IOException e) {
-			e.printStackTrace();
-			
-		}
+		int result = adminService.updateEvent(event);
 		
 		return result;
 	}
@@ -180,4 +169,51 @@ public class AdminController {
 		return result;
 	}
 	
+	//--------------- 관리자 상품 등록 --------------- //
+	@PutMapping("/insertGoods")
+	public int selectGoodsList( @RequestBody GoodsVO goods ) {
+		
+		
+		int result = adminService.insertGoods(goods);
+		
+		return result;
+	}
+
+	//--------------- 관리자 상품 등록 (이미지 등록) --------------- //
+	@PostMapping("/insertGoodsUpload")
+	public int insertGoodsUpload(@RequestParam("img") MultipartFile file) {
+	
+		int result = 0;
+		
+		try {
+			result = uploadService.upLoad("G", file);
+			
+		} catch (IllegalStateException | IOException e) {
+			e.printStackTrace();
+			
+		}
+		
+		return result;
+	}
+	
+	//--------------- 관리자 상품 삭제 --------------- //
+	@DeleteMapping("/deleteGoods")
+	public int deleteGoods(@RequestBody HashMap<String, String> req) {
+		
+		String goodsCode = req.get("goodsCode"); // 삭제 요청된 상품 코드
+		String photoCode = req.get("photoCode"); // 삭제 요청된 사진 코드
+		String photoPath = req.get("photoPath"); // 삭제 요청된 사진 경로
+		String photoReName = req.get("photoReName"); // 삭제 요청된 사진 이름
+		
+		// 해당 이벤트 이미지 삭제
+		int result = uploadService.deletePhoto(photoCode, photoPath, photoReName);
+		
+		// 해당 이벤트 삭제
+		if( result == 1 ) { // 상품 이미지 삭제 성공 시,
+			result = adminService.deleteGoods(goodsCode);
+			
+		}
+		
+		return result;
+	}
 }

@@ -63,10 +63,10 @@ const AdminEventListMain = () => {
     }
 
     // 이벤트 삭제
-    const eventDelete = (eventCode, photoCode, eventName, photoPath, photoRename) => {
+    const eventDelete = (eventCode, eventName, photoCode, photoPath, photoReName) => {
 
         if(window.confirm(eventName + '\n정말로 삭제하시겠습니까?')) {
-            AdminService.deleteEvent(eventCode, photoCode, photoPath, photoRename).then( res => {
+            AdminService.deleteEvent(eventCode, photoCode, photoPath, photoReName).then( res => {
 
                 if(res.data === 1) {
                     setIsDelete(true);
@@ -176,7 +176,7 @@ const AdminEventListMain = () => {
                                                         </button>
                                                     </Link>
                                                     <button className={`btn btn-danger ${AdminEventListMainStyle['admin-button']}`} 
-                                                            onClick={() => eventDelete(list.EVENT_CODE, list.PHOTO_CODE, EVENT_NAME, PHOTO_PATH, PHOTO_RENAME)}> {/* 이벤트 코드, 사진 코드, 사진 경로, 사진 이름 */}
+                                                            onClick={() => eventDelete(list.EVENT_CODE, EVENT_NAME, list.PHOTO_CODE, PHOTO_PATH, PHOTO_RENAME)}> {/* 이벤트 코드, 사진 코드, 사진 경로, 사진 이름 */}
                                                                 삭제
                                                     </button>
                                                 </td>

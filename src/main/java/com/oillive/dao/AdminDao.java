@@ -1,8 +1,10 @@
 package com.oillive.dao;
 
-import java.util.HashMap;
 
 import org.apache.ibatis.annotations.Mapper;
+
+import com.oillive.vo.EventVO;
+import com.oillive.vo.GoodsVO;
 
 @Mapper
 public interface AdminDao {
@@ -11,12 +13,17 @@ public interface AdminDao {
 	public String getMpassword(String userId);
 	
 	//--------------- 관리자 이벤트 등록 --------------- //
-	public int insertEvent(HashMap<String, String> params);
+	public int insertEvent(EventVO event);
 	
 	//--------------- 관리자 이벤트 변경 --------------- //
-	public int updateEvent(HashMap<String, String> params);
+	public int updateEvent(EventVO event);
 	
 	//--------------- 관리자 이벤트 삭제 --------------- //
 	public int deleteEvent(String eventCode);
 
+	//--------------- 관리자 상품 등록 --------------- //
+	public int insertGoods(GoodsVO goods);
+	
+	//--------------- 관리자 상품 삭제 --------------- //
+	public int deleteGoods(String goodsCode);
 }

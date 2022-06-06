@@ -355,7 +355,7 @@ const AdminEventControlMain = () => {
                                 AdminService.updateEvent(eventCode, eventName.value, eventContent.value, startDate, endDate).then( () => {
 
                                     // 이벤트 이미지 수정
-                                    AdminService.updateEventUpload(formData).then( res => {
+                                    AdminService.updateUpload(formData).then( res => {
 
                                         if(res.data === 1) {
                                             alert('이벤트 변경 성공');
