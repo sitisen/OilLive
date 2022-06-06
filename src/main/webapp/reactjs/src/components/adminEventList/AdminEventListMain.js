@@ -44,9 +44,13 @@ const AdminEventListMain = () => {
     // 날짜 YYYY-MM-dd 형식으로 전환해주는 함수
     const dateFormat = (date) => {
 
-        const year = date.substring(0, 4); // 연도
-        const month = date.substring(5, 7); // 월
-        const day = date.substring(8, 10); // 일
+        let timezoneOffset = new Date().getTimezoneOffset() * 60000;
+        let timezoneDate = Date.parse(date) - timezoneOffset;
+        const result = new Date(timezoneDate).toISOString();
+        
+        const year = result.substring(0, 4); // 연도
+        const month = result.substring(5, 7); // 월
+        const day = result.substring(8, 10); // 일
 
         return year + '/' + month + '/' + day;
     }
@@ -100,7 +104,6 @@ const AdminEventListMain = () => {
     const nextPage = () => { // 다음 페이지 번호로 이동
         setCurrentPage(currentPage + 1);
     }
-
 
     return (
         <div className={AdminEventListMainStyle['adminEvent-wrap']}>
@@ -187,7 +190,7 @@ const AdminEventListMain = () => {
                     {/* 이미지 확대 Modal */}
                     <Modal show={imgZoom} onHide={handleCloseModal}> 
                         <Modal.Body>
-                            <img className={AdminEventListMainStyle['modal-img']} alt='test' src={imgData} />
+                            <img className={AdminEventListMainStyle['modal-img']} alt='adminEventImgZoom' src={imgData} />
                         </Modal.Body>
                         <ModalFooter>          
                             <button className='btn btn-secondary' onClick={handleCloseModal}>
