@@ -47,7 +47,7 @@ const QboardWriteMain = () => {
                 }
                 
                 QBoardService.qBoardWrite(sessionStorage.getItem('userId'),title.value, content.value).then( res =>{
-                    if(res !== 0){
+                    if(res.data !== 0){
                         // 첨부파일 없는경우
                         if(file.length === 0) {
                             alert('문의내용이 저장되었습니다.');
@@ -55,7 +55,7 @@ const QboardWriteMain = () => {
                         // 첨부파일 있는경우
                         } else {
                             QBoardService.qBoardImgUpload(formData).then( re => {
-                                if(re !== 0){
+                                if(re.data !== 0){
                                     alert('문의내용이 저장되었습니다.');
                                     navigate('/', {replace:true} );
                                 } else {
