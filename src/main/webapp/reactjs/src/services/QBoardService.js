@@ -63,10 +63,13 @@ const QBoardService = {
         })
     },
 
-    qboardRemove(qboardCode){
+    qboardRemove(qboardCode, photoCode, photoPath, photoReName){
         return axios.get(Q_BOARD_REMOVE, {
             params: {
-                qboardCode : qboardCode
+                qboardCode : qboardCode,
+                photoCode : photoCode,
+                photoPath : photoPath,
+                photoReName : photoReName
             }
         })
     },

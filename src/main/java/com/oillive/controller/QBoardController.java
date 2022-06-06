@@ -95,7 +95,7 @@ public class QBoardController {
 		// Pagination 처리 변수
 		int totalCount = qBoardService.selectQboardCount(userId); // Qna 테이블 데이터 개수
 		int pageLimit = 5;  // 페이징바의 최대 노출 번호
-		int listRange = 5; // 한 페이지당 노출시킬 데이터의 개수
+		int listRange = 5;  // 한 페이지당 노출시킬 데이터의 개수
 		
 		// 페이징 처리 객체
 		PaginationVO paging = paginationService.pagination(totalCount, pageLimit, listRange, currentPage);
@@ -113,7 +113,13 @@ public class QBoardController {
 	
 	//--------------- 관리자 문의글 삭제 --------------- //
 	@GetMapping("/qboardRemove")
-	public int qboardRemove(@RequestParam( name = "qboardCode" ) String qboardCode) {
+	public int qboardRemove(@RequestParam( name = "qboardCode" ) String qboardCode,
+			@RequestParam( name = "photoCode" ) String photoCode,
+			@RequestParam( name = "photoPath" ) String photoPath,
+			@RequestParam( name = "photoReName" ) String photoReName) {
+		
+		uploadService.deletePhoto(photoCode, photoPath, photoReName);
+		
 		return qBoardService.qboardRemove(qboardCode);
 	}
 	
