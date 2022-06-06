@@ -76,9 +76,9 @@ const AdminQboardMain = () => {
     }
 
     // 삭제하기 버튼 클릭
-    const onDelete = (qboardCode) => {
+    const onDelete = (qboardCode, photoCode, photoPath, photoReName) => {
         if(window.confirm('삭제하시겠습니까?')){
-            QBoardService.qboardRemove(qboardCode).then(res => {
+            QBoardService.qboardRemove(qboardCode, photoCode, photoPath, photoReName).then(res => {
                 if(res.data === 1) {
                     alert('삭제되었습니다.');
                     setState(!state);
@@ -104,7 +104,6 @@ const AdminQboardMain = () => {
             }
         }
     }
-    console.log(qboardList);
    
     return (
         <div className={AdminQboardStyle['admin-qboard-layout']}>
@@ -139,7 +138,7 @@ const AdminQboardMain = () => {
                     </thead>
                     {
                         qboardList.map((list, index) => {
-                            const {USER_ID, Q_BOARD_ASTATUS, Q_BOARD_QDATE, Q_BOARD_CODE, Q_BOARD_QCONTENT, Q_BOARD_TITLE, PHOTO_PATH, PHOTO_RENAME, PHOTO_NAME} = list
+                            const {USER_ID, Q_BOARD_ASTATUS, Q_BOARD_STATUS, Q_BOARD_QDATE, Q_BOARD_CODE, Q_BOARD_QCONTENT, Q_BOARD_TITLE, PHOTO_CODE, PHOTO_PATH, PHOTO_RENAME, PHOTO_NAME} = list
                            
                             // 등록일
                             var date = Q_BOARD_QDATE.substring(0,10);
@@ -149,13 +148,21 @@ const AdminQboardMain = () => {
                                             <td>{USER_ID}</td>
                                             <td>{Q_BOARD_TITLE}</td>
                                             <td>{date}</td>
-                                            {Q_BOARD_ASTATUS === 'N' 
-                                                ?   <td style={{color:'red',fontWeight:'bold'}}>답변대기</td>
-                                                :   <td style={{color:'green',fontWeight:'bold'}}>답변완료</td>
+                                            
+                                            {
+                                                Q_BOARD_STATUS === 'Y' ?
+                                                    Q_BOARD_ASTATUS === 'N'
+                                                    ?   <td style={{color:'red',fontWeight:'bold'}}>답변대기</td>
+                                                    :   <td style={{color:'green',fontWeight:'bold'}}>답변완료</td>
+                                                : <td style={{color:'blue',fontWeight:'bold'}}>문의삭제</td>
                                             }
                                             <td>
-                                                <button className={AdminQboardStyle['deleBtn']} onClick={()=> onDelete(Q_BOARD_CODE)}>삭제하기</button>
-                                                <button className={AdminQboardStyle['answerBtn']} onClick={()=> onAnswer(index)}>답변하기</button>
+                                                <button className={AdminQboardStyle['deleBtn']} onClick={()=> onDelete(Q_BOARD_CODE, PHOTO_CODE, PHOTO_PATH, PHOTO_RENAME)}>삭제하기</button>
+                                                {
+                                                    Q_BOARD_STATUS === 'Y' ?
+                                                        <button className={AdminQboardStyle['answerBtn']} onClick={()=> onAnswer(index)}>답변하기</button>
+                                                    :  <button className={AdminQboardStyle['answerBtn']} onClick={()=> onAnswer(index)}>문의보기</button>
+                                                }
                                             </td>
                                         </tr>
                                         <tr className={AdminQboardStyle['display-off']} ref={el => adminQboardRef.current['content'+index] = el}>
