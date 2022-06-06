@@ -49,8 +49,6 @@ const AdminSidebarMain = () => {
 
     return (
         <>
-        <div className={AdminSidebarStyle['top-line']}>
-        </div>
         <div className={allYN ? AdminSidebarStyle['display-on'] : AdminSidebarStyle['display-off']}>
             <div className={AdminSidebarStyle['admin-side-layout']}>
                 <div className={AdminSidebarStyle['nav-on-off']}>
