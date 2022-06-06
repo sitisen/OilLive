@@ -12,5 +12,6 @@ public class PhotoVO {
 	private String photoName;	// 원본 파일명
 	private String photoReName;	// 수정 파일명
 	private String photoPath;	// 파일경로
+	private int currentSeq;
 	
 }

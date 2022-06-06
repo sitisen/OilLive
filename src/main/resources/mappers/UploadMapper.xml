@@ -7,20 +7,38 @@
 	
 	<!-- 문의등록 -->
 	<insert id="upLoadQ" parameterType="PhotoVO">
+	    <selectKey resultType="int" keyProperty="currentSeq" order="BEFORE">
+        	SELECT last_number - 1
+			  FROM user_sequences
+			 WHERE sequence_name = UPPER('seq_q_board')
+   		</selectKey> 
+   		
 		INSERT INTO photo 
-		VALUES (seq_photo.NEXTVAL, null, seq_q_board.CURRVAL, null, #{photoName}, #{photoReName}, #{photoPath})
+		VALUES (seq_photo.NEXTVAL, null, #{currentSeq}, null, #{photoName}, #{photoReName}, #{photoPath})
 	</insert>
 	
 	<!-- 상품등록 -->
 	<insert id="upLoadG" parameterType="PhotoVO">
+		    <selectKey resultType="int" keyProperty="currentSeq" order="BEFORE">
+        	SELECT last_number - 1
+			  FROM user_sequences
+			 WHERE sequence_name = UPPER('seq_goods')
+   		</selectKey> 
+	
 		INSERT INTO photo 
-		VALUES (seq_photo.NEXTVAL, seq_goods.CURRVAL, null, null, #{photoName}, #{photoReName}, #{photoPath})
+		VALUES (seq_photo.NEXTVAL, #{currentSeq}, null, null, #{photoName}, #{photoReName}, #{photoPath})
 	</insert>
 	
 	<!-- 이벤트등록 -->
 	<insert id="upLoadE" parameterType="PhotoVO">
+	    <selectKey resultType="int" keyProperty="currentSeq" order="BEFORE">
+        	SELECT last_number - 1
+			  FROM user_sequences
+			 WHERE sequence_name = UPPER('seq_event')
+   		</selectKey>   
+
 		INSERT INTO photo 
-		VALUES (seq_photo.NEXTVAL, null, null, seq_event.CURRVAL, #{photoName}, #{photoReName}, #{photoPath})
+		VALUES (seq_photo.NEXTVAL, null, null, #{currentSeq}, #{photoName}, #{photoReName}, #{photoPath})
 	</insert>
 	
 	<!-- 업로드된 파일 변경 -->
