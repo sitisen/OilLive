@@ -40,14 +40,22 @@ const AdminEventControlMain = () => {
     useEffect( () => {
         // 이벤트 수정일 경우, input에 선택한 이벤트 값 넣어주기
         if( locationType === 'update' ) { 
+
+            // ISO 형식일 경우, 한국은 -1일이 되기 때문에 오프셋 변경
+            let timezoneOffset = new Date().getTimezoneOffset() * 60000;
+            let timezoneStartDate = Date.parse(locationData.EVENT_STARTDATE) - timezoneOffset;
+            let timezoneEndDate = Date.parse(locationData.EVENT_ENDDATE) - timezoneOffset;
+            const start = new Date(timezoneStartDate).toISOString();
+            const end = new Date(timezoneEndDate).toISOString();
+
             eventNameRef.current.value = locationData.EVENT_NAME; // 이벤트 제목
             eventContentRef.current.value = locationData.EVENT_CONTENT; // 이벤트 내용
-            startDateRef.current[0].value = locationData.EVENT_STARTDATE.substr(0, 4); // 시작일 연도
-            startDateRef.current[1].value = locationData.EVENT_STARTDATE.substr(5, 2); // 시작일 월
-            startDateRef.current[2].value = locationData.EVENT_STARTDATE.substr(8, 2); // 시작일 일자
-            endDateRef.current[0].value = locationData.EVENT_ENDDATE.substr(0, 4); // 종료일 연도
-            endDateRef.current[1].value = locationData.EVENT_ENDDATE.substr(5, 2); // 종료일 월
-            endDateRef.current[2].value = locationData.EVENT_ENDDATE.substr(8, 2); // 종료일 일자
+            startDateRef.current[0].value = start.substring(0, 4); // 시작일 연도
+            startDateRef.current[1].value = start.substring(5, 7); // 시작일 월
+            startDateRef.current[2].value = start.substring(8, 10); // 시작일 일자
+            endDateRef.current[0].value = end.substring(0, 4); // 종료일 연도
+            endDateRef.current[1].value = end.substring(5, 7); // 종료일 월
+            endDateRef.current[2].value = end.substring(8, 10); // 종료일 일자
 
             // 유효성 검사를 성공시키기 위해 setState
             setStartDate(startDateRef.current[0].value + '/' + startDateRef.current[1].value + '/' + startDateRef.current[2].value);
