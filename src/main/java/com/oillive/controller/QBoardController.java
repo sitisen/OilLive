@@ -114,11 +114,13 @@ public class QBoardController {
 	//--------------- 관리자 문의글 삭제 --------------- //
 	@GetMapping("/qboardRemove")
 	public int qboardRemove(@RequestParam( name = "qboardCode" ) String qboardCode,
-			@RequestParam( name = "photoCode" ) String photoCode,
-			@RequestParam( name = "photoPath" ) String photoPath,
-			@RequestParam( name = "photoReName" ) String photoReName) {
+			@RequestParam( name = "photoCode", required = false ) String photoCode,
+			@RequestParam( name = "photoPath", required = false ) String photoPath,
+			@RequestParam( name = "photoReName", required = false ) String photoReName) {
 		
-		uploadService.deletePhoto(photoCode, photoPath, photoReName);
+		if(qboardCode != null && photoCode != null) {
+			uploadService.deletePhoto(photoCode, photoPath, photoReName);
+		}
 		
 		return qBoardService.qboardRemove(qboardCode);
 	}
@@ -131,6 +133,20 @@ public class QBoardController {
 		} else {
 			return qBoardService.getAttached(qboardCode);		
 		}
+	}
+	
+	//--------------- 관리자 문의글 답변 업데이트 --------------- //
+	@GetMapping("/updateAnswer")
+	public int updateAnswer(
+			@RequestParam( name = "qboardCode" ) String qboardCode,
+			@RequestParam( name = "answer" ) String answer) {
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("qboardCode", qboardCode);
+		map.put("answer", answer);
+		
+		return qBoardService.updateAnswer(map);		
 	}
 }
 

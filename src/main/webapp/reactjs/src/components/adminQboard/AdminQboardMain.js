@@ -92,7 +92,7 @@ const AdminQboardMain = () => {
         var on = AdminQboardStyle['qboard-content'];
         var off = AdminQboardStyle['display-off'];
         
-        for(var i = 0;  i <= qboardList.length; i++){
+        for(var i = 0;  i < qboardList.length; i++){
             if(i === index){
                 if(adminQboardRef.current['content'+i].className === on){
                     adminQboardRef.current['content'+i].className = off;
@@ -105,6 +105,57 @@ const AdminQboardMain = () => {
         }
     }
    
+    // 답변 저장하기 버튼 클릭 이벤트
+    const onSave = (qboardCode, index) => {
+        if(window.confirm('답변을 저장하시겠습니까?')){
+            var answer = adminQboardRef.current['answer' + index];
+            if(answer.value === ''){
+                alert('답변을 입력해주세요.');
+                answer.focus();
+            } else {
+                QBoardService.updateAnswer(qboardCode,answer.value).then( res => {
+                    if(res.data === 1){
+                        var off = AdminQboardStyle['display-off'];
+                        for(var i = 0;  i < qboardList.length; i++){
+                            adminQboardRef.current['content'+i].className = off;
+                        }
+                        alert('저장되었습니다.');
+                        setState(!state);
+                    }
+                });
+            }
+        }
+    }
+
+    // 답변 수정한것 저장하기 이벤트
+    const onNSave = (qboardCode, index) => {
+        if(window.confirm('답변을 저장하시겠습니까?')){
+            var updateAnswer = adminQboardRef.current['updateAnswer' + index];
+            if(updateAnswer.value === ''){
+                alert('답변을 입력해주세요.');
+                updateAnswer.focus();
+            } else {
+                QBoardService.updateAnswer(qboardCode,updateAnswer.value).then( res => {
+                    if(res.data === 1){
+                        var off = AdminQboardStyle['display-off'];
+                        for(var i = 0;  i < qboardList.length; i++){
+                            adminQboardRef.current['content'+i].className = off;
+                        }
+                        updateAnswer.readOnly = true;
+                        alert('저장되었습니다.');
+                        setState(!state);
+                    }
+                });
+            }
+        }
+    }
+
+    // 수정하기 버튼 클릭 이벤트
+    const onUpdate = (index) => {
+        var updateAnswer = adminQboardRef.current['updateAnswer' + index];
+        updateAnswer.readOnly = false;
+    }
+
     return (
         <div className={AdminQboardStyle['admin-qboard-layout']}>
             <div className={AdminQboardStyle['admin-qboard-label']}>
@@ -138,7 +189,7 @@ const AdminQboardMain = () => {
                     </thead>
                     {
                         qboardList.map((list, index) => {
-                            const {USER_ID, Q_BOARD_ASTATUS, Q_BOARD_STATUS, Q_BOARD_QDATE, Q_BOARD_CODE, Q_BOARD_QCONTENT, Q_BOARD_TITLE, PHOTO_CODE, PHOTO_PATH, PHOTO_RENAME, PHOTO_NAME} = list
+                            const {USER_ID, Q_BOARD_ACONTENT, Q_BOARD_ASTATUS, Q_BOARD_STATUS, Q_BOARD_QDATE, Q_BOARD_CODE, Q_BOARD_QCONTENT, Q_BOARD_TITLE, PHOTO_CODE, PHOTO_PATH, PHOTO_RENAME, PHOTO_NAME} = list
                            
                             // 등록일
                             var date = Q_BOARD_QDATE.substring(0,10);
@@ -166,11 +217,31 @@ const AdminQboardMain = () => {
                                             </td>
                                         </tr>
                                         <tr className={AdminQboardStyle['display-off']} ref={el => adminQboardRef.current['content'+index] = el}>
-                                            <td colSpan={5}>
-                                                <span>문의 내용:  </span>{Q_BOARD_QCONTENT}<br />
-                                                <a href={PHOTO_PATH+PHOTO_RENAME} download>{PHOTO_NAME}</a>
+                                            <td colSpan={5} className={AdminQboardStyle['qboard-content']}>
+                                                <span className={AdminQboardStyle['content-span']}>{Q_BOARD_QCONTENT}</span><br /><br />
+                                                {
+                                                    PHOTO_PATH !== undefined
+                                                    ? <a href={PHOTO_PATH+PHOTO_RENAME} download style={{float:'right',marginRight:'600px'}}>{PHOTO_NAME}</a>
+                                                    : null
+                                                }
+                                                {
+                                                    Q_BOARD_ACONTENT !== undefined
+                                                    ?   <div className={AdminQboardStyle['answer-area']}>
+                                                            <textarea className={AdminQboardStyle['answer-textarea']} rows='10' ref={el => adminQboardRef.current['updateAnswer' + index] = el} defaultValue={Q_BOARD_ACONTENT} readOnly={true}/>
+                                                            <div>
+                                                                <button className={AdminQboardStyle['answer-btn']} onClick={()=> onNSave(Q_BOARD_CODE, index)}>저장</button>
+                                                                <button className={AdminQboardStyle['answer-btn']} onClick={()=> onUpdate(index)}>수정</button>
+                                                            </div>
+                                                        </div>
+                                                    :   <div className={AdminQboardStyle['answer-area']}>
+                                                            <textarea className={AdminQboardStyle['answer-textarea']} rows='10' ref={el => adminQboardRef.current['answer' + index] = el} />
+                                                            <div>
+                                                                <button className={AdminQboardStyle['answer-btn']} onClick={()=> onSave(Q_BOARD_CODE, index)}>저장</button>
+                                                            </div>
+                                                        </div>
+                                                }
+                                               
                                             </td>
-
                                         </tr>
                                     </tbody>
                                 );

@@ -33,4 +33,7 @@ public interface QBoardService {
 
 	//--------------- 관리자 문의글 첨부파일 가져오기 --------------- //
 	public PhotoVO getAttached(String qboardCode);
+
+	//--------------- 관리자 문의글 답변 업데이트 --------------- //
+	public int updateAnswer(HashMap<String, Object> map);
 }

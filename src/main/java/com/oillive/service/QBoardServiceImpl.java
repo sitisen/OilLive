@@ -90,5 +90,11 @@ public class QBoardServiceImpl implements QBoardService {
 	public PhotoVO getAttached(String qboardCode) {
 		return qBoardDao.getAttached(qboardCode);
 	}
+
+	//--------------- 관리자 문의글 답변 업데이트 --------------- //
+	@Override
+	public int updateAnswer(HashMap<String, Object> map) {
+		return qBoardDao.updateAnswer(map);
+	}
 	
 }

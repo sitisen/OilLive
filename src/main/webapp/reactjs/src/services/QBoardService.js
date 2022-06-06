@@ -10,6 +10,7 @@ const Q_BOARD_COUNT = Q_BOARD_URL + '/qboardCount';                     // 관�
 const Q_BOARD_LIST_PAGE = Q_BOARD_URL + '/qboardListPage';              // 관리자 문의 페이징
 const Q_BOARD_REMOVE =  Q_BOARD_URL + '/qboardRemove';                  // 관리자 문의글 삭제
 const Q_BOARD_GET_ATTACHED =  Q_BOARD_URL + '/getAttached';             // 관리자 문의글 첨부파일 가져오기
+const Q_BOARD_UPDATE_ANSWER =  Q_BOARD_URL + '/updateAnswer';           // 관리자 문의글 답변 업데이트
 
 /* 문의 Service */
 const QBoardService = {
@@ -79,6 +80,15 @@ const QBoardService = {
             params: {
                 qboardCode : qboardCode
             }
+        })
+    },
+
+    updateAnswer(qboardCode, answer){
+        return axios.get(Q_BOARD_UPDATE_ANSWER, {
+            params: {
+                qboardCode : qboardCode,
+                answer : answer
+            } 
         })
     }
 }

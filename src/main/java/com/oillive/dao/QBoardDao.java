@@ -38,4 +38,7 @@ public interface QBoardDao {
 
 	//--------------- 문의글 첨부파일 --------------- //
 	public PhotoVO getAttached(String qboardCode);
+
+	//--------------- 문의글 답변 업데이트 --------------- //
+	public int updateAnswer(HashMap<String, Object> map);
 }

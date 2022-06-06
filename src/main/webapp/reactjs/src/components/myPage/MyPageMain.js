@@ -165,6 +165,8 @@ const MyPageMain = () => {
                 } else {
                     myPageRef.current['detail'+index].className = off;
                 }
+            } else {
+                myPageRef.current['detail'+i].className = off;
             }
         }
     }
@@ -252,6 +254,8 @@ const MyPageMain = () => {
                 } else {
                     myPageRef.current['qboard'+index].className = off;
                 }
+            } else {
+                myPageRef.current['qboard'+i].className = off;
             }
         }
     }
@@ -479,7 +483,7 @@ const MyPageMain = () => {
                                                         <hr /><br />
                                                         <span>
                                                             <span className={MyPageMainStyle['qna-q']}>A.</span><br /><br />
-                                                            <textarea readOnly={true} className={MyPageMainStyle['qna-textarea']} defaultValue={list.qboardAcontent} /><br /><br />
+                                                            <textarea readOnly={true} className={MyPageMainStyle['qna-textarea']} defaultValue={list.qboardAContent} /><br /><br />
                                                         </span>
                                                     </>
                                                 }

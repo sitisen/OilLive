@@ -54,19 +54,19 @@
 	<select id="selectQboardList" parameterType="Map" resultType="Map">
 		SELECT E.*
 		FROM ( SELECT ROWNUM RNUM, q.*
-			FROM ( SELECT user_id, 
-						  q_board_code, q_board_title, q_board_qcontent, 
-						  q_board_acontent, q_board_qdate, q_board_status, q_board_astatus, 
-						  photo_path, photo_rename, photo_code, photo_name
-					FROM q_board
-					JOIN users
-					USING (user_code)
+				 FROM ( SELECT user_id, 
+						  	   q_board_code, q_board_title, q_board_qcontent, 
+						       q_board_acontent, q_board_qdate, q_board_status, q_board_astatus, 
+						       photo_path, photo_rename, photo_code, photo_name
+						  FROM q_board
+						  JOIN users
+						 USING (user_code)
 					LEFT OUTER JOIN photo
-					USING (q_board_code)
-					ORDER BY q_board_code DESC
-				) q 	
+						 USING (q_board_code)
+					  ORDER BY q_board_code DESC
+					 ) q 	
 		    <if test="! userId.isEmpty()">
-		    	WHERE u.user_Id LIKE '%' || #{userId} || '%'
+		    	WHERE user_Id LIKE '%' || #{userId} || '%'
 		    </if>
 		    ) E
 		WHERE E.rnum BETWEEN #{startRow} AND #{endRow}
@@ -84,5 +84,12 @@
 		FROM photo
 		WHERE q_board_code = #{qboardCode}
 	</select>
+	
+	<!-- 관리자 문의글 답변작성 -->
+	<update id="updateAnswer" parameterType="Map">
+		UPDATE q_board
+		SET q_board_acontent = #{answer}, q_board_adate = SYSDATE, q_board_astatus = 'Y'
+		WHERE q_board_code = #{qboardCode}
+	</update>
 	
 </mapper>
