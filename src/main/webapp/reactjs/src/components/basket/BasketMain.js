@@ -170,6 +170,7 @@ const BasketMain = () => {
 
     }
 
+    // 장바구니 구매하기 버튼 클릭 이벤트
     const purchase = () => {
 
         let purchaseGoods = []; // 선택된 장바구니 코드가 담길 배열
@@ -178,8 +179,7 @@ const BasketMain = () => {
 
             if( goodsCheckbox.current[k].checked === true ) {
 
-                purchaseGoods.push(basketData[k].basketCode);
-
+                purchaseGoods.push(basketData[k].BASKET_CODE);
             }
         }
         
@@ -201,6 +201,7 @@ const BasketMain = () => {
         }
 
     };
+
 
     /* ===== 실제 페이지 렌더링 =====  */
     return (
@@ -239,11 +240,11 @@ const BasketMain = () => {
 
                                 :  // 장바구니에 상품이 존재하는 경우
                                     basketData.map( (list, index) => {
-                                        const basketCode = list.basketCode; // 장바구니 갱신에 쓰일 장바구니 코드
-                                        const basketAmount = list.basketAmount; // 장바구니에 담긴 상품 개수
-                                        const goodsCode = list.goodsVO.goodsCode; // 장바구니에 담긴 상품 코드
-                                        const discount = list.goodsVO.goodsDiscount; // 상품의 할인율
-                                        const goodsPrice = list.goodsVO.goodsPrice; // 상품의 원 가격
+                                        const basketCode = list.BASKET_CODE; // 장바구니 갱신에 쓰일 장바구니 코드
+                                        const basketAmount = list.BASKET_AMOUNT; // 장바구니에 담긴 상품 개수
+                                        const goodsCode = list.GOODS_CODE; // 장바구니에 담긴 상품 코드
+                                        const discount = list.GOODS_DISCOUNT; // 상품의 할인율
+                                        const goodsPrice = list.GOODS_PRICE; // 상품의 원 가격
                                         const discountPrice = goodsPrice - (goodsPrice * (discount * 0.01).toFixed(1)); // 상품의 할인된 가격
                                         let deliveryPrice = 0;
 
@@ -281,9 +282,9 @@ const BasketMain = () => {
                                                         </td>
 
                                                         <td className={BasketMainStyle['table-td-2']}>
-                                                            <img className={BasketMainStyle['basket-img']} alt='test' src='/images/goods/Engine-Oil-S-Oil.jpg' />
-                                                            <Link className={BasketMainStyle['basket-link']} to='/goods/goodsdetail' state={{ data: list.goodsVO.goodsCode }}>
-                                                                <span>{list.goodsVO.goodsName}</span>
+                                                            <img className={BasketMainStyle['basket-img']} alt='basketImg' src={list.PHOTO_PATH + list.PHOTO_RENAME} />
+                                                            <Link className={BasketMainStyle['basket-link']} to='/goods/goodsdetail' state={{ data: list.GOODS_CODE }}>
+                                                                <span>{list.GOODS_NAME}</span>
                                                             </Link>
                                                         </td>
 
@@ -309,7 +310,7 @@ const BasketMain = () => {
                                                                     onChange={(e) => validCheck(e, goodsCode)} // 수량 예외 처리 이벤트 (최댓값, 최솟값)
                                                                     onKeyUp={(e) => symbolCheck(e, goodsCode)} // 특수문자 예외처리 이벤트
                                                                     min='1'
-                                                                    max={list.goodsVO.goodsAmount}
+                                                                    max={list.GOODS_AMOUNT}
                                                                 />
                                                                 <button className={BasketMainStyle['basket-amount-button']} 
                                                                         onClick={() => amountClicked(basketCode, goodsCode)} // 기존 개수 화면 전환 및 장바구니 수량 갱신
@@ -335,9 +336,9 @@ const BasketMain = () => {
                                                         </td>
 
                                                         <td className={BasketMainStyle['table-td-2']}>
-                                                            <img className={BasketMainStyle['basket-img']} alt='test' src='/images/goods/Engine-Oil-S-Oil.jpg' />
-                                                            <Link className={BasketMainStyle['basket-link']} to='/goods/goodsdetail' state={{ data: list.goodsVO.goodsCode }}>
-                                                                <span>{list.goodsVO.goodsName}</span>
+                                                            <img className={BasketMainStyle['basket-img']} alt='basketImg' src={list.PHOTO_PATH + list.PHOTO_RENAME} />
+                                                            <Link className={BasketMainStyle['basket-link']} to='/goods/goodsdetail' state={{ data: list.GOODS_CODE }}>
+                                                                <span>{list.GOODS_NAME}</span>
                                                             </Link>
                                                         </td>
                                                         
@@ -346,7 +347,7 @@ const BasketMain = () => {
                                                         <td className={BasketMainStyle['table-td-4']}>
 
                                                             <div ref={el => requestChange.current[goodsCode] = el}>
-                                                                <span>{list.basketAmount}개</span>
+                                                                <span>{list.BASKET_AMOUNT}개</span>
                                                                 <button className={BasketMainStyle['basket-amount-button']} 
                                                                         onClick={() => amountClicked(basketCode, goodsCode)} // 수량 변경 화면으로 전환
                                                                 >
@@ -361,7 +362,7 @@ const BasketMain = () => {
                                                                     onChange={(e) => validCheck(e, goodsCode)} // 수량 예외 처리 이벤트 (최댓값, 최솟값)
                                                                     onKeyUp={(e) => symbolCheck(e, goodsCode)} // 특수문자 예외처리 이벤트
                                                                     min='1'
-                                                                    max={list.goodsVO.goodsAmount}
+                                                                    max={list.GOODS_AMOUNT}
                                                                 />
                                                                 <button className={BasketMainStyle['basket-amount-button']} 
                                                                         onClick={() => amountClicked(basketCode, goodsCode, discount)} // 기존 개수 화면 전환 및 장바구니 수량 갱신

@@ -26,8 +26,8 @@ const GoodsDetailMain = () => {
     /* //. useRef 부분 */
 
     // 기타 변수
-    const goodsPrice = goodsInfo.goodsPrice; // 상품 가격
-    const discountPrice = goodsPrice - (goodsPrice * (goodsInfo.goodsDiscount * 0.01)); // 할인율로 할인된 가격
+    const goodsPrice = goodsInfo.GOODS_PRICE; // 상품 가격
+    const discountPrice = goodsPrice - (goodsPrice * (goodsInfo.GOODS_DISCOUNT * 0.01)); // 할인율로 할인된 가격
 
     /* useEffect 부분 */
     useEffect( () => {
@@ -40,7 +40,7 @@ const GoodsDetailMain = () => {
 
     useEffect( () => {
 
-        if( goodsInfo.goodsDiscount === 0 ) { // 할인 상품일 경우
+        if( goodsInfo.GOODS_DISCOUNT === 0 ) { // 할인 상품일 경우
             if( goodsPrice * amount >= 40000 ) { // 주문 금액이 40000원 이상일 때, 배송비 무료
                 setDeliveryPrice(0);
             } else {
@@ -55,7 +55,7 @@ const GoodsDetailMain = () => {
             }
         }
 
-    }, [amount, goodsInfo.goodsDiscount, goodsPrice, discountPrice])
+    }, [amount, goodsInfo.GOODS_DISCOUNT, goodsPrice, discountPrice])
     /* //. useEffect 부분 */
 
     // 상품 수량 변경 이벤트
@@ -80,7 +80,7 @@ const GoodsDetailMain = () => {
             alert('로그인 후, 이용할 수 있는 기능입니다.');
             navigate('/users/login', {replace:true} );
 
-        } else if( goodsInfo.goodsAmount === 0 ) {
+        } else if( goodsInfo.GOODS_AMOUNT === 0 ) {
 
             alert('해당 상품은 품절되었습니다.');
 
@@ -90,7 +90,7 @@ const GoodsDetailMain = () => {
     // 사용자의 장바구니에 해당 상품 추가
     const insertBasket = () => {
         const userId = sessionStorage.getItem('userId'); // 사용자 아이디
-        const goodsCode = goodsInfo.goodsCode; // 사용자가 선택한 상품 코드
+        const goodsCode = goodsInfo.GOODS_CODE; // 사용자가 선택한 상품 코드
         const basketAmount = amount; // 사용자가 선택한 상품 개수
 
         UserService.insertBasket(userId, goodsCode, basketAmount).then( res => { // 사용자 장바구니에 상품 추가
@@ -107,7 +107,7 @@ const GoodsDetailMain = () => {
     };
 
     // 결제 및 장바구니로 넘길 최종 상품 객체
-    const goodsData = Object.assign({goodsCode: goodsInfo.goodsCode}, { goodsSelectedAmount: amount }, { basketCode: null });
+    const goodsData = Object.assign({goodsCode: goodsInfo.GOODS_CODE}, { goodsSelectedAmount: amount }, { basketCode: null });
 
     /* ===== 실제 페이지 렌더링 =====  */
     return (
@@ -115,28 +115,28 @@ const GoodsDetailMain = () => {
             <div className={`container ${GoodsDetailMainStyle['goods-detail-layout']}`}>
 
                 <div className={`container ${GoodsDetailMainStyle['goods-detail-header']}`}>
-                        { goodsInfo.goodsAmount === 0 
+                        { goodsInfo.GOODS_AMOUNT === 0 
 
                             ? // 상품 재고가 없을 경우
                             <div className={GoodsDetailMainStyle['header-img-layout']}>
                                 <img className={GoodsDetailMainStyle['goods-img-sold']} alt='SoldOut' src='/images/goods/SoldOut.png' />
-                                <img className={GoodsDetailMainStyle['goods-img']} alt='test' src='/images/goods/Indoor-BullsOne-Defuser.jpg' />
+                                <img className={GoodsDetailMainStyle['goods-img']} alt='goodsImg' src={goodsInfo.PHOTO_PATH + goodsInfo.PHOTO_RENAME} />
                             </div>
                             : // 상품 재고가 있을 경우
                             <div className={GoodsDetailMainStyle['header-img-layout']}>
-                                <img className={GoodsDetailMainStyle['goods-img']} alt='test' src='/images/goods/Indoor-BullsOne-Defuser.jpg' />
+                                <img className={GoodsDetailMainStyle['goods-img']} alt='goodsImg' src={goodsInfo.PHOTO_PATH + goodsInfo.PHOTO_RENAME} />
                             </div>
                         }
                     <div className={GoodsDetailMainStyle['header-option-layout']}>
-                        <h5>{goodsInfo.goodsName}</h5>
+                        <h5>{goodsInfo.GOODS_NAME}</h5>
                         <hr/>
                         <div className={GoodsDetailMainStyle['info-content']}>
 
                         {/* 상품 가격 출력 */}
-                        { goodsInfo.goodsDiscount === 0
+                        { goodsInfo.GOODS_DISCOUNT === 0
 
                             // 할인 상품이 아닐 경우
-                            ? goodsInfo.goodsAmount === 0
+                            ? goodsInfo.GOODS_AMOUNT === 0
                                 ? // 상품 재고가 없을 경우
                                     <>
                                         <div className={GoodsDetailMainStyle['goods-price']}>
@@ -155,15 +155,15 @@ const GoodsDetailMain = () => {
                                     </> 
 
                             // 할인 상품일 경우
-                            : goodsInfo.goodsAmount === 0
+                            : goodsInfo.GOODS_AMOUNT === 0
                                 ? // 상품 재고가 없을 경우
                                     <>
-                                        <div key={goodsInfo.goodsCode}>
+                                        <div key={goodsInfo.GOODS_CODE}>
                                             <span className={GoodsDetailMainStyle['goods-discount-price']}>
                                                 {Number(goodsPrice).toLocaleString('ko-KR')}원
                                             </span>
                                             <span className={GoodsDetailMainStyle['goods-discount-rate']}>
-                                                {goodsInfo.goodsDiscount}%
+                                                {goodsInfo.GOODS_DISCOUNT}%
                                             </span>
                                         </div>
                                         <div className={GoodsDetailMainStyle['goods-original-price']}>
@@ -175,12 +175,12 @@ const GoodsDetailMain = () => {
 
                                 : // 상품 재고가 있을 경우
                                     <>
-                                        <div key={goodsInfo.goodsCode}>
+                                        <div key={goodsInfo.GOODS_CODE}>
                                             <span className={GoodsDetailMainStyle['goods-discount-price']}>
                                                 {Number(goodsPrice * amount).toLocaleString('ko-KR')}원
                                             </span>
                                             <span className={GoodsDetailMainStyle['goods-discount-rate']}>
-                                                {goodsInfo.goodsDiscount}%
+                                                {goodsInfo.GOODS_DISCOUNT}%
                                             </span>
                                         </div>
                                         <div className={GoodsDetailMainStyle['goods-original-price']}>
@@ -192,8 +192,8 @@ const GoodsDetailMain = () => {
                         }
 
                             <div className={GoodsDetailMainStyle['goods-info']}>
-                                <span>상품코드 : {goodsInfo.goodsCode}</span>
-                                <span>분류 : {goodsInfo.goodsKind}</span>
+                                <span>상품코드 : {goodsInfo.GOODS_CODE}</span>
+                                <span>분류 : {goodsInfo.GOODS_KIND}</span>
                                 <span>배송비 : {deliveryPrice.toLocaleString('ko-KR')}원</span>
                             </div>
 
@@ -204,11 +204,11 @@ const GoodsDetailMain = () => {
                                         ref={amountCount}
                                         onChange={(e) => amountChange(e)}
                                         min='1'
-                                        max={goodsInfo.goodsAmount}
+                                        max={goodsInfo.GOODS_AMOUNT}
                                         value={amount}
                                 />
 
-                                { goodsInfo.goodsAmount === 0
+                                { goodsInfo.GOODS_AMOUNT === 0
                                     ? // 상품 재고가 없을 경우
                                         <>
                                             <Link className={GoodsDetailMainStyle['goods-buy-Link']} to='#' onClick={(e) => purchaseClick(e)}>
@@ -268,7 +268,7 @@ const GoodsDetailMain = () => {
                 <div className={`container ${GoodsDetailMainStyle['goods-detail-container']}`}>
                     <div className={GoodsDetailMainStyle['container-info']}>
                         <textarea className={`form-control ${GoodsDetailMainStyle['info-textarea']}`} 
-                                  value={goodsInfo.goodsContent}
+                                  value={goodsInfo.GOODS_CONTENT}
                                   readOnly
                         />
                     </div>

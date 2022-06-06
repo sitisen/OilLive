@@ -190,7 +190,7 @@ const GoodslistMain = () => {
                                                         <div className={GoodslistMainStyle['goods-item']}>
                                                             <div className={GoodslistMainStyle['goods-item-img']}>
                                                                 <img className={GoodslistMainStyle['item-img-sold']} alt='SoldOut' src='/images/goods/SoldOut.png' />
-                                                                <img className={GoodslistMainStyle['item-img']} alt='test' src='/images/goods/Engine-Oil-Zic.jpg' />
+                                                                <img className={GoodslistMainStyle['item-img']} alt='goodsImg' src={list.PHOTO_PATH + list.PHOTO_RENAME} />
                                                             </div>
                                                             <div className={GoodslistMainStyle['goods-item-title']}>
                                                                 <span className={GoodslistMainStyle['item-span-sold']}>{list.GOODS_NAME}</span>
@@ -211,7 +211,7 @@ const GoodslistMain = () => {
                                                 >
                                                     <div className={GoodslistMainStyle['goods-item']}>
                                                             <div className={GoodslistMainStyle['goods-item-img']}>
-                                                                <img className={GoodslistMainStyle['item-img']} alt='test' src='/images/goods/Indoor-UnderScore-Defuser.jpg' />
+                                                                <img className={GoodslistMainStyle['item-img']} alt='goodsImg' src={list.PHOTO_PATH + list.PHOTO_RENAME} />
                                                             </div>
                                                             <div className={GoodslistMainStyle['goods-item-title']}>
                                                                 <span>{list.GOODS_NAME}</span>
@@ -233,7 +233,7 @@ const GoodslistMain = () => {
                                                     <div className={GoodslistMainStyle['goods-item']}>
 
                                                             <div className={GoodslistMainStyle['goods-item-img']}>
-                                                                <img className={GoodslistMainStyle['item-img']} alt='test' src='/images/goods/Indoor-Mobenta-PhoneCharge.jpg' />
+                                                                <img className={GoodslistMainStyle['item-img']} alt='goodsImg' src={list.PHOTO_PATH + list.PHOTO_RENAME} />
                                                             </div>
                                                             <div className={GoodslistMainStyle['goods-item-title']}>
                                                                 <span>{list.GOODS_NAME}</span>
