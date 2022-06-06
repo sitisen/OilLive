@@ -123,7 +123,7 @@
 }
 
 .page-div {
-    margin-left: 50%;
+    margin-left: 45%;
     margin-top: 30px;
 }
 
@@ -146,6 +146,7 @@
 /* modal button div */
 .modal-button {
     text-align: right;
+    padding-bottom: 30px;
 }
 
 /* modal 수정하기 버튼 */

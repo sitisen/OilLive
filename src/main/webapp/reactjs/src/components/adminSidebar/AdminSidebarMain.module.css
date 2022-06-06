@@ -2,16 +2,9 @@
 .admin-side-layout {
     background-color: rgb(31,31,31);
     width: 35vh;
-    height: 95vh;
+    height: 100vh;
     text-align: center;
 }
-
-/* 맨 윗 라인 */
-.top-line {
-    height: 5vh;
-    background-color: rgb(31,31,31);
-}
-
 
 /* 관리자 사이드바 로고 div */
 .admin-side-logo {
@@ -93,7 +86,7 @@
 
 /* 전체화면 보이기 */
 .display-on {
-    position: absolute;
+    position: fixed;
     left: 0px;
     transition: 1s;
 }
