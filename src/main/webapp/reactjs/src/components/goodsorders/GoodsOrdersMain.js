@@ -460,8 +460,8 @@ const GoodsOrdersMain = () => {
     
                         selectedGoods.push({
                             userCode: userCode,
-                            goodsCode : list.goodsVO.goodsCode,
-                            orderAmount : list.basketAmount,
+                            goodsCode : list.GOODS_CODE,
+                            orderAmount : list.BASKET_AMOUNT,
                             orderAddress: orderAddress,
                             orderRequest: orderRequest
                         })
@@ -524,7 +524,6 @@ const GoodsOrdersMain = () => {
         }
 
     }
-
 
     /* ===== 실제 페이지 렌더링 =====  */
     if( login !== null ) { // 로그인 되어있을 경우
@@ -658,11 +657,11 @@ const GoodsOrdersMain = () => {
                                         switch (purchaseType) {
 
                                             case '바로구매': // 바로 구매일 경우,                                    
-                                                            if( list.goodsDiscount === 0 ) { // 할인 중인 상품이 아닐 경우
-                                                                goodsPrice = list.goodsPrice * goodsSelectedAmount;
+                                                            if( list.GOODS_DISCOUNT === 0 ) { // 할인 중인 상품이 아닐 경우
+                                                                goodsPrice = list.GOODS_PRICE * goodsSelectedAmount;
                     
                                                             } else { // 할인 중인 상품일 경우
-                                                                goodsPrice = ( list.goodsPrice - (list.goodsPrice * (list.goodsDiscount * 0.01)) ) * goodsSelectedAmount;
+                                                                goodsPrice = ( list.GOODS_PRICE - (list.GOODS_PRICE * (list.GOODS_DISCOUNT * 0.01)) ) * goodsSelectedAmount;
                                                             }
                     
                                                             if(goodsPrice >= 40000) { // 상품 가격이 40000원 이상일 경우
@@ -677,7 +676,7 @@ const GoodsOrdersMain = () => {
                     
                                                             return (
                                                                 <tr key={index}>
-                                                                    <td>{list.goodsName}</td>
+                                                                    <td>{list.GOODS_NAME}</td>
                                                                     <td>{goodsSelectedAmount}개</td>
                                                                     <td>{goodsPrice.toLocaleString('ko-KR')}원</td>
                                                                     <td>{deliveryPrice.toLocaleString('ko-KR')}원</td>
@@ -685,11 +684,11 @@ const GoodsOrdersMain = () => {
                                                             )
 
                                                     default: // 장바구니에 담긴 상품 구매일 경우
-                                                            if( list.goodsVO.goodsDiscount === 0 ) { // 할인 중인 상품이 아닐 경우
-                                                                goodsPrice = list.goodsVO.goodsPrice * list.basketAmount;
+                                                            if( list.GOODS_DISCOUNT === 0 ) { // 할인 중인 상품이 아닐 경우
+                                                                goodsPrice = list.GOODS_PRICE * list.BASKET_AMOUNT;
                     
                                                             } else { // 할인 중인 상품 일 경우
-                                                                goodsPrice = ( list.goodsVO.goodsPrice - (list.goodsVO.goodsPrice * (list.goodsVO.goodsDiscount * 0.01)) ) * list.basketAmount;
+                                                                goodsPrice = ( list.GOODS_PRICE - (list.GOODS_PRICE * (list.GOODS_DISCOUNT * 0.01)) ) * list.BASKET_AMOUNT;
                                                             }
                     
                                                             if(goodsPrice >= 40000) { // 상품 가격이 40000원 이상일 경우
@@ -704,8 +703,8 @@ const GoodsOrdersMain = () => {
                     
                                                             return (
                                                                 <tr key={index}>
-                                                                    <td>{list.goodsVO.goodsName}</td>
-                                                                    <td>{list.basketAmount}개</td>
+                                                                    <td>{list.GOODS_NAME}</td>
+                                                                    <td>{list.BASKET_AMOUNT}개</td>
                                                                     <td>{goodsPrice.toLocaleString('ko-KR')}원</td>
                                                                     <td>{deliveryPrice.toLocaleString('ko-KR')}원</td>
                                                                 </tr>
