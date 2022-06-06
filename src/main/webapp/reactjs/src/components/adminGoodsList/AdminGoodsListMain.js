@@ -49,17 +49,17 @@ const AdminGoodsListMain = () => {
     }
 
     // 상품 삭제
-    const goodsDelete = (goodsCode, photoCode, eventName, photoPath, photoRename) => {
+    const goodsDelete = (goodsCode, goodsName, photoCode, photoPath, photoReName) => {
 
-        // if(window.confirm(eventName + '\n정말로 삭제하시겠습니까?')) {
-        //     AdminService.deleteEvent(goodsCode, photoCode, photoPath, photoRename).then( res => {
+        if(window.confirm(goodsName + '\n정말로 삭제하시겠습니까?')) {
+            AdminService.deleteGoods(goodsCode, photoCode, photoPath, photoReName).then( res => {
 
-        //         if(res.data === 1) {
-        //             setIsDelete(true);
+                if(res.data === 1) {
+                    setIsDelete(true);
 
-        //         }
-        //     })
-        // }
+                }
+            })
+        }
 
     }
 
@@ -132,7 +132,7 @@ const AdminGoodsListMain = () => {
 
                                 : // 상품가 존재할 경우,                            
                                     goodsData.map( (list, index) => {
-                                        const { GOODS_NAME, GOODS_CONTENT, GOODS_KIND, GOODS_PRICE, GOODS_DISCOUNT, GOODS_AMOUNT} = list;
+                                        const { GOODS_NAME, GOODS_CONTENT, GOODS_KIND, GOODS_PRICE, GOODS_DISCOUNT, GOODS_AMOUNT, PHOTO_PATH, PHOTO_RENAME} = list;
 
                                         return (                                
                                             <tr key={list.GOODS_CODE}>
@@ -140,7 +140,7 @@ const AdminGoodsListMain = () => {
                                                     <img className={AdminGoodsListMainStyle['adminGoods-img']} 
                                                         ref={el => imgRef.current[index] = el}
                                                         alt='adminGoodsImg' 
-                                                        src='/images/icon/qna.png'
+                                                        src={PHOTO_PATH + PHOTO_RENAME}
                                                     />
                                                 </td>
                                                 <td className={AdminGoodsListMainStyle['adminGoods-td-2']}>
@@ -159,7 +159,7 @@ const AdminGoodsListMain = () => {
                                                     {GOODS_DISCOUNT}%
                                                 </td>
                                                 <td>
-                                                    {GOODS_AMOUNT}개
+                                                    {GOODS_AMOUNT.toLocaleString('ko-KR')}개
                                                 </td>
                                                 <td>
                                                     <Link to={'/admin/goodsControl'}
@@ -170,7 +170,7 @@ const AdminGoodsListMain = () => {
                                                         </button>
                                                     </Link>
                                                     <button className={`btn btn-danger ${AdminGoodsListMainStyle['admin-button']}`} 
-                                                            onClick={() => goodsDelete()}> {/* 상품 코드, 사진 코드, 사진 경로, 사진 이름 */}
+                                                            onClick={() => goodsDelete(list.GOODS_CODE, GOODS_NAME, list.PHOTO_CODE, PHOTO_PATH, PHOTO_RENAME)}> {/* 상품 코드, 사진 코드, 사진 경로, 사진 이름 */}
                                                                 삭제
                                                     </button>
                                                 </td>
