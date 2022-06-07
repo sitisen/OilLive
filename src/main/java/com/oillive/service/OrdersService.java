@@ -3,6 +3,7 @@ package com.oillive.service;
 import java.util.List;
 
 import com.oillive.vo.OrdersVO;
+import com.oillive.vo.PaginationVO;
 
 public interface OrdersService {
 
@@ -20,4 +21,10 @@ public interface OrdersService {
 
 	//--------------- 전체 결제목록 --------------- //
 	public List<OrdersVO> orderAllList();
+
+	//--------------- 전체 결제목록 개수 (페이징) --------------- //
+	public int selectOrderCount(String term);
+
+	//--------------- 전체 결제목록 (페이징) --------------- //
+	public List<OrdersVO> selectOrderList(String term, PaginationVO paging);
 }

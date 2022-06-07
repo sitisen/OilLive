@@ -1,0 +1,120 @@
+/* 전체 레이아웃 */
+.admin-orderList-layout {
+    height: 95vh;
+}
+
+/* 전체 label div */
+.admin-order-label {
+    margin-left: 18%;
+    padding:30px;
+}
+
+/* 판매내역 table div */
+.admin-order-list {
+    margin-left: 18%;
+    padding:30px;
+}
+
+
+/* 판매내역 table */
+.admin-order-table {
+    width: 100%;
+    text-align: center;
+}
+
+
+/* th */
+.admin-order-table th {
+    height: 50px;
+    border-bottom: 1px solid;
+    border-top: 1px solid;
+}
+
+/* td */
+.admin-order-table td {
+    height: 60px;
+    text-overflow: ellipsis;
+    overflow: hidden; 
+}
+
+/* tr */
+.admin-order-table-tr {
+    border-bottom: 0.5px solid rgba(150, 150, 150, 0.5);
+}
+
+.admin-user-table-tr:hover {
+    background-color: rgb(234, 234, 234);
+}
+
+/* 페이지버튼 */
+.page-button {
+    color: rgb(82, 167, 67) !important;
+    font-size: 18px;
+}
+
+.page-button:active,
+.page-button:focus {
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+.page-active {
+    background-color: #7CC135 !important;
+    color: white !important;
+}
+
+.page-div {
+    margin-left: 45%;
+    margin-top: 30px;
+}
+
+/* 검색 */
+.admin-search {
+    width: 100%;
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+/* 검색 input */
+.admin-input {
+    width: 20%;
+    border: 0.1em solid rgba(150, 150, 150, 0.5);
+    outline: none;
+    height: 40px;
+    padding-left: 10px;
+}
+
+.admin-input:focus {
+    border-color: rgb(107, 187, 72);
+    box-shadow: 0 0 6px 0 rgb(107, 187, 72);
+}
+
+/* 상품명 */
+.name {
+    width: 20%;
+}
+
+/* 판매일 */
+.date {
+    width: 10%;
+}
+
+/* 구매자 */
+.id {
+    width: 10%;
+}
+
+/* 배송지 */
+.address {
+    width: 25%;
+}
+
+/* 요청사항 */
+.request {
+    width: 25%;
+}
+
+/* 수량 */
+.amount {
+    width: 10%;
+}

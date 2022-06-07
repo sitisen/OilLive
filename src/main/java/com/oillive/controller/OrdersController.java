@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.oillive.service.OrdersService;
+import com.oillive.service.PaginationService;
 import com.oillive.service.UsersService;
 import com.oillive.vo.OrdersVO;
+import com.oillive.vo.PaginationVO;
 
 @RestController
 @RequestMapping("/orders")
@@ -27,6 +29,9 @@ public class OrdersController {
 	
 	@Autowired
 	UsersService usersService;
+	
+	@Autowired
+	PaginationService paginationService;
 
 	//--------------- 결제 내역 추가 --------------- //
 	@PutMapping("/insertOrders")
@@ -64,5 +69,30 @@ public class OrdersController {
 	@GetMapping("/orderAllList")
 	public List<OrdersVO> orderAllList() {
 		return ordersService.orderAllList();
+	}
+	
+	//--------------- 전체 결제목록 (페이징) --------------- //
+	@GetMapping("/orderListPage")
+	public HashMap<String, Object> orderListPage( 
+			@RequestParam( name = "term" ) String term,
+			@RequestParam( name = "currentPage" ) int currentPage) {
+		
+		// Pagination 처리 변수
+		int totalCount = ordersService.selectOrderCount(term); // Qna 테이블 데이터 개수
+		int pageLimit = 5;  // 페이징바의 최대 노출 번호
+		int listRange = 5; // 한 페이지당 노출시킬 데이터의 개수
+		
+		// 페이징 처리 객체
+		PaginationVO paging = paginationService.pagination(totalCount, pageLimit, listRange, currentPage);
+		
+		// qna 목록이 담기는 리스트
+		List<OrdersVO> orderList = ordersService.selectOrderList(term, paging);
+		
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		
+		result.put("paging", paging);
+		result.put("orderList", orderList);
+		
+		return result;
 	}
 }

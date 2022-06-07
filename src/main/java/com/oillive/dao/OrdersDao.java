@@ -25,5 +25,11 @@ public interface OrdersDao {
 
 	//--------------- 전체 판매목록 --------------- //
 	public List<OrdersVO> orderAllList();
+
+	//--------------- 전체 판매목록 개수(페이징) --------------- //
+	public int selectOrderCount(HashMap<String, String> param);
+
+	//--------------- 전체 판매목록(페이징) --------------- //
+	public List<OrdersVO> selectOrderList(HashMap<String, String> param);
 	
 }

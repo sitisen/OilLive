@@ -46,4 +46,47 @@
         AND EXTRACT(YEAR FROM SYSDATE) || '/12/31'
 	</select>
 	
+	<!-- 관리자 기간별 판매내역 페이징 개수 -->
+	<select id="selectOrderCount" resultType="int">
+		SELECT count(*)
+		FROM orders
+		WHERE 1 = 1
+		    <if test="term.equals('week')">
+		    	 AND order_date BETWEEN to_char(SYSDATE-8,'yyyy-mm-dd') AND SYSDATE
+		    </if>
+    	 	<if test="term.equals('month')">
+		    	 AND order_date BETWEEN to_char(add_months(SYSDATE,-1),'yyyy-mm-dd') and SYSDATE
+		    </if>
+		     <if test="term.equals('year')">
+		    	 AND order_date BETWEEN to_char(add_months(SYSDATE,-12),'yyyy-mm-dd') and SYSDATE
+		    </if>
+	</select>
+	
+	<!-- 판매내역 페이징 -->
+	<select id="selectOrderList" parameterType="Map" resultType="Map">
+		SELECT E.*
+		FROM ( SELECT ROWNUM RNUM, o.*
+			FROM (
+					SELECT order_code, order_date, goods_name, user_id, order_request, order_address, order_amount
+					FROM orders
+					JOIN users
+					USING (user_code)
+					JOIN goods
+					USING (goods_code)
+					ORDER BY order_code DESC
+				 ) o
+        	WHERE 1 = 1
+	     	<if test="term.equals('week')">
+		    	 AND o.order_date BETWEEN to_char(SYSDATE-8,'yyyy-mm-dd') AND SYSDATE
+		    </if>
+    	 	<if test="term.equals('month')">
+		    	 AND o.order_date BETWEEN to_char(add_months(SYSDATE,-1),'yyyy-mm-dd') AND SYSDATE
+		    </if>
+		     <if test="term.equals('year')">
+		    	 AND o.order_date BETWEEN to_char(add_months(SYSDATE,-12),'yyyy-mm-dd') AND SYSDATE
+		    </if>
+		        ) E
+		WHERE E.rnum BETWEEN #{startRow} AND #{endRow}
+	</select>
+	
 </mapper>

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.oillive.dao.OrdersDao;
 import com.oillive.vo.OrdersVO;
+import com.oillive.vo.PaginationVO;
 
 @Service
 public class OrdersServiceImpl implements OrdersService {
@@ -74,6 +75,33 @@ public class OrdersServiceImpl implements OrdersService {
 	public List<OrdersVO> orderAllList() {
 		
 		return ordersDao.orderAllList();
+	}
+
+	//--------------- 전체 결제목록 개수(페이징) --------------- //
+	@Override
+	public int selectOrderCount(String term) {
+		// Mapper 에 여러 개의 변수를 전달해야 하기 때문에 Map 으로 가공
+		HashMap<String, String> param = new HashMap<String, String>();
+		param.put("term", term);
+
+		return ordersDao.selectOrderCount(param);
+	}
+
+	//--------------- 전체 결제목록 (페이징) --------------- //
+	@Override
+	public List<OrdersVO> selectOrderList(String term, PaginationVO paging) {
+		// 한 페이지 당 8개의 상품 정보를 보여주기 위해 WHERE 절에 쓰일 변수
+		int startRow = (paging.getCurrentPage() - 1) * paging.getListRange() + 1;
+		int endRow = startRow + paging.getListRange() - 1;
+		
+		// Mapper 에 여러 개의 변수를 전달해야 하기 때문에 Map 으로 가공
+		HashMap<String, String> param = new HashMap<String, String>();
+
+		param.put("term", term);
+		param.put("startRow", String.valueOf(startRow));
+		param.put("endRow", String.valueOf(endRow));	
+		
+		return ordersDao.selectOrderList(param);
 	}
 	
 }
