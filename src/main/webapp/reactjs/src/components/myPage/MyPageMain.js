@@ -260,6 +260,20 @@ const MyPageMain = () => {
         }
     }
 
+    // 회원탈퇴 label 클릭시 이벤트
+    const onQuit = () => {
+        if(window.confirm('탈퇴시 개인정보가 30일간 유지되며\n이후에 개인정보 및 서비스 이용기록은 모두 삭제됩니다.\n탈퇴 후 취소가 가능한 기간은 30일 입니다.\n탈퇴 신청을 하시겠습니까?')){
+            UserService.quit(sessionStorage.getItem('userId')).then( res => {
+                if(res.data === 1){
+                    alert('탈퇴처리가 완료되었습니다.\n이용해주셔서 감사합니다.');
+                    sessionStorage.removeItem('userId');
+                    navigate('/', {replace:false});
+                }
+            });
+        }
+    }
+
+
     return (
         <div className={MyPageMainStyle['mypage-main-layout']}><br />
             <div className={MyPageMainStyle['mypage-main']}>
@@ -501,6 +515,9 @@ const MyPageMain = () => {
                         </tbody>
                     }
                 </table>
+                <div className={MyPageMainStyle['quit-button']}>
+                    <span className={MyPageMainStyle['quit-span']} onClick={onQuit}>회원탈퇴&gt;</span>
+                </div>
             </div>
         </div>
     );

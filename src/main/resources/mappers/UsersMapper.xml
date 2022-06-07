@@ -195,4 +195,18 @@
 	  	WHERE TO_CHAR(TO_DATE(USER_BIRTH, 'yyyy/MM/DD'), 'yyyy') between #{startYear} and #{endYear}
 	</select>
 	
+	<!-- 회원탈퇴 -->
+	<update id="quit" parameterType="int">
+		UPDATE users
+		SET user_status = 'N'
+		WHERE user_code = #{userCode}
+	</update>
+	
+	<!-- 탈퇴유저 검사 -->
+	<select id="quitUser" parameterType="String" resultType="int">
+		SELECT count(*)
+	  	FROM users
+	  	WHERE user_id = #{userId}
+	  	AND user_status = 'N'
+	</select>
 </mapper>

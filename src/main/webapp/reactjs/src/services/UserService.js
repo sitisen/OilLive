@@ -24,6 +24,7 @@ const USERS_UPDATE_INFO = USERS_URL + '/updateInfo'; // 사용자 정보변경
 const USERS_SEND_EMAIL = USERS_URL + '/sendEmail'; // 사용자 이메일 인증
 const USERS_LIST = USERS_URL + '/getUserList'; // 이용자 목록
 const USERS_COUNT = USERS_URL + '/getUserCount'; // 이용자수
+const USERS_QUIT = USERS_URL + '/quit'; // 회원탈퇴
 
 /* 사용자 Service */
 const UserService = {
@@ -205,7 +206,17 @@ const UserService = {
 
     getUserCount(){
         return axios.get(USERS_COUNT);
+    },
+
+    /* 회원탈퇴 */
+    quit(userId){
+        return axios.get(USERS_QUIT,{
+            params: {
+                userId: userId
+            }
+        });
     }
+
     
 }
 

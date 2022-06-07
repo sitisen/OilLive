@@ -542,4 +542,16 @@ public class UsersServiceImpl implements UsersService{
 		return list;
 	}
 
+	//--------------- 회원탈퇴 --------------- //
+	@Override
+	public int quit(int userCode) {
+		return usersDao.quit(userCode);
+	}
+
+	//--------------- 탈퇴유저 검사 --------------- //
+	@Override
+	public int quitUser(String userId) {
+		return usersDao.quitUser(userId);
+	}
+
 }

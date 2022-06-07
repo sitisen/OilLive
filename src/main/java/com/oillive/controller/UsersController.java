@@ -90,6 +90,14 @@ public class UsersController {
 			}
 		}		
 		
+		// 탈퇴한사람인지 확인
+		int quit = usersService.quitUser(userId);
+		
+		// 탈퇴처리한 계정일때
+		if(quit == 1) {
+			result = 3;
+		}
+		
 		return result;
 	}
 	
@@ -430,6 +438,15 @@ public class UsersController {
 	@GetMapping("/getUserCount")
 	public List<Integer> getUserCount(){
 		return usersService.getUserCount();
+	}
+	
+	//--------------- 회원탈퇴 --------------- //
+	@GetMapping("/quit")
+	public int quit(@RequestParam( name = "userId" ) String userId){
+		// 유저코드 받아옴
+		int userCode = usersService.getUserCode(userId);
+		
+		return usersService.quit(userCode);
 	}
 	
 }

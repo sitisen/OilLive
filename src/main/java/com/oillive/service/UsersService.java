@@ -90,5 +90,11 @@ public interface UsersService {
 
 	//--------------- 이용자수 --------------- //	
 	public List<Integer> getUserCount();
+
+	//--------------- 회원탈퇴 --------------- //	
+	public int quit(int userCode);
+
+	//--------------- 탈퇴유저 검사 --------------- //	
+	public int quitUser(String userId);
 	
 }

@@ -90,5 +90,11 @@ public interface UsersDao {
 
 	//--------------- 이용자 연령별 --------------- //
 	public Integer getUserCount(HashMap<String, Integer> m);
+
+	//--------------- 회원탈퇴 --------------- //
+	public int quit(int userCode);
+
+	//--------------- 탈퇴유저 검사 --------------- //
+	public int quitUser(String userId);
 	
 }

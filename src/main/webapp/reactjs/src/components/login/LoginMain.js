@@ -73,25 +73,29 @@ const LoginMain = () => {
       return 0;
     }
     
-    UserService.login(inputs).then( res => {if(res.data === 0){
+    UserService.login(inputs).then( res => {
+      // 회원 아이디 비밀번호 불일치
+      if(res.data === 0){
       alert('아이디 또는 비밀번호가 일치하지 않습니다.');
       inputuserPwd.current.value = null;
       inputuserId.current.focus();
-    } else {
-      if(res.data === 2){
-        sessionStorage.setItem('admin', inputuserId.current.value);
-        navigate('/admin/home', {replace:true} );
       } else {
-        // 세션 및 쿠키 저장
-        if(isRemember){
-          setCookie('rememberUsersId', userId, {maxAge: 2000});
+        // 관리자 로그인
+        if(res.data === 2){
+          sessionStorage.setItem('admin', inputuserId.current.value);
+          navigate('/admin/home', {replace:true} );
+        } else if(res.data === 3) {
+          alert('현재 탈퇴신청한 계정입니다.\n관리자에게 문의해 탈퇴를 취소해주세요.');
+        } else {
+          // 세션 및 쿠키 저장
+          if(isRemember){
+            setCookie('rememberUsersId', userId, {maxAge: 2000});
+          }
+          sessionStorage.setItem('userId', userId);
+          navigate('/', {replace:true} );
         }
-        sessionStorage.setItem('userId', userId);
-        navigate('/', {replace:true} );
       }
-    }}
-    )
-
+    });
   }
 
   // 엔터시 로그인 함수 호출

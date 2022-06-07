@@ -391,3 +391,17 @@
 .qna-q-title {
     font-weight: bold;
 }
+
+/* 탈퇴 label div */
+.quit-button {
+    text-align: right;
+    margin-right: 60px;
+}
+
+/* 탈퇴 label */
+.quit-span {
+    font-size: 14px;
+    color: rgb(118, 118, 120);
+    font-weight: bold;
+    cursor: pointer;
+}
