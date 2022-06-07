@@ -114,6 +114,7 @@
 
 /* ----- table 태그 CSS */
 .basket-table {
+    width: 100%;
     text-align: center;
     border-top: 2px solid rgb(79, 97, 139);
     border-bottom: 2px solid rgb(79, 97, 139);
