@@ -210,4 +210,38 @@
 	  	WHERE user_id = #{userId}
 	  	AND user_status = 'N'
 	</select>
+	
+	<!-- 유저목록 개수 (페이징) -->
+	<select id="selectUserCount" parameterType="Map" resultType="int">
+		SELECT count(*)
+		  FROM users
+		 WHERE 1 = 1
+		    <if test="! userId.isEmpty()">
+		    	AND user_id LIKE '%' || #{userId} || '%'
+		    </if>
+	</select>
+	
+	<!-- 유저목록 조회 페이징처리 -->
+	<select id="selectUserList" parameterType="Map" resultType="Map">
+		SELECT E.*
+		FROM ( SELECT ROWNUM RNUM, u.*
+			FROM (
+					SELECT *
+					FROM users
+					ORDER BY user_code DESC
+				 ) u
+        	WHERE 1 = 1
+		    <if test="! userId.isEmpty()">
+		    	AND user_id LIKE '%' || #{userId} || '%'
+		    </if>
+		        ) E
+		WHERE E.rnum BETWEEN #{startRow} AND #{endRow}
+	</select>
+	
+	<!-- 회원탈퇴 취소처리 -->
+	<update id="cancelQuit" parameterType="String">
+		UPDATE users
+		SET user_status = 'Y'
+		WHERE user_code = #{userCode}
+	</update>
 </mapper>

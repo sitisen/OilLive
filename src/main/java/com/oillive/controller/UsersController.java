@@ -22,10 +22,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.oillive.service.AdminService;
 import com.oillive.service.GoodsService;
+import com.oillive.service.PaginationService;
 import com.oillive.service.UsersService;
 import com.oillive.vo.BasketVO;
 import com.oillive.vo.CardVO;
 import com.oillive.vo.ElectricCarVO;
+import com.oillive.vo.PaginationVO;
 import com.oillive.vo.UsersVO;
 
 @RestController
@@ -44,6 +46,9 @@ public class UsersController {
 	
 	@Autowired
     PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	PaginationService paginationService;
 	
 	// 난수생성
 	Random rand = new Random();
@@ -449,6 +454,35 @@ public class UsersController {
 		return usersService.quit(userCode);
 	}
 	
+	//--------------- 회원목록 페이징 --------------- //
+	@GetMapping("/userListPage")
+	public HashMap<String, Object> userListPage( @RequestParam( name = "userId" ) String userId,
+			@RequestParam( name = "currentPage" ) int currentPage ) {
+		
+		// Pagination 처리 변수
+		int totalCount = usersService.selectUserCount(userId); // Qna 테이블 데이터 개수
+		int pageLimit = 5;  // 페이징바의 최대 노출 번호
+		int listRange = 5; // 한 페이지당 노출시킬 데이터의 개수
+		
+		// 페이징 처리 객체
+		PaginationVO paging = paginationService.pagination(totalCount, pageLimit, listRange, currentPage);
+		
+		// qna 목록이 담기는 리스트
+		List<UsersVO> userList = usersService.selectUserList(userId, paging);
+		
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		
+		result.put("paging", paging);
+		result.put("userList", userList);
+		
+		return result;
+	}
+	
+	//--------------- 회원탈퇴 취소처리 --------------- //
+	@GetMapping("/cancelQuit")
+	public int cancelQuit(@RequestParam( name = "userCode" ) String userCode){
+		return usersService.cancelQuit(userCode);
+	}
 }
 
 

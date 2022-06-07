@@ -37,6 +37,7 @@ import com.oillive.vo.ApiAvgSidoPriceVO;
 import com.oillive.vo.ApiLowTop10VO;
 import com.oillive.vo.CardVO;
 import com.oillive.vo.ElectricCarVO;
+import com.oillive.vo.PaginationVO;
 import com.oillive.vo.UsersVO;
 
 import net.nurigo.java_sdk.api.Message;
@@ -552,6 +553,40 @@ public class UsersServiceImpl implements UsersService{
 	@Override
 	public int quitUser(String userId) {
 		return usersDao.quitUser(userId);
+	}
+
+	//--------------- 회원목록 페이징 개수 --------------- //
+	@Override
+	public int selectUserCount(String userId) {
+		// Mapper 에 여러 개의 변수를 전달해야 하기 때문에 Map 으로 가공
+		HashMap<String, String> param = new HashMap<String, String>();
+
+		param.put("userId", userId);
+		
+		return usersDao.selectUserCount(param);
+	}
+
+	//--------------- 회원목록 페이징 --------------- //
+	@Override
+	public List<UsersVO> selectUserList(String userId, PaginationVO paging) {
+		// 한 페이지 당 5개의 사용자 정보를 보여주기 위해 WHERE 절에 쓰일 변수
+		int startRow = (paging.getCurrentPage() - 1) * paging.getListRange() + 1;
+		int endRow = startRow + paging.getListRange() - 1;
+		
+		// Mapper 에 여러 개의 변수를 전달해야 하기 때문에 Map 으로 가공
+		HashMap<String, String> param = new HashMap<String, String>();
+
+		param.put("userId", userId);
+		param.put("startRow", String.valueOf(startRow));
+		param.put("endRow", String.valueOf(endRow));	
+		
+		return usersDao.selectUserList(param);
+	}
+
+	//--------------- 회원탈퇴 취소처리 --------------- //
+	@Override
+	public int cancelQuit(String userCode) {
+		return usersDao.cancelQuit(userCode);
 	}
 
 }

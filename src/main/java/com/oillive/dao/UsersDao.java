@@ -96,5 +96,14 @@ public interface UsersDao {
 
 	//--------------- 탈퇴유저 검사 --------------- //
 	public int quitUser(String userId);
+
+	//--------------- 회원목록 페이징 개수 --------------- //
+	public int selectUserCount(HashMap<String, String> param);
+
+	//--------------- 회원목록 페이징 --------------- //
+	public List<UsersVO> selectUserList(HashMap<String, String> param);
+
+	//--------------- 회원탈퇴 취소처리 --------------- //
+	public int cancelQuit(String userCode);
 	
 }

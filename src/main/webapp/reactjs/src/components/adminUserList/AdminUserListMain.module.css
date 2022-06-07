@@ -1,0 +1,106 @@
+/* 전체 레이아웃 */
+.admin-userList-layout {
+    height: 95vh;
+}
+
+/* 전체 label div */
+.admin-user-label {
+    margin-left: 18%;
+    padding:30px;
+}
+
+/* 유저목록 table div */
+.admin-user-list {
+    margin-left: 18%;
+    padding:30px;
+}
+
+/* 유저목록 table */
+.admin-user-table {
+    width: 100%;
+    text-align: center;
+}
+
+
+/* th */
+.admin-user-table th {
+    height: 50px;
+    width: 16.6%;
+    border-bottom: 1px solid;
+    border-top: 1px solid;
+}
+
+/* td */
+.admin-user-table td {
+    height: 60px;
+    text-overflow: ellipsis;
+    white-space : nowrap;
+    overflow: hidden; 
+}
+
+/* tr */
+.admin-user-table-tr {
+    border-bottom: 0.5px solid rgba(150, 150, 150, 0.5);
+}
+
+.admin-user-table-tr:hover {
+    background-color: rgb(234, 234, 234);
+}
+
+/* 페이지버튼 */
+.page-button {
+    color: rgb(82, 167, 67) !important;
+    font-size: 18px;
+}
+
+.page-button:active,
+.page-button:focus {
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+.page-active {
+    background-color: #7CC135 !important;
+    color: white !important;
+}
+
+.page-div {
+    margin-left: 45%;
+    margin-top: 30px;
+}
+
+/* 검색 */
+.admin-search {
+    width: 100%;
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+/* 검색 input */
+.admin-input {
+    width: 20%;
+    border: 0.1em solid rgba(150, 150, 150, 0.5);
+    outline: none;
+    height: 40px;
+    padding-left: 10px;
+}
+
+.admin-input:focus {
+    border-color: rgb(107, 187, 72);
+    box-shadow: 0 0 6px 0 rgb(107, 187, 72);
+}
+
+/* 탈퇴취소 버튼 */
+.cancel-btn {
+    border: none;
+    background-color: rgb(190, 41, 41);
+    border-radius: 5px;
+    color: white;
+    height: 40px;
+    width: 90px;
+}
+
+.cancel-btn:hover {
+    background-color: rgb(231, 61, 61);
+    font-weight: bold;
+}

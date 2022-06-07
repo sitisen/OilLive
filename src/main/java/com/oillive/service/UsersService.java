@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.oillive.vo.CardVO;
 import com.oillive.vo.ElectricCarVO;
+import com.oillive.vo.PaginationVO;
 import com.oillive.vo.UsersVO;
 
 public interface UsersService {
@@ -96,5 +97,14 @@ public interface UsersService {
 
 	//--------------- 탈퇴유저 검사 --------------- //	
 	public int quitUser(String userId);
+
+	//--------------- 회원목록 페이징 개수 --------------- //	
+	public int selectUserCount(String userId);
+
+	//--------------- 회원목록 페이징 --------------- //	
+	public List<UsersVO> selectUserList(String userId, PaginationVO paging);
+
+	//--------------- 회원탈퇴 취소처리 --------------- //	
+	public int cancelQuit(String userCode);
 	
 }

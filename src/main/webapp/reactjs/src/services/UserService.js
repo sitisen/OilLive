@@ -2,29 +2,31 @@ import axios from 'axios';
 
 
 const USERS_URL = 'http://localhost:9090/users';
-const USERS_LOGIN = USERS_URL + '/login';           // 로그인
-const USERS_IDCHECK = USERS_URL + '/idCheck';       // 아이디 중복확인
-const USERS_PHONE =  USERS_URL + '/sendSMS';        // 휴대폰 인증
-const USERS_PHONE_CHECK = USERS_URL + '/phoneCheck';   // 휴대폰 번호 중복확인
-const USERS_SIGNUP = USERS_URL + '/signup';         // 회원가입
-const USERS_FINDID_PHONE = USERS_URL + '/findIdPhone';   // 아이디 찾기 - 핸드폰
-const USERS_FINDID_EMAIL = USERS_URL + '/findIdEmail';  // 아이디 찾기 - 이메일
-const USERS_FIND_RESULT = USERS_URL + '/resultId';  // 아이디 반환
-const USERS_PWD_UPDATE = USERS_URL + '/pwdUpdate'; // 비밀번호 변경
-const USERS_SELECT_USER_INFO = USERS_URL + '/selectUserInfo'; // 사용자 정보 조회
-const USERS_SELECT_CARD_INFO = USERS_URL + '/selectCardInfo'; // 사용자 카드 정보 조회
-const USERS_INSERT_CARD = USERS_URL + '/insertCard'; // 사용자 카드 정보 등록
-const USERS_UPDATE_CARD = USERS_URL + '/updateCard'; // 사용자 카드 정보 교체
-const USERS_SELECT_BASKET = USERS_URL + '/selectBasket'; // 사용자 장바구니 조회
-const USERS_INSERT_BASKET = USERS_URL + '/insertBasket'; // 사용자 장바구니 상품 추가
-const USERS_BASKET_COUNT = USERS_URL + '/basketCount'; // 사용자 장바구니 수량 조회
-const USERS_UPDATE_BASKET_AMOUNT = USERS_URL + '/updateBasketAmount'; // 사용자 장바구니 상품 수량 갱신
-const USERS_DELETE_BASKET_GOODS = USERS_URL + '/deleteBasketGoods'; // 사용자 장바구니 상품 삭제
-const USERS_UPDATE_INFO = USERS_URL + '/updateInfo'; // 사용자 정보변경
-const USERS_SEND_EMAIL = USERS_URL + '/sendEmail'; // 사용자 이메일 인증
-const USERS_LIST = USERS_URL + '/getUserList'; // 이용자 목록
-const USERS_COUNT = USERS_URL + '/getUserCount'; // 이용자수
-const USERS_QUIT = USERS_URL + '/quit'; // 회원탈퇴
+const USERS_LOGIN = USERS_URL + '/login';                               // 로그인
+const USERS_IDCHECK = USERS_URL + '/idCheck';                           // 아이디 중복확인
+const USERS_PHONE =  USERS_URL + '/sendSMS';                            // 휴대폰 인증
+const USERS_PHONE_CHECK = USERS_URL + '/phoneCheck';                    // 휴대폰 번호 중복확인
+const USERS_SIGNUP = USERS_URL + '/signup';                             // 회원가입
+const USERS_FINDID_PHONE = USERS_URL + '/findIdPhone';                  // 아이디 찾기 - 핸드폰
+const USERS_FINDID_EMAIL = USERS_URL + '/findIdEmail';                  // 아이디 찾기 - 이메일
+const USERS_FIND_RESULT = USERS_URL + '/resultId';                      // 아이디 반환
+const USERS_PWD_UPDATE = USERS_URL + '/pwdUpdate';                      // 비밀번호 변경
+const USERS_SELECT_USER_INFO = USERS_URL + '/selectUserInfo';           // 사용자 정보 조회
+const USERS_SELECT_CARD_INFO = USERS_URL + '/selectCardInfo';           // 사용자 카드 정보 조회
+const USERS_INSERT_CARD = USERS_URL + '/insertCard';                    // 사용자 카드 정보 등록
+const USERS_UPDATE_CARD = USERS_URL + '/updateCard';                    // 사용자 카드 정보 교체
+const USERS_SELECT_BASKET = USERS_URL + '/selectBasket';                // 사용자 장바구니 조회
+const USERS_INSERT_BASKET = USERS_URL + '/insertBasket';                // 사용자 장바구니 상품 추가
+const USERS_BASKET_COUNT = USERS_URL + '/basketCount';                  // 사용자 장바구니 수량 조회
+const USERS_UPDATE_BASKET_AMOUNT = USERS_URL + '/updateBasketAmount';   // 사용자 장바구니 상품 수량 갱신
+const USERS_DELETE_BASKET_GOODS = USERS_URL + '/deleteBasketGoods';     // 사용자 장바구니 상품 삭제
+const USERS_UPDATE_INFO = USERS_URL + '/updateInfo';                    // 사용자 정보변경
+const USERS_SEND_EMAIL = USERS_URL + '/sendEmail';                      // 사용자 이메일 인증
+const USERS_LIST = USERS_URL + '/getUserList';                          // 이용자 목록
+const USERS_COUNT = USERS_URL + '/getUserCount';                        // 이용자수
+const USERS_QUIT = USERS_URL + '/quit';                                 // 회원탈퇴
+const USERS_LIST_PAGE = USERS_URL + '/userListPage';                    // 회원목록 페이징
+const USERS_CANCEL_QUIT = USERS_URL + '/cancelQuit';                    // 회원탈퇴 취소
 
 /* 사용자 Service */
 const UserService = {
@@ -215,6 +217,25 @@ const UserService = {
                 userId: userId
             }
         });
+    },
+
+    /* 관리자 회원관리 페이징 */
+    userListPage(userId, currentPage){
+        return axios.get(USERS_LIST_PAGE, {
+            params: {
+                userId: userId,
+                currentPage: currentPage
+            }
+        })
+    },
+
+    /* 관리자 회원 탈퇴취소 */
+    cancelQuit(userCode){
+        return axios.get(USERS_CANCEL_QUIT, {
+            params: {
+                userCode: userCode
+            }
+        })
     }
 
     
