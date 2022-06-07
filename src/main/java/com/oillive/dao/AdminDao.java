@@ -24,6 +24,9 @@ public interface AdminDao {
 	//--------------- 관리자 상품 등록 --------------- //
 	public int insertGoods(GoodsVO goods);
 	
+	//--------------- 관리자 상품 변경 --------------- //
+	public int updateGoods(GoodsVO goods);
+	
 	//--------------- 관리자 상품 삭제 --------------- //
 	public int deleteGoods(String goodsCode);
 }

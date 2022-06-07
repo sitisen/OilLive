@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -117,7 +118,7 @@ public class AdminController {
 	}
 	
 	//--------------- 관리자 이벤트 변경 --------------- //
-	@PutMapping("/updateEvent")
+	@PatchMapping("/updateEvent")
 	public int  updateEvent(@RequestBody EventVO event) {
 		
 		int result = adminService.updateEvent(event);
@@ -192,6 +193,17 @@ public class AdminController {
 			e.printStackTrace();
 			
 		}
+		
+		return result;
+	}
+
+	//--------------- 관리자 이벤트 변경 --------------- //
+	@PatchMapping("/updateGoods")
+	public int updateGoods(@RequestBody GoodsVO goods) {
+		
+		System.out.println(goods);
+		
+		int result = adminService.updateGoods(goods);
 		
 		return result;
 	}

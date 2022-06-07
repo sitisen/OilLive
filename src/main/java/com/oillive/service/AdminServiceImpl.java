@@ -44,6 +44,12 @@ public class AdminServiceImpl implements AdminService {
 		return adminDao.insertGoods(goods);
 	}
 
+	//--------------- 관리자 상품 변경 --------------- //
+	@Override
+	public int updateGoods(GoodsVO goods) {
+		return adminDao.updateGoods(goods);
+	}	
+	
 	//--------------- 관리자 상품 삭제 --------------- //
 	@Override
 	public int deleteGoods(String goodsCode) {

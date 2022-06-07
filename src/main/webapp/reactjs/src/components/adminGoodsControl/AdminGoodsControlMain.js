@@ -31,8 +31,17 @@ const AdminGoodsControlMain = () => {
     /* //. useRef 부분 */
 
     /* useEffect 부분 */
-    useEffect( () => {
-
+    useEffect( () => {  
+            
+        if( locationType === 'update' ) {   
+            
+            goodsRef.current['goodsName'].value = locationData.GOODS_NAME;
+            goodsRef.current['goodsContent'].value = locationData.GOODS_CONTENT;
+            goodsRef.current['goodsKind'].value = locationData.GOODS_KIND;
+            goodsRef.current['goodsPrice'].value = locationData.GOODS_PRICE.toLocaleString('ko-KR');
+            goodsRef.current['goodsDiscount'].value = locationData.GOODS_DISCOUNT;
+            goodsRef.current['goodsAmount'].value = locationData.GOODS_AMOUNT.toLocaleString('ko-KR');
+        }
 
     }, []);
     /* //. useEffect 부분 */
@@ -210,8 +219,6 @@ const AdminGoodsControlMain = () => {
             return alert('입력한 값이 유효한지 확인해주세요.');
         }
 
-        // 서버로 전송하기 전, 상품 가격/수량 포맷 변경
-
         // 상품 등록, 수정인지 판별
         if( locationType === 'insert' ) { // 상품 등록일 경우,
 
@@ -224,11 +231,11 @@ const AdminGoodsControlMain = () => {
                 let formData = new FormData();
                 formData.append('img', file[0]);
 
-                // // 상품 등록
+                // 상품 등록
                 AdminService.insertGoods(goodsName.value, goodsContent.value, goodsKind.value, 
                                          goodsPrice.value.replaceAll(',', ''), goodsDiscount.value, goodsAmount.value.replaceAll(',', '')).then( () => {
 
-                        // // 상품 이미지 등록
+                        // 상품 이미지 등록
                         AdminService.insertGoodsUpload(formData).then( res => {
 
                             if(res.data === 1) {
@@ -241,6 +248,49 @@ const AdminGoodsControlMain = () => {
                 );    
             }
 
+        } else if ( locationType === 'update' ) { // 상품 수정일 경우,
+            const goodsCode = locationData.GOODS_CODE;
+            const photoCode = locationData.PHOTO_CODE;
+            const photoPath = locationData.PHOTO_PATH;
+            const photoReName = locationData.PHOTO_RENAME;
+
+            if(window.confirm('해당 상품을 수정하시겠습니까?')) {
+                
+                switch( file.length === 0 ) {
+
+                    case true: // 이미지를 수정하지 않을 경우
+                                // 상품 수정
+                                AdminService.updateGoods(goodsCode, goodsName.value, goodsContent.value, goodsKind.value, 
+                                                         goodsPrice.value.replaceAll(',', ''), goodsDiscount.value, goodsAmount.value.replaceAll(',', '')).then( res => {
+                                    if(res.data === 1) {
+                                        alert('상품 변경 성공');
+                                        navigate('/admin/goodsList', { replace: true } );
+                                    }
+                                });
+                                break;
+
+                    default: // 이미지를 수정했을 경우
+                                // 상품 수정
+                                let formData = new FormData();
+                                formData.append('img', file[0]);
+                                formData.append('photoCode', photoCode);
+                                formData.append('photoPath', photoPath);
+                                formData.append('photoReName', photoReName);
+
+                                AdminService.updateGoods(goodsCode, goodsName.value, goodsContent.value, goodsKind.value, 
+                                                         goodsPrice.value.replaceAll(',', ''), goodsDiscount.value, goodsAmount.value.replaceAll(',', '')).then( () => {
+
+                                    // 상품 이미지 수정
+                                    AdminService.updateUpload(formData).then( res => {
+
+                                        if(res.data === 1) {
+                                            alert('상품 변경 성공');
+                                            navigate('/admin/goodsList', { replace: true } );
+                                        }
+                                    })
+                                });
+                }
+            }
         }
     }
 
@@ -370,6 +420,7 @@ const AdminGoodsControlMain = () => {
 
                         : // 상품 수정일 경우,
                         <button className={`btn btn-warning ${AdminGoodsControlMainStyle['adminGoodsControl-footer-button']}`}
+                                onClick={() => confirm()}
                         >
                             수정
                         </button>

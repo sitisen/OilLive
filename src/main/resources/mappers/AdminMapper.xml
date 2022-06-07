@@ -40,6 +40,18 @@
 			 VALUES ( seq_goods.NEXTVAL, #{goodsName}, #{goodsKind}, #{goodsPrice}, #{goodsAmount}, #{goodsContent}, #{goodsDiscount}, SYSDATE)
 	</insert>
 	
+	<!-- 관리자 상품 변경 -->
+	<update id="updateGoods" parameterType="GoodsVO">
+		UPDATE goods
+		   SET goods_name = #{goodsName},
+		       goods_content = #{goodsContent},
+		       goods_kind = #{goodsKind},
+		       goods_price = #{goodsPrice},
+		       goods_discount = #{goodsDiscount},
+		       goods_amount = #{goodsAmount}
+		 WHERE goods_code = #{goodsCode}
+	</update>
+	
 	<!-- 관리자 이벤트 삭제 -->
 	<delete id="deleteGoods" parameterType="String">
 		DELETE FROM goods

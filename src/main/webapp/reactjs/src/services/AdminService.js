@@ -13,6 +13,7 @@ const ADMIN_DELETE_EVENT = ADMIN_URL + '/deleteEvent'; // 관리자 이벤트 �
 const ADMIN_SELECT_GOODS_LIST = ADMIN_URL + '/selectGoodsList'; // 상품 목록 조회
 const ADMIN_INSERT_GOODS = ADMIN_URL + '/insertGoods'; // 관리자 상품 등록
 const ADMIN_INSERT_GOODS_UPLOAD = ADMIN_URL + '/insertGoodsUpload'; // 관리자 상품 등록 (이미지)
+const ADMIN_UPDATE_GOODS = ADMIN_URL + '/updateGoods'; // 관리자 상품 변경
 const ADMIN_DELETE_GOODS = ADMIN_URL + '/deleteGoods';  // 관리자 상품 삭제
 
 /* 관리자 Service */
@@ -47,7 +48,7 @@ const AdminService = {
     },
 
     updateEvent (eventCode, eventName, eventContent, startDate, endDate) {
-        return axios.put(ADMIN_UPDATE_EVENT, {
+        return axios.patch(ADMIN_UPDATE_EVENT, {
             eventCode: eventCode,
             eventName: eventName,
             eventContent: eventContent,
@@ -91,6 +92,19 @@ const AdminService = {
 
     insertGoodsUpload (formData) {
         return axios.post(ADMIN_INSERT_GOODS_UPLOAD, formData);
+    },
+
+    updateGoods (goodsCode, goodsName, goodsContent, goodsKind, 
+                 goodsPrice, goodsDiscount, goodsAmount) {
+        return axios.patch(ADMIN_UPDATE_GOODS, {
+            goodsCode: goodsCode,
+            goodsName: goodsName,
+            goodsContent: goodsContent,
+            goodsKind: goodsKind,
+            goodsPrice: goodsPrice,
+            goodsDiscount: goodsDiscount,
+            goodsAmount: goodsAmount
+        });
     },
 
     deleteGoods (goodsCode, photoCode, photoPath, photoReName) {
