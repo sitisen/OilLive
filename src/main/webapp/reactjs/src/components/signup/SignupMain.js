@@ -236,7 +236,7 @@ const SignupMain = () => {
             var tempYear = parseInt(userInfoRef.current['year'].value);
             var tempMonth = parseInt(userInfoRef.current['month'].value);
             var tempDay = parseInt(userInfoRef.current['day'].value);
-            
+
             /* 1일 ~ 31일 정규식 조건 */
             if(regExpDay.test(userInfoRef.current['day'].value)){
                 if(tempYear !== null && tempMonth !== null){
@@ -628,7 +628,7 @@ const SignupMain = () => {
                 /* 회원가입 처리 */
                 var temday = userInfoRef.current['day'].value;
                 if(temday < 10){
-                    temday *= 10
+                    temday = '0'+userInfoRef.current['day'].value.toString();
                 }
                 UserService.signup(userInfoRef.current['userId'].value,
                     userInfoRef.current['userPwd'].value,
