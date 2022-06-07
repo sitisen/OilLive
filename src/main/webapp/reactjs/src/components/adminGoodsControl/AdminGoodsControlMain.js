@@ -43,7 +43,7 @@ const AdminGoodsControlMain = () => {
             goodsRef.current['goodsAmount'].value = locationData.GOODS_AMOUNT.toLocaleString('ko-KR');
         }
 
-    }, []);
+    }, [locationData, locationType]);
     /* //. useEffect 부분 */
 
     // 썸네일 이미지 이벤트
