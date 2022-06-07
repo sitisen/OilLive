@@ -156,7 +156,7 @@ const BasketMain = () => {
             for(let k = 0; k < basketData.length; k++) { // 선택된 상품들을 배열에 추가
     
                 if( goodsCheckbox.current[k].checked === true) {
-                    deleteGoods.push(basketData[k].basketCode);
+                    deleteGoods.push(basketData[k].BASKET_CODE);
                 }
             }
     
@@ -245,7 +245,7 @@ const BasketMain = () => {
                                         const goodsCode = list.GOODS_CODE; // 장바구니에 담긴 상품 코드
                                         const discount = list.GOODS_DISCOUNT; // 상품의 할인율
                                         const goodsPrice = list.GOODS_PRICE; // 상품의 원 가격
-                                        const discountPrice = goodsPrice - (goodsPrice * (discount * 0.01).toFixed(1)); // 상품의 할인된 가격
+                                        const discountPrice = goodsPrice - parseInt((goodsPrice * (discount * 0.01))); // 상품의 할인된 가격
                                         let deliveryPrice = 0;
 
                                         if( discount !== 0 ) { // 상품이 할인 중일 경우
