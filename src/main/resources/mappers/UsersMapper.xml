@@ -192,7 +192,8 @@
 	<select id="getUserCount" parameterType="List" resultType="int">
 		SELECT count(*)
 	  	FROM users
-	  	WHERE TO_CHAR(TO_DATE(USER_BIRTH, 'yyyy/MM/DD'), 'yyyy') between #{startYear} and #{endYear}
+	  	WHERE TO_CHAR(TO_DATE(USER_BIRTH, 'yyyy/MM/DD'), 'yyyy') BETWEEN #{startYear} AND #{endYear}
+	  	AND user_status = 'Y'
 	</select>
 	
 	<!-- 회원탈퇴 -->
