@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import { Carousel } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, CartesianGrid } from 'recharts';
 import ApiService from 'services/ApiService';
+import EventService from 'services/EventService';
 
 // import CSS
 import mainStyle from './Main.module.css';
@@ -184,7 +187,11 @@ const Main = () => {
   const [ oilPriceList, setOilPriceList ] = useState([]); // 유가 API 요청 값이 모두 담겨있음.
   const [ brandData, setBrandData ] = useState([]); // 상표별 유가가 담겨있음.
   const [ lowTopData, setLowTopData ] = useState([]); // 시도별 최저가 주유소 TOP 10의 정보가 담겨있음.
+  const [ eventBanner, setEventBanner ] = useState([]); // 가장 최근에 등록된 이벤트 데이터
 
+  /* useNavigate 부분 */
+  const navigate = useNavigate();
+  /* //. useNavigate 부분 */
 
   // 네이버 지도 API 관련 변수
   let tm128 = '';
@@ -194,6 +201,7 @@ const Main = () => {
     zoom : 0
   };
 
+  // API 데이터 조회
   useEffect( () => {
 
     // 시도별 주유소 평균가격(전국 포함) API
@@ -246,6 +254,15 @@ const Main = () => {
     });
 
   }, [oilType, brandArray]);
+
+  // 이벤트 배너 조회
+  useEffect( () => {
+
+    EventService.selectEventBanner().then( res => {
+      setEventBanner(res.data.banner);
+    });
+
+  }, [])
   
 
   /* 기름 종류 Click 이벤트 */
@@ -370,6 +387,15 @@ const Main = () => {
     });
 
   };
+
+  // 이벤트 배너 클릭 이벤트
+  const eventDetail = (list) => {
+    navigate('/event/eventDetail', 
+    {
+        replace: true, 
+        state: { data: list }
+    });
+  }
 
 
   /* ========== 실제 사이트 렌더링 ========== */
@@ -525,7 +551,30 @@ const Main = () => {
             </div>
 
           <div className={mainStyle['banner']}>
-            배너 위치
+
+            { eventBanner.length === 0
+                ? // 이벤트가 존재하지 않을 경우,
+                  <div className={mainStyle['banner-empty']} />
+
+                : // 이벤트가 존재할 경우,
+                  <Carousel variant='dark' interval={3000}>
+                    { eventBanner.map( (list, index) => {
+                      const { EVENT_CODE, PHOTO_PATH, PHOTO_RENAME} = list;
+      
+                        return (
+                          <Carousel.Item key={EVENT_CODE}>
+                            <img
+                              className={`d-block ${mainStyle['carousel-img']}`}
+                              onClick={() => eventDetail(list)}
+                              alt={'event-banner-' + (index + 1)}
+                              src={PHOTO_PATH + PHOTO_RENAME}
+                            />
+                          </Carousel.Item>
+                        )
+                      }) 
+                    }
+                  </Carousel>
+            }
           </div>
 
         </div> {/* //.oil-box-button */}
