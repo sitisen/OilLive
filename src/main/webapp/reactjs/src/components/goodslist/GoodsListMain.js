@@ -178,7 +178,7 @@ const GoodslistMain = () => {
 
                                     { listArray[mainIndex].map( list => {
 
-                                        const discountPrice = list.GOODS_PRICE - (list.GOODS_PRICE * (list.GOODS_DISCOUNT * 0.01));
+                                        const discountPrice = list.GOODS_PRICE - parseInt((list.GOODS_PRICE * (list.GOODS_DISCOUNT * 0.01)));
 
                                         return ( 
                                             // 해당 상품의 재고가 없을 경우,

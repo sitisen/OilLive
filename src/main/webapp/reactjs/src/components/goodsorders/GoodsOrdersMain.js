@@ -661,7 +661,7 @@ const GoodsOrdersMain = () => {
                                                                 goodsPrice = list.GOODS_PRICE * goodsSelectedAmount;
                     
                                                             } else { // 할인 중인 상품일 경우
-                                                                goodsPrice = ( list.GOODS_PRICE - (list.GOODS_PRICE * (list.GOODS_DISCOUNT * 0.01)) ) * goodsSelectedAmount;
+                                                                goodsPrice = ( list.GOODS_PRICE - parseInt((list.GOODS_PRICE * (list.GOODS_DISCOUNT * 0.01))) ) * goodsSelectedAmount;
                                                             }
                     
                                                             if(goodsPrice >= 40000) { // 상품 가격이 40000원 이상일 경우
@@ -688,7 +688,7 @@ const GoodsOrdersMain = () => {
                                                                 goodsPrice = list.GOODS_PRICE * list.BASKET_AMOUNT;
                     
                                                             } else { // 할인 중인 상품 일 경우
-                                                                goodsPrice = ( list.GOODS_PRICE - (list.GOODS_PRICE * (list.GOODS_DISCOUNT * 0.01)) ) * list.BASKET_AMOUNT;
+                                                                goodsPrice = ( list.GOODS_PRICE - parseInt((list.GOODS_PRICE * (list.GOODS_DISCOUNT * 0.01))) ) * list.BASKET_AMOUNT;
                                                             }
                     
                                                             if(goodsPrice >= 40000) { // 상품 가격이 40000원 이상일 경우

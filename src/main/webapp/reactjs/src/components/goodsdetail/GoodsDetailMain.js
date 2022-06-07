@@ -16,7 +16,7 @@ const GoodsDetailMain = () => {
     /* //. useNavigate 부분 */
 
     /* useState 부분 */
-    const [ goodsInfo, setGoodsInfo ] = useState({}); // 조회한 상품 데이터
+    const [ goodsInfo, setGoodsInfo ] = useState([]); // 조회한 상품 데이터
     const [ amount, setAmount ] = useState(1); // 사용자가 선택한 상품 개수
     const [ deliveryPrice, setDeliveryPrice ] = useState(5000); // 상품 배송비
     /* //. useState 부분 */
@@ -27,7 +27,7 @@ const GoodsDetailMain = () => {
 
     // 기타 변수
     const goodsPrice = goodsInfo.GOODS_PRICE; // 상품 가격
-    const discountPrice = goodsPrice - (goodsPrice * (goodsInfo.GOODS_DISCOUNT * 0.01)); // 할인율로 할인된 가격
+    const discountPrice = goodsPrice - parseInt((goodsPrice * (goodsInfo.GOODS_DISCOUNT * 0.01))); // 할인율로 할인된 가격
 
     /* useEffect 부분 */
     useEffect( () => {
@@ -115,17 +115,20 @@ const GoodsDetailMain = () => {
             <div className={`container ${GoodsDetailMainStyle['goods-detail-layout']}`}>
 
                 <div className={`container ${GoodsDetailMainStyle['goods-detail-header']}`}>
-                        { goodsInfo.GOODS_AMOUNT === 0 
+                        { goodsInfo.PHOTO_PATH !== undefined
 
-                            ? // 상품 재고가 없을 경우
-                            <div className={GoodsDetailMainStyle['header-img-layout']}>
-                                <img className={GoodsDetailMainStyle['goods-img-sold']} alt='SoldOut' src='/images/goods/SoldOut.png' />
-                                <img className={GoodsDetailMainStyle['goods-img']} alt='goodsImg' src={goodsInfo.PHOTO_PATH + goodsInfo.PHOTO_RENAME} />
-                            </div>
-                            : // 상품 재고가 있을 경우
-                            <div className={GoodsDetailMainStyle['header-img-layout']}>
-                                <img className={GoodsDetailMainStyle['goods-img']} alt='goodsImg' src={goodsInfo.PHOTO_PATH + goodsInfo.PHOTO_RENAME} />
-                            </div>
+                            ? goodsInfo.GOODS_AMOUNT === 0 // goodsInfo가 setState를 진행했을 경우,
+                                ? // 상품 재고가 없을 경우
+                                    <div className={GoodsDetailMainStyle['header-img-layout']}>
+                                        <img className={GoodsDetailMainStyle['goods-img-sold']} alt='SoldOut' src='/images/goods/SoldOut.png' />
+                                        <img className={GoodsDetailMainStyle['goods-img']} alt='goodsImg' src={goodsInfo.PHOTO_PATH + goodsInfo.PHOTO_RENAME} />
+                                    </div>
+                                : // 상품 재고가 있을 경우
+                                    <div className={GoodsDetailMainStyle['header-img-layout']}>
+                                        <img className={GoodsDetailMainStyle['goods-img']} alt='goodsImg' src={goodsInfo.PHOTO_PATH + goodsInfo.PHOTO_RENAME} />
+                                    </div>
+                            : // goodsInfo가 setState를 아직 진행하지 않았을 경우,
+                                ''
                         }
                     <div className={GoodsDetailMainStyle['header-option-layout']}>
                         <h5>{goodsInfo.GOODS_NAME}</h5>
