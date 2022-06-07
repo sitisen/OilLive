@@ -78,7 +78,7 @@ const AdminSidebarMain = () => {
                 </div>
                 {/* 회원관리 */}
                 <div className={AdminSidebarStyle['admin-nav']}>
-                    <button className={AdminSidebarStyle['nav-button']}>회원관리</button>
+                    <Link to='/admin/userList'><button className={AdminSidebarStyle['nav-button']}>회원관리</button></Link>
                 </div>
                 {/* 상품관리 */}
                 <div className={AdminSidebarStyle['admin-nav']}>
