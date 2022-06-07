@@ -13,4 +13,7 @@ public interface EventService {
 	//--------------- 이벤트 목록 조회 --------------- //
 	public List<EventVO> selectEventList(String eventName, String filterName, PaginationVO paging);
 	
+	//--------------- 메인페이지 이벤트 조회 --------------- //
+	public List<EventVO> selectEventBanner();
+	
 }

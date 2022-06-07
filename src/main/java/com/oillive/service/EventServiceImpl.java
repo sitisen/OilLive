@@ -58,5 +58,11 @@ public class EventServiceImpl implements EventService {
 		
 		return eventDao.selectEventList(param);
 	}
+
+	//--------------- 메인페이지 이벤트 조회 --------------- //
+	@Override
+	public List<EventVO> selectEventBanner() {
+		return eventDao.selectEventBanner();
+	}
 	
 }

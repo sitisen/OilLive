@@ -15,5 +15,8 @@ public interface EventDao {
 	
 	//--------------- 이벤트 목록 조회 --------------- //
 	public List<EventVO> selectEventList(HashMap<String, String> param);
+	
+	//--------------- 메인페이지 이벤트 조회 --------------- //
+	public List<EventVO> selectEventBanner();
 
 }

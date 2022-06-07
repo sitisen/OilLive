@@ -51,4 +51,17 @@ public class EventController {
 		return result;
 	}
 	
+	//--------------- 메인페이지 이벤트 조회 --------------- //
+	@GetMapping("/selectEventBanner")
+	public HashMap<String, Object> selectEventBanner() {
+		
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		
+		List<EventVO> banner = eventService.selectEventBanner();
+		
+		result.put("banner", banner);
+		
+		return result; 
+	}
+	
 }

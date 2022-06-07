@@ -25,27 +25,42 @@
 	<!-- 이벤트 목록 조회 -->
 	<select id="selectEventList" parameterType="Map" resultType="Map">
 		SELECT E.*
-		FROM (  SELECT ROWNUM RNUM, event_code, event_name, event_content, 
-			       	   event_startdate, event_enddate, photo_code, photo_rename, photo_path
-		          FROM ( SELECT * 
-			       	   	FROM event	   
-			       	   	ORDER BY event_enddate DESC
-			       	   )
-    	          JOIN photo
-          		 USING (event_code)
-		         WHERE 1 = 1
-		    <if test="! eventName.isEmpty()">
-		    	AND event_name LIKE '%' || #{eventName} || '%'
-		    </if>
-		   	<if test="filterName.equals('진행중')">
-		   		<![CDATA[ AND event_startdate <= TO_DATE(#{today}, 'yyyy/MM/DD') ]]>  
-				AND event_enddate >= TO_DATE(#{today}, 'yyyy/MM/DD')		    	
-		   	</if>
-		   	<if test="filterName.equals('종료')">
-		   		<![CDATA[ AND event_enddate < TO_DATE(#{today}, 'yyyy/MM/DD') ]]>    	
-		   	</if>
+		  FROM (  SELECT ROWNUM RNUM, o.*
+					FROM (  SELECT event_code, event_name, event_content, event_startdate, event_enddate, 
+								   photo_code, photo_rename, photo_path 
+							  FROM event	   
+							  JOIN photo
+							 USING (event_code)
+						  ORDER BY event_code DESC
+						  ) o
+					WHERE 1 = 1
+					<if test="! eventName.isEmpty()">
+					   	AND event_name LIKE '%' || #{eventName} || '%'
+					</if>
+					<if test="filterName.equals('진행중')">
+						<![CDATA[ AND event_startdate <= TO_DATE(#{today}, 'yyyy/MM/DD') ]]>  
+						AND event_enddate >= TO_DATE(#{today}, 'yyyy/MM/DD')		    	
+					</if>
+					<if test="filterName.equals('종료')">
+						<![CDATA[ AND event_enddate < TO_DATE(#{today}, 'yyyy/MM/DD') ]]>    	
+					</if>
+			   ) E
+		 WHERE E.rnum BETWEEN #{startRow} AND #{endRow}
+	</select>
+	
+	<!-- 메인페이지 이벤트 조회 -->
+	<select id="selectEventBanner" resultType="Map">
+        SELECT E.*
+		FROM (  SELECT ROWNUM RNUM, o.*
+		          FROM (  SELECT event_code, event_name, event_content, event_startdate, event_enddate, 
+                                 photo_code, photo_rename, photo_path
+			       	   	    FROM event	   
+                            JOIN photo
+                           USING (event_code)
+			       	   	ORDER BY event_code DESC
+			       	   ) o
 		        ) E
-		WHERE E.rnum BETWEEN #{startRow} AND #{endRow}
+		WHERE E.rnum BETWEEN 1 AND 5
 	</select>
 	
 </mapper>
