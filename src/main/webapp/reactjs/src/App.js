@@ -31,6 +31,7 @@ import AdminGoodsList from 'pages/AdminGoodsList';
 import AdminGoodsControl from 'pages/AdminGoodsControl';
 import AdminQboard from 'pages/AdminQboard';
 import AdminUserList from 'pages/AdminUserList';
+import AdminOrderList from 'pages/AdminOrderList';
 
 // Page Routing Setting
 function App() {
@@ -67,6 +68,7 @@ function App() {
       <Route path='/admin/goodsControl' element={<AdminGoodsControl />}/>
       <Route path='/admin/qboard' element={<AdminQboard />}/>
       <Route path='/admin/userList' element={<AdminUserList />}/>
+      <Route path='/admin/orderList' element={<AdminOrderList />}/>
     </Routes>
   );
 }
