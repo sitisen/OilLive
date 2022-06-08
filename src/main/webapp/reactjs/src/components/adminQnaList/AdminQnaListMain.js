@@ -150,13 +150,24 @@ const AdminQnaListMain = () => {
             var title = adminQnaRef.current['title'].value;
             var content = adminQnaRef.current['content'].value;
 
-            QnAService.qnaModify(qnaCode,title,content).then(res => {
-                if(res.data === 1){
-                    alert('수정되었습니다.');
-                    setModalYN(false);
-                    setStateYN(!stateYN);
-                }
-            });
+            // 제목 필수입력
+            if(title === ''){
+                alert('제목을 입력해주세요.');
+                adminQnaRef.current['title'].focus();
+            // 내용 필수입력
+            } else if(content === ''){
+                alert('내용을 입력해주세요.');
+                adminQnaRef.current['content'].focus();
+            // 둘다 입력 완료시
+            } else {
+                QnAService.qnaModify(qnaCode,title,content).then(res => {
+                    if(res.data === 1){
+                        alert('수정되었습니다.');
+                        setModalYN(false);
+                        setStateYN(!stateYN);
+                    }
+                });
+            }
         }
     }
 
