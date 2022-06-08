@@ -234,6 +234,9 @@ const AdminQboardMain = () => {
                                                     : null
                                                 }
                                                 {
+                                                    Q_BOARD_STATUS === 'N'
+                                                    ? null
+                                                    : 
                                                     Q_BOARD_ACONTENT !== undefined
                                                     ?   <div className={AdminQboardStyle['answer-area']}>
                                                             <textarea className={AdminQboardStyle['answer-textarea']} rows='10' ref={el => adminQboardRef.current['updateAnswer' + index] = el} defaultValue={Q_BOARD_ACONTENT} readOnly={true}/>
