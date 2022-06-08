@@ -112,15 +112,6 @@ const EventListMain = () => {
                     </div>
                 </div> {/* //. eventList-header */}
 
-                {/* { eventData.length === 0
-                    ?
-                        <div className={EventListMainStyle['eventList-empty']}>
-                            <h5>현재 존재하는 이벤트가 없습니다.</h5>
-                        </div>
-                    :
-                        null
-                } */}
-
                 <div className={eventData.length === 0 
                                 ? // 이벤트가 존재하지 않을 경우
                                     `container ${EventListMainStyle['eventList-container-empty']}`
