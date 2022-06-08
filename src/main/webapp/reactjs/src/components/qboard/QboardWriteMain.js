@@ -36,7 +36,7 @@ const QboardWriteMain = () => {
                 alert('제목을 입력해주세요.');
                 title.focus();
             // 내용 필수입력
-            } else if(content === ''){
+            } else if(content.value === ''){
                 alert('내용을 입력해주세요.');
                 content.focus();
             // 조건 만족시 service
