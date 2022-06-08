@@ -99,6 +99,15 @@ const AdminUserListMain = () => {
                             </tr>
                         </thead>
                         {
+                            userList.length === 0
+                            ?   <tbody>
+                                    <tr className={AdminUserListStyle['admin-user-table-tr']}>
+                                        <td colSpan={6}>회원정보가 없습니다.</td>
+                                    </tr>
+                                </tbody>
+                            : null
+                        }
+                        {
                             userList.map((list, index) => {
                                 const {USER_CODE, USER_NAME, USER_ID, USER_PHONE, USER_STATUS, USER_EMAIL, USER_DATE} = list
     

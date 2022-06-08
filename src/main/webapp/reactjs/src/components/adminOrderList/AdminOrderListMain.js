@@ -24,9 +24,6 @@ const AdminOrderListMain = () => {
     const pageNumber = useRef([]); // 페이지 번호 (Pagination)
     const [term, setTerm] = useState(''); // 관리자가 선택한 날짜
     
-    // 상태 변수
-    const [state, setState] = useState(false);
-
     // 페이지 번호 선택 이벤트 (Pagination)
     const selectPage = (index) => {
         const selectNum = Number(pageNumber.current[index].innerText);
@@ -60,7 +57,7 @@ const AdminOrderListMain = () => {
             setOrderList(res.data.orderList);
             setPaging(res.data.paging);
         });
-    }, [navigate, state, currentPage, term]);
+    }, [navigate, currentPage, term]);
     
     return (
         <div className={AdminOrderListStyle['admin-orderList-layout']}>
@@ -89,6 +86,15 @@ const AdminOrderListMain = () => {
                                 <th className={AdminOrderListStyle['amount']}>수량</th>
                             </tr>
                         </thead>
+                        {
+                            orderList.length === 0
+                            ?   <tbody>
+                                    <tr className={AdminOrderListStyle['admin-user-table-tr']}>
+                                        <td colSpan={6}>주문내역이 없습니다.</td>
+                                    </tr>
+                                </tbody>
+                            : null
+                        }
                         {
                             orderList.map((list, index) => {
                                 const {GOODS_NAME, ORDER_DATE, USER_ID, ORDER_ADDRESS, ORDER_REQUEST, ORDER_AMOUNT} = list

@@ -192,6 +192,15 @@ const AdminQnaListMain = () => {
                         </tr>
                     </thead>
                     {
+                        qnaList.length === 0
+                        ?   <tbody>
+                                <tr className={AdminQnaListStyle['admin-qna-table-tr']}>
+                                    <td colSpan={3}>Qna정보가 없습니다.</td>
+                                </tr>
+                            </tbody>
+                        : null
+                    }
+                    {
                         qnaList.map((list, index) => {
                             const {QNA_CODE, QNA_TITLE, QNA_CONTENT} = list
 

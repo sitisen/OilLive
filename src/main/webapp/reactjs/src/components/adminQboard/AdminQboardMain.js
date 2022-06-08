@@ -188,6 +188,15 @@ const AdminQboardMain = () => {
                         </tr>
                     </thead>
                     {
+                        qboardList.length === 0 
+                        ?   <tbody>
+                                <tr className={AdminQboardStyle['admin-qboard-table-tr']}>
+                                    <td colSpan={5}>문의정보가 없습니다.</td>
+                                </tr>
+                            </tbody>
+                        : null
+                    }
+                    {
                         qboardList.map((list, index) => {
                             const {USER_ID, Q_BOARD_ACONTENT, Q_BOARD_ASTATUS, Q_BOARD_STATUS, Q_BOARD_QDATE, Q_BOARD_CODE, Q_BOARD_QCONTENT, Q_BOARD_TITLE, PHOTO_CODE, PHOTO_PATH, PHOTO_RENAME, PHOTO_NAME} = list
                            
