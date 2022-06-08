@@ -299,13 +299,12 @@ const FindinfoMain = () => {
         if(tempName.value === '' || tempEmail.value === ''){
             alert('이름과 이메일 주소를 모두 입력해주세요.');
         } else {
+            alert('입력하신 이메일로 인증번호가 전송되었습니다.\n인증번호를 입력해주세요.');
             UserService.findIdEmail(tempName.value, tempEmail.value).then( res => {
                 if(res.data === ''){
                     alert('등록된 정보가 없습니다.\n이름과 이메일 주소를 정확히 입력해주세요.');
                 } else {
-                    alert('입력하신 이메일로 인증번호가 전송되었습니다.\n인증번호를 입력해주세요.');
                     setCertiNum(res.data);
-
                     tempName.readOnly = true;
                     tempEmail.readOnly = true;
 
@@ -327,11 +326,11 @@ const FindinfoMain = () => {
         if(tempName.value === '' || tempEmail.value === ''){
             alert('이름과 이메일 주소를 모두 입력해주세요.');
         } else {
+            alert('입력하신 이메일로 인증번호가 전송되었습니다.\n인증번호를 입력해주세요.');
             UserService.findIdEmail(tempName.value, tempEmail.value).then( res => {
                 if(res.data === ''){
                     alert('등록된 정보가 없습니다.\n이름과 이메일 주소를 정확히 입력해주세요.');
                 } else {
-                    alert('입력하신 이메일로 인증번호가 전송되었습니다.\n인증번호를 입력해주세요.');
                     setCertiNum(res.data);
 
                     tempName.readOnly = true;
@@ -378,11 +377,10 @@ const FindinfoMain = () => {
             var tempName = findInfoRef.current['idemailname'];
             var tempEmail = findInfoRef.current['emailId'];
 
+            alert('인증번호가 재전송 되었습니다.');
             UserService.findIdEmail(tempName.value, tempEmail.value).then( res => {
                 if(res.data !== ''){
                     setCertiNum(res.data);
-                    alert('인증번호가 재전송 되었습니다.');
-
                     findInfoRef.current['idemailcerti'].value = '';
                     findInfoRef.current['idemailcerti'].focus();
                 } else {
@@ -398,11 +396,10 @@ const FindinfoMain = () => {
             var tempName = findInfoRef.current['pwdemailname'];
             var tempEmail = findInfoRef.current['emailpwd'];
 
+            alert('인증번호가 재전송 되었습니다.');
             UserService.findIdEmail(tempName.value, tempEmail.value).then( res => {
                 if(res.data !== ''){
                     setCertiNum(res.data);
-                    alert('인증번호가 재전송 되었습니다.');
-
                     findInfoRef.current['pwdemailcerti'].value = '';
                     findInfoRef.current['pwdemailcerti'].focus();
                 } else {
@@ -419,7 +416,7 @@ const FindinfoMain = () => {
             alert('아이디를 입력해주세요.');
         } else {
             UserService.idCheck(userId.value).then( res => {
-                if(res.data !== 0){
+                if(res.data === 1){
                     sessionStorage.setItem('pwCheck', true);
                     setManageButton({
                         pwdIdOK : true
