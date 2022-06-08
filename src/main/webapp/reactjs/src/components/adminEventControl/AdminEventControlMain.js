@@ -127,32 +127,117 @@ const AdminEventControlMain = () => {
             // 일자 포맷 변경
             // 시작일이 현재 날짜보다 작은지 검사
             if( startDay.length === 1 ) { // 일자가 1 ~ 9일 경우,
-                result = startYear + '/' + startMonth + '/0' + startDay;
+                const compareStart = startYear + '/' + startMonth + '/0' + startDay;
 
-                if(result < now) {
+                if(compareStart < now) {
                     return setValidateMsg({
                         start: '시작일은 현재 날짜보다 크거나 같아야 합니다.',
                         end: endMsg
                     });
+
+                } else {
+                    result = startYear + '/' + startMonth + '/0' + startDay;
+
                 }
 
             } else { // 일자가 2자리일 경우,
-                result = startYear + '/' + startMonth + '/' + startDay;
+                const compareStart = startYear + '/' + startMonth + '/' + startDay;
 
-                if(result < now) {
+                if(compareStart < now) {
                     return setValidateMsg({
                         start: '시작일은 현재 날짜보다 크거나 같아야 합니다.',
                         end: endMsg
                     });
-                }   
 
+                } else {
+                    result = startYear + '/' + startMonth + '/' + startDay;
+
+                }
+
+            }
+
+            // 시작일과 비교했을 때, 종료일보다 시작일보다 크면 경고 문구 제거
+            if( endDate !== '' ) { // 종료일이 비어있지 않은 경우
+                if( startDay.length === 1 ) { // 일자가 1 ~ 9일 경우,
+                    const compareStart = startYear + '/' + startMonth + '/0' + startDay;
+                    const endYear = endDateRef.current[0].value;
+                    const endMonth = endDateRef.current[1].value;
+                    let endDay = '';
+
+                    // 종료일 길이 판단
+                    if( endDateRef.current[2].value.length === 1 ) { // 종료일이 1자리일 경우
+                        endDay = '0' + endDateRef.current[2].value;
+
+                    } else { // 종료일이 2자리일 경우
+                        endDay = endDateRef.current[2].value;
+
+                    }
+
+                    // 시작일이 종료일보다 큰지 검사
+                    if( compareStart <= (endYear + '/' + endMonth + '/' + endDay) ) {
+
+                        // 입력한 값 세팅
+                        setStartDate(compareStart);
+
+                        setEndDate(endYear + '/' + endMonth + '/' + endDay);
+
+                        return setValidateMsg({
+                            start: '',
+                            end: ''
+                        });
+
+                    } else {
+                        return setValidateMsg({
+                            start: '',
+                            end: '종료일은 시작일보다 크거나 같아야 합니다.'
+                        });
+                    }
+
+
+                } else { // 일자가 2자리일 경우,
+                    const compareStart = startYear + '/' + startMonth + '/' + startDay;
+                    const endYear = endDateRef.current[0].value;
+                    const endMonth = endDateRef.current[1].value;
+                    let endDay = '';
+
+                    // 종료일 길이 판단
+                    if( endDateRef.current[2].value.length === 1 ) { // 종료일이 1자리일 경우
+                        endDay = '0' + endDateRef.current[2].value;
+
+                    } else { // 종료일이 2자리일 경우
+                        endDay = endDateRef.current[2].value;
+
+                    }
+
+                    // 시작일이 종료일보다 큰지 검사
+                    if( compareStart <= (endYear + '/' + endMonth + '/' + endDay) ) {
+
+                        // 입력한 값 세팅
+                        setStartDate(compareStart);
+
+                        setEndDate(endYear + '/' + endMonth + '/' + endDay);
+
+
+                        return setValidateMsg({
+                            start: '',
+                            end: ''
+                        });
+
+                    } else {
+                        return setValidateMsg({
+                            start: '',
+                            end: '종료일은 시작일보다 크거나 같아야 합니다.'
+                        });
+                    }
+
+                }
             }
 
             // 입력한 값 세팅
             setStartDate(result);
 
-            return setValidateMsg({    
-                start: '',   
+            return setValidateMsg({
+                start: '',
                 end: endMsg
             });
 
@@ -234,6 +319,46 @@ const AdminEventControlMain = () => {
                 }
 
                 result = endYear + '/' + endMonth + '/' + endDay;
+
+            }
+
+            // 시작일이 정상적일 경우, 시작일 setState
+            if(validateMsg.start === '') {
+                const startYear = startDateRef.current[0].value;
+                const startMonth = startDateRef.current[1].value;
+                let startDay = '';
+
+                if( startDateRef.current[2].value.length === 1 ) { // 시작일 일자가 1 ~ 9일 경우,
+                    startDay = '0' + startDateRef.current[2].value;
+
+                    setStartDate(startYear + '/' + startMonth + '/' + startDay);
+                } else { // 시작일 일자가 2자리일 경우,
+                    startDay = startDateRef.current[2].value;
+
+                    setStartDate(startYear + '/' + startMonth + '/' + startDay);   
+                }
+
+                if( endDay.length === 1 ) { // 일자가 1 ~ 9일 경우,
+
+                    // 시작일이 종료일보다 큰지 검사
+                    if( (startYear + '/' + startMonth + '/' + startDay) > (endYear + '/' + endMonth + '/0' + endDay) ) {
+                        return setValidateMsg({
+                            start: startMsg,
+                            end: '종료일은 시작일보다 크거나 같아야 합니다.'
+                        });
+                    }
+
+                } else { // 일자가 2자리일 경우,
+
+                    // 시작일이 종료일보다 큰지 검사
+                    if( (startYear + '/' + startMonth + '/' + startDay) > (endYear + '/' + endMonth + '/' + endDay) ) {
+                        return setValidateMsg({
+                            start: startMsg,
+                            end: '종료일은 시작일보다 크거나 같아야 합니다.'
+                        });
+                    }
+
+                }
 
             }
 
@@ -374,6 +499,7 @@ const AdminEventControlMain = () => {
         }
 
     }
+
 
     return (
         <div className={AdminEventControlMainStyle['adminEventControl-wrap']}>
