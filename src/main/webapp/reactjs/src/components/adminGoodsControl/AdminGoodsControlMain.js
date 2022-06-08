@@ -90,7 +90,6 @@ const AdminGoodsControlMain = () => {
                 });
             }
 
-            console.log(value)
             // 상품 가격이 0원인지 확인
             if( value === '0' || value === '00' ) {
                 return setValidateMsg({
