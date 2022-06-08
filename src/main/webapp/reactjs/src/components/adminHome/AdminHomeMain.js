@@ -182,28 +182,28 @@ const AdminHomeMain = () => {
                                     if(res.data[i].goodsDiscount === 0){
                                         silTotal += parseInt(res.data[i].goodsPrice) * res.data[i].orderAmount;
                                     } else {
-                                        silTotal += parseInt(res.data[i].goodsPrice * (res.data[i].goodsDiscount * 0.01)) * res.data[i].orderAmount;
+                                        silTotal += (res.data[i].goodsPrice - parseInt(res.data[i].goodsPrice * (res.data[i].goodsDiscount * 0.01))) * res.data[i].orderAmount;
                                     }
                                     break;
                     case '세차용품' :
                                     if(res.data[i].goodsDiscount === 0){
                                         sechaTotal += parseInt(res.data[i].goodsPrice) * res.data[i].orderAmount;
                                     } else {
-                                        sechaTotal += parseInt(res.data[i].goodsPrice * (res.data[i].goodsDiscount * 0.01)) * res.data[i].orderAmount;        
+                                        sechaTotal += (res.data[i].goodsPrice - parseInt(res.data[i].goodsPrice * (res.data[i].goodsDiscount * 0.01))) * res.data[i].orderAmount;        
                                     }
                                     break;
                     case '엔진오일' :
                                     if(res.data[i].goodsDiscount === 0){
                                         engenTotal += parseInt(res.data[i].goodsPrice) * res.data[i].orderAmount;
                                     } else {
-                                        engenTotal += parseInt(res.data[i].goodsPrice * (res.data[i].goodsDiscount * 0.01)) * res.data[i].orderAmount;
+                                        engenTotal += (res.data[i].goodsPrice - parseInt(res.data[i].goodsPrice * (res.data[i].goodsDiscount * 0.01))) * res.data[i].orderAmount;
                                     }
                                     break;
                     default :
                             if(res.data[i].goodsDiscount === 0){
                                 gwangTotal += parseInt(res.data[i].goodsPrice) * res.data[i].orderAmount;
                             } else {
-                                gwangTotal += parseInt(res.data[i].goodsPrice * (res.data[i].goodsDiscount * 0.01)) * res.data[i].orderAmount;
+                                gwangTotal += (res.data[i].goodsPrice - parseInt(res.data[i].goodsPrice * (res.data[i].goodsDiscount * 0.01))) * res.data[i].orderAmount;
                             }
                 }
             }

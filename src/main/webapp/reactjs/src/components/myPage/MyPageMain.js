@@ -52,7 +52,6 @@ const MyPageMain = () => {
             // 상품결제 내역 가져오기
             OrdersService.orderList(userId).then( ores => {
                 setOrderInfo(ores.data);
-                
                 // 내역에 해당하는 상품정보 가져오기
                 if(ores.data.length > 0){
                     // 결제내역 조회를 위한 goodsCode 변수 선언
@@ -87,7 +86,7 @@ const MyPageMain = () => {
             var checkList = '';
             var orderCode = [];
             // 배열로 True False 받아옴
-            for(var i = 0; i<goodsInfo.length; i++){
+            for(var i = 0; i<orderInfo.length; i++){
                 checkList += myPageRef.current['orderCode'+[i]].checked;
                 if(myPageRef.current['orderCode'+[i]].checked === true){
                     orderCode.push(myPageRef.current['orderCode'+[i]].value);
@@ -273,7 +272,6 @@ const MyPageMain = () => {
         }
     }
 
-
     return (
         <div className={MyPageMainStyle['mypage-main-layout']}><br />
             <div className={MyPageMainStyle['mypage-main']}>
@@ -390,6 +388,7 @@ const MyPageMain = () => {
                                 goodsInfo.map((list, i) => {
                                     // 날짜
                                     var date = list.orderDate.substring(0,10);
+
                                     return (
                                         <tbody key={i}>
                                             <tr className={MyPageMainStyle['orders-td-tr']}>
@@ -403,7 +402,7 @@ const MyPageMain = () => {
                                                         {list.goodsName}
                                                     </Link>
                                                 </td>
-                                                <td>{(list.goodsPrice * list.orderAmount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</td>
+                                                <td>{((list.goodsPrice - parseInt(list.goodsPrice * (list.goodsDiscount * 0.01))) * list.orderAmount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</td>
                                                 <td>{list.orderAmount}</td>
                                                 <td><span className={MyPageMainStyle['order-detail']} onClick={() => orderDetail(i)}>상세보기</span></td>
                                             </tr>
