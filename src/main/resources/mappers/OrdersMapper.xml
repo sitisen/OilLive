@@ -24,7 +24,8 @@
 	
 	<!-- 사용자 결제 상품목록 -->
 	<select id="orderGoodsList" parameterType="String" resultType="OrdersVO">
-		SELECT o.order_code, o.order_amount, o.order_request, o.order_date, o.order_status, o.order_address, g.goods_name, g.goods_price, g.goods_code 
+		SELECT o.order_code, o.order_amount, o.order_request, o.order_date, o.order_status, o.order_address,
+				g.goods_name, g.goods_price, g.goods_code, g.goods_discount
 		FROM goods g, orders o
 		WHERE g.goods_code = o.goods_code
 		AND o.order_code = #{orderCode}
@@ -34,7 +35,7 @@
 	<update id="deleteOrder" parameterType="String">
 		UPDATE orders
 		SET order_status = 'N'
-		WHERE order_code = #{orderCode}orderAllList
+		WHERE order_code = #{orderCode}
 	</update>
 	
 	<!-- 전체 판매목록 -->
