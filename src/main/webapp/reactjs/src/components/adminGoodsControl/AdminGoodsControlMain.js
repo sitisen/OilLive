@@ -90,8 +90,9 @@ const AdminGoodsControlMain = () => {
                 });
             }
 
+            console.log(value)
             // 상품 가격이 0원인지 확인
-            if( value === 0 ) {
+            if( value === '0' || value === '00' ) {
                 return setValidateMsg({
                     price: '상품 가격은 0원보다 커야 합니다.',
                     discount: discountMsg,
@@ -154,19 +155,20 @@ const AdminGoodsControlMain = () => {
 
     }
 
-    // 입력창에서 벗어났을 경우, 포맷 변경
+    // 입력창에 입력했을 경우, 포맷 변경
     const formatChange = (e) => {
         let value = e.target.value; // 현재 입력 중인 Input 태그 값
-
-        value = Number(value.replaceAll(',', ''));
         
-        if( isNaN(value) ) {
-            e.target.value = 0;
-            
-        } else {
+        value = Number(value.replaceAll(',', ''));
+
+        if( isNaN(value) === false ) {
             const formatValue = value.toLocaleString('ko-KR');
-            e.target.value = formatValue;
-        }
+
+            if(value !== 0) {
+                e.target.value = formatValue;
+            }
+
+        } 
     }
 
     // 상품 등록 버튼 이벤트
@@ -215,9 +217,10 @@ const AdminGoodsControlMain = () => {
         }
 
         // 상품 등록 전, 유효성 검사가 모두 통과되었는지 확인
-        if( validateMsg.price !== '' && validateMsg.discount !== '' && validateMsg.amount !== '' ) {
+        if( validateMsg.price !== '' || validateMsg.discount !== '' || validateMsg.amount !== '' ) {
             return alert('입력한 값이 유효한지 확인해주세요.');
         }
+
 
         // 상품 등록, 수정인지 판별
         if( locationType === 'insert' ) { // 상품 등록일 경우,
