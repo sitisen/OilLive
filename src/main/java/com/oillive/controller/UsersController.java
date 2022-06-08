@@ -110,10 +110,20 @@ public class UsersController {
 	@GetMapping("/idCheck/{userId}")
 	public int idCheck(@PathVariable String userId) {
 		
-		int result = usersService.idCheck(userId);
+		int uresult = usersService.idCheck(userId);
 		int mresult = usersService.idMCheck(userId);
 		
-		result += mresult;
+		int result = 0;
+		
+		// 사용자 중복확인
+		if(uresult == 1) {
+			result = 1;
+		}
+		
+		// 관리자 중복확인
+		if(mresult == 1) {
+			result = 2;
+		}
 		
 		return result;
 	}

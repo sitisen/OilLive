@@ -191,9 +191,10 @@ const SignupMain = () => {
             var regExpYear = /^(19[0-9][0-9]|20\d{2})$/;
 
             var userYear =  parseInt(userInfoRef.current['year'].value);
+
             /* 숫자가 들어왔을때 */
             if(regExpYear.test(userInfoRef.current['year'].value)){
-                if(1900 < userYear || userYear < year) {
+                if(1900 < userYear && userYear < year) {
                     /* 올바르게 입력 되었을때 */
                     setInputs({
                         ...inputs,
@@ -473,6 +474,7 @@ const SignupMain = () => {
                     setCount({
                         maxcount : 5
                     })
+                    userInfoRef.current['seNumber'].readOnly = false;
                     setStateTime(0);
                     time.current = 180;
                     seNumber.value = '';
