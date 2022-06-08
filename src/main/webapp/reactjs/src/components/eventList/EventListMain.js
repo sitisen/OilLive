@@ -39,9 +39,13 @@ const EventListMain = () => {
     // 날짜 YYYY-MM-dd 형식으로 전환해주는 함수
     const dateFormat = (date) => {
 
-        const year = date.substring(0, 4); // 연도
-        const month = date.substring(5, 7); // 월
-        const day = date.substring(8, 10); // 일
+        let timezoneOffset = new Date().getTimezoneOffset() * 60000;
+        let timezoneDate = Date.parse(date) - timezoneOffset;
+        const result = new Date(timezoneDate).toISOString();
+
+        const year = result.substring(0, 4); // 연도
+        const month = result.substring(5, 7); // 월
+        const day = result.substring(8, 10); // 일
 
         return year + '/' + month + '/' + day;
     }
