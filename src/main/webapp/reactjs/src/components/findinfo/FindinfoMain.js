@@ -178,6 +178,9 @@ const FindinfoMain = () => {
                     alert('입력하신 번호로 인증번호가 전송되었습니다.\n인증번호를 입력해주세요.');
                     setCertiNum(res.data);
 
+                    // 휴대전화 api 대용으로 console 출력
+                    console.log('인증번호 : ', res.data);
+
                     // 변경이 불가능하게함
                     tempName.readOnly = true;
                     tempPhone.readOnly = true;
@@ -208,6 +211,9 @@ const FindinfoMain = () => {
                     // 인증번호를 저장
                     alert('입력하신 번호로 인증번호가 전송되었습니다.\n인증번호를 입력해주세요.');
                     setCertiNum(res.data);
+
+                    // 휴대전화 api 대용으로 console 출력
+                    console.log('인증번호 : ', res.data);
 
                     // 변경이 불가능하게함
                     tempName.readOnly = true;
@@ -262,6 +268,9 @@ const FindinfoMain = () => {
                     setCertiNum(res.data);
                     alert('인증번호가 재전송 되었습니다.');
                     
+                    // 휴대전화 api 대용으로 console 출력
+                    console.log('인증번호 : ', res.data);
+
                     findInfoRef.current['idphonecerti'].value = '';
                     findInfoRef.current['idphonecerti'].focus();
                 } else {
@@ -280,6 +289,9 @@ const FindinfoMain = () => {
                 if(res.data !== ''){
                     setCertiNum(res.data);
                     alert('인증번호가 재전송 되었습니다.');
+                    
+                    // 휴대전화 api 대용으로 console 출력
+                    console.log('인증번호 : ', res.data);
                     
                     findInfoRef.current['pwdphonecerti'].value = '';
                     findInfoRef.current['pwdphonecerti'].focus();

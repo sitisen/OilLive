@@ -144,8 +144,6 @@ public class UsersController {
 		// 문자 보내는 횟수가 제한되어 있어 막아놓음
 		// usersService.sendSMS(phoneNum, numStr);
 		
-		System.out.println("인증번호 : "+numStr);
-		
 		return numStr;
 	}
 	
@@ -218,7 +216,6 @@ public class UsersController {
 			// usersService.sendSMS(req.get("userphone"), numStr);
 		}
 		
-		System.out.println("인증번호 : " + numStr);
 		return numStr;
 	}
   
@@ -248,8 +245,6 @@ public class UsersController {
 			// 해당하는 값이 있을때 이메일 전송
 			usersService.sendEmail(req.get("useremail"), numStr);
 		}
-		
-		System.out.println("인증번호 : " + numStr);
 		
 		return numStr;
 	}
@@ -439,7 +434,6 @@ public class UsersController {
 		
 		usersService.sendEmail(req.get("email"), numStr);
 		
-		System.out.println("인증번호 : " + numStr);
 		return numStr;
 	}
 	

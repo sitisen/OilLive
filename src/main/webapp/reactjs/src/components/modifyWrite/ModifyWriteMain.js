@@ -99,6 +99,10 @@ const ModifyWriteMain = () => {
                     UserService.sendSMS(phoneNumber.value).then(res => {
                         if(res !== undefined){
                             alert('요청하신 번호로 인증번호가 발송되었습니다.');
+
+                            // 휴대전화 api 대용으로 console 출력
+                            console.log('인증번호 : ', res.data);
+
                             // 인증번호 저장
                             setCertiNum(res.data);
                             modiWriteRef.current['phone-certi'].focus();
@@ -151,6 +155,10 @@ const ModifyWriteMain = () => {
                     if(res !== undefined){
                         alert('인증번호가 재발송되었습니다.');
                         setCertiNum(res.data);
+
+                        // 휴대전화 api 대용으로 console 출력
+                        console.log('인증번호 : ', res.data);
+                        
                         ceNum.value = '';
                         ceNum.focus();
                     } else {

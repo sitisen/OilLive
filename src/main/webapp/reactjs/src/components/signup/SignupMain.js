@@ -398,6 +398,8 @@ const SignupMain = () => {
                                 ...inputs,
                                 certiNum : res.data
                             })
+                            // 휴대전화 api 대용으로 console 출력
+                            console.log('인증번호 : ', res.data);
                             timerId.current = setInterval(() => {
                                 setMin(parseInt(time.current / 60));
                                 setSec(time.current % 60);
@@ -474,6 +476,8 @@ const SignupMain = () => {
                     setCount({
                         maxcount : 5
                     })
+                    // 휴대전화 api 대용으로 console 출력
+                    console.log('인증번호 : ', res.data);
                     userInfoRef.current['seNumber'].readOnly = false;
                     setStateTime(0);
                     time.current = 180;
