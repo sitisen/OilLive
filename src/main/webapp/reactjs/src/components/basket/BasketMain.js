@@ -93,10 +93,16 @@ const BasketMain = () => {
     };
 
     // 수량 변경 버튼 클릭 및 수량 변경 확인 시, 이벤트
-    const amountClicked = (basketCode, goodsCode) => {
+    const amountClicked = (basketCode, goodsCode, goodsAmount) => {
 
         const check = requestChange.current[goodsCode].hidden; // 수량 변경 버튼의 hidden 값
+        const existAmount = goodsAmount; // 현재 선택된 상품의 실제 수량
         let amount = amountCount.current[goodsCode].value; // input 태그의 수량 값
+
+        // 품절된 상품일 경우, 예외처리
+        if( existAmount === 0) {
+            return alert('해당 상품은 현재 품절된 상태입니다.\n선택한 상품 삭제 기능을 이용하여 삭제해주세요.');
+        }
 
         if(amount === '') { // 수량이 1 미만일 경우, ''으로 변하기 때문에 1로 초기화
             amount = 1;
@@ -296,7 +302,7 @@ const BasketMain = () => {
                                                             <div ref={el => requestChange.current[goodsCode] = el}>
                                                                 <span>{basketAmount}개</span>
                                                                 <button className={BasketMainStyle['basket-amount-button']} 
-                                                                        onClick={() => amountClicked(basketCode, goodsCode, discount)} // 수량 변경 화면으로 전환
+                                                                        onClick={() => amountClicked(basketCode, goodsCode, list.GOODS_AMOUNT)} // 수량 변경 화면으로 전환
                                                                 >
                                                                     수량 변경
                                                                 </button>
@@ -349,7 +355,7 @@ const BasketMain = () => {
                                                             <div ref={el => requestChange.current[goodsCode] = el}>
                                                                 <span>{list.BASKET_AMOUNT}개</span>
                                                                 <button className={BasketMainStyle['basket-amount-button']} 
-                                                                        onClick={() => amountClicked(basketCode, goodsCode)} // 수량 변경 화면으로 전환
+                                                                        onClick={() => amountClicked(basketCode, goodsCode, list.GOODS_AMOUNT)} // 수량 변경 화면으로 전환
                                                                 >
                                                                             수량 변경
                                                                 </button>
@@ -365,7 +371,7 @@ const BasketMain = () => {
                                                                     max={list.GOODS_AMOUNT}
                                                                 />
                                                                 <button className={BasketMainStyle['basket-amount-button']} 
-                                                                        onClick={() => amountClicked(basketCode, goodsCode, discount)} // 기존 개수 화면 전환 및 장바구니 수량 갱신
+                                                                        onClick={() => amountClicked(basketCode, goodsCode)} // 기존 개수 화면 전환 및 장바구니 수량 갱신
                                                                 >
                                                                             확인
                                                                 </button>
