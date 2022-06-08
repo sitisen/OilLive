@@ -60,6 +60,13 @@ const QnaMain = () => {
                 </div>
                 <div>
                     {
+                        qnaList.length === 0
+                        ?   <div className={QnaMainStyle['qna-list-none']}>
+                                <h5>현재 FAQ목록이 없습니다.</h5>
+                            </div>
+                        : null
+                    }
+                    {
                         qnaList.map( (list , index) => {
                             return (
                             <div key={list.qnaCode} className={QnaMainStyle['qna-list-code']}>
