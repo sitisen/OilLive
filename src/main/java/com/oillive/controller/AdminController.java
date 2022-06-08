@@ -197,11 +197,9 @@ public class AdminController {
 		return result;
 	}
 
-	//--------------- 관리자 이벤트 변경 --------------- //
+	//--------------- 관리자 상품 변경 --------------- //
 	@PatchMapping("/updateGoods")
 	public int updateGoods(@RequestBody GoodsVO goods) {
-		
-		System.out.println(goods);
 		
 		int result = adminService.updateGoods(goods);
 		

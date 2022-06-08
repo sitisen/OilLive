@@ -52,7 +52,7 @@
 		 WHERE goods_code = #{goodsCode}
 	</update>
 	
-	<!-- 관리자 이벤트 삭제 -->
+	<!-- 관리자 상품 삭제 -->
 	<delete id="deleteGoods" parameterType="String">
 		DELETE FROM goods
 			  WHERE goods_code = #{goodsCode}
