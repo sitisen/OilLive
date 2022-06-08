@@ -330,6 +330,11 @@ const AdminEventControlMain = () => {
             const photoPath = locationData.PHOTO_PATH;
             const photoReName = locationData.PHOTO_RENAME;
 
+            // 이벤트 수정 전, 시작일/종료일이 유효한지 검사
+            if( validateMsg.start !== '' || validateMsg.end !== '' ) {
+                return alert('시작일/종료일을 정확히 입력해주세요.');
+            }
+
             if(window.confirm('해당 이벤트를 수정하시겠습니까?')) {
                 
                 switch( file.length === 0 ) {
