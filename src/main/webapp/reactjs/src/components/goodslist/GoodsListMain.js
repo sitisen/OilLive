@@ -148,114 +148,117 @@ const GoodslistMain = () => {
 
                 <div className={`container ${GoodslistMainStyle['goods-list-container']}`}>
 
-                    {               
-                        [...Array( Math.ceil(goodsList.length / goodsPerLine) )].map( (n, mainIndex) => {
-                            const listArray = [];
-                            let startNum = 1;
-                            let endNum = goodsPerLine;
+                    {   goodsList.length === 0
+                            ? // 상품이 존재하지 않을 때,
+                                <div><h5>상품이 존재하지 않습니다.</h5></div>
+                            :
+                                [...Array( Math.ceil(goodsList.length / goodsPerLine) )].map( (n, mainIndex) => {
+                                    const listArray = [];
+                                    let startNum = 1;
+                                    let endNum = goodsPerLine;
 
-                            if ( currentPage > 1 ) { // currentPage 가 1을 넘겼을 경우,
-                                startNum = (currentPage - 1) * paging.listRange + 1;
-                                endNum = startNum + goodsPerLine;
-                            }
+                                    if ( currentPage > 1 ) { // currentPage 가 1을 넘겼을 경우,
+                                        startNum = (currentPage - 1) * paging.listRange + 1;
+                                        endNum = startNum + goodsPerLine;
+                                    }
 
 
-                            switch ( mainIndex ) { // 1행당 goodsPerLine 만큼 목록을 띄워줘야 하기 때문에 switch 문 사용
-                                case 0: listArray[mainIndex] = goodsList.filter( idx => idx.RNUM >= startNum && 
-                                                                                 idx.RNUM <= endNum );
-                                        break;
-                            
-                                case 1: listArray[mainIndex] = goodsList.filter( idx => idx.RNUM >= startNum + (goodsPerLine * mainIndex) && 
-                                                                                 idx.RNUM <= endNum + (goodsPerLine * mainIndex) );
-                                        break;
+                                    switch ( mainIndex ) { // 1행당 goodsPerLine 만큼 목록을 띄워줘야 하기 때문에 switch 문 사용
+                                        case 0: listArray[mainIndex] = goodsList.filter( idx => idx.RNUM >= startNum && 
+                                                                                        idx.RNUM <= endNum );
+                                                break;
+                                    
+                                        case 1: listArray[mainIndex] = goodsList.filter( idx => idx.RNUM >= startNum + (goodsPerLine * mainIndex) && 
+                                                                                        idx.RNUM <= endNum + (goodsPerLine * mainIndex) );
+                                                break;
 
-                                default: listArray[mainIndex] = goodsList.filter( idx => idx.RNUM >= startNum + (goodsPerLine * mainIndex) && 
-                                                                                  idx.RNUM <= endNum + (goodsPerLine * mainIndex) );
-                            }
+                                        default: listArray[mainIndex] = goodsList.filter( idx => idx.RNUM >= startNum + (goodsPerLine * mainIndex) && 
+                                                                                        idx.RNUM <= endNum + (goodsPerLine * mainIndex) );
+                                    }
 
-                            return (
-                                <div key={mainIndex} className={GoodslistMainStyle['goods-list-main']}>
+                                    return (
+                                        <div key={mainIndex} className={GoodslistMainStyle['goods-list-main']}>
 
-                                    { listArray[mainIndex].map( list => {
+                                            { listArray[mainIndex].map( list => {
 
-                                        const discountPrice = list.GOODS_PRICE - parseInt((list.GOODS_PRICE * (list.GOODS_DISCOUNT * 0.01)));
+                                                const discountPrice = list.GOODS_PRICE - parseInt((list.GOODS_PRICE * (list.GOODS_DISCOUNT * 0.01)));
 
-                                        return ( 
-                                            // 해당 상품의 재고가 없을 경우,
-                                            list.GOODS_AMOUNT === 0 
-                                            ?   <Link key={list.RNUM} className={GoodslistMainStyle['goods-item-Link']} 
-                                                      to='/goods/goodsdetail' 
-                                                      state={{ data: list.GOODS_CODE }}
-                                                 >
-                                                        <div className={GoodslistMainStyle['goods-item']}>
-                                                            <div className={GoodslistMainStyle['goods-item-img']}>
-                                                                <img className={GoodslistMainStyle['item-img-sold']} alt='SoldOut' src='/images/goods/SoldOut.png' />
-                                                                <img className={GoodslistMainStyle['item-img']} alt='goodsImg' src={list.PHOTO_PATH + list.PHOTO_RENAME} />
-                                                            </div>
-                                                            <div className={GoodslistMainStyle['goods-item-title']}>
-                                                                <span className={GoodslistMainStyle['item-span-sold']}>{list.GOODS_NAME}</span>
-                                                            </div>
-                                                            <div className={GoodslistMainStyle['goods-item-price']}>
-                                                                <div className={GoodslistMainStyle['item-price']}>
-                                                                    <span className={GoodslistMainStyle['item-span-sold']}>{list.GOODS_PRICE.toLocaleString('ko-KR')}원</span>
+                                                return ( 
+                                                    // 해당 상품의 재고가 없을 경우,
+                                                    list.GOODS_AMOUNT === 0 
+                                                    ?   <Link key={list.RNUM} className={GoodslistMainStyle['goods-item-Link']} 
+                                                            to='/goods/goodsdetail' 
+                                                            state={{ data: list.GOODS_CODE }}
+                                                        >
+                                                                <div className={GoodslistMainStyle['goods-item']}>
+                                                                    <div className={GoodslistMainStyle['goods-item-img']}>
+                                                                        <img className={GoodslistMainStyle['item-img-sold']} alt='SoldOut' src='/images/goods/SoldOut.png' />
+                                                                        <img className={GoodslistMainStyle['item-img']} alt='goodsImg' src={list.PHOTO_PATH + list.PHOTO_RENAME} />
+                                                                    </div>
+                                                                    <div className={GoodslistMainStyle['goods-item-title']}>
+                                                                        <span className={GoodslistMainStyle['item-span-sold']}>{list.GOODS_NAME}</span>
+                                                                    </div>
+                                                                    <div className={GoodslistMainStyle['goods-item-price']}>
+                                                                        <div className={GoodslistMainStyle['item-price']}>
+                                                                            <span className={GoodslistMainStyle['item-span-sold']}>{list.GOODS_PRICE.toLocaleString('ko-KR')}원</span>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                        </div>
-                                                </Link>
+                                                        </Link>
 
-                                            // 해당 상품이 할인 중이지 않을 경우,
-                                            : list.GOODS_DISCOUNT === 0
-                                            ?   <Link key={list.RNUM} className={GoodslistMainStyle['goods-item-Link']} 
-                                                      to='/goods/goodsdetail' 
-                                                      state={{ data: list.GOODS_CODE }}
-                                                >
-                                                    <div className={GoodslistMainStyle['goods-item']}>
-                                                            <div className={GoodslistMainStyle['goods-item-img']}>
-                                                                <img className={GoodslistMainStyle['item-img']} alt='goodsImg' src={list.PHOTO_PATH + list.PHOTO_RENAME} />
+                                                    // 해당 상품이 할인 중이지 않을 경우,
+                                                    : list.GOODS_DISCOUNT === 0
+                                                    ?   <Link key={list.RNUM} className={GoodslistMainStyle['goods-item-Link']} 
+                                                            to='/goods/goodsdetail' 
+                                                            state={{ data: list.GOODS_CODE }}
+                                                        >
+                                                            <div className={GoodslistMainStyle['goods-item']}>
+                                                                    <div className={GoodslistMainStyle['goods-item-img']}>
+                                                                        <img className={GoodslistMainStyle['item-img']} alt='goodsImg' src={list.PHOTO_PATH + list.PHOTO_RENAME} />
+                                                                    </div>
+                                                                    <div className={GoodslistMainStyle['goods-item-title']}>
+                                                                        <span>{list.GOODS_NAME}</span>
+                                                                    </div>
+                                                                    <div className={GoodslistMainStyle['goods-item-price']}>
+                                                                        <div className={GoodslistMainStyle['item-price']}>
+                                                                            <span>{list.GOODS_PRICE.toLocaleString('ko-KR')}원</span>
+                                                                        </div>
+                                                                    </div> 
                                                             </div>
-                                                            <div className={GoodslistMainStyle['goods-item-title']}>
-                                                                <span>{list.GOODS_NAME}</span>
-                                                            </div>
-                                                            <div className={GoodslistMainStyle['goods-item-price']}>
-                                                                <div className={GoodslistMainStyle['item-price']}>
-                                                                    <span>{list.GOODS_PRICE.toLocaleString('ko-KR')}원</span>
-                                                                </div>
-                                                            </div> 
-                                                    </div>
-                                                </Link>
-                                                
+                                                        </Link>
+                                                        
 
-                                            // 해당 상품이 할인 중일 경우,
-                                            :   <Link key={list.RNUM} className={GoodslistMainStyle['goods-item-Link']} 
-                                                      to='/goods/goodsdetail' 
-                                                      state={{ data: list.GOODS_CODE }}
-                                                >
-                                                    <div className={GoodslistMainStyle['goods-item']}>
+                                                    // 해당 상품이 할인 중일 경우,
+                                                    :   <Link key={list.RNUM} className={GoodslistMainStyle['goods-item-Link']} 
+                                                            to='/goods/goodsdetail' 
+                                                            state={{ data: list.GOODS_CODE }}
+                                                        >
+                                                            <div className={GoodslistMainStyle['goods-item']}>
 
-                                                            <div className={GoodslistMainStyle['goods-item-img']}>
-                                                                <img className={GoodslistMainStyle['item-img']} alt='goodsImg' src={list.PHOTO_PATH + list.PHOTO_RENAME} />
+                                                                    <div className={GoodslistMainStyle['goods-item-img']}>
+                                                                        <img className={GoodslistMainStyle['item-img']} alt='goodsImg' src={list.PHOTO_PATH + list.PHOTO_RENAME} />
+                                                                    </div>
+                                                                    <div className={GoodslistMainStyle['goods-item-title']}>
+                                                                        <span>{list.GOODS_NAME}</span>
+                                                                    </div>
+                                                                    <div className={GoodslistMainStyle['goods-item-price']}>
+                                                                        <div className={GoodslistMainStyle['original-price']}>
+                                                                            <span>{list.GOODS_PRICE.toLocaleString('ko-KR')}원</span>
+                                                                            <label>{list.GOODS_DISCOUNT}%</label>
+                                                                        </div>
+                                                                        <div className={GoodslistMainStyle['discount-price']}>
+                                                                            <span>{discountPrice.toLocaleString('ko-KR')}원</span>
+                                                                        </div>
+                                                                    </div>
                                                             </div>
-                                                            <div className={GoodslistMainStyle['goods-item-title']}>
-                                                                <span>{list.GOODS_NAME}</span>
-                                                            </div>
-                                                            <div className={GoodslistMainStyle['goods-item-price']}>
-                                                                <div className={GoodslistMainStyle['original-price']}>
-                                                                    <span>{list.GOODS_PRICE.toLocaleString('ko-KR')}원</span>
-                                                                    <label>{list.GOODS_DISCOUNT}%</label>
-                                                                </div>
-                                                                <div className={GoodslistMainStyle['discount-price']}>
-                                                                    <span>{discountPrice.toLocaleString('ko-KR')}원</span>
-                                                                </div>
-                                                            </div>
-                                                    </div>
-                                                </Link>
+                                                        </Link>
 
-                                        )
-                                    })}
+                                                )
+                                            })}
 
-                                </div> /* // .goods-list-main */
-                            )
-                        })
+                                        </div> /* // .goods-list-main */
+                                    )
+                                })
                     }
                 </div> {/* // .goods-list-container */}
 
