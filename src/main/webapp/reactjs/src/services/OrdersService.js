@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 
-const ORDERS_URL = 'http://localhost:9090/orders';
+const ORDERS_URL = process.env.REACT_APP_URL + '/orders';
 const ORDERS_INSERT_ORDERS = ORDERS_URL + '/insertOrders';  // 결제 내역 추가
 const ORDER_LIST = ORDERS_URL + '/orderList';               // 사용자 결제 목록
 const ORDER_GOODS_LIST = ORDERS_URL + '/orderGoodsList';    // 사용자 결제 상품 정보

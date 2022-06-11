@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 
-const USERS_URL = 'http://localhost:9090/users';
+const USERS_URL = process.env.REACT_APP_URL + '/users';
 const USERS_LOGIN = USERS_URL + '/login';                               // 로그인
 const USERS_IDCHECK = USERS_URL + '/idCheck';                           // 아이디 중복확인
 const USERS_PHONE =  USERS_URL + '/sendSMS';                            // 휴대폰 인증

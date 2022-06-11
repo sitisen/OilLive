@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 
-const ADMIN_URL = 'http://localhost:9090/admin';
+const ADMIN_URL = process.env.REACT_APP_URL + '/admin';
 const ADMIN_UPDATE_UPLOAD = ADMIN_URL + '/updateUpload'; // 관리자 이미지 변경
 /* 이벤트 관련 */
 const ADMIN_SELECT_EVENT_LIST = ADMIN_URL + '/selectEventList'; // 이벤트 목록 조회

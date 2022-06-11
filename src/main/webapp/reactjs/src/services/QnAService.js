@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const QNA_URL = 'http://localhost:9090/qna';
+const QNA_URL = process.env.REACT_APP_URL + '/qna';
 const QNA_LIST = QNA_URL + '/qnaList';  // qna 목록 조회
 const QNA_LIST_PAGE = QNA_URL + '/qnaListPage';  // qna 목록 조회 (페이징)
 const QNA_COUNT = QNA_URL + '/qnaCount';  // qna 총 개수

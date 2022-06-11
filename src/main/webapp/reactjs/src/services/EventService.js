@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 
-const EVENT_URL = 'http://localhost:9090/event';
+const EVENT_URL = process.env.REACT_APP_URL + '/event';
 const EVENT_SELECT_EVENT_LIST = EVENT_URL + '/selectEventList'; // 이벤트 목록 조회
 const EVENT_SELECT_EVENT_BANNER = EVENT_URL + '/selectEventBanner'; // 메인페이지 이벤트 조회
 
