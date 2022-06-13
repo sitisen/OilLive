@@ -171,6 +171,7 @@ const AdminHomeMain = () => {
         // 상품매출 통계를 위한 구매목록 가져옴
         OrdersService.orderAllList().then( res => {
 
+          if(res.data.length !== 0){
             var silTotal = 0;
             var sechaTotal = 0;
             var engenTotal = 0;
@@ -212,6 +213,7 @@ const AdminHomeMain = () => {
             setEngin(engenTotal);
             setGwang(gwangTotal);
             setAllTotal(silTotal+sechaTotal+engenTotal+gwangTotal);
+          }
         });
     }, [navigate]);
 
