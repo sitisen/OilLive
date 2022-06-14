@@ -120,7 +120,7 @@ const GoodsDetailMain = () => {
                             ? goodsInfo.GOODS_AMOUNT === 0 // goodsInfo가 setState를 진행했을 경우,
                                 ? // 상품 재고가 없을 경우
                                     <div className={GoodsDetailMainStyle['header-img-layout']}>
-                                        <img className={GoodsDetailMainStyle['goods-img-sold']} alt='SoldOut' src='/images/goods/SoldOut.png' />
+                                        <img className={GoodsDetailMainStyle['goods-img-sold']} alt='SoldOut' src='/images/logo/SoldOut.png' />
                                         <img className={GoodsDetailMainStyle['goods-img']} alt='goodsImg' src={goodsInfo.PHOTO_PATH + goodsInfo.PHOTO_RENAME} />
                                     </div>
                                 : // 상품 재고가 있을 경우

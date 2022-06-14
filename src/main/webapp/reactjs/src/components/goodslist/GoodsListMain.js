@@ -192,7 +192,7 @@ const GoodslistMain = () => {
                                                         >
                                                                 <div className={GoodslistMainStyle['goods-item']}>
                                                                     <div className={GoodslistMainStyle['goods-item-img']}>
-                                                                        <img className={GoodslistMainStyle['item-img-sold']} alt='SoldOut' src='/images/goods/SoldOut.png' />
+                                                                        <img className={GoodslistMainStyle['item-img-sold']} alt='SoldOut' src='/images/logo/SoldOut.png' />
                                                                         <img className={GoodslistMainStyle['item-img']} alt='goodsImg' src={list.PHOTO_PATH + list.PHOTO_RENAME} />
                                                                     </div>
                                                                     <div className={GoodslistMainStyle['goods-item-title']}>
