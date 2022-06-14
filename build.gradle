@@ -48,7 +48,7 @@ processResources{
 task copyReactBuildFiles(type:Copy){
         dependsOn "buildReact"
         from "$reactDir/build"
-        into "$projectDir/src/main/resources/reactjs"
+        into "$projectDir/src/main/resources/static"
 }
 
 task buildReact(type:Exec){
