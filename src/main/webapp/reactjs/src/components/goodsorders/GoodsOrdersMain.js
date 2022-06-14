@@ -330,26 +330,44 @@ const GoodsOrdersMain = () => {
         const year = '20' + value.slice(2, 4); // 카드 유효기간 연도
         const month = value.slice(0, 2); // 카드 유효기간 달
 
-        if(regExp.test(value)) {
+        if(regExp.test(value)) { // 유효성 검사 통과 시,
 
-            if( Number(year) >= new Date().getFullYear() &&
-                Number(month) > new Date().getMonth() ) { // 카드 유효기간 연도 및 월이 현재 날짜보다 크거나 같아야 true
-                
-                    const result = value.slice(0, 2) + '/' + value.slice(2, 4);
+            if( Number(year) > new Date().getFullYear() ) { // 카드 유효기간 연도 가 현재 연도보다 크면 true
+                    
+                        const result = value.slice(0, 2) + '/' + value.slice(2, 4);
+                        setValidateCheck({
+                            status: true,
+                            typeChanged: false
+                        });
+                        cardDateInput.current.value = result; // 입력 창에 MM/YY 형식으로 변환
+                        
+            } else if ( Number(year) === new Date().getFullYear() ) { // 카드 유효기간 연도가 현재 연도와 같으면 true
+                    
+                        if( Number(month) > new Date().getMonth() + 1 ) { // 카드 유효기간 월이 현재 월보다 커야 true
+
+                            const result = value.slice(0, 2) + '/' + value.slice(2, 4);
+                            setValidateCheck({
+                                status: true,
+                                typeChanged: false
+                            });
+                            cardDateInput.current.value = result; // 입력 창에 MM/YY 형식으로 변환
+
+                        } else {
+                            setValidateCheck({
+                                status: false,
+                                typeChanged: false
+                            });
+
+                        }
+
+            } else {
                     setValidateCheck({
-                        status: true,
+                        status: false,
                         typeChanged: false
                     });
-                    cardDateInput.current.value = result; // 입력 창에 MM/YY 형식으로 변환
-                    
-            } else {
-                setValidateCheck({
-                    status: false,
-                    typeChanged: false
-                });
             }
-            
-        } else {
+                
+        } else { // 유효성 검사 실패 시,
             setValidateCheck({
                 status: false,
                 typeChanged: false
